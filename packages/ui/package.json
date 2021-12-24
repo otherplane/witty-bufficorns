@@ -8,27 +8,25 @@
     "lint": "prettier-standard --format"
   },
   "dependencies": {
-    "@vueuse/core": "^6.5.3",
-    "axios": "^0.21.4",
-    "date-fns": "^2.24.0",
-    "date-fns-tz": "^1.1.6",
-    "eslint-plugin-vue": "^7.18.0",
-    "pinia": "^2.0.0-rc.9",
-    "sass": "^1.42.1",
-    "vue": "^3.2.6",
-    "vue-router": "4",
-    "vue3-qr-reader": "^1.0.0",
-    "web3": "^1.6.0"
+    "@vueuse/core": "7.4.1",
+    "axios": "0.24.0",
+    "date-fns": "2.27.0",
+    "date-fns-tz": "1.2.2",
+    "pinia": "2.0.8",
+    "sass": "1.45.1",
+    "vue": "3.2.26",
+    "vue-router": "4.0.12",
+    "vue3-qr-reader": "1.0.0",
+    "web3": "1.6.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.6.1",
-    "@vue/compiler-sfc": "^3.2.6",
-    "@vue/composition-api": "^1.2.2",
-    "autoprefixer": "^10.3.4",
-    "postcss": "^8.3.6",
-    "prettier-standard": "^16.4.1",
-    "tailwindcss": "^2.2.15",
-    "vite": "^2.5.4",
-    "vite-plugin-components": "^0.13.3"
+    "@vitejs/plugin-vue": "2.0.1",
+    "autoprefixer": "10.4.0",
+    "eslint-plugin-vue": "8.2.0",
+    "postcss": "8.4.5",
+    "prettier-standard": "16.4.1",
+    "tailwindcss": "3.0.7",
+    "unplugin-vue-components": "0.17.10",
+    "vite": "2.7.6"
   }
 }
