@@ -2,10 +2,10 @@
 
 ``` bash
 # clone the repository
-git clone git@github.com:otherplane/wittycorns.git
+git clone git@github.com:otherplane/witty-bufficorns.git
 
 # cd into the cloned repository
-cd wittycorns
+cd witty-bufficorns
 
 # install application dependencies
 yarn
