@@ -1,4 +1,9 @@
-import { server, VALID_TOKEN, INVALID_TOKEN, authenticatePlayer } from '../../setup'
+import {
+  server,
+  VALID_TOKEN,
+  INVALID_TOKEN,
+  authenticatePlayer,
+} from '../../setup'
 
 const initialPlayers = [
   {
@@ -19,7 +24,9 @@ describe('authentication.ts', () => {
         url: `/auth/${initialPlayers[0].key}`,
       },
       (err, response) => {
-        expect(response.json().message).toBe(`headers should have required property 'authorization'`)
+        expect(response.json().message).toBe(
+          `headers should have required property 'authorization'`
+        )
         done()
       }
     )

@@ -30,7 +30,7 @@ export class RanchRepository {
       const ranch = {
         name: RanchName[index],
         resource: Trait[index],
-        medals: []
+        medals: [],
       }
       await this.create(ranch)
       ranches.push(ranch)

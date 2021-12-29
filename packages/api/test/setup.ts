@@ -31,8 +31,10 @@ beforeEach(async () => {
   server = Fastify().register(app)
 })
 
-const VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
-const INVALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.oxyzcdaeImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
+const VALID_TOKEN =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
+const INVALID_TOKEN =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.oxyzcdaeImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
 
 afterAll(async () => {
   await client.close()

@@ -1,4 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
+export { Db, Collection, ObjectId, WithId } from 'mongodb'
 
 export const ClaimPlayerParams = Type.Object({
   key: Type.String(),
@@ -23,7 +24,7 @@ export const Bufficorn = Type.Object({
   stamina: Type.Integer(),
   coat: Type.Integer(),
   agility: Type.Integer(),
-  medals: Type.Array(Type.Optional(Type.String()))
+  medals: Type.Array(Type.Optional(Type.String())),
 })
 
 export type Bufficorn = Static<typeof Bufficorn>
@@ -54,7 +55,7 @@ export enum Trait {
   stamina,
   coolness,
   coat,
-  agility
+  agility,
 }
 
 export const Player = Type.Object({
@@ -64,7 +65,7 @@ export const Player = Type.Object({
   points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
-  medals: Type.Array(Type.Optional(Type.String()))
+  medals: Type.Array(Type.Optional(Type.String())),
 })
 
 export type Player = Static<typeof Player>
@@ -77,7 +78,7 @@ export const DbPlayer = Type.Object({
   points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
-  medals: Type.Array(Type.Optional(Type.String()))
+  medals: Type.Array(Type.Optional(Type.String())),
 })
 
 export type DbPlayer = Static<typeof DbPlayer>
@@ -85,11 +86,6 @@ export type DbPlayer = Static<typeof DbPlayer>
 //TODO: define Medal type
 export const Medal = Type.String()
 export type Medal = Static<typeof Medal>
-
-
-
-
-
 
 export const IndexedEgg = Type.Intersect([
   Player,

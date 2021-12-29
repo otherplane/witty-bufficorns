@@ -1,6 +1,6 @@
 import {
   PLAYER_MINT_TIMESSTAMP,
-  EGG_COLORS_COUNT,
+  PLAYERS_COUNT,
   INCUBATION_COOLDOWN_MILLIS,
   INCUBATION_DURATION_MILLIS,
 } from './constants'
@@ -39,7 +39,7 @@ export function getIncubationExtendedFromBase(incubation: Incubation) {
 }
 
 export function getRanchFromIndex(index: number) {
-  const ranchIndex = index % EGG_COLORS_COUNT
+  const ranchIndex = index % PLAYERS_COUNT
   return RanchName[ranchIndex]
 }
 

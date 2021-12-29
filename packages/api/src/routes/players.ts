@@ -64,7 +64,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           ranch: player.ranch,
           lastTradeIn: player.lastTradeIn,
           lastTradeOut: player.lastTradeOut,
-          medals: player.medals
+          medals: player.medals,
         }
 
         return reply.status(200).send(extendedPlayer)
