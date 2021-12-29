@@ -55,8 +55,9 @@ export class PlayerRepository {
       })
       const medals: Array<string> = []
       const ranch: string = getRanchFromIndex(index)
+      const points: number = 0
       // Create an player based on that player data and push it to our collection
-      const player: DbPlayer = { key, username, ranch, medals }
+      const player: DbPlayer = { key, username, ranch, medals, points }
       await this.create(player)
       players.push(player)
     }

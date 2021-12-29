@@ -21,6 +21,8 @@ export const Bufficorn = Type.Object({
   speed: Type.Integer(),
   coolness: Type.Integer(),
   stamina: Type.Integer(),
+  coat: Type.Integer(),
+  agility: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String()))
 })
 
@@ -33,33 +35,33 @@ export const Ranch = Type.Object({
   bufficorn3: Bufficorn,
   bufficorn4: Bufficorn,
   medals: Type.Array(Type.Optional(Type.String())),
-  primaryResource: Type.String(),
-  secondaryResource: Type.String(),
+  resource: Type.String(),
 })
 
 export type Ranch = Static<typeof Ranch>
 
 export const DbRanch = Type.Object({
   name: Type.String(),
-  primaryResource: Type.String(),
-  secondaryResource: Type.String(),
+  resource: Type.String(),
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
-export type DbRanch = Static<typeof Ranch>
+export type DbRanch = Static<typeof DbRanch>
 
 export enum Trait {
   vigor,
   speed,
   stamina,
-  coolness
+  coolness,
+  coat,
+  agility
 }
 
 export const Player = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
-  ranch: Ranch,
+  points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String()))
@@ -72,6 +74,7 @@ export const DbPlayer = Type.Object({
   token: Type.Optional(Type.String()),
   username: Type.String(),
   ranch: Type.String(),
+  points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String()))
