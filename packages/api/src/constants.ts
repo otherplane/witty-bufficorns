@@ -55,7 +55,7 @@ export const EGGS_COUNT: number = process.env.EGGS_COUNT
   ? parseInt(process.env.EGGS_COUNT)
   : 10
 
-// Number of different egg colors
+// Number of different ranches
 export const EGG_COLORS_COUNT = process.env.EGG_COLORS_COUNT
   ? parseInt(process.env.EGG_COLORS_COUNT)
   : 7

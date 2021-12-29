@@ -4,7 +4,7 @@ import {
   INCUBATION_COOLDOWN_MILLIS,
   INCUBATION_DURATION_MILLIS,
 } from './constants'
-import { Incubation } from './types'
+import { Incubation, RanchName } from './types'
 
 export function calculateRemainingCooldown(
   incubationEnds: number,
@@ -38,8 +38,9 @@ export function getIncubationExtendedFromBase(incubation: Incubation) {
   )
 }
 
-export function getColorFromIndex(index: number) {
-  return index % EGG_COLORS_COUNT
+export function getRanchFromIndex(index: number) {
+  const ranchIndex = index % EGG_COLORS_COUNT
+  return RanchName[ranchIndex]
 }
 
 export function fromHexToUint8Array(hex: string) {

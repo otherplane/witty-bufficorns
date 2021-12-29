@@ -56,9 +56,15 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             .send(new Error(`Player has not been claimed yet (key: ${key})`))
         }
 
+        //GET RANCH
+
         const extendedPlayer: Player = {
           key: player.key,
           username: player.username,
+          ranch: player.ranch,
+          lastTradeIn: player.lastTradeIn,
+          lastTradeOut: player.lastTradeOut,
+          medals: player.medals
         }
 
         return reply.status(200).send(extendedPlayer)

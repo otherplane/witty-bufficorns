@@ -5,12 +5,88 @@ export const ClaimPlayerParams = Type.Object({
 })
 export type ClaimPlayerParams = Static<typeof ClaimPlayerParams>
 
+export enum RanchName {
+  Ranch1,
+  Ranch2,
+  Ranch3,
+  Ranch4,
+  Ranch5,
+  Ranch6,
+}
+
+export const Bufficorn = Type.Object({
+  name: Type.String(),
+  ranch: Type.String(),
+  vigor: Type.Integer(),
+  speed: Type.Integer(),
+  coolness: Type.Integer(),
+  stamina: Type.Integer(),
+  medals: Type.Array(Type.Optional(Type.String()))
+})
+
+export type Bufficorn = Static<typeof Bufficorn>
+
+export const Ranch = Type.Object({
+  name: Type.String(),
+  bufficorn1: Bufficorn,
+  bufficorn2: Bufficorn,
+  bufficorn3: Bufficorn,
+  bufficorn4: Bufficorn,
+  medals: Type.Array(Type.Optional(Type.String())),
+  primaryResource: Type.String(),
+  secondaryResource: Type.String(),
+})
+
+export type Ranch = Static<typeof Ranch>
+
+export const DbRanch = Type.Object({
+  name: Type.String(),
+  primaryResource: Type.String(),
+  secondaryResource: Type.String(),
+  medals: Type.Array(Type.Optional(Type.String())),
+})
+
+export type DbRanch = Static<typeof Ranch>
+
+export enum Trait {
+  vigor,
+  speed,
+  stamina,
+  coolness
+}
+
 export const Player = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
+  ranch: Ranch,
+  lastTradeIn: Type.Optional(Type.Integer()),
+  lastTradeOut: Type.Optional(Type.Integer()),
+  medals: Type.Array(Type.Optional(Type.String()))
 })
+
 export type Player = Static<typeof Player>
+
+export const DbPlayer = Type.Object({
+  key: Type.String(),
+  token: Type.Optional(Type.String()),
+  username: Type.String(),
+  ranch: Type.String(),
+  lastTradeIn: Type.Optional(Type.Integer()),
+  lastTradeOut: Type.Optional(Type.Integer()),
+  medals: Type.Array(Type.Optional(Type.String()))
+})
+
+export type DbPlayer = Static<typeof DbPlayer>
+
+//TODO: define Medal type
+export const Medal = Type.String()
+export type Medal = Static<typeof Medal>
+
+
+
+
+
 
 export const IndexedEgg = Type.Intersect([
   Player,

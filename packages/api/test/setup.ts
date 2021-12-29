@@ -31,6 +31,9 @@ beforeEach(async () => {
   server = Fastify().register(app)
 })
 
+const VALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
+const INVALID_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.oxyzcdaeImVmMTJlZmJkNzY1ZjlhZDMiLCJpYXQiOjE2NDA3MDk3MDZ9.zELplBcL_FpGy795eEaT7JWp6-sncgVH9JhR7mcVp0I'
+
 afterAll(async () => {
   await client.close()
 })
@@ -39,4 +42,20 @@ afterEach(async () => {
   await server.close()
 })
 
-export { server }
+async function authenticatePlayer(key): Promise<string> {
+  return new Promise((resolve) => {
+    server.inject(
+      {
+        method: 'POST',
+        url: '/auth',
+        payload: { key },
+      },
+      (err, response) => {
+        console.log('---response---', response.json().token)
+        resolve(response.json().token)
+      }
+    )
+  })
+}
+
+export { server, VALID_TOKEN, INVALID_TOKEN, authenticatePlayer }
