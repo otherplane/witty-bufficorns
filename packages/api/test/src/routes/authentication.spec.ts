@@ -1,4 +1,4 @@
-import { server } from '../../setup'
+import { serverInject } from '../../setup'
 
 const initialPlayers = [
   {
@@ -11,25 +11,9 @@ const initialPlayers = [
   },
 ]
 
-function authenticatePlayer() {
-  return async (index: number): Promise<string> =>
-    new Promise((resolve) => {
-      server.inject(
-        {
-          method: 'POST',
-          url: '/auth',
-          payload: { key: initialPlayers[index].key },
-        },
-        (err, response) => {
-          resolve(response.json().token)
-        }
-      )
-    })
-}
-
 describe('authentication.ts', () => {
-  it('should authenticate PLAYER #0', (done) => {
-    server.inject(
+  it('should authenticate PLAYER #0', async () => {
+    await serverInject(
       {
         method: 'POST',
         url: '/auth',
@@ -41,8 +25,6 @@ describe('authentication.ts', () => {
         expect(key).toBeTruthy()
         expect(token).toBeTruthy()
         expect(username).toBeTruthy()
-
-        done()
       }
     )
   })
