@@ -5,8 +5,10 @@ import { FastifyPluginAsync } from 'fastify'
 import { fastifyMongodb } from 'fastify-mongodb'
 import { join } from 'path'
 
-import { EGGS_COUNT, JWT_SECRET, MONGO_URI } from './constants'
+import { PLAYERS_COUNT, JWT_SECRET, MONGO_URI } from './constants'
 import { PlayerRepository } from './repositories/player'
+import { BufficornRepository } from './repositories/bufficorn'
+import { RanchRepository } from './repositories/ranch'
 
 export type AppOptions = {
   // Place your custom options for app below here.
@@ -45,13 +47,17 @@ const app: FastifyPluginAsync<AppOptions> = async (
     url: MONGO_URI,
   })
 
-  // Initialize egg repository from `eggs.json`
+  // Initialize game repositories
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
 
-    // Initialize eggs repository and bootstrap with EGGS_COUNT eggs if no eggs exist already
-    const repository = new PlayerRepository(fastify.mongo.db)
-    await repository.bootstrap(EGGS_COUNT, false)
+    // Initialize game repositories and bootstrap
+    const playerRepository = new PlayerRepository(fastify.mongo.db)
+    const ranchRepository = new RanchRepository(fastify.mongo.db)
+    const bufficornRepository = new BufficornRepository(fastify.mongo.db)
+    await playerRepository.bootstrap(PLAYERS_COUNT, false)
+    await ranchRepository.bootstrap(false)
+    await bufficornRepository.bootstrap(false)
 
     next()
   })

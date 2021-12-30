@@ -1,9 +1,9 @@
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 
 import { MintOutput } from '../types'
 
 export class MintRepository {
-  private collection: Collection
+  private collection: Collection<WithId<MintOutput>>
 
   constructor(db: Db) {
     this.collection = db.collection('mints')
@@ -18,9 +18,9 @@ export class MintRepository {
     return mintOutput
   }
 
-  public async get(index: number): Promise<MintOutput | null> {
-    return (await this.collection.findOne({
+  public async get(index: number): Promise<WithId<MintOutput> | null> {
+    return await this.collection.findOne({
       'data.index': index,
-    })) as MintOutput | null
+    })
   }
 }

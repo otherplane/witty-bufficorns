@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -7,10 +7,11 @@ import {
 } from 'unique-names-generator'
 
 import { PLAYER_KEY_LENGTH_BYTES, PLAYER_KEY_SALT } from '../constants'
-import { Player } from '../types'
+import { getRanchFromIndex } from '../utils'
+import { DbPlayer } from '../types'
 
 export class PlayerRepository {
-  private collection: Collection
+  private collection: Collection<WithId<DbPlayer>>
 
   constructor(db: Db) {
     this.collection = db.collection('players')
@@ -24,7 +25,7 @@ export class PlayerRepository {
   public async bootstrap(
     count: Number,
     force: Boolean = false
-  ): Promise<Array<Player> | null> {
+  ): Promise<Array<DbPlayer> | null> {
     // Tell if the collection is already bootstrapped
     const isAlreadyBootstrapped =
       (await this.collection.estimatedDocumentCount()) > 0
@@ -52,8 +53,11 @@ export class PlayerRepository {
         separator: '-',
         style: 'lowerCase',
       })
+      const medals: Array<string> = []
+      const ranch: string = getRanchFromIndex(index)
+      const points: number = 0
       // Create an player based on that player data and push it to our collection
-      const player: Player = { key, username }
+      const player: DbPlayer = { key, username, ranch, medals, points }
       await this.create(player)
       players.push(player)
     }
@@ -61,7 +65,7 @@ export class PlayerRepository {
     return players
   }
 
-  public async create(player: Player): Promise<Player> {
+  public async create(player: DbPlayer): Promise<DbPlayer> {
     const isAlreadyCreated = await this.get(player.key)
 
     if (isAlreadyCreated) {
@@ -76,7 +80,7 @@ export class PlayerRepository {
     return player
   }
 
-  public async update(player: Player): Promise<Player> {
+  public async update(player: DbPlayer): Promise<DbPlayer> {
     const isAlreadyCreated = await this.get(player.key)
 
     if (!isAlreadyCreated) {
@@ -95,7 +99,7 @@ export class PlayerRepository {
     return player
   }
 
-  public async get(key: string): Promise<Player | null> {
-    return (await this.collection.findOne({ key })) as Player | null
+  public async get(key: string): Promise<WithId<DbPlayer> | null> {
+    return await this.collection.findOne({ key })
   }
 }

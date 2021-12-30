@@ -1,16 +1,89 @@
 import { Static, Type } from '@sinclair/typebox'
+export { Db, Collection, ObjectId, WithId } from 'mongodb'
 
 export const ClaimPlayerParams = Type.Object({
   key: Type.String(),
 })
 export type ClaimPlayerParams = Static<typeof ClaimPlayerParams>
 
+export enum RanchName {
+  Ranch1,
+  Ranch2,
+  Ranch3,
+  Ranch4,
+  Ranch5,
+  Ranch6,
+}
+
+export const Bufficorn = Type.Object({
+  name: Type.String(),
+  ranch: Type.String(),
+  vigor: Type.Integer(),
+  speed: Type.Integer(),
+  coolness: Type.Integer(),
+  stamina: Type.Integer(),
+  coat: Type.Integer(),
+  agility: Type.Integer(),
+  medals: Type.Array(Type.Optional(Type.String())),
+})
+
+export type Bufficorn = Static<typeof Bufficorn>
+
+export const Ranch = Type.Object({
+  name: Type.String(),
+  bufficorns: Type.Array(Bufficorn),
+  medals: Type.Array(Type.Optional(Type.String())),
+  resource: Type.String(),
+})
+
+export type Ranch = Static<typeof Ranch>
+
+export const DbRanch = Type.Object({
+  name: Type.String(),
+  resource: Type.String(),
+  medals: Type.Array(Type.Optional(Type.String())),
+})
+
+export type DbRanch = Static<typeof DbRanch>
+
+export enum Trait {
+  vigor,
+  speed,
+  stamina,
+  coolness,
+  coat,
+  agility,
+}
+
 export const Player = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
+  ranch: Ranch,
+  points: Type.Integer(),
+  lastTradeIn: Type.Optional(Type.Integer()),
+  lastTradeOut: Type.Optional(Type.Integer()),
+  medals: Type.Array(Type.Optional(Type.String())),
 })
+
 export type Player = Static<typeof Player>
+
+export const DbPlayer = Type.Object({
+  key: Type.String(),
+  token: Type.Optional(Type.String()),
+  username: Type.String(),
+  ranch: Type.String(),
+  points: Type.Integer(),
+  lastTradeIn: Type.Optional(Type.Integer()),
+  lastTradeOut: Type.Optional(Type.Integer()),
+  medals: Type.Array(Type.Optional(Type.String())),
+})
+
+export type DbPlayer = Static<typeof DbPlayer>
+
+//TODO: define Medal type
+export const Medal = Type.String()
+export type Medal = Static<typeof Medal>
 
 export const IndexedEgg = Type.Intersect([
   Player,

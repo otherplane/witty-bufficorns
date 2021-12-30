@@ -2,6 +2,41 @@
  * Constants. These can be customized through environment variables.
  */
 
+import { Ranch, Trait } from './types'
+
+export const RANCHES = [
+  {
+    name: Ranch[0],
+    resource: Trait[0],
+    medals: [],
+  },
+  {
+    name: Ranch[1],
+    resource: Trait[1],
+    medals: [],
+  },
+  {
+    name: Ranch[2],
+    resource: Trait[2],
+    medals: [],
+  },
+  {
+    name: Ranch[3],
+    resource: Trait[3],
+    medals: [],
+  },
+  {
+    name: Ranch[4],
+    resource: Trait[4],
+    medals: [],
+  },
+  {
+    name: Ranch[5],
+    resource: Trait[5],
+    medals: [],
+  },
+]
+
 // Byte length of egg keys. This can be adjusted for usability vs. security trade-offs.
 let playerKeyLengthBytes: number = process.env.PLAYER_KEY_LENGTH_BYTES
   ? parseInt(process.env.PLAYER_KEY_LENGTH_BYTES)
@@ -51,20 +86,25 @@ export const MINT_PRIVATE_KEY = process.env.MINT_PRIVATE_KEY || '0x00'
 // '0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7'
 
 // Tell how many eggs to generate
-export const EGGS_COUNT: number = process.env.EGGS_COUNT
-  ? parseInt(process.env.EGGS_COUNT)
+export const PLAYERS_COUNT: number = process.env.PLAYERS_COUNT
+  ? parseInt(process.env.PLAYERS_COUNT)
   : 10
 
-// Number of different egg colors
-export const EGG_COLORS_COUNT = process.env.EGG_COLORS_COUNT
-  ? parseInt(process.env.EGG_COLORS_COUNT)
-  : 7
+// Tell how many bufficorns to generate for each ranch
+export const BUFFICORNS_PER_RANCH: number = process.env.BUFFICORNS_PER_RANCH
+  ? parseInt(process.env.BUFFICORNS_PER_RANCH)
+  : 4
+
+// Number of different ranches
+export const RANCH_COUNT = process.env.RANCH_COUNT
+  ? parseInt(process.env.RANCH_COUNT)
+  : 6
 
 // Egg birth/hatch date in millis
-// If `EGG_MINT_TIMESSTAMP=0`, checks are ignored (for testing purposes)
-export const PLAYER_MINT_TIMESSTAMP = process.env.PLAYER_MINT_TIMESSTAMP
-  ? parseInt(process.env.PLAYER_MINT_TIMESSTAMP)
-  : 1634835600 // Thursday, October 21, 2021 17:00:00 PM (GMT)
+// If `EGG_MINT_TIMESTAMP=0`, checks are ignored (for testing purposes)
+export const PLAYER_MINT_TIMESTAMP = process.env.PLAYER_MINT_TIMESTAMP
+  ? parseInt(process.env.PLAYER_MINT_TIMESTAMP)
+  : 1645351200 // Sunday, February 20, 2022 18:00:00 PM (UTC)
 
 // Web3 provider URL
 export const WEB3_PROVIDER =
@@ -80,10 +120,10 @@ export const MONGO_URI: string =
   'MONGO_URI=mongodb://your_username:your_password@localhost:27017/database'
 
 export default {
-  EGG_COLORS_COUNT,
+  RANCH_COUNT,
   PLAYER_KEY_LENGTH_BYTES,
-  PLAYER_MINT_TIMESSTAMP,
-  EGGS_COUNT,
+  PLAYER_MINT_TIMESTAMP,
+  PLAYERS_COUNT,
   INCUBATION_COOLDOWN_MILLIS,
   INCUBATION_DURATION_MILLIS,
   INCUBATION_POINTS,

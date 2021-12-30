@@ -1,9 +1,9 @@
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 
 import { EggMetadata } from '../types'
 
 export class MetadataRepository {
-  private collection: Collection
+  private collection: Collection<WithId<EggMetadata>>
 
   constructor(db: Db) {
     this.collection = db.collection('metadata')
@@ -18,9 +18,9 @@ export class MetadataRepository {
     return metadataOutput
   }
 
-  public async get(tokenId: number): Promise<EggMetadata | null> {
-    return (await this.collection.findOne({
+  public async get(tokenId: number): Promise<WithId<EggMetadata> | null> {
+    return await this.collection.findOne({
       token_id: tokenId,
-    })) as EggMetadata | null
+    })
   }
 }
