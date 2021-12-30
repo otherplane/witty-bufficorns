@@ -11,23 +11,37 @@ let db
 beforeAll(async () => {
   client = await client.connect()
   db = await client.db(process.env.MONGO_INITDB_DATABASE)
+  // // Drop mongodb collections
+  // try {
+  //   await db
+  //     .listCollections()
+  //     .next(async (err, info) => {
+  //       console.log('info11', info)
+  //       if (info) {
+  //         console.log(info.name)
+  //         await db.collection(info.name).drop()
+  //       }
+  //     })
+  // } catch (err) {
+  //   console.error('Error dropping mongo', err)
+  // }
+  // await db.listCollections().next(async (err, info) => {console.log('info22', info.name)})
+  // server = Fastify().register(app)
 })
 
 beforeEach(async () => {
   // Drop mongodb collections
   try {
-    await client
-      .db(process.env.MONGO_INITDB_DATABASE)
+    await db
       .listCollections()
-      .forEach((collection) => {
-        client
-          .db(process.env.MONGO_INITDB_DATABASE)
-          .dropCollection(collection.name)
+      .next(async (err, info) => {
+        if (info) {
+          await db.collection(info.name).drop()
+        }
       })
   } catch (err) {
     console.error('Error dropping mongo', err)
   }
-
   server = Fastify().register(app)
 })
 
@@ -53,7 +67,6 @@ async function authenticatePlayer(key): Promise<string> {
         payload: { key },
       },
       (err, response) => {
-        console.log('---response---', response.json().token)
         resolve(response.json().token)
       }
     )

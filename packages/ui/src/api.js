@@ -40,11 +40,12 @@ export class WittyCreaturesApi {
   }
 
   getInfo (params) {
-    return {
-      error: {
-        response: { data: { message: `Error getting user info` } }
-      }
-    }
+    return this._get({
+      url: `${this.baseUrl}/auth/${params.id}`,
+      headers: {
+        Authorization: params.token,
+      },
+    })
   }
 
   getContractArgs ({ address, token }) {

@@ -84,6 +84,7 @@ export const useStore = defineStore('player', {
           token: tokenInfo && tokenInfo.token,
           id: tokenInfo && tokenInfo.key
         })
+        console.log('request', request)
         if (request.error) {
           router.push({ name: 'init-game' })
           this.setError('info', request.error)
@@ -98,7 +99,6 @@ export const useStore = defineStore('player', {
           }
         }
       } else {
-        console.log('claim in getInfo')
         this.authorize({ key: router.currentRoute.value.params.id })
       }
     },

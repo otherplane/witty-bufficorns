@@ -31,10 +31,7 @@ export type Bufficorn = Static<typeof Bufficorn>
 
 export const Ranch = Type.Object({
   name: Type.String(),
-  bufficorn1: Bufficorn,
-  bufficorn2: Bufficorn,
-  bufficorn3: Bufficorn,
-  bufficorn4: Bufficorn,
+  bufficorns: Type.Array(Bufficorn),
   medals: Type.Array(Type.Optional(Type.String())),
   resource: Type.String(),
 })
@@ -62,6 +59,7 @@ export const Player = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
+  ranch: Ranch,
   points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),

@@ -26,7 +26,7 @@ export class BufficornRepository {
     if (isAlreadyBootstrapped && !force) {
       return null
     }
-    const ranches = []
+    const bufficorns = []
     const bufficornsCount = BUFFICORNS_PER_RANCH * RANCH_COUNT
     for (let index = 0; index < bufficornsCount; index++) {
       const bufficorn = {
@@ -41,9 +41,9 @@ export class BufficornRepository {
         medals: [],
       }
       await this.create(bufficorn)
-      ranches.push(bufficorn)
+      bufficorns.push(bufficorn)
     }
-    return ranches
+    return bufficorns
   }
 
   public async create(bufficorn: Bufficorn): Promise<Bufficorn> {

@@ -2,7 +2,7 @@ import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 
 import { PLAYER_MINT_TIMESSTAMP } from '../constants'
 import { PlayerRepository } from '../repositories/player'
-import { Player, ClaimPlayerParams } from '../types'
+import { ClaimPlayerParams, DbPlayer } from '../types'
 import { isTimeToMint } from '../utils'
 
 const authentication: FastifyPluginAsync = async (
@@ -12,11 +12,11 @@ const authentication: FastifyPluginAsync = async (
   if (!fastify.mongo.db) throw Error('mongo db not found')
   const repository = new PlayerRepository(fastify.mongo.db)
 
-  fastify.post<{ Body: ClaimPlayerParams; Reply: Player | Error }>('/auth', {
+  fastify.post<{ Body: ClaimPlayerParams; Reply: DbPlayer | Error }>('/auth', {
     schema: {
       body: ClaimPlayerParams,
       response: {
-        200: Player,
+        200: DbPlayer,
       },
     },
     handler: async (

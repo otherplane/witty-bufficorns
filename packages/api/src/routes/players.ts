@@ -1,16 +1,22 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
-
+import { BufficornRepository } from '../repositories/bufficorn'
 import { PlayerRepository } from '../repositories/player'
+import { RanchRepository } from '../repositories/ranch'
 import {
   AuthorizationHeader,
   Player,
+  Ranch,
   GetByStringKeyParams,
   JwtVerifyPayload,
+  DbRanch,
+  Bufficorn,
 } from '../types'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
   const playerRepository = new PlayerRepository(fastify.mongo.db)
+  const ranchRepository = new RanchRepository(fastify.mongo.db)
+  const bufficornRepository = new BufficornRepository(fastify.mongo.db)
 
   fastify.get<{ Params: GetByStringKeyParams; Reply: Player | Error }>(
     '/auth/:key',
@@ -56,17 +62,30 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             .send(new Error(`Player has not been claimed yet (key: ${key})`))
         }
 
-        //GET RANCH
+        //GET RANCH Info
+
+        const ranch: DbRanch = (await ranchRepository.get(
+          player.ranch
+        )) as DbRanch
+        const ranchBufficorns: Array<Bufficorn> =
+          (await bufficornRepository.getBufficornsByRanch(
+            player.ranch
+          )) as Array<Bufficorn>
+
+        const ranchInfo: Ranch = {
+          ...ranch,
+          bufficorns: ranchBufficorns,
+        }
 
         const extendedPlayer: Player = {
           key: player.key,
           username: player.username,
-          ranch: player.ranch,
+          points: player.points,
+          ranch: ranchInfo,
           lastTradeIn: player.lastTradeIn,
           lastTradeOut: player.lastTradeOut,
           medals: player.medals,
         }
-
         return reply.status(200).send(extendedPlayer)
       },
     }
