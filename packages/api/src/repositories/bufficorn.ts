@@ -1,11 +1,11 @@
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 
 import { Bufficorn } from '../types'
 import { BUFFICORNS_PER_RANCH, RANCH_COUNT } from '../constants'
 import { getRanchFromIndex } from '../utils'
 
 export class BufficornRepository {
-  private collection: Collection
+  private collection: Collection<WithId<Bufficorn>>
 
   constructor(db: Db) {
     this.collection = db.collection('ranches')
@@ -87,10 +87,10 @@ export class BufficornRepository {
   ): Promise<Array<Bufficorn> | null> {
     return (await this.collection
       .find({ ranch: name })
-      .toArray()) as Array<Bufficorn> | null
+      .toArray()) as Array<WithId<Bufficorn>>
   }
 
-  public async get(name: string): Promise<Bufficorn | null> {
-    return (await this.collection.findOne({ name })) as Bufficorn | null
+  public async get(name: string): Promise<WithId<Bufficorn> | null> {
+    return (await this.collection.findOne({ name }))
   }
 }

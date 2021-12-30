@@ -1,10 +1,10 @@
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 
 import { RanchName, Trait, DbRanch } from '../types'
 import { RANCH_COUNT } from '../constants'
 
 export class RanchRepository {
-  private collection: Collection
+  private collection: Collection<WithId<DbRanch>>
 
   constructor(db: Db) {
     this.collection = db.collection('ranches')
@@ -72,7 +72,7 @@ export class RanchRepository {
     return ranch
   }
 
-  public async get(name: string): Promise<DbRanch | null> {
-    return (await this.collection.findOne({ name })) as DbRanch | null
+  public async get(name: string): Promise<WithId<DbRanch> | null> {
+    return await this.collection.findOne({ name })
   }
 }

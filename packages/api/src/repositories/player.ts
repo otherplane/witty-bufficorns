@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId} from 'mongodb'
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -11,7 +11,7 @@ import { getRanchFromIndex } from '../utils'
 import { DbPlayer } from '../types'
 
 export class PlayerRepository {
-  private collection: Collection
+  private collection: Collection<WithId<DbPlayer>>
 
   constructor(db: Db) {
     this.collection = db.collection('players')
@@ -99,7 +99,7 @@ export class PlayerRepository {
     return player
   }
 
-  public async get(key: string): Promise<DbPlayer | null> {
-    return (await this.collection.findOne({ key })) as DbPlayer | null
+  public async get(key: string): Promise<WithId<DbPlayer> | null> {
+    return await this.collection.findOne({ key })
   }
 }
