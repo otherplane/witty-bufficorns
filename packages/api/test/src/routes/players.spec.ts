@@ -17,7 +17,7 @@ const initialPlayers = [
   },
 ]
 
-describe('authentication.ts', () => {
+describe('player.ts', () => {
   it('should NOT get PLAYER #1 - no authorization header', async () => {
     await serverInject(
       {

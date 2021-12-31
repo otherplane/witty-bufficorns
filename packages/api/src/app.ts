@@ -1,14 +1,23 @@
 import Ajv from 'ajv'
 import AutoLoad, { AutoloadPluginOptions } from 'fastify-autoload'
 import fastifyJwt from 'fastify-jwt'
-import { FastifyPluginAsync } from 'fastify'
+import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify'
 import { fastifyMongodb } from 'fastify-mongodb'
+import fp from 'fastify-plugin'
 import { join } from 'path'
 
 import { PLAYERS_COUNT, JWT_SECRET, MONGO_URI } from './constants'
-import { PlayerRepository } from './repositories/player'
-import { BufficornRepository } from './repositories/bufficorn'
-import { RanchRepository } from './repositories/ranch'
+import { PlayerModel } from './models/player'
+import { BufficornModel } from './models/bufficorn'
+import { RanchModel } from './models/ranch'
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    playerModel: PlayerModel
+    ranchModel: RanchModel
+    bufficornModel: BufficornModel
+  }
+}
 
 export type AppOptions = {
   // Place your custom options for app below here.
@@ -46,18 +55,33 @@ const app: FastifyPluginAsync<AppOptions> = async (
     forceClose: true,
     url: MONGO_URI,
   })
+  // InitializeModels and callback
+  const initializeModels: FastifyPluginCallback = async (
+    fastify,
+    options,
+    next
+  ) => {
+    if (!fastify.mongo.db) throw Error('mongo db not found')
+    const playerModel = new PlayerModel(fastify.mongo.db)
+    const ranchModel = new RanchModel(fastify.mongo.db)
+    const bufficornModel = new BufficornModel(fastify.mongo.db)
+
+    fastify.decorate('playerModel', playerModel)
+    fastify.decorate('ranchModel', ranchModel)
+    fastify.decorate('bufficornModel', bufficornModel)
+
+    next()
+  }
+
+  fastify.register(fp(initializeModels))
 
   // Initialize game repositories
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
-
     // Initialize game repositories and bootstrap
-    const playerRepository = new PlayerRepository(fastify.mongo.db)
-    const ranchRepository = new RanchRepository(fastify.mongo.db)
-    const bufficornRepository = new BufficornRepository(fastify.mongo.db)
-    await playerRepository.bootstrap(PLAYERS_COUNT, false)
-    await ranchRepository.bootstrap(false)
-    await bufficornRepository.bootstrap(false)
+    await fastify.playerModel.bootstrap(PLAYERS_COUNT, false)
+    await fastify.ranchModel.bootstrap(false)
+    await fastify.bufficornModel.bootstrap(false)
 
     next()
   })
