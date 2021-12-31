@@ -1,7 +1,6 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 
 import { PLAYER_MINT_TIMESTAMP } from '../constants'
-import { PlayerRepository } from '../repositories/player'
 import { ClaimPlayerParams, DbPlayer } from '../types'
 import { isTimeToMint } from '../utils'
 
@@ -10,7 +9,8 @@ const authentication: FastifyPluginAsync = async (
   opts
 ): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
-  const repository = new PlayerRepository(fastify.mongo.db)
+
+  const { playerModel } = fastify
 
   fastify.post<{ Body: ClaimPlayerParams; Reply: DbPlayer | Error }>('/auth', {
     schema: {
@@ -30,7 +30,7 @@ const authentication: FastifyPluginAsync = async (
           .send(new Error(`Claiming is not possible because the game is over.`))
 
       const key = request.body.key
-      const player = await repository.get(key)
+      const player = await playerModel.get(key)
 
       if (!player) {
         return reply
@@ -48,7 +48,7 @@ const authentication: FastifyPluginAsync = async (
 
       try {
         return reply.status(200).send(
-          await repository.update({
+          await playerModel.update({
             ...player,
             token,
           })

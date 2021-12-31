@@ -15,15 +15,38 @@ export enum RanchName {
   Ranch6,
 }
 
+export enum Trait {
+  Vigor = 'vigor',
+  Speed = 'speed',
+  Stamina = 'stamina',
+  Coolness = 'coolness',
+  Coat = 'coolness',
+  Agility = 'agility',
+}
+
+export const ranchTraits: Record<number, Trait> = {
+  0: Trait.Vigor,
+  1: Trait.Speed,
+  2: Trait.Stamina,
+  3: Trait.Coolness,
+  4: Trait.Coat,
+  5: Trait.Agility,
+}
+
+export type Resource = {
+  trait: Trait
+  amount: number
+}
+
 export const Bufficorn = Type.Object({
   name: Type.String(),
   ranch: Type.String(),
-  vigor: Type.Integer(),
-  speed: Type.Integer(),
-  coolness: Type.Integer(),
-  stamina: Type.Integer(),
-  coat: Type.Integer(),
-  agility: Type.Integer(),
+  [Trait.Vigor]: Type.Integer(),
+  [Trait.Speed]: Type.Integer(),
+  [Trait.Coolness]: Type.Integer(),
+  [Trait.Stamina]: Type.Integer(),
+  [Trait.Coat]: Type.Integer(),
+  [Trait.Agility]: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
@@ -45,15 +68,6 @@ export const DbRanch = Type.Object({
 })
 
 export type DbRanch = Static<typeof DbRanch>
-
-export enum Trait {
-  vigor,
-  speed,
-  stamina,
-  coolness,
-  coat,
-  agility,
-}
 
 export const Player = Type.Object({
   key: Type.String(),
