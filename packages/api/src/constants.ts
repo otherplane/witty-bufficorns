@@ -2,41 +2,6 @@
  * Constants. These can be customized through environment variables.
  */
 
-import { Ranch, ranchTraits } from './types'
-
-export const RANCHES = [
-  {
-    name: Ranch[0],
-    resource: ranchTraits[0],
-    medals: [],
-  },
-  {
-    name: Ranch[1],
-    resource: ranchTraits[1],
-    medals: [],
-  },
-  {
-    name: Ranch[2],
-    resource: ranchTraits[2],
-    medals: [],
-  },
-  {
-    name: Ranch[3],
-    resource: ranchTraits[3],
-    medals: [],
-  },
-  {
-    name: Ranch[4],
-    resource: ranchTraits[4],
-    medals: [],
-  },
-  {
-    name: Ranch[5],
-    resource: ranchTraits[5],
-    medals: [],
-  },
-]
-
 // Byte length of egg keys. This can be adjusted for usability vs. security trade-offs.
 let playerKeyLengthBytes: number = process.env.PLAYER_KEY_LENGTH_BYTES
   ? parseInt(process.env.PLAYER_KEY_LENGTH_BYTES)
