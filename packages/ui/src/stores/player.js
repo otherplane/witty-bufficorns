@@ -1,26 +1,34 @@
 import { defineStore } from 'pinia'
 import { WittyCreaturesApi } from '@/api'
 import router from '../router'
+import { isThisSecond } from 'date-fns'
 
 export const useStore = defineStore('player', {
   state: () => {
     return {
       api: new WittyCreaturesApi(),
       id: null,
-      timeToBirth: 1645380000000,
+      medals: [],
+      username: '',
+      ranch: {},
+      selectedBufficornIndex: 0,
+      trade: null,
+      gameOverTimeMilli: 1645380000000,
       creaturePreview: null,
       mintInfo: null,
       color: null,
       creatureData: null,
       errors: {
-        auth: null
+        auth: null,
+        trade: null,
+        info: null,
       }
     }
   },
   getters: {
-    hasBorn () {
+    gameOver () {
       //FIXME: make it reactive
-      return this.timeToBirth < Date.now()
+      return this.gameOverTimeMilli < Date.now()
     }
   },
   actions: {
@@ -66,6 +74,14 @@ export const useStore = defineStore('player', {
       this.errors[name] = error.response.data.message
       this.notify({ message: this.errors[name] })
     },
+    updateSelectedBufficorns(index) {
+      this.clearTrade()
+      this.selectedBufficornIndex = index
+    },
+    clearTrade () {
+      this.trade = null
+      this.selectedBufficornIndex = 0
+    },
     async authorize ({ key }) {
       const request = await this.api.authorize({ key })
       if (request.error) {
@@ -75,6 +91,26 @@ export const useStore = defineStore('player', {
         await this.saveClaimInfo(request)
         this.clearError('auth')
         this.getInfo()
+      }
+    },
+    breed({ bufficorns }) {
+      this.ranch.bufficorns = bufficorns
+    },
+    async trade ({ key }) {
+      const tokenInfo = this.getToken()
+      const request = await this.api.trade({
+        token: tokenInfo.token,
+        key: key,
+        bufficornId: this.selectedBufficornIndex,
+      })
+
+      if (request.error) {
+        this.setError('trade', request.error)
+        router.push('/')
+      } else {
+        this.clearError('trade')
+        this.getInfo()
+        router.push('/')
       }
     },
     async getInfo () {
@@ -89,16 +125,16 @@ export const useStore = defineStore('player', {
           this.setError('info', request.error)
         } else {
           this.clearError('info')
-          const { key } = request.player
+          const { key, username, ranch } = request
           this.id = key
+          this.username = username
+          this.ranch = ranch
 
           if (this.id !== router.currentRoute.value.params.id) {
-            this.trade({ key: router.currentRoute.value.params.id })
-            router.push('/')
+            router.push({ name: 'trade', params: { id: router.currentRoute.value.params.id }})
           }
         }
       } else {
-        console.log('claim in getInfo')
         this.authorize({ key: router.currentRoute.value.params.id })
       }
     },

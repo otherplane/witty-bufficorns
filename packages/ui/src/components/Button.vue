@@ -1,17 +1,16 @@
 <template>
-  <button class="btn" :class="[color, type]">
+  <button class="btn" :class="[type]">
     <slot class="btn-content"> </slot>
   </button>
 </template>
 
 <script setup>
 defineProps({
-  color: String,
   type: {
     type: String,
     default: 'default',
     validator (value) {
-      return ['default', 'disable'].includes(value)
+      return ['primary', 'secondary', 'disable', 'dark'].includes(value)
     }
   }
 })
@@ -21,23 +20,23 @@ defineProps({
 .btn {
   width: 100%;
   color: white;
-  padding: 14px 24px;
-  border-radius: 12px;
+  padding: 16px 16px;
+  border-radius: 4px;
+  font-family: Zilla Slab;
+  font-weight: bold;
 
-  &.black {
-    background: black;
+  &.primary {
+    color: $black;
+    background: $orange;
   }
-  &.green {
-    background: rgb(25, 208, 172);
+  &.secondary {
+    color: $black;
+    background: $transparent;
+    border: 1px solid $orange;
   }
-  &.purple {
-    background: rgb(195, 139, 217);
-  }
-  &.orange {
-    background: rgb(242, 157, 98);
-  }
-  &.grey {
-    background: rgb(128, 128, 128);
+  &.dark {
+    color: $brown;
+    background: $beige;
   }
   &.disable {
     opacity: 0.6;

@@ -20,7 +20,7 @@ function createErrorMessage (message) {
 }
 
 const errorNetworkMessage = `Your web3 provider should be connected to the ${NETWORK} network`
-const errorCreatureDataMessage = `There was an error getting the Witty Creature data`
+const errorCreatureDataMessage = `There was an error getting the NFT data`
 const errorMintMessage = `There was an error minting your NFT.`
 const errorPreviewMessage = `There was an error showing the preview of your NFT.`
 
@@ -65,7 +65,7 @@ export function useWeb3Witmon () {
   onMounted(() => {
     if (window.ethereum) {
       web3 = new Web3(window.ethereum || 'ws://localhost:8545')
-      if (player.hasBorn) {
+      if (player.gameOver) {
         enableProvider()
       }
     }

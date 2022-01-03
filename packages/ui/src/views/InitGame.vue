@@ -1,10 +1,17 @@
 <template>
-  <Layout>
-    <h1>WITTY BUFFICORNS</h1>
+  <MainLayout :isBackground="true">
     <router-link to="/disclaimer" class="link">
-      <Button class="btn" color="black">
-        Play now
+      <Button class="btn" type="dark">
+        PLAY NOW
       </Button>
     </router-link>
-  </Layout>
+  </MainLayout>
 </template>
+
+<style lang="scss" scoped>
+.link {
+  margin-top: 60vh;
+  width: max-content;
+  justify-self: center;
+}
+</style>
