@@ -25,7 +25,6 @@ export class WittyCreaturesApi {
   }
 
   _post ({ url, params }) {
-    console.log({ url, params })
     return axios
       .post(url, params)
       .then(this._handleResponse)
@@ -40,11 +39,17 @@ export class WittyCreaturesApi {
   }
 
   getInfo (params) {
-    return {
-      error: {
-        response: { data: { message: `Error getting user info` } }
-      }
-    }
+    return this._get({
+      url: `${this.baseUrl}/players/${params.id}`,
+      params: { headers: { authorization: params.token } }
+    })
+  }
+
+  trade (params) {
+    return this._get({
+      url: `${this.baseUrl}/trade/${params.id}`,
+      params: { headers: { authorization: params.token } }
+    })
   }
 
   getContractArgs ({ address, token }) {

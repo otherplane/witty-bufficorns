@@ -1,14 +1,19 @@
 <template>
-  <Layout>
-    <p class="small-title import-label">Scan a QR code</p>
+  <MainLayout>
     <QrStream class="qr-code pl-4 pr-4 pb-4" @decode="onDecode"></QrStream>
-    <Button class="btn" color="black" @click="onDecode('/ef12efbd765f9ad3')">
-      Import player id
-    </Button>
+    <div class="content">
+      <p class="small-title import-label">Scan a QR code</p>
+      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad3')">
+        REGISTER FARMER example
+      </Button>
+      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad9')">
+        TRADE EXAMPLE
+      </Button>
+    </div>
     <ModalDialog :show="modal.visible.value" v-on:close="modal.hideModal">
       <ModalClaimConfirmation v-on:claim="register" />
     </ModalDialog>
-  </Layout>
+  </MainLayout>
 </template>
 
 <script>
@@ -73,3 +78,25 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.qr-code {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+}
+.pl-4 {
+  padding-bottom: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+.content {
+  color: $beige;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  z-index: 10;
+}
+</style>

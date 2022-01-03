@@ -1,9 +1,13 @@
 <template>
-  <Layout v-if="player.username">
-    <div class="content">
-      <div>
-        <p class="subtitle">PLAYER ID: {{ player.username }}</p>
-        <p class="title">My Witty Creature</p>
+  <MainLayout v-if="player.username">
+    <div class="main-content">
+      <div class="header">
+        <div>
+          <p class="subtitle">PLAYER ID: {{ player.username }}</p>
+          <p class="subtitle">RANCH NAME: {{ player.ranch.name }}</p>
+          <p class="subtitle">RANCH RESOURCE: {{ player.ranch.resource }}</p>
+        </div>
+        <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo">
       </div>
       <WittyCreature
         v-if="player.creaturePreview"
@@ -44,35 +48,42 @@
           />
         </div>
       </div>
+      <BufficornsList />
+      <div class="buttons">
+        <Button
+          v-if="player.gameOver && !player.creaturePreview"
+          @click="openModal('preview')"
+          type="primary"
+          class="center-item"
+        >
+          PREVIEW NFT
+        </Button>
+        <Button
+          v-else-if="player.gameOver && player.creaturePreview"
+          @click="mint"
+          :type="type"
+          class="center-item"
+        >
+          MINT NFT
+        </Button>
+        <router-link
+          v-if="!player.gameOver"
+          :to="type === 'disable' ? '' : '/scan'"
+          class="center-item"
+        >
+          <Button type="dark">
+            TRADE
+          </Button>
+        </router-link>
+        <Button @click="openModal('export')" type="dark">
+          BACKUP
+        </Button>
+        <Button type="dark">
+          STATS
+        </Button>
+      </div>
     </div>
-    <div class="buttons">
-      <Button
-        v-if="player.hasBorn && !player.creaturePreview"
-        @click="openModal('preview')"
-        color="black"
-        class="center-item"
-      >
-        Open my player
-      </Button>
-      <Button
-        v-else-if="player.hasBorn && player.creaturePreview"
-        @click="mint"
-        :type="type"
-        color="black"
-        class="center-item"
-      >
-        Mint NFT
-      </Button>
-
-      <Button @click="openModal('export')" color="grey" class="center-item">
-        Eggxport &trade;
-      </Button>
-      <p class="footer">
-        powered by
-        <a class="link" href="https://witnet.io" target="_blank">Witnet</a>
-      </p>
-    </div>
-  </Layout>
+  </MainLayout>
 
   <ModalDialog :show="modal.visible.value" v-on:close="closeModal">
     <ModalExport v-if="modals.export" />
@@ -101,19 +112,19 @@ export default {
       preview: false,
       gameOver: false
     })
-    const hasBorn = player.hasBorn
+    const gameOver = player.gameOver
     let timeout
 
     onBeforeMount(async () => {
       await player.getInfo()
       await player.getMintInfo()
       await player.getPreview()
-      if (player.hasBorn) {
+      if (player.gameOver) {
         const data = await web3Witmon.getCreatureData()
         player.setCreatureData(data)
       }
 
-      if (!player.hasBorn) {
+      if (!player.gameOver) {
         timeout = setTimeout(() => {
           player.timeToBirth -= 1
         }, player.timeToBirth - Date.now())
@@ -128,7 +139,7 @@ export default {
       player.incubating ||
       (player.creatureData && parseInt(player.creatureData.tokenId) !== 0)
         ? 'disable'
-        : 'default'
+        : 'primary'
     )
     const mintStatus = computed(() =>
       player.mintInfo.blockHash ? 'minted' : 'pending'
@@ -162,7 +173,7 @@ export default {
       etherscanBaseUrl: ETHERSCAN_BASE_URL,
       openseaBaseUrl: OPENSEA_BASE_URL,
       mint,
-      hasBorn,
+      gameOver,
       player,
       type,
       closeModal,
@@ -179,3 +190,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.main-content {
+  display: grid;
+  row-gap: 32px;
+}
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-items: flex-end;
+  align-items: center;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: max-content;
+  justify-self: center;
+  grid-template-rows: auto auto;
+  grid-gap: 16px;
+  .center-item {
+    grid-column: 1 / span 2;
+    align-self: center;
+    width: max-content;
+    justify-self: center;
+  }
+}
+</style>

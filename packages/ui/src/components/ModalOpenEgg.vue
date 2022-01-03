@@ -6,12 +6,12 @@
           class="text-lg leading-6 font-medium text-gray-900"
           id="modal-title"
         >
-          Hatch your Witty Creature
+          Mint yout medals
         </h3>
         <div class="mt-2">
           <p class="text-sm text-gray-900">
             This is a preview of the NFT, click the 'Mint' button to receive
-            your Witty Creature NFT.
+            your medal.
           </p>
         </div>
       </div>
@@ -23,14 +23,14 @@
       type="button"
       class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
     >
-      Open
+      OPEN
     </button>
     <button
       @click="$parent.$emit('close')"
       type="button"
       class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
     >
-      Cancel
+      CANCEL
     </button>
     <a
       ref="download"

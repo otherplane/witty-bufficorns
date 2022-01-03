@@ -1,6 +1,8 @@
 module.exports = {
-  // purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: 'media', // or 'media' or 'class'
+  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  fontFamily: {
+    serif: ['Zilla Slab', 'serif']
+  },
   theme: {
     extend: {}
   },
