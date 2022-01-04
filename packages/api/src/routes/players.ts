@@ -12,6 +12,7 @@ import {
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
+
   const { playerModel, ranchModel, bufficornModel } = fastify
 
   fastify.get<{ Params: GetByStringKeyParams; Reply: Player | Error }>(
@@ -29,17 +30,16 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         reply
       ) => {
         const { key } = request.params
-        let playerId: string
+        let playerKey: string
         try {
           const decoded: JwtVerifyPayload = fastify.jwt.verify(
             request.headers.authorization as string
           )
-          playerId = decoded.id
+          playerKey = decoded.id
         } catch (err) {
           return reply.status(403).send(new Error(`Forbidden: invalid token`))
         }
-
-        if (playerId !== key)
+        if (playerKey !== key)
           return reply.status(403).send(new Error(`Forbidden: invalid token`))
 
         // Unreachable: valid server issued token refers to non-existent player

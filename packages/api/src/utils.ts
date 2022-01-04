@@ -1,27 +1,26 @@
 import {
   PLAYER_MINT_TIMESTAMP,
-  PLAYERS_COUNT,
-  INCUBATION_COOLDOWN_MILLIS,
-  INCUBATION_DURATION_MILLIS,
+  RANCHES_COUNT,
+  TRADE_COOLDOWN_MILLIS,
+  TRADE_DURATION_MILLIS,
 } from './constants'
-import { Incubation, RanchName } from './types'
+import { Incubation, indexToRanch, RanchName } from './types'
 
 export function calculateRemainingCooldown(
-  incubationEnds: number,
+  tradeEnds: number,
   currentTimestamp = Date.now(),
-  incubationDuration: number = INCUBATION_DURATION_MILLIS,
-  incubationCooldown: number = INCUBATION_COOLDOWN_MILLIS
+  tradeDuration: number = TRADE_DURATION_MILLIS,
+  tradeCooldown: number = TRADE_COOLDOWN_MILLIS
 ) {
   const remainingMillis =
-    incubationEnds - incubationDuration + incubationCooldown - currentTimestamp
+    tradeEnds - tradeDuration + tradeCooldown - currentTimestamp
 
   return remainingMillis > 0 ? remainingMillis : 0
 }
 
 export function calculateRemainingDuration(
   incubationEnds: number,
-  currentTimestamp = Date.now(),
-  incubationDuration: number = INCUBATION_DURATION_MILLIS
+  currentTimestamp = Date.now()
 ) {
   const remainingMillis = incubationEnds - currentTimestamp
 
@@ -38,9 +37,10 @@ export function getIncubationExtendedFromBase(incubation: Incubation) {
   )
 }
 
-export function getRanchFromIndex(index: number) {
-  const ranchIndex = index % PLAYERS_COUNT
-  return RanchName[ranchIndex]
+export function getRanchFromIndex(index: number): RanchName {
+  const ranchIndex = index % RANCHES_COUNT
+
+  return indexToRanch[ranchIndex]
 }
 
 export function fromHexToUint8Array(hex: string) {

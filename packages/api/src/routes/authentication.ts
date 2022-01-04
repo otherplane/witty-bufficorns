@@ -28,7 +28,6 @@ const authentication: FastifyPluginAsync = async (
         return reply
           .status(403)
           .send(new Error(`Claiming is not possible because the game is over.`))
-
       const key = request.body.key
       const player = await playerModel.get(key)
 
@@ -47,12 +46,11 @@ const authentication: FastifyPluginAsync = async (
       const token = fastify.jwt.sign({ id: key })
 
       try {
-        return reply.status(200).send(
-          await playerModel.update({
-            ...player,
-            token,
-          })
-        )
+        const playerupdate = await playerModel.update({
+          ...player,
+          token,
+        })
+        return reply.status(200).send(playerupdate)
       } catch (error) {
         reply.status(409).send(error as Error)
       }

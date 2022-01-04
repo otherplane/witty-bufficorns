@@ -10,12 +10,14 @@ import { PLAYERS_COUNT, JWT_SECRET, MONGO_URI } from './constants'
 import { PlayerModel } from './models/player'
 import { BufficornModel } from './models/bufficorn'
 import { RanchModel } from './models/ranch'
+import { TradeModel } from './models/trade'
 
 declare module 'fastify' {
   interface FastifyInstance {
     playerModel: PlayerModel
     ranchModel: RanchModel
     bufficornModel: BufficornModel
+    tradeModel: TradeModel
   }
 }
 
@@ -65,10 +67,12 @@ const app: FastifyPluginAsync<AppOptions> = async (
     const playerModel = new PlayerModel(fastify.mongo.db)
     const ranchModel = new RanchModel(fastify.mongo.db)
     const bufficornModel = new BufficornModel(fastify.mongo.db)
+    const tradeModel = new TradeModel(fastify.mongo.db)
 
     fastify.decorate('playerModel', playerModel)
     fastify.decorate('ranchModel', ranchModel)
     fastify.decorate('bufficornModel', bufficornModel)
+    fastify.decorate('tradeModel', tradeModel)
 
     next()
   }
@@ -82,7 +86,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     await fastify.playerModel.bootstrap(PLAYERS_COUNT, false)
     await fastify.ranchModel.bootstrap(false)
     await fastify.bufficornModel.bootstrap(false)
-
     next()
   })
 

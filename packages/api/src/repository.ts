@@ -56,7 +56,7 @@ export class Repository<T> {
 
   public async getById(id: ObjectId | string): Promise<WithId<T> | null> {
     return await this.collection.findOne({
-      id: typeof id === 'string' ? new ObjectId(id) : id,
+      _id: typeof id === 'string' ? new ObjectId(id) : id,
     })
   }
 
@@ -64,24 +64,25 @@ export class Repository<T> {
     filter: Filter<T>,
     element: Partial<T>
   ): Promise<WithId<T>> {
-    const exists = await this.getOne({
-      [this.keyName]: element[this.keyName],
-    } as Filter<T>)
-    if (!exists) {
-      throw new Error(`Element does not exist (name: ${element[this.keyName]})`)
-    }
-
-    const success = await this.collection.updateOne(
-      filter,
-      { $set: element },
-      { upsert: false }
-    )
-
-    if (!success.acknowledged)
-      throw new Error(
-        `Element could not be updated (name: ${element[this.keyName]})`
+    try {
+      const success = await this.collection.updateOne(
+        filter,
+        { $set: element },
+        { upsert: false }
       )
 
-    return (await this.getById(success.upsertedId)) as WithId<T>
+      if (!success.acknowledged)
+        throw new Error(
+          `Element could not be updated (name: ${element[this.keyName]})`
+        )
+
+      return (await this.getOne(filter)) as WithId<T>
+    } catch (error) {
+      throw new Error(`Element does not exist (name: ${element[this.keyName]})`)
+    }
+  }
+
+  public async getLast(filter: Filter<T>) {
+    return await this.collection.findOne(filter, { sort: { timestamp: -1 } })
   }
 }

@@ -1,7 +1,7 @@
 import { Collection, Db, WithId } from 'mongodb'
 
 import { Bufficorn, Resource } from '../types'
-import { BUFFICORNS_PER_RANCH, RANCH_COUNT } from '../constants'
+import { BUFFICORNS_PER_RANCH, RANCHES_COUNT } from '../constants'
 import { getRanchFromIndex } from '../utils'
 import { Repository } from '../repository'
 
@@ -37,12 +37,12 @@ export class BufficornModel {
   ): Promise<Array<Bufficorn> | null> {
     return this.repository.bootstrap(
       (_: null, index: number) => this.createBufficorn(index),
-      BUFFICORNS_PER_RANCH * RANCH_COUNT,
+      BUFFICORNS_PER_RANCH * RANCHES_COUNT,
       force
     )
   }
 
-  public async create(bufficorn: Bufficorn): Promise<Bufficorn> {
+  public async create(bufficorn: Bufficorn): Promise<WithId<Bufficorn>> {
     const { name } = bufficorn
     const bufficornExists = await this.repository.getOne({ name })
 
@@ -53,7 +53,7 @@ export class BufficornModel {
     return this.repository.create(bufficorn)
   }
 
-  public async update(bufficorn: Bufficorn): Promise<Bufficorn> {
+  public async update(bufficorn: Bufficorn): Promise<WithId<Bufficorn>> {
     const { name } = bufficorn
     const exists = await this.repository.getOne({ name })
 
@@ -74,17 +74,27 @@ export class BufficornModel {
     return await this.repository.getOne({ name })
   }
 
-  public feed(id: string, resource: Resource): Promise<WithId<Bufficorn>> {
-    const existsBufficorn = this.repository.getById(id)
+  public async feed(
+    name: string,
+    resource: Resource,
+    ranch: string
+  ): Promise<WithId<Bufficorn>> {
+    const bufficorn = await this.repository.getOne({ name })
 
-    if (!existsBufficorn) {
-      throw new Error(`Bufficorn with id ${id} doesn't exist`)
+    if (!bufficorn) {
+      throw new Error(`Bufficorn with name ${name} doesn't exist`)
+    }
+
+    if (ranch !== bufficorn.ranch) {
+      throw new Error(
+        `Bufficorn with name ${name} doesn't belong to your ranch`
+      )
     }
 
     return this.repository.updateOne(
-      { id },
+      { name },
       {
-        [resource.trait]: resource.amount,
+        [resource.trait]: resource.amount + bufficorn[resource.trait],
       }
     )
   }

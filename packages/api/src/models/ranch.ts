@@ -1,7 +1,7 @@
 import { Collection, Db, WithId } from 'mongodb'
 
-import { RanchName, DbRanch, ranchTraits } from '../types'
-import { RANCH_COUNT } from '../constants'
+import { DbRanch, ranchToTrait, indexToRanch } from '../types'
+import { RANCHES_COUNT } from '../constants'
 import { Repository } from '../repository'
 
 export class RanchModel {
@@ -14,9 +14,10 @@ export class RanchModel {
   }
 
   public createRanch(index: number) {
+    const ranchName = indexToRanch[index]
     return {
-      name: RanchName[index],
-      resource: ranchTraits[index],
+      name: ranchName,
+      resource: ranchToTrait[ranchName],
       medals: [],
     }
   }
@@ -30,7 +31,7 @@ export class RanchModel {
   ): Promise<Array<DbRanch> | null> {
     return this.repository.bootstrap(
       (_: null, index: number) => this.createRanch(index),
-      RANCH_COUNT,
+      RANCHES_COUNT,
       force
     )
   }

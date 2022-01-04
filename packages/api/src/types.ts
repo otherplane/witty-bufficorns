@@ -7,13 +7,14 @@ export const ClaimPlayerParams = Type.Object({
 export type ClaimPlayerParams = Static<typeof ClaimPlayerParams>
 
 export enum RanchName {
-  Ranch1,
-  Ranch2,
-  Ranch3,
-  Ranch4,
-  Ranch5,
-  Ranch6,
+  Ranch1 = 'Ranch1',
+  Ranch2 = 'Ranch2',
+  Ranch3 = 'Ranch3',
+  Ranch4 = 'Ranch4',
+  Ranch5 = 'Ranch5',
+  Ranch6 = 'Ranch6',
 }
+export const RanchNameEnum = Type.Enum(RanchName)
 
 export enum Trait {
   Vigor = 'vigor',
@@ -23,20 +24,40 @@ export enum Trait {
   Coat = 'coolness',
   Agility = 'agility',
 }
+export const TraitEnum = Type.Enum(Trait)
 
-export const ranchTraits: Record<number, Trait> = {
-  0: Trait.Vigor,
-  1: Trait.Speed,
-  2: Trait.Stamina,
-  3: Trait.Coolness,
-  4: Trait.Coat,
-  5: Trait.Agility,
+export enum RanchIndex {
+  Ranch1 = 0,
+  Ranch2 = 1,
+  Ranch3 = 2,
+  Ranch4 = 3,
+  Ranch5 = 4,
+  Ranch6 = 5,
 }
 
-export type Resource = {
-  trait: Trait
-  amount: number
+export const indexToRanch: Record<number, RanchName> = {
+  [RanchIndex.Ranch1]: RanchName.Ranch1,
+  [RanchIndex.Ranch2]: RanchName.Ranch2,
+  [RanchIndex.Ranch3]: RanchName.Ranch3,
+  [RanchIndex.Ranch4]: RanchName.Ranch4,
+  [RanchIndex.Ranch5]: RanchName.Ranch5,
+  [RanchIndex.Ranch6]: RanchName.Ranch6,
 }
+
+export const ranchToTrait: Record<RanchName, Trait> = {
+  [RanchName.Ranch1]: Trait.Vigor,
+  [RanchName.Ranch2]: Trait.Speed,
+  [RanchName.Ranch3]: Trait.Stamina,
+  [RanchName.Ranch4]: Trait.Coolness,
+  [RanchName.Ranch5]: Trait.Coat,
+  [RanchName.Ranch6]: Trait.Agility,
+}
+
+export const Resource = Type.Object({
+  trait: TraitEnum,
+  amount: Type.Number(),
+})
+export type Resource = Static<typeof Resource>
 
 export const Bufficorn = Type.Object({
   name: Type.String(),
@@ -86,7 +107,7 @@ export const DbPlayer = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
-  ranch: Type.String(),
+  ranch: RanchNameEnum,
   points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
@@ -197,3 +218,32 @@ export const GetByNumericKeyParams = Type.Object({
   key: Type.Number(),
 })
 export type GetByNumericKeyParams = Static<typeof GetByNumericKeyParams>
+
+export const TradeParams = Type.Object({
+  bufficorn: Type.String(),
+  to: Type.String(),
+})
+export type TradeParams = Static<typeof TradeParams>
+
+export const TradeResult = Type.Object({
+  resource: Resource,
+  ends: Type.Number(),
+  from: Type.String(),
+  to: Type.String(),
+  timestamp: Type.Number(),
+  bufficorn: Type.String(),
+})
+export type TradeResult = Static<typeof TradeParams>
+
+export const DbTrade = Type.Object({
+  bufficorn: Type.String(),
+  from: Type.String(),
+  to: Type.String(),
+  resource: Type.Object({
+    trait: TraitEnum,
+    amount: Type.Number(),
+  }),
+  timestamp: Type.Number(),
+  ends: Type.Number(),
+})
+export type DbTrade = Static<typeof DbTrade>

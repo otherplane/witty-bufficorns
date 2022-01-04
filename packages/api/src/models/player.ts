@@ -6,9 +6,15 @@ import {
   animals,
 } from 'unique-names-generator'
 
-import { PLAYER_KEY_LENGTH_BYTES, PLAYER_KEY_SALT } from '../constants'
+import {
+  PLAYER_KEY_LENGTH_BYTES,
+  PLAYER_KEY_SALT,
+  TRADE_POINTS,
+  TRADE_POINTS_DIVISOR,
+  TRADE_POINTS_MIN,
+} from '../constants'
 import { getRanchFromIndex } from '../utils'
-import { DbPlayer } from '../types'
+import { DbPlayer, DbTrade, RanchName, ranchToTrait, Resource } from '../types'
 import { Repository } from '../repository'
 
 export class PlayerModel {
@@ -20,7 +26,7 @@ export class PlayerModel {
     this.repository = new Repository(this.collection, 'username')
   }
 
-  public createPlayer(index: number) {
+  public createPlayer(index: number): DbPlayer {
     // Generate the player data.
     // First we derive a deterministic 32-bytes sequence of bytes from a fixed salt plus the player nonce.
     const seed = crypto
@@ -38,7 +44,7 @@ export class PlayerModel {
       style: 'lowerCase',
     })
     const medals: Array<string> = []
-    const ranch: string = getRanchFromIndex(index)
+    const ranch = getRanchFromIndex(index)
     const points: number = 0
     // Create an player based on that player data and push it to our collection
     return { key, username, ranch, medals, points }
@@ -73,16 +79,40 @@ export class PlayerModel {
 
   public async update(player: DbPlayer): Promise<DbPlayer> {
     const { username } = player
-    const exists = await this.repository.getOne({ username })
-
-    if (!exists) {
-      throw new Error(`Player does not exist (name: ${player.username})`)
-    }
 
     return await this.repository.updateOne({ username }, player)
   }
 
   public async get(key: string): Promise<WithId<DbPlayer> | null> {
     return await this.repository.getOne({ key })
+  }
+
+  public generateResource(
+    player: WithId<DbPlayer>,
+    lastTrade: WithId<DbTrade> | null
+  ): Resource {
+    // Compute points
+    let amount
+    if (!lastTrade) {
+      amount = TRADE_POINTS
+    } else {
+      amount = Math.max(
+        Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR),
+        TRADE_POINTS_MIN
+      )
+    }
+
+    // Get trait
+    const ranchName = RanchName[player.ranch]
+    const trait = ranchToTrait[ranchName]
+
+    return {
+      amount,
+      trait,
+    }
+  }
+
+  public async getOne(id: string): Promise<WithId<DbPlayer> | null> {
+    return this.repository.getById(id)
   }
 }
