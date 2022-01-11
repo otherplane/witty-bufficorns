@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Collection, Db } from 'mongodb'
+import { Collection, Db, WithId } from 'mongodb'
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -121,6 +121,13 @@ export class PlayerModel {
       amount,
       trait,
     }
+  }
+
+  public async getLeaderboard(): Promise<Array<WithId<DbPlayerVTO>>> {
+    // TODO: Remove mongoDB $exists from model
+    return await this.repository.get({
+      token: { $exists: true },
+    })
   }
 
   public async getOne(id: string): Promise<Player | null> {

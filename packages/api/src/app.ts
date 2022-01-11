@@ -83,9 +83,9 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
     // Initialize game repositories and bootstrap
-    await fastify.playerModel.bootstrap(PLAYERS_COUNT, false)
-    await fastify.ranchModel.bootstrap(false)
-    await fastify.bufficornModel.bootstrap(false)
+    await fastify.playerModel.bootstrap(PLAYERS_COUNT, true)
+    await fastify.ranchModel.bootstrap(true)
+    await fastify.bufficornModel.bootstrap(true)
     next()
   })
 

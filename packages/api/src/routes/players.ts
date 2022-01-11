@@ -57,7 +57,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
 
         //GET RANCH Info
-        const ranch: Ranch = (await ranchModel.get(player.ranch)) as Ranch
+        const ranch: Ranch = (await ranchModel.getByName(player.ranch)) as Ranch
 
         const ranchBufficorns: Array<Bufficorn> =
           (await bufficornModel.getBufficornsByRanch(

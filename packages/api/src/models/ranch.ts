@@ -51,7 +51,11 @@ export class RanchModel {
     return new Ranch(await this.repository.updateOne({ name }, ranch))
   }
 
-  public async get(name: RanchName): Promise<Ranch | null> {
+  public async getAll(): Promise<Array<Ranch>> {
+    return (await this.repository.get({})).map((dbRanch) => new Ranch(dbRanch))
+  }
+
+  public async getByName(name: RanchName): Promise<Ranch | null> {
     const vto = await this.repository.getOne({ name })
 
     return vto ? new Ranch(vto) : null

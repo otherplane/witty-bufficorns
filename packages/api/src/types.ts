@@ -21,7 +21,7 @@ export enum Trait {
   Speed = 'speed',
   Stamina = 'stamina',
   Coolness = 'coolness',
-  Coat = 'coolness',
+  Coat = 'coat',
   Agility = 'agility',
 }
 export const TraitEnum = Type.Enum(Trait)
@@ -77,14 +77,14 @@ export const RanchVTO = Type.Object({
   name: RanchNameEnum,
   bufficorns: Type.Array(BufficornVTO),
   medals: Type.Array(Type.Optional(Type.String())),
-  resource: Resource,
+  trait: TraitEnum,
 })
 
 export type RanchVTO = Static<typeof RanchVTO>
 
 export const DbRanchVTO = Type.Object({
   name: RanchNameEnum,
-  resource: Resource,
+  trait: TraitEnum,
   bufficorns: Type.Array(Type.String()),
   medals: Type.Array(Type.Optional(Type.String())),
 })
@@ -136,6 +136,21 @@ export const GetByStringKeyParams = Type.Object({
   key: Type.String(),
 })
 export type GetByStringKeyParams = Static<typeof GetByStringKeyParams>
+
+export const LeaderboardParams = Type.Object({
+  resource: Type.Optional(Type.String()),
+  limit: Type.Optional(Type.Integer()),
+  offset: Type.Optional(Type.Integer()),
+  filter: Type.Optional(Type.String()),
+})
+export type LeaderboardParams = Static<typeof LeaderboardParams>
+
+export const LeaderboardResponse = Type.Object({
+  bufficorns: Type.Array(BufficornVTO),
+  ranches: Type.Array(DbRanchVTO),
+  players: Type.Array(DbPlayerVTO),
+})
+export type LeaderboardResponse = Static<typeof LeaderboardResponse>
 
 export const JwtVerifyPayload = Type.Object({
   id: Type.String(),
