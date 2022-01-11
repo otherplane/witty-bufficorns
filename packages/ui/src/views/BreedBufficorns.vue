@@ -16,7 +16,7 @@ import { useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
 
 export default {
-  setup() {
+  setup () {
     const player = useStore()
     const router = useRouter()
 
@@ -33,10 +33,9 @@ export default {
     // const resource = player.trade.resource
     const bufficorns = player.bufficorns
     return { player, bufficorns, trade }
-  },
+  }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .disclaimer {

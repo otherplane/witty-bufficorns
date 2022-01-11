@@ -12,7 +12,7 @@ export const ETHERSCAN_BASE_URL =
 export const NETWORK = import.meta.env.NETWORK || 'main'
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'listening at http://0.0.0.0:4000'
+  import.meta.env.VITE_API_BASE_URL || 'http://0.0.0.0:4000'
 
 export const BASE_URL =
   import.meta.env.VITE_BASE_URL || 'https://wittycreatures.com'

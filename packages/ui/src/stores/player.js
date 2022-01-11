@@ -21,7 +21,7 @@ export const useStore = defineStore('player', {
       errors: {
         auth: null,
         trade: null,
-        info: null,
+        info: null
       }
     }
   },
@@ -74,7 +74,7 @@ export const useStore = defineStore('player', {
       this.errors[name] = error.response.data.message
       this.notify({ message: this.errors[name] })
     },
-    updateSelectedBufficorns(index) {
+    updateSelectedBufficorns (index) {
       this.clearTrade()
       this.selectedBufficornIndex = index
     },
@@ -93,7 +93,7 @@ export const useStore = defineStore('player', {
         this.getInfo()
       }
     },
-    breed({ bufficorns }) {
+    breed ({ bufficorns }) {
       this.ranch.bufficorns = bufficorns
     },
     async trade ({ key }) {
@@ -101,7 +101,7 @@ export const useStore = defineStore('player', {
       const request = await this.api.trade({
         token: tokenInfo.token,
         key: key,
-        bufficornId: this.selectedBufficornIndex,
+        bufficornId: this.selectedBufficornIndex
       })
 
       if (request.error) {
@@ -131,7 +131,10 @@ export const useStore = defineStore('player', {
           this.ranch = ranch
 
           if (this.id !== router.currentRoute.value.params.id) {
-            router.push({ name: 'trade', params: { id: router.currentRoute.value.params.id }})
+            router.push({
+              name: 'trade',
+              params: { id: router.currentRoute.value.params.id }
+            })
           }
         }
       } else {

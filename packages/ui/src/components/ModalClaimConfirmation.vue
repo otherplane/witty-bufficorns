@@ -33,15 +33,13 @@
         </svg>
       </div>
       <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-        <h3
-          class="text-lg leading-6 font-bold text-black"
-          id="modal-title"
-        >
+        <h3 class="text-lg leading-6 font-bold text-black" id="modal-title">
           Register your farmer
         </h3>
         <div class="mt-2">
           <p class="text-sm text-black">
-            Do you want to start playing on this browser? If not, create a backup using the button in the next page
+            Do you want to start playing on this browser? If not, create a
+            backup using the button in the next page
           </p>
         </div>
       </div>

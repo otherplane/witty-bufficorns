@@ -3,6 +3,7 @@
 $beige: #eedba5;
 $orange: #fc9700;
 $brown: #bd3800;
+$opacity-brown: #bd390075;
 
 html,
 body {
@@ -61,7 +62,7 @@ svg {
   height: 100%;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   appearance: none;
   background-color: $transparent;
   font: inherit;
@@ -74,8 +75,8 @@ input[type="radio"] {
   place-content: center;
 }
 
-input[type="radio"]::before {
-  content: "";
+input[type='radio']::before {
+  content: '';
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -84,6 +85,6 @@ input[type="radio"]::before {
   box-shadow: inset 1em 1em $brown;
 }
 
-input[type="radio"]:checked::before {
+input[type='radio']:checked::before {
   transform: scale(1);
 }
