@@ -10,6 +10,5 @@
   -moz-osx-font-smoothing: grayscale;
   display: grid;
   grid-template-rows: max-content 1fr;
-  height: 100vh;
 }
 </style>

@@ -62,7 +62,7 @@ const routes = [
   {
     name: 'trade',
     path: '/trade/:id',
-    component: BreedBufficorns,
+    component: BreedBufficorns
   },
   {
     name: 'import',

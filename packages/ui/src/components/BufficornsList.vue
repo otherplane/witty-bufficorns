@@ -4,7 +4,10 @@
     :index="index"
     :key="bufficorn.name"
     :name="bufficorn.name"
-    :score="bufficorn.vigor"
+    :vigor="bufficorn.vigor"
+    :agility="bufficorn.agility"
+    :speed="bufficorn.speed"
+    :coolness="bufficorn.coolness"
     :select="select"
   />
 </template>
@@ -15,17 +18,13 @@ export default {
   props: {
     select: {
       type: Boolean,
-      default: false,
-    },
-    bufficorns: {
-      type: Array,
-      require: true,
+      default: false
     }
   },
   setup () {
     const player = useStore()
     const bufficornsData = player.ranch.bufficorns
     return { bufficornsData }
-  },
+  }
 }
 </script>

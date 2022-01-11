@@ -7,7 +7,7 @@
           <p class="subtitle">RANCH NAME: {{ player.ranch.name }}</p>
           <p class="subtitle">RANCH RESOURCE: {{ player.ranch.resource }}</p>
         </div>
-        <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo">
+        <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
       </div>
       <WittyCreature
         v-if="player.creaturePreview"
