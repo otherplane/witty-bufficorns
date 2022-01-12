@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { WittyCreaturesApi } from '@/api'
+import { WittyApi } from '@/api'
 import router from '../router'
 import { isThisSecond } from 'date-fns'
 
 export const useStore = defineStore('player', {
   state: () => {
     return {
-      api: new WittyCreaturesApi(),
+      api: new WittyApi(),
       id: null,
       medals: [],
       username: '',
@@ -16,10 +16,11 @@ export const useStore = defineStore('player', {
       tradeIn: null,
       tradeOut: null,
       gameOverTimeMilli: 1645380000000,
-      creaturePreview: null,
+      preview: null,
       mintInfo: null,
+      mintParams: null,
       color: null,
-      creatureData: null,
+      data: null,
       bufficornsGlobalStats: null,
       playersGlobalStats: null,
       ranchesGlobalStats: null,
@@ -33,7 +34,8 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      return this.gameOverTimeMilli < Date.now()
+      // return this.gameOverTimeMilli < Date.now()
+      return true
     }
   },
   actions: {
@@ -46,21 +48,21 @@ export const useStore = defineStore('player', {
         JSON.stringify({ ...this.getToken(), ...info })
       )
     },
-    setCreatureData (data) {
-      this.creatureData = data
+    setData (data) {
+      this.data = data
     },
-    savePreview (creature) {
-      localStorage.setItem('creature', creature)
-      this.creaturePreview = creature
+    savePreview (preview) {
+      localStorage.setItem('preview', preview)
+      this.preview = preview
     },
     saveMintInfo (info) {
       localStorage.setItem('mintInfo', JSON.stringify({ ...info }))
       this.mintInfo = info
     },
     getPreview () {
-      const preview = localStorage.getItem('creature')
+      const preview = localStorage.getItem('preview')
       if (preview) {
-        this.creaturePreview = preview
+        this.preview = preview
       }
     },
     getMintInfo () {
@@ -163,10 +165,8 @@ export const useStore = defineStore('player', {
         address,
         token: tokenInfo.token
       })
-
-      this.mintInformation = request
-
-      return this.mintCreatureParams
+      this.mintParams = request
+      return this.mintParams
     }
   }
 })

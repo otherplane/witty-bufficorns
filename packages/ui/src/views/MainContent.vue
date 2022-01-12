@@ -10,10 +10,7 @@
         <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
       </div>
       <TradeInfo />
-      <WittyCreature
-        v-if="player.creaturePreview"
-        :creature-preview="player.creaturePreview"
-      />
+      <NFTPreview v-if="player.preview" :preview="player.preview" />
       <div
         class="mint-status"
         v-if="player.mintInfo && player.mintInfo.transactionHash"
@@ -31,15 +28,13 @@
       <div
         class="mint-status"
         v-if="
-          player.creatureData &&
-            player.creatureData.tokenId &&
-            parseInt(player.creatureData.tokenId) !== 0
+          player.data &&
+            player.data.tokenId &&
+            parseInt(player.data.tokenId) !== 0
         "
       >
         <div class="opensea">
-          <a
-            :href="`${openseaBaseUrl}/${player.creatureData.tokenId}`"
-            target="_blank"
+          <a :href="`${openseaBaseUrl}/${player.data.tokenId}`" target="_blank"
             >See on OpenSea
           </a>
           <img
@@ -52,17 +47,17 @@
       <BufficornsList />
       <div class="buttons">
         <Button
-          v-if="player.gameOver && !player.creaturePreview"
+          v-if="player.gameOver && !player.preview"
           @click="openModal('preview')"
-          type="primary"
+          type="dark"
           class="center-item"
         >
           PREVIEW NFT
         </Button>
         <Button
-          v-else-if="player.gameOver && player.creaturePreview"
+          v-else-if="player.gameOver && player.preview"
           @click="mint"
-          :type="type"
+          type="dark"
           class="center-item"
         >
           MINT NFT
@@ -101,14 +96,14 @@ import { useStore } from '@/stores/player'
 import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
 import imageUrl from '@/assets/egg-example.png'
 import { useModal } from '@/composables/useModal'
-import { useWeb3Witmon } from '../composables/useWeb3Witmon'
+import { useWeb3 } from '../composables/useWeb3'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
 
 export default {
   setup () {
     const modal = useModal()
     const player = useStore()
-    const web3Witmon = useWeb3Witmon()
+    const web3Witmon = useWeb3()
     const modals = reactive({
       mint: false,
       export: false,
@@ -123,8 +118,8 @@ export default {
       await player.getMintInfo()
       await player.getPreview()
       if (player.gameOver) {
-        const data = await web3Witmon.getCreatureData()
-        player.setCreatureData(data)
+        const data = await web3Witmon.getData()
+        player.setData(data)
       }
 
       if (!player.gameOver) {
@@ -139,8 +134,7 @@ export default {
     })
 
     const type = computed(() =>
-      player.incubating ||
-      (player.creatureData && parseInt(player.creatureData.tokenId) !== 0)
+      player.incubating || (player.data && parseInt(player.data.tokenId) !== 0)
         ? 'disable'
         : 'primary'
     )
@@ -188,7 +182,7 @@ export default {
       enableProvider: web3Witmon.enableProvider,
       preview: web3Witmon.preview,
       isProviderConnected: web3Witmon.isProviderConnected,
-      getCreatureData: web3Witmon.getCreatureData
+      getData: web3Witmon.getData
     }
   }
 }

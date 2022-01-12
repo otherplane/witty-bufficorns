@@ -26,13 +26,12 @@
           class="text-lg leading-6 font-medium text-gray-900"
           id="modal-title"
         >
-          Mint your NFT
+          Mint yout medals
         </h3>
         <div class="mt-2">
           <p class="text-sm text-gray-900">
-            A NFT is about to appear in the Metaverse. The minting process will
-            occur in the Ethereum mainnet and it is powered by the Witnet Random
-            Number Generator (RNG) functionality.
+            This is a preview of the NFT, click the 'Mint' button to receive
+            your medal.
           </p>
         </div>
       </div>
@@ -44,7 +43,7 @@
       type="button"
       class="w-full inline-flex justify-center rounded-md border border-orange shadow-sm px-4 py-2 bg-orange text-base font-bold text-black hover:bg-orange focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
     >
-      CONTINUE
+      OPEN
     </button>
     <button
       @click="$parent.$emit('close')"
@@ -59,15 +58,18 @@
 <script>
 import { defineComponent, getCurrentInstance } from 'vue'
 import { useWeb3 } from '../composables/useWeb3'
+import { useStore } from '@/stores/player'
 
 export default defineComponent({
   setup (props, ctx) {
     const instance = getCurrentInstance()
     const w3Witmon = useWeb3()
+    const player = useStore()
 
     return {
+      player,
       mint () {
-        w3Witmon.mint()
+        w3Witmon.open()
         instance.parent.emit('close')
       }
     }
