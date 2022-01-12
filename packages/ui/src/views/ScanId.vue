@@ -3,10 +3,11 @@
     <QrStream class="qr-code pl-4 pr-4 pb-4" @decode="onDecode"></QrStream>
     <div class="content">
       <p class="small-title import-label">Scan a QR code</p>
-      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad3')">
+      <!-- ef12efbd765f9ad3 -->
+      <Button class="btn" type="primary" @click="onDecode('/b75c34545e8cb4d2')">
         REGISTER FARMER example
       </Button>
-      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad9')">
+      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad3')">
         TRADE EXAMPLE
       </Button>
     </div>
@@ -85,7 +86,7 @@ export default {
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 9;
+  z-index: 8;
 }
 .pl-4 {
   padding-bottom: 0;
@@ -97,6 +98,6 @@ export default {
   width: 100%;
   position: relative;
   text-align: center;
-  z-index: 10;
+  z-index: 9;
 }
 </style>

@@ -4,6 +4,7 @@ import MainContent from '../views/MainContent.vue'
 import InitGame from '../views/InitGame.vue'
 import Disclaimer from '../views/GameDisclaimer.vue'
 import BreedBufficorns from '../views/BreedBufficorns.vue'
+import GlobalStats from '../views/GlobalStats.vue'
 import { useStore } from '@/stores/player'
 import { createApp } from 'vue'
 import ScanId from '../views/ScanId.vue'
@@ -18,7 +19,7 @@ app.use(pinia)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home,
     beforeEnter: async (to, from, next) => {
       const store = useStore()
@@ -63,6 +64,11 @@ const routes = [
     name: 'trade',
     path: '/trade/:id',
     component: BreedBufficorns
+  },
+  {
+    name: 'stats',
+    path: '/stats',
+    component: GlobalStats
   },
   {
     name: 'import',

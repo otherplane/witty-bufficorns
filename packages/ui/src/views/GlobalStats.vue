@@ -1,0 +1,83 @@
+<template>
+  <MainLayout>
+    <div class="container">
+      <SectionHeader title="GLOBAL STATS" />
+      <div class="tabs-container">
+        <div v-for="tab in Object.values(tabs)" :key="tab.key">
+          <TabButton
+            :active="tab.active"
+            :label="tab.key"
+            @click="activateTab({ primaryValue: tab.key })"
+          />
+        </div>
+      </div>
+      <div class="subtabs-container">
+        <div
+          v-for="tab in Object.values(tabs[primaryTab].subTabs)"
+          :key="tab.key"
+        >
+          <SubtabButton
+            :active="tab.active"
+            :label="tab.key"
+            @click="
+              activateTab({ primaryValue: primaryTab, secondaryValue: tab.key })
+            "
+          />
+        </div>
+      </div>
+      <ListStats :gameEntity="primaryTab" :entityAttribute="secondaryTab" />
+    </div>
+  </MainLayout>
+</template>
+
+<script>
+import { useStore } from '@/stores/player'
+import { onMounted, ref, computed } from 'vue'
+import { STATS_FILTERS } from '../constants'
+
+export default {
+  setup () {
+    const player = useStore()
+    let primaryTab = ref('bufficorns')
+    let secondaryTab = ref('vigor')
+    let tabs = ref(STATS_FILTERS)
+    let defaultSubTab = computed(() => tabs.value[primaryTab.value].default)
+
+    onMounted(() => {
+      tabs.value[primaryTab.value].active = true
+      tabs.value[primaryTab.value].subTabs[secondaryTab.value].active = true
+    })
+
+    const resetTabs = () => {
+      tabs.value[primaryTab.value].active = false
+      tabs.value[primaryTab.value].subTabs[secondaryTab.value].active = false
+    }
+
+    const stats = {}
+
+    const activateTab = ({ primaryValue, secondaryValue }) => {
+      resetTabs()
+      primaryTab.value = primaryValue
+      tabs.value[primaryTab.value].active = true
+      secondaryTab.value = secondaryValue || defaultSubTab.value
+      tabs.value[primaryTab.value].subTabs[
+        secondaryValue || defaultSubTab.value
+      ].active = true
+    }
+    return { player, activateTab, tabs, primaryTab, secondaryTab, stats }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.tabs-container {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 8px;
+}
+.subtabs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 70px);
+  justify-content: center;
+}
+</style>

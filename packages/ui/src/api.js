@@ -34,7 +34,7 @@ export class WittyCreaturesApi {
   authorize (params) {
     return this._post({
       url: `${this.baseUrl}/auth`,
-      params: { key: params.key }
+      data: { key: params.key }
     })
   }
 
@@ -42,6 +42,12 @@ export class WittyCreaturesApi {
     return this._get({
       url: `${this.baseUrl}/players/${params.id}`,
       params: { headers: { authorization: params.token } }
+    })
+  }
+
+  getLeaderboardInfo () {
+    return this._get({
+      url: `${this.baseUrl}/leaderboard`
     })
   }
 

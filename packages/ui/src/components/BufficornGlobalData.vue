@@ -1,5 +1,5 @@
 <template>
-  <div class="bufficorn-container">
+  <div class="stats-container" :class="{ even: index % 2 }">
     <div class="stats">
       <div class="stat-container" v-for="resource in stats" :key="resource.key">
         <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
@@ -13,20 +13,13 @@
       <p class="bufficorn-name">{{ name }}</p>
     </div>
     <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
-    <input
-      class="select custom"
-      v-if="selectable"
-      type="radio"
-      v-model="player.selectedBufficorn"
-      :value="name"
-    />
   </div>
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
-import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
 import { ref } from 'vue'
+import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
 
 export default {
   props: {
@@ -38,7 +31,7 @@ export default {
       coolness: Number
     },
     name: String,
-    selectable: {
+    select: {
       type: Boolean,
       default: false
     }
@@ -52,21 +45,29 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.bufficorn-container {
+.even {
+  background: $opacity-beige;
+  border-radius: 4px;
+}
+.stats-container {
+  padding: 16px;
   display: grid;
   column-gap: 16px;
-  grid-template-columns: 1fr 1fr max-content;
+  grid-template-columns: 1fr 1fr;
   justify-items: center;
   grid-template-rows: max-content 1fr;
   align-items: center;
   .bufficorn-name {
+    justify-self: flex-start;
     color: $brown;
   }
   .item {
+    justify-self: flex-start;
     padding: 8px;
     text-align: center;
   }
   .stat-container {
+    justify-self: flex-end;
     display: grid;
     grid-template-columns: max-content 1fr;
     justify-content: center;
@@ -77,6 +78,7 @@ export default {
     }
   }
   .stats {
+    justify-self: flex-end;
     display: grid;
     grid-row: 1 / span 2;
     padding: 4px;
@@ -106,6 +108,7 @@ export default {
     grid-column: 3;
   }
   .bufficorn-image {
+    justify-self: flex-start;
     grid-column: 1;
     height: auto;
     width: 80px;

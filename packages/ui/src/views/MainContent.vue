@@ -5,10 +5,11 @@
         <div>
           <p class="subtitle">PLAYER ID: {{ player.username }}</p>
           <p class="subtitle">RANCH NAME: {{ player.ranch.name }}</p>
-          <p class="subtitle">RANCH RESOURCE: {{ player.ranch.resource }}</p>
+          <p class="subtitle">RANCH RESOURCE: {{ player.ranch.trait }}</p>
         </div>
         <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
       </div>
+      <TradeInfo :tradeInfo="tradeInfo" />
       <WittyCreature
         v-if="player.creaturePreview"
         :creature-preview="player.creaturePreview"
@@ -78,9 +79,11 @@
         <Button @click="openModal('export')" type="dark">
           BACKUP
         </Button>
-        <Button type="dark">
-          STATS
-        </Button>
+        <router-link :to="'/stats'">
+          <Button type="dark">
+            STATS
+          </Button>
+        </router-link>
       </div>
     </div>
   </MainLayout>
@@ -145,6 +148,13 @@ export default {
       player.mintInfo.blockHash ? 'minted' : 'pending'
     )
 
+    const tradeInfo = computed(() => {
+      return {
+        tradeIn: player.tradeIn,
+        tradeOut: player.tradeOut
+      }
+    })
+
     function openModal (name) {
       const needProvider = name === 'mint' || name === 'preview'
       if (!web3Witmon.isProviderConnected.value && needProvider) {
@@ -185,7 +195,8 @@ export default {
       enableProvider: web3Witmon.enableProvider,
       preview: web3Witmon.preview,
       isProviderConnected: web3Witmon.isProviderConnected,
-      getCreatureData: web3Witmon.getCreatureData
+      getCreatureData: web3Witmon.getCreatureData,
+      tradeInfo
     }
   }
 }
@@ -194,7 +205,7 @@ export default {
 <style lang="scss" scoped>
 .main-content {
   display: grid;
-  row-gap: 32px;
+  row-gap: 48px;
 }
 .header {
   display: grid;

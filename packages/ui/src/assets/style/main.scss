@@ -1,15 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap');
+@font-face {
+  font-family: 'Road Store';
+  src: local('Road Store'), url('../fonts/ROADSTORE.ttf') format('truetype'),
+    url('../fonts/ROADSTORE.otf') format('otf');
+}
 
 $beige: #eedba5;
+$opacity-beige: #eedba570;
 $orange: #fc9700;
 $brown: #bd3800;
 $opacity-brown: #bd390075;
+$pink: #ffe8ff;
 
 html,
 body {
   font-family: Zilla Slab;
-  background: $orange;
-  background: linear-gradient(0deg, $orange 0%, $beige 60%);
 }
 .bg-beige {
   background-color: $beige !important;
@@ -24,6 +29,12 @@ body {
   color: $brown;
 }
 
+.container {
+  text-align: center;
+  display: grid;
+  row-gap: 24px;
+}
+
 .btn {
   font-size: 24px;
 }
@@ -36,6 +47,7 @@ body {
   font-weight: lighter;
 }
 .title {
+  font-family: Road Store, Zilla Slab sans-serif;
   font-size: 48px;
   font-weight: 700;
   color: $brown;
@@ -63,28 +75,34 @@ svg {
 }
 
 input[type='radio'] {
-  appearance: none;
-  background-color: $transparent;
-  font: inherit;
-  color: currentColor;
-  width: 18px;
-  height: 18px;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-  display: grid;
-  place-content: center;
+  &.custom {
+    appearance: none;
+    background-color: $transparent;
+    font: inherit;
+    color: currentColor;
+    width: 18px;
+    height: 18px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+  }
 }
 
-input[type='radio']::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em $brown;
+input[type='radio'] {
+  &.custom::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em $brown;
+  }
 }
 
-input[type='radio']:checked::before {
-  transform: scale(1);
+input[type='radio'] {
+  &.custom:checked::before {
+    transform: scale(1);
+  }
 }

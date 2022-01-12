@@ -1,7 +1,7 @@
 <template>
   <MainLayout>
     <div class="disclaimer">
-      <p class="title">TRADE</p>
+      <SectionHeader title="TRADE" />
       <BufficornsList :selectable="true" />
       <Button type="dark" @click="trade">
         TRADE

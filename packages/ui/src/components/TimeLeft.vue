@@ -1,5 +1,5 @@
 <template>
-  <p>{{ timeLeft }}</p>
+  <p>{{ timeLeft > 1 ? time : '00:00:00' }}</p>
 </template>
 
 <script>

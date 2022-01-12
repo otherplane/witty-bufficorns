@@ -16,3 +16,55 @@ export const API_BASE_URL =
 
 export const BASE_URL =
   import.meta.env.VITE_BASE_URL || 'https://wittycreatures.com'
+
+export const STATS_FILTERS = {
+  players: {
+    key: 'players',
+    active: false,
+    default: 'score',
+    subTabs: {
+      score: {
+        key: 'score',
+        active: false
+      }
+    }
+  },
+  bufficorns: {
+    key: 'bufficorns',
+    active: false,
+    default: 'vigor',
+    subTabs: {
+      score: {
+        key: 'score',
+        active: false
+      },
+      vigor: {
+        key: 'vigor',
+        active: false
+      },
+      speed: {
+        key: 'speed',
+        active: false
+      },
+      agility: {
+        key: 'agility',
+        active: false
+      },
+      coolness: {
+        key: 'coolness',
+        active: false
+      }
+    }
+  },
+  ranches: {
+    key: 'ranches',
+    active: false,
+    default: 'score',
+    subTabs: {
+      score: {
+        key: 'score',
+        active: false
+      }
+    }
+  }
+}

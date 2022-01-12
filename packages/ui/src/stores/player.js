@@ -12,12 +12,17 @@ export const useStore = defineStore('player', {
       username: '',
       ranch: {},
       selectedBufficorn: null,
-      trade: null,
+      tradeInfo: null,
+      tradeIn: null,
+      tradeOut: null,
       gameOverTimeMilli: 1645380000000,
       creaturePreview: null,
       mintInfo: null,
       color: null,
       creatureData: null,
+      bufficornsGlobalStats: null,
+      playersGlobalStats: null,
+      ranchesGlobalStats: null,
       errors: {
         auth: null,
         trade: null,
@@ -95,14 +100,25 @@ export const useStore = defineStore('player', {
         to: key,
         bufficorn: this.selectedBufficorn
       })
-
       if (request.error) {
         this.setError('trade', request.error)
         router.push('/')
       } else {
         this.clearError('trade')
+        this.tradeInfo = request
         this.getInfo()
         router.push('/')
+      }
+    },
+    async getGlobalStats () {
+      const request = await this.api.getLeaderboardInfo()
+      if (request.error) {
+        this.setError('getLeaderboardInfo', request.error)
+      } else {
+        this.clearError('getLeaderboardInfo')
+        this.bufficornsGlobalStats = request.bufficorns
+        this.playersGlobalStats = request.players
+        this.ranchesGlobalStats = request.ranches
       }
     },
     async getInfo () {
@@ -113,18 +129,23 @@ export const useStore = defineStore('player', {
           id: tokenInfo && tokenInfo.key
         })
         if (request.error) {
-          router.push({ name: 'init-game' })
+          router.push('/init-game')
           this.setError('info', request.error)
         } else {
           this.clearError('info')
-          const { key, username, ranch } = request
+          const { key, username, ranch } = request.player
           this.id = key
           this.username = username
           this.ranch = ranch
+          if (request.tradeIn) {
+            this.tradeIn = request.tradeIn
+          }
+          if (request.tradeOut) {
+            this.tradeOut = request.tradeOut
+          }
           if (!this.selectedBufficorn) {
             this.selectedBufficorn = ranch.bufficorns[0].name
           }
-
           if (this.id !== router.currentRoute.value.params.id) {
             router.push({
               name: 'trade',

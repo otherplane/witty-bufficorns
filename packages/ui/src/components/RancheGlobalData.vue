@@ -1,65 +1,44 @@
 <template>
-  <div class="bufficorn-container">
+  <div class="stats-container" :class="{ even: index % 2 }">
     <div class="stats">
-      <div class="stat-container" v-for="resource in stats" :key="resource.key">
-        <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
-        <div class="stat">
-          <p class="key">{{ resource.key.toUpperCase() }}</p>
-          <p class="score">{{ resource.score }}</p>
-        </div>
-      </div>
+      <p class="score">{{ score }}</p>
     </div>
     <div class="small-title item user">
       <p class="bufficorn-name">{{ name }}</p>
     </div>
-    <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
-    <input
-      class="select custom"
-      v-if="selectable"
-      type="radio"
-      v-model="player.selectedBufficorn"
-      :value="name"
-    />
+    <img class="bufficorn-image" src="@/assets/ranchLogo.svg" alt="Bufficorn" />
   </div>
 </template>
 
 <script>
-import { useStore } from '@/stores/player'
-import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
-import { ref } from 'vue'
-
+import { getAssetPath } from '@/utils.js'
 export default {
   props: {
     index: Number,
-    attributes: {
-      vigor: Number,
-      speed: Number,
-      agility: Number,
-      coolness: Number
-    },
     name: String,
-    selectable: {
-      type: Boolean,
-      default: false
-    }
+    score: Number
   },
-  setup (props) {
-    const player = useStore()
-    const stats = ref(getStatsFromAttributes(props.attributes))
-    return { player, stats, getAssetPath }
+  setup () {
+    return { getAssetPath }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.bufficorn-container {
+.even {
+  background: $opacity-beige;
+  border-radius: 4px;
+}
+.stats-container {
+  padding: 16px;
   display: grid;
   column-gap: 16px;
-  grid-template-columns: 1fr 1fr max-content;
+  grid-template-columns: max-content 1fr;
   justify-items: center;
   grid-template-rows: max-content 1fr;
   align-items: center;
   .bufficorn-name {
+    justify-self: center;
     color: $brown;
   }
   .item {
@@ -67,6 +46,7 @@ export default {
     text-align: center;
   }
   .stat-container {
+    justify-self: flex-end;
     display: grid;
     grid-template-columns: max-content 1fr;
     justify-content: center;
@@ -77,6 +57,7 @@ export default {
     }
   }
   .stats {
+    justify-self: flex-end;
     display: grid;
     grid-row: 1 / span 2;
     padding: 4px;
@@ -106,6 +87,7 @@ export default {
     grid-column: 3;
   }
   .bufficorn-image {
+    justify-self: flex-start;
     grid-column: 1;
     height: auto;
     width: 80px;

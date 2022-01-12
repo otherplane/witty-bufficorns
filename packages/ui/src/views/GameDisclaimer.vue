@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="disclaimer">
+    <div class="container">
       <p class="title">DISCLAIMER</p>
       <p class="text">
         <span class="bold">Remember:</span> once you register your farmer, it
@@ -19,12 +19,7 @@
 </template>
 
 <style lang="scss" scoped>
-.disclaimer {
-  text-align: center;
-  display: grid;
-  row-gap: 24px;
-  .btn {
-    width: max-content;
-  }
+.btn {
+  width: max-content;
 }
 </style>
