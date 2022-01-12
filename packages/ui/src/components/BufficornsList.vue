@@ -8,15 +8,17 @@
     :agility="bufficorn.agility"
     :speed="bufficorn.speed"
     :coolness="bufficorn.coolness"
-    :select="select"
+    :selectable="selectable"
   />
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
+import { onMounted } from 'vue'
+
 export default {
   props: {
-    select: {
+    selectable: {
       type: Boolean,
       default: false
     }

@@ -2,7 +2,7 @@
   <MainLayout>
     <div class="disclaimer">
       <p class="title">TRADE</p>
-      <BufficornsList :bufficorns="bufficorns" :select="true" />
+      <BufficornsList :selectable="true" />
       <Button type="dark" @click="trade">
         TRADE
       </Button>
@@ -13,7 +13,7 @@
 <script>
 import { useStore } from '@/stores/player'
 import { useRouter } from 'vue-router'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 export default {
   setup () {
@@ -30,9 +30,7 @@ export default {
       player.trade({ key: router.currentRoute.value.params.id })
     }
 
-    // const resource = player.trade.resource
-    const bufficorns = player.bufficorns
-    return { player, bufficorns, trade }
+    return { trade }
   }
 }
 </script>

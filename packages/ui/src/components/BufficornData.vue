@@ -15,17 +15,16 @@
     <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
     <input
       class="select"
-      v-if="select"
+      v-if="selectable"
       type="radio"
-      v-model="player.selectedBufficornIndex"
-      :value="index"
+      v-model="player.selectedBufficorn"
+      :value="name"
     />
   </div>
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
-import { ref, computed } from 'vue'
 
 export default {
   props: {
@@ -35,7 +34,7 @@ export default {
     speed: Number,
     agility: Number,
     coolness: Number,
-    select: {
+    selectable: {
       type: Boolean,
       default: false
     }

@@ -24,9 +24,9 @@ export class WittyCreaturesApi {
       .catch(this._handleError)
   }
 
-  _post ({ url, params }) {
+  _post ({ url, data, params }) {
     return axios
-      .post(url, params)
+      .post(url, data, params)
       .then(this._handleResponse)
       .catch(this._handleError)
   }
@@ -45,10 +45,11 @@ export class WittyCreaturesApi {
     })
   }
 
-  trade (params) {
-    return this._get({
-      url: `${this.baseUrl}/trade/${params.id}`,
-      params: { headers: { authorization: params.token } }
+  trade ({ bufficorn, to, token }) {
+    return this._post({
+      url: `${this.baseUrl}/trades`,
+      data: { to, bufficorn },
+      params: { headers: { authorization: token } }
     })
   }
 

@@ -11,7 +11,7 @@ export const useStore = defineStore('player', {
       medals: [],
       username: '',
       ranch: {},
-      selectedBufficornIndex: 0,
+      selectedBufficorn: null,
       trade: null,
       gameOverTimeMilli: 1645380000000,
       creaturePreview: null,
@@ -74,14 +74,6 @@ export const useStore = defineStore('player', {
       this.errors[name] = error.response.data.message
       this.notify({ message: this.errors[name] })
     },
-    updateSelectedBufficorns (index) {
-      this.clearTrade()
-      this.selectedBufficornIndex = index
-    },
-    clearTrade () {
-      this.trade = null
-      this.selectedBufficornIndex = 0
-    },
     async authorize ({ key }) {
       const request = await this.api.authorize({ key })
       if (request.error) {
@@ -100,8 +92,8 @@ export const useStore = defineStore('player', {
       const tokenInfo = this.getToken()
       const request = await this.api.trade({
         token: tokenInfo.token,
-        key: key,
-        bufficornId: this.selectedBufficornIndex
+        to: key,
+        bufficorn: this.selectedBufficorn
       })
 
       if (request.error) {
@@ -129,6 +121,9 @@ export const useStore = defineStore('player', {
           this.id = key
           this.username = username
           this.ranch = ranch
+          if (!this.selectedBufficorn) {
+            this.selectedBufficorn = ranch.bufficorns[0].name
+          }
 
           if (this.id !== router.currentRoute.value.params.id) {
             router.push({
