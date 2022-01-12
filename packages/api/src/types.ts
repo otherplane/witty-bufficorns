@@ -59,9 +59,9 @@ export const Resource = Type.Object({
 })
 export type Resource = Static<typeof Resource>
 
-export const Bufficorn = Type.Object({
+export const BufficornVTO = Type.Object({
   name: Type.String(),
-  ranch: Type.String(),
+  ranch: RanchNameEnum,
   [Trait.Vigor]: Type.Integer(),
   [Trait.Speed]: Type.Integer(),
   [Trait.Coolness]: Type.Integer(),
@@ -71,39 +71,40 @@ export const Bufficorn = Type.Object({
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
-export type Bufficorn = Static<typeof Bufficorn>
+export type BufficornVTO = Static<typeof BufficornVTO>
 
-export const Ranch = Type.Object({
-  name: Type.String(),
-  bufficorns: Type.Array(Bufficorn),
+export const RanchVTO = Type.Object({
+  name: RanchNameEnum,
+  bufficorns: Type.Array(BufficornVTO),
   medals: Type.Array(Type.Optional(Type.String())),
-  resource: Type.String(),
+  resource: Resource,
 })
 
-export type Ranch = Static<typeof Ranch>
+export type RanchVTO = Static<typeof RanchVTO>
 
-export const DbRanch = Type.Object({
-  name: Type.String(),
-  resource: Type.String(),
+export const DbRanchVTO = Type.Object({
+  name: RanchNameEnum,
+  resource: Resource,
+  bufficorns: Type.Array(Type.String()),
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
-export type DbRanch = Static<typeof DbRanch>
+export type DbRanchVTO = Static<typeof DbRanchVTO>
 
-export const Player = Type.Object({
+export const PlayerVTO = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
-  ranch: Ranch,
+  ranch: RanchVTO,
   points: Type.Integer(),
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
-export type Player = Static<typeof Player>
+export type PlayerVTO = Static<typeof PlayerVTO>
 
-export const DbPlayer = Type.Object({
+export const DbPlayerVTO = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
@@ -114,14 +115,14 @@ export const DbPlayer = Type.Object({
   medals: Type.Array(Type.Optional(Type.String())),
 })
 
-export type DbPlayer = Static<typeof DbPlayer>
+export type DbPlayerVTO = Static<typeof DbPlayerVTO>
 
 //TODO: define Medal type
 export const Medal = Type.String()
 export type Medal = Static<typeof Medal>
 
 export const IndexedEgg = Type.Intersect([
-  Player,
+  PlayerVTO,
   Type.Object({ rarityIndex: Type.String() }),
 ])
 export type IndexedEgg = Static<typeof IndexedEgg>
@@ -235,7 +236,7 @@ export const TradeResult = Type.Object({
 })
 export type TradeResult = Static<typeof TradeParams>
 
-export const DbTrade = Type.Object({
+export const DbTradeVTO = Type.Object({
   bufficorn: Type.String(),
   from: Type.String(),
   to: Type.String(),
@@ -246,4 +247,13 @@ export const DbTrade = Type.Object({
   timestamp: Type.Number(),
   ends: Type.Number(),
 })
-export type DbTrade = Static<typeof DbTrade>
+export type DbTradeVTO = Static<typeof DbTradeVTO>
+
+export type Stats = {
+  vigor: number
+  speed: number
+  coolness: number
+  stamina: number
+  coat: number
+  agility: number
+}

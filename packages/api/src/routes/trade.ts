@@ -114,7 +114,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       const resource: Resource = playerModel.generateResource(
-        toPlayer,
+        toPlayer.toDbVTO(),
         lastTrade
       )
 

@@ -1,13 +1,12 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
+import { Bufficorn } from '../domain/bufficorn'
+import { Ranch } from '../domain/ranch'
 
 import {
   AuthorizationHeader,
-  Player,
-  Ranch,
   GetByStringKeyParams,
   JwtVerifyPayload,
-  DbRanch,
-  Bufficorn,
+  PlayerVTO,
 } from '../types'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
@@ -15,14 +14,14 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   const { playerModel, ranchModel, bufficornModel } = fastify
 
-  fastify.get<{ Params: GetByStringKeyParams; Reply: Player | Error }>(
+  fastify.get<{ Params: GetByStringKeyParams; Reply: PlayerVTO | Error }>(
     '/players/:key',
     {
       schema: {
         params: GetByStringKeyParams,
         headers: AuthorizationHeader,
         response: {
-          200: Player,
+          200: PlayerVTO,
         },
       },
       handler: async (
@@ -58,26 +57,18 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
 
         //GET RANCH Info
-        const ranch: DbRanch = (await ranchModel.get(player.ranch)) as DbRanch
+        const ranch: Ranch = (await ranchModel.get(player.ranch)) as Ranch
 
         const ranchBufficorns: Array<Bufficorn> =
           (await bufficornModel.getBufficornsByRanch(
             player.ranch
           )) as Array<Bufficorn>
 
-        const ranchInfo: Ranch = {
-          ...ranch,
-          bufficorns: ranchBufficorns,
-        }
+        ranch.addBufficorns(ranchBufficorns)
 
-        const extendedPlayer: Player = {
-          key: player.key,
-          username: player.username,
-          points: player.points,
-          ranch: ranchInfo,
-          lastTradeIn: player.lastTradeIn,
-          lastTradeOut: player.lastTradeOut,
-          medals: player.medals,
+        const extendedPlayer: PlayerVTO = {
+          ...player.toDbVTO(),
+          ranch: ranch.toVTO(),
         }
 
         return reply.status(200).send(extendedPlayer)

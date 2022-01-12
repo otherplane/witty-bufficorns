@@ -4,7 +4,12 @@ import {
   TRADE_POINTS,
   TRADE_POINTS_DIVISOR,
 } from '../../../src/constants'
-import { authenticatePlayer, initialPlayers, serverInject, sleep } from '../../setup'
+import {
+  authenticatePlayer,
+  initialPlayers,
+  serverInject,
+  sleep,
+} from '../../setup'
 
 describe('Route /trade', () => {
   it('should return the trade object after trade with itself', async () => {
@@ -126,7 +131,7 @@ describe('Route /trade', () => {
 
   it('should sum less points if incubated several times', async () => {
     const bufficornName = 'Bufficorn-0'
-    
+
     const token = await authenticatePlayer(initialPlayers[0].key)
     await authenticatePlayer(initialPlayers[1].key)
     await serverInject(

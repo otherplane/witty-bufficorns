@@ -1,31 +1,17 @@
-import { Collection, Db, WithId } from 'mongodb'
+import { Collection, Db } from 'mongodb'
 
-import { Bufficorn, Resource } from '../types'
+import { BufficornVTO, RanchName, Resource } from '../types'
 import { BUFFICORNS_PER_RANCH, RANCHES_COUNT } from '../constants'
-import { getRanchFromIndex } from '../utils'
 import { Repository } from '../repository'
+import { Bufficorn } from '../domain/bufficorn'
 
 export class BufficornModel {
-  private collection: Collection<Bufficorn>
-  private repository: Repository<Bufficorn>
+  private collection: Collection<BufficornVTO>
+  private repository: Repository<BufficornVTO>
 
   constructor(db: Db) {
     this.collection = db.collection('bufficorns')
     this.repository = new Repository(this.collection, 'name')
-  }
-
-  public createBufficorn(index: number) {
-    return {
-      name: `Bufficorn-${index}`,
-      ranch: getRanchFromIndex(index),
-      vigor: 0,
-      speed: 0,
-      coolness: 0,
-      stamina: 0,
-      coat: 0,
-      agility: 0,
-      medals: [],
-    }
   }
 
   /**
@@ -35,14 +21,16 @@ export class BufficornModel {
   public async bootstrap(
     force: boolean = false
   ): Promise<Array<Bufficorn> | null> {
-    return this.repository.bootstrap(
-      (_: null, index: number) => this.createBufficorn(index),
+    const vtos = await this.repository.bootstrap(
+      (_: null, index: number) => new Bufficorn(undefined, index).toVTO(),
       BUFFICORNS_PER_RANCH * RANCHES_COUNT,
       force
     )
+
+    return vtos ? vtos.map((vto) => new Bufficorn(vto)) : null
   }
 
-  public async create(bufficorn: Bufficorn): Promise<WithId<Bufficorn>> {
+  public async create(bufficorn: BufficornVTO): Promise<Bufficorn> {
     const { name } = bufficorn
     const bufficornExists = await this.repository.getOne({ name })
 
@@ -50,35 +38,39 @@ export class BufficornModel {
       throw new Error(`Bufficorn with name ${name} already exists`)
     }
 
-    return this.repository.create(bufficorn)
+    return new Bufficorn(await this.repository.create(bufficorn))
   }
 
-  public async update(bufficorn: Bufficorn): Promise<WithId<Bufficorn>> {
+  public async update(bufficorn: BufficornVTO): Promise<Bufficorn> {
     const { name } = bufficorn
     const exists = await this.repository.getOne({ name })
 
     if (!exists) {
-      throw new Error(`Bufficorn does not exist (name: ${bufficorn.name})`)
+      throw new Error(`Bufficorn does not exist (name: ${name})`)
     }
 
-    return await this.repository.updateOne({ name }, bufficorn)
+    return new Bufficorn(await this.repository.updateOne({ name }, bufficorn))
   }
 
   public async getBufficornsByRanch(
     name: string
-  ): Promise<Array<WithId<Bufficorn>> | null> {
-    return await this.repository.get({ ranch: name })
+  ): Promise<Array<Bufficorn> | null> {
+    const vtos = await this.repository.get({ ranch: name as RanchName })
+
+    return vtos.map((vto) => new Bufficorn(vto))
   }
 
-  public async getOne(name: string): Promise<WithId<Bufficorn> | null> {
-    return await this.repository.getOne({ name })
+  public async getOne(name: string): Promise<Bufficorn | null> {
+    const vto = await this.repository.getOne({ name })
+
+    return vto ? new Bufficorn(vto) : null
   }
 
   public async feed(
     name: string,
     resource: Resource,
     ranch: string
-  ): Promise<WithId<Bufficorn>> {
+  ): Promise<Bufficorn> {
     const bufficorn = await this.repository.getOne({ name })
 
     if (!bufficorn) {
@@ -91,11 +83,13 @@ export class BufficornModel {
       )
     }
 
-    return this.repository.updateOne(
-      { name },
-      {
-        [resource.trait]: resource.amount + bufficorn[resource.trait],
-      }
+    return new Bufficorn(
+      await this.repository.updateOne(
+        { name },
+        {
+          [resource.trait]: resource.amount + bufficorn[resource.trait],
+        }
+      )
     )
   }
 }

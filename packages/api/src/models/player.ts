@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Collection, Db, WithId } from 'mongodb'
+import { Collection, Db } from 'mongodb'
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -14,19 +14,26 @@ import {
   TRADE_POINTS_MIN,
 } from '../constants'
 import { getRanchFromIndex } from '../utils'
-import { DbPlayer, DbTrade, RanchName, ranchToTrait, Resource } from '../types'
+import {
+  DbPlayerVTO,
+  DbTradeVTO,
+  RanchName,
+  ranchToTrait,
+  Resource,
+} from '../types'
 import { Repository } from '../repository'
+import { Player } from '../domain/player'
 
 export class PlayerModel {
-  private collection: Collection<DbPlayer>
-  private repository: Repository<DbPlayer>
+  private collection: Collection<DbPlayerVTO>
+  private repository: Repository<DbPlayerVTO>
 
   constructor(db: Db) {
     this.collection = db.collection('players')
     this.repository = new Repository(this.collection, 'username')
   }
 
-  public createPlayer(index: number): DbPlayer {
+  public createPlayer(index: number): Player {
     // Generate the player data.
     // First we derive a deterministic 32-bytes sequence of bytes from a fixed salt plus the player nonce.
     const seed = crypto
@@ -46,8 +53,8 @@ export class PlayerModel {
     const medals: Array<string> = []
     const ranch = getRanchFromIndex(index)
     const points: number = 0
-    // Create an player based on that player data and push it to our collection
-    return { key, username, ranch, medals, points }
+
+    return new Player({ key, username, ranch, medals, points })
   }
 
   /**
@@ -58,15 +65,17 @@ export class PlayerModel {
   public async bootstrap(
     count: number,
     force: boolean = false
-  ): Promise<Array<DbPlayer> | null> {
-    return this.repository.bootstrap(
+  ): Promise<Array<Player> | null> {
+    const vtos = await this.repository.bootstrap(
       (_: null, index: number) => this.createPlayer(index),
       count,
       force
     )
+
+    return vtos?.map((vto) => new Player(vto)) || null
   }
 
-  public async create(player: DbPlayer): Promise<DbPlayer> {
+  public async create(player: DbPlayerVTO): Promise<Player> {
     const { username } = player
     const bufficornExists = await this.repository.getOne({ username })
 
@@ -74,22 +83,24 @@ export class PlayerModel {
       throw new Error(`Player with name ${username} already exists`)
     }
 
-    return this.repository.create(player)
+    return new Player(await this.repository.create(player))
   }
 
-  public async update(player: DbPlayer): Promise<DbPlayer> {
+  public async update(player: DbPlayerVTO): Promise<Player> {
     const { username } = player
 
-    return await this.repository.updateOne({ username }, player)
+    return new Player(await this.repository.updateOne({ username }, player))
   }
 
-  public async get(key: string): Promise<WithId<DbPlayer> | null> {
-    return await this.repository.getOne({ key })
+  public async get(key: string): Promise<Player | null> {
+    const vto = await this.repository.getOne({ key })
+
+    return vto ? new Player(vto) : null
   }
 
   public generateResource(
-    player: WithId<DbPlayer>,
-    lastTrade: WithId<DbTrade> | null
+    player: DbPlayerVTO,
+    lastTrade: DbTradeVTO | null
   ): Resource {
     // Compute points
     let amount
@@ -112,7 +123,9 @@ export class PlayerModel {
     }
   }
 
-  public async getOne(id: string): Promise<WithId<DbPlayer> | null> {
-    return this.repository.getById(id)
+  public async getOne(id: string): Promise<Player | null> {
+    const vto = await this.repository.getById(id)
+
+    return vto ? new Player(vto) : null
   }
 }

@@ -1,42 +1,35 @@
-import { Collection, Db, WithId } from 'mongodb'
+import { Collection, Db } from 'mongodb'
 
-import { DbRanch, ranchToTrait, indexToRanch } from '../types'
+import { DbRanchVTO, RanchName } from '../types'
 import { RANCHES_COUNT } from '../constants'
 import { Repository } from '../repository'
+import { Ranch } from '../domain/ranch'
+// import { Bufficorn } from '../domain/bufficorn'
 
 export class RanchModel {
-  private collection: Collection<DbRanch>
-  private repository: Repository<DbRanch>
+  private collection: Collection<DbRanchVTO>
+  private repository: Repository<DbRanchVTO>
 
   constructor(db: Db) {
     this.collection = db.collection('ranches')
     this.repository = new Repository(this.collection, 'name')
   }
 
-  public createRanch(index: number) {
-    const ranchName = indexToRanch[index]
-    return {
-      name: ranchName,
-      resource: ranchToTrait[ranchName],
-      medals: [],
-    }
-  }
-
   /**
    * Generate as many ranches as specified in the `count` argument.
    * @param force If provided and set to `true`, circumvent the double bootstrapping protection.
    */
-  public async bootstrap(
-    force: boolean = false
-  ): Promise<Array<DbRanch> | null> {
-    return this.repository.bootstrap(
-      (_: null, index: number) => this.createRanch(index),
+  public async bootstrap(force: boolean = false): Promise<Array<Ranch> | null> {
+    const vtos = await this.repository.bootstrap(
+      (_: null, index: number) => new Ranch(undefined, index).toDbVTO(),
       RANCHES_COUNT,
       force
     )
+
+    return vtos ? vtos.map((vto) => new Ranch(vto)) : null
   }
 
-  public async create(ranch: DbRanch): Promise<DbRanch> {
+  public async create(ranch: DbRanchVTO): Promise<Ranch> {
     const { name } = ranch
     const ranchExists = await this.repository.getOne({ name })
 
@@ -44,13 +37,10 @@ export class RanchModel {
       throw new Error(`Ranch with name ${name} already exists`)
     }
 
-    return this.repository.create(ranch)
+    return new Ranch(await this.repository.create(ranch))
   }
 
-  public async update(
-    ranch: DbRanch,
-    returnNew: boolean = false
-  ): Promise<DbRanch> {
+  public async update(ranch: DbRanchVTO): Promise<Ranch> {
     const { name } = ranch
     const exists = await this.repository.getOne({ name })
 
@@ -58,10 +48,12 @@ export class RanchModel {
       throw new Error(`Ranch does not exist (name: ${ranch.name})`)
     }
 
-    return await this.repository.updateOne({ name }, ranch)
+    return new Ranch(await this.repository.updateOne({ name }, ranch))
   }
 
-  public async get(name: string): Promise<WithId<DbRanch> | null> {
-    return await this.repository.getOne({ name })
+  public async get(name: RanchName): Promise<Ranch | null> {
+    const vto = await this.repository.getOne({ name })
+
+    return vto ? new Ranch(vto) : null
   }
 }

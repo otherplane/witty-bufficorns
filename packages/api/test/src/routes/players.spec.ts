@@ -1,4 +1,9 @@
-import { server, authenticatePlayer, serverInject, initialPlayers } from '../../setup'
+import {
+  server,
+  authenticatePlayer,
+  serverInject,
+  initialPlayers,
+} from '../../setup'
 
 describe('player.ts', () => {
   it('should NOT get PLAYER #1 - no authorization header', async () => {

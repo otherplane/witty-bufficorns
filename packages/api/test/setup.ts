@@ -87,6 +87,4 @@ const initialPlayers = [
   },
 ]
 
-
-
 export { server, authenticatePlayer, serverInject, sleep, initialPlayers }
