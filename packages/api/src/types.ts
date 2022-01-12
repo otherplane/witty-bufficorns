@@ -113,6 +113,7 @@ export const DbPlayerVTO = Type.Object({
   lastTradeIn: Type.Optional(Type.Integer()),
   lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String())),
+  id: Type.Optional(Type.String()),
 })
 
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
@@ -233,10 +234,9 @@ export const MintOutput = Type.Object({
   }),
   data: Type.Object({
     address: Type.String(),
-    index: Type.Number(),
-    rank: Type.Number(),
-    score: Type.Number(),
-    total: Type.Number(),
+    points: Type.Number(),
+    playerMedals: Type.Array(Type.Optional(Type.String())),
+    ranchMedals: Type.Array(Type.Optional(Type.String())),
   }),
 })
 export type MintOutput = Static<typeof MintOutput>

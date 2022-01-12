@@ -67,7 +67,7 @@ export class PlayerModel {
     force: boolean = false
   ): Promise<Array<Player> | null> {
     const vtos = await this.repository.bootstrap(
-      (_: null, index: number) => this.createPlayer(index),
+      (_: null, index: number) => this.createPlayer(index).toDbVTO(),
       count,
       force
     )

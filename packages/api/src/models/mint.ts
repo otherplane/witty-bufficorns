@@ -1,6 +1,6 @@
 import { Collection, Db, WithId } from 'mongodb'
 
-import { MintOutput } from '../types'
+import { ObjectId, MintOutput } from '../types'
 import { Repository } from '../repository'
 
 export class MintModel {
@@ -13,13 +13,16 @@ export class MintModel {
     this.repository = new Repository(this.collection, 'data')
   }
 
-  public async create(mintOutput: MintOutput): Promise<MintOutput> {
-    return await this.repository.create(mintOutput)
+  public async create(
+    mintOutput: MintOutput,
+    playerId: ObjectId
+  ): Promise<MintOutput> {
+    return await this.repository.createWithId(mintOutput, playerId)
   }
 
-  public async get(index: number): Promise<WithId<MintOutput> | null> {
+  public async get(index: ObjectId): Promise<WithId<MintOutput> | null> {
     return await this.repository.getOne({
-      'data.index': index,
+      _id: index,
     })
   }
 }

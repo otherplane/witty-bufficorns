@@ -51,7 +51,7 @@ const authentication: FastifyPluginAsync = async (
 
         try {
           const playerUpdated = await playerModel.update({
-            ...player,
+            ...player.toDbVTO(),
             token,
           })
 

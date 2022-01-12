@@ -1,4 +1,4 @@
-import { RanchName, DbPlayerVTO, PlayerLeaderboardInfo } from '../types'
+import { RanchName, DbPlayerVTO, PlayerLeaderboardInfo, ObjectId } from '../types'
 
 export class Player {
   token?: string | undefined
@@ -9,6 +9,7 @@ export class Player {
   ranch: RanchName
   points: number
   medals: Array<string> = []
+  id?: ObjectId
 
   constructor(vto: DbPlayerVTO) {
     this.lastTradeIn = vto.lastTradeIn || undefined
@@ -19,6 +20,7 @@ export class Player {
     this.points = vto.points
     this.medals = vto.medals
     this.token = vto.token
+    this.id = new ObjectId(vto.id)
   }
 
   toDbVTO(shoWToken: boolean = false): DbPlayerVTO {
@@ -31,6 +33,7 @@ export class Player {
       points: this.points,
       medals: this.medals,
       token: this.token,
+      id: this.id?.toString(),
     }
 
     return shoWToken ? { ...vto, token: this.token } : vto

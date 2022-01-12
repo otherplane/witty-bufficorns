@@ -46,6 +46,24 @@ export class Repository<T> {
     return result as WithId<T>
   }
 
+  public async createWithId(element: T, id: ObjectId): Promise<WithId<T>> {
+    const elementWithId = { ...element, _id: id }
+    const success = await this.collection.insertOne(
+      elementWithId as OptionalId<T>
+    )
+
+    if (!success.acknowledged)
+      throw new Error(
+        `Element could not be created (name: ${element[this.keyName]})`
+      )
+
+    const result = await this.collection.findOne({
+      [this.keyName]: element[this.keyName],
+    } as Filter<T>)
+
+    return result as WithId<T>
+  }
+
   public async getOne(filter: Filter<T>): Promise<WithId<T> | null> {
     return await this.collection.findOne(filter)
   }
