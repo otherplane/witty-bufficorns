@@ -5,6 +5,7 @@ import {
   indexToRanch,
   ranchToTrait,
   RanchVTO,
+  RanchLeaderboardInfo,
 } from '../types'
 import { Bufficorn } from './bufficorn'
 
@@ -54,7 +55,26 @@ export class Ranch {
     }
   }
 
-  static getLeaderboard(ranches: Array<Ranch>): Array<Ranch> {
-    return ranches
+  getScore(trait?: Trait) {
+    const bufficorn_scores = this.bufficorns.map((b: Bufficorn) =>
+      b.getScore(trait)
+    )
+
+    return trait ? Math.max(...bufficorn_scores) : Math.min(...bufficorn_scores)
+  }
+
+  static getLeaderboard(
+    bufficorns: Array<Ranch>,
+    trait?: Trait
+  ): Array<RanchLeaderboardInfo> {
+    return bufficorns
+      .sort((a, b) => b.getScore(trait) - a.getScore(trait))
+      .map((r, index) => {
+        return {
+          name: r.name,
+          score: r.getScore(trait),
+          position: index,
+        }
+      })
   }
 }

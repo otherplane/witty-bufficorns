@@ -32,9 +32,7 @@ const leaderboard: FastifyPluginAsync = async (
       const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns)
 
       const ranches: Array<Ranch> = await ranchModel.getAll()
-      const sorted_ranches = Ranch.getLeaderboard(ranches).map((ranch) =>
-        ranch.toDbVTO()
-      )
+      const sorted_ranches = Ranch.getLeaderboard(ranches)
 
       const players: Array<DbPlayerVTO> = await playerModel.getLeaderboard()
 

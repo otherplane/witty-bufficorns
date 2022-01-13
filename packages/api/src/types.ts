@@ -151,6 +151,13 @@ export const BufficornLeaderboardInfo = Type.Object({
 })
 export type BufficornLeaderboardInfo = Static<typeof BufficornLeaderboardInfo>
 
+export const RanchLeaderboardInfo = Type.Object({
+  name: Type.String(),
+  score: Type.Integer(),
+  position: Type.Integer(),
+})
+export type RanchLeaderboardInfo = Static<typeof RanchLeaderboardInfo>
+
 export const LeaderboardParams = Type.Object({
   resource: Type.Optional(Type.String()),
   limit: Type.Optional(Type.Integer()),
@@ -161,7 +168,7 @@ export type LeaderboardParams = Static<typeof LeaderboardParams>
 
 export const LeaderboardResponse = Type.Object({
   bufficorns: Type.Array(BufficornLeaderboardInfo),
-  ranches: Type.Array(DbRanchVTO),
+  ranches: Type.Array(RanchLeaderboardInfo),
   players: Type.Array(DbPlayerVTO),
 })
 export type LeaderboardResponse = Static<typeof LeaderboardResponse>
