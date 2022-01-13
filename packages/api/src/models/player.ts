@@ -123,7 +123,7 @@ export class PlayerModel {
     }
   }
 
-  public async getLeaderboard(): Promise<Array<WithId<DbPlayerVTO>>> {
+  public async getAll(): Promise<Array<WithId<DbPlayerVTO>>> {
     // TODO: Remove mongoDB $exists from model
     return await this.repository.get({
       token: { $exists: true },
