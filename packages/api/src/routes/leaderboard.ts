@@ -4,6 +4,7 @@ import { DbPlayerVTO, LeaderboardParams, LeaderboardResponse } from '../types'
 import { Ranch } from '../domain/ranch'
 import { Bufficorn } from '../domain/bufficorn'
 import { Player } from '../domain/player'
+import { groupBufficornsByRanch } from '../utils'
 
 const leaderboard: FastifyPluginAsync = async (
   fastify,
@@ -32,7 +33,11 @@ const leaderboard: FastifyPluginAsync = async (
       const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
       const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns)
 
-      const ranches: Array<Ranch> = await ranchModel.getAll()
+      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+        r.addBufficorns(bufficornsByRanch[r.name])
+        return r
+      })
       const sorted_ranches = Ranch.getLeaderboard(ranches)
 
       const players: Array<DbPlayerVTO> = await playerModel.getAll()

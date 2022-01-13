@@ -15,7 +15,7 @@ export class Ranch {
   public medals: Array<string>
   public bufficorns: Array<Bufficorn> = []
 
-  constructor(vto?: DbRanchVTO, index?: number) {
+  constructor(vto?: DbRanchVTO, index?: number, bufficorns?: Array<Bufficorn>) {
     if (vto) {
       this.name = vto.name
       this.trait = vto.trait
@@ -27,6 +27,10 @@ export class Ranch {
       this.name = ranchName
       this.trait = ranchToTrait[ranchName]
       this.medals = []
+    }
+
+    if (bufficorns) {
+      this.bufficorns = bufficorns
     }
   }
 

@@ -5,6 +5,7 @@ import {
   TRADE_DURATION_MILLIS,
 } from './constants'
 import { Incubation, indexToRanch, RanchName } from './types'
+import { Bufficorn } from './domain/bufficorn'
 
 export function calculateRemainingCooldown(
   tradeEnds: number,
@@ -58,4 +59,19 @@ export function printRemainingMillis(millis: number) {
   } else {
     return `${Math.ceil(seconds / 60)} min`
   }
+}
+
+export function groupBufficornsByRanch(
+  bufficorns: Array<Bufficorn>
+): Record<RanchName, Array<Bufficorn>> {
+  const bufficornsByRanch = {} as Record<RanchName, Array<Bufficorn>>
+
+  for (let b of bufficorns) {
+    if (bufficornsByRanch[b.ranch]) {
+      bufficornsByRanch[b.ranch].push(b)
+    } else {
+      bufficornsByRanch[b.ranch] = [b]
+    }
+  }
+  return bufficornsByRanch
 }

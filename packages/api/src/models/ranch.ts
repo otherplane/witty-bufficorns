@@ -1,10 +1,11 @@
 import { Collection, Db } from 'mongodb'
 
-import { DbRanchVTO, RanchName } from '../types'
+import { DbRanchVTO, indexToRanch, RanchName } from '../types'
 import { RANCHES_COUNT } from '../constants'
 import { Repository } from '../repository'
 import { Ranch } from '../domain/ranch'
-// import { Bufficorn } from '../domain/bufficorn'
+import { Bufficorn } from '../domain/bufficorn'
+import { groupBufficornsByRanch } from '../utils'
 
 export class RanchModel {
   private collection: Collection<DbRanchVTO>
@@ -17,16 +18,31 @@ export class RanchModel {
 
   /**
    * Generate as many ranches as specified in the `count` argument.
+   * @param bufficorns All bufficorns to be included in the new ranches
    * @param force If provided and set to `true`, circumvent the double bootstrapping protection.
    */
-  public async bootstrap(force: boolean = false): Promise<Array<Ranch> | null> {
+  public async bootstrap(
+    bufficorns: Array<Bufficorn>,
+    force: boolean = false
+  ): Promise<Array<Ranch> | null> {
+    const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
     const vtos = await this.repository.bootstrap(
-      (_: null, index: number) => new Ranch(undefined, index).toDbVTO(),
+      (_: null, index: number) => {
+        const filteredBufficorns = bufficornsByRanch[indexToRanch[index]]
+        const ranch = new Ranch(undefined, index, filteredBufficorns)
+
+        return ranch.toDbVTO()
+      },
       RANCHES_COUNT,
       force
     )
 
-    return vtos ? vtos.map((vto) => new Ranch(vto)) : null
+    return vtos
+      ? vtos.map(
+          (vto, index) =>
+            new Ranch(vto, undefined, bufficornsByRanch[indexToRanch[index]])
+        )
+      : null
   }
 
   public async create(ranch: DbRanchVTO): Promise<Ranch> {

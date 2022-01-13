@@ -11,6 +11,7 @@ import { PlayerModel } from './models/player'
 import { BufficornModel } from './models/bufficorn'
 import { RanchModel } from './models/ranch'
 import { TradeModel } from './models/trade'
+import { Bufficorn } from './domain/bufficorn'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -83,9 +84,11 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
     // Initialize game repositories and bootstrap
-    await fastify.playerModel.bootstrap(PLAYERS_COUNT, true)
-    await fastify.ranchModel.bootstrap(true)
-    await fastify.bufficornModel.bootstrap(true)
+    await fastify.playerModel.bootstrap(PLAYERS_COUNT)
+    const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
+    const bufficorns =
+      bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
+    await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)
     next()
   })
 
