@@ -166,7 +166,7 @@ export const PlayerLeaderboardInfo = Type.Object({
 export type PlayerLeaderboardInfo = Static<typeof PlayerLeaderboardInfo>
 
 export const LeaderboardParams = Type.Object({
-  resource: Type.Optional(Type.String()),
+  resource: Type.Optional(TraitEnum),
   limit: Type.Optional(Type.Integer()),
   offset: Type.Optional(Type.Integer()),
   filter: Type.Optional(Type.String()),

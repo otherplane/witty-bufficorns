@@ -16,22 +16,24 @@ const leaderboard: FastifyPluginAsync = async (
 
   //GET /leaderboard?resource=RESOURCE&limit=LIMIT&offset=OFFSET&filter=STAT
   fastify.get<{
-    Params: LeaderboardParams
+    Querystring: LeaderboardParams
     Reply: LeaderboardResponse | Error
   }>('/leaderboard', {
     schema: {
-      params: LeaderboardParams,
+      querystring: LeaderboardParams,
       response: {
         200: LeaderboardResponse,
       },
     },
     handler: async (
-      request: FastifyRequest<{ Params: LeaderboardParams }>,
+      request: FastifyRequest<{ Querystring: LeaderboardParams }>,
       reply
     ) => {
-      // TODO: Use resource from LeaderBoardParams as a trait in getLeaderboard functions
       const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-      const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns)
+      const sorted_bufficorns = Bufficorn.getLeaderboard(
+        bufficorns,
+        request.query.resource
+      )
 
       const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
       const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
