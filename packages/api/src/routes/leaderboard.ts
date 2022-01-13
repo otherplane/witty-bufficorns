@@ -1,6 +1,6 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 
-import { DbPlayerVTO, LeaderboardParams, LeaderboardResponse } from '../types'
+import { LeaderboardParams, LeaderboardResponse } from '../types'
 import { Ranch } from '../domain/ranch'
 import { Bufficorn } from '../domain/bufficorn'
 import { Player } from '../domain/player'
@@ -42,7 +42,7 @@ const leaderboard: FastifyPluginAsync = async (
       })
       const sorted_ranches = Ranch.getLeaderboard(ranches)
 
-      const players: Array<DbPlayerVTO> = await playerModel.getAll()
+      const players: Array<Player> = await playerModel.getAll()
       const sorted_players = Player.getLeaderboard(players)
 
       return reply.status(200).send({

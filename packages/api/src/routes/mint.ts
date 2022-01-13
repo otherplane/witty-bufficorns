@@ -28,8 +28,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     },
     handler: async (request: FastifyRequest<{ Body: MintParams }>, reply) => {
       // Check 0: incubation period
-      // TODO: remove false, it is used for testing
-      if (false && PLAYER_MINT_TIMESTAMP && !isTimeToMint())
+      if (PLAYER_MINT_TIMESTAMP && !isTimeToMint())
         return reply
           .status(403)
           .send(new Error(`Forbidden: mint is not enabled yet`))
@@ -70,7 +69,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // TODO: get extendedPlayer using route /players/:key?
       // Instead of two separate calls to playerModel.get and ranchModel.get
       //GET RANCH Info
-      const ranch: Ranch = (await ranchModel.get(player.ranch)) as Ranch
+      const ranch: Ranch = (await ranchModel.getByName(player.ranch)) as Ranch
 
       // If previously minted, reply with same mint output
       const prevMint = await mintModel.get(player.id)

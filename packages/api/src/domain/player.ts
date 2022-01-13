@@ -1,4 +1,9 @@
-import { RanchName, DbPlayerVTO, PlayerLeaderboardInfo, ObjectId } from '../types'
+import {
+  RanchName,
+  DbPlayerVTO,
+  PlayerLeaderboardInfo,
+  ObjectId,
+} from '../types'
 
 export class Player {
   token?: string | undefined
@@ -39,9 +44,7 @@ export class Player {
     return shoWToken ? { ...vto, token: this.token } : vto
   }
 
-  static getLeaderboard(
-    players: Array<DbPlayerVTO>
-  ): Array<PlayerLeaderboardInfo> {
+  static getLeaderboard(players: Array<Player>): Array<PlayerLeaderboardInfo> {
     return players
       .sort((a, b) => b.points - a.points)
       .map((p, index) => ({
