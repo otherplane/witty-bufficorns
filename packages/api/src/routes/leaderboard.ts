@@ -1,12 +1,8 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 
-import {
-  BufficornVTO,
-  DbPlayerVTO,
-  LeaderboardParams,
-  LeaderboardResponse,
-} from '../types'
+import { DbPlayerVTO, LeaderboardParams, LeaderboardResponse } from '../types'
 import { Ranch } from '../domain/ranch'
+import { Bufficorn } from '../domain/bufficorn'
 
 const leaderboard: FastifyPluginAsync = async (
   fastify,
@@ -31,8 +27,9 @@ const leaderboard: FastifyPluginAsync = async (
       request: FastifyRequest<{ Params: LeaderboardParams }>,
       reply
     ) => {
-      const bufficorns: Array<BufficornVTO> =
-        await bufficornModel.getLeaderboard()
+      // TODO: Use resource from LeaderBoardParams as a trait in getLeaderboard functions
+      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+      const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns)
 
       const ranches: Array<Ranch> = await ranchModel.getAll()
       const sorted_ranches = Ranch.getLeaderboard(ranches).map((ranch) =>
@@ -42,7 +39,7 @@ const leaderboard: FastifyPluginAsync = async (
       const players: Array<DbPlayerVTO> = await playerModel.getLeaderboard()
 
       const leaderboardResponse: LeaderboardResponse = {
-        bufficorns,
+        bufficorns: sorted_bufficorns,
         ranches: sorted_ranches,
         players,
       }

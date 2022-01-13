@@ -64,6 +64,10 @@ export class BufficornModel {
     return await this.repository.get({})
   }
 
+  public async getAll(): Promise<Array<Bufficorn>> {
+    return (await this.repository.get({})).map((vto) => new Bufficorn(vto))
+  }
+
   public async getOne(name: string): Promise<Bufficorn | null> {
     const vto = await this.repository.getOne({ name })
 

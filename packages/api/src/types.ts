@@ -137,6 +137,20 @@ export const GetByStringKeyParams = Type.Object({
 })
 export type GetByStringKeyParams = Static<typeof GetByStringKeyParams>
 
+export const BufficornLeaderboardInfo = Type.Object({
+  name: Type.String(),
+  ranch: Type.String(),
+  [Trait.Vigor]: Type.Integer(),
+  [Trait.Speed]: Type.Integer(),
+  [Trait.Coolness]: Type.Integer(),
+  [Trait.Stamina]: Type.Integer(),
+  [Trait.Coat]: Type.Integer(),
+  [Trait.Agility]: Type.Integer(),
+  score: Type.Integer(),
+  position: Type.Integer(),
+})
+export type BufficornLeaderboardInfo = Static<typeof BufficornLeaderboardInfo>
+
 export const LeaderboardParams = Type.Object({
   resource: Type.Optional(Type.String()),
   limit: Type.Optional(Type.Integer()),
@@ -146,7 +160,7 @@ export const LeaderboardParams = Type.Object({
 export type LeaderboardParams = Static<typeof LeaderboardParams>
 
 export const LeaderboardResponse = Type.Object({
-  bufficorns: Type.Array(BufficornVTO),
+  bufficorns: Type.Array(BufficornLeaderboardInfo),
   ranches: Type.Array(DbRanchVTO),
   players: Type.Array(DbPlayerVTO),
 })

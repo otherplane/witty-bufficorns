@@ -1,4 +1,10 @@
-import { BufficornVTO, RanchName, Stats } from '../types'
+import {
+  BufficornLeaderboardInfo,
+  BufficornVTO,
+  RanchName,
+  Stats,
+  Trait,
+} from '../types'
 import { getRanchFromIndex } from '../utils'
 
 export class Bufficorn {
@@ -42,5 +48,30 @@ export class Bufficorn {
       medals: this.medals,
       ...this.stats,
     }
+  }
+
+  getScore(trait?: Trait) {
+    const { vigor, speed, coolness, stamina, coat, agility } = this.stats
+
+    return trait
+      ? this.stats[trait]
+      : Math.min(vigor, speed, coolness, stamina, coat, agility)
+  }
+
+  static getLeaderboard(
+    bufficorns: Array<Bufficorn>,
+    trait?: Trait
+  ): Array<BufficornLeaderboardInfo> {
+    return bufficorns
+      .sort((a, b) => b.getScore(trait) - a.getScore(trait))
+      .map((b, index) => {
+        return {
+          name: b.name,
+          ranch: b.ranch,
+          ...b.stats,
+          score: b.getScore(trait),
+          position: index,
+        }
+      })
   }
 }
