@@ -45,13 +45,11 @@ const leaderboard: FastifyPluginAsync = async (
       const players: Array<DbPlayerVTO> = await playerModel.getAll()
       const sorted_players = Player.getLeaderboard(players)
 
-      const leaderboardResponse: LeaderboardResponse = {
+      return reply.status(200).send({
         bufficorns: sorted_bufficorns,
         ranches: sorted_ranches,
         players: sorted_players,
-      }
-
-      return reply.status(200).send(leaderboardResponse)
+      })
     },
   })
 }

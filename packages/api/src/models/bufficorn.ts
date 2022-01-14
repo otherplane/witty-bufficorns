@@ -1,4 +1,4 @@
-import { Collection, Db, WithId } from 'mongodb'
+import { Collection, Db } from 'mongodb'
 
 import { BufficornVTO, RanchName, Resource } from '../types'
 import { BUFFICORNS_PER_RANCH, RANCHES_COUNT } from '../constants'
@@ -58,10 +58,6 @@ export class BufficornModel {
     const vtos = await this.repository.get({ ranch: name as RanchName })
 
     return vtos.map((vto) => new Bufficorn(vto))
-  }
-
-  public async getLeaderboard(): Promise<Array<WithId<BufficornVTO>>> {
-    return await this.repository.get({})
   }
 
   public async getAll(): Promise<Array<Bufficorn>> {

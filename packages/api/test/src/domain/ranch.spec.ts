@@ -16,7 +16,8 @@ describe('ranch.ts', () => {
 
     return b
   }
-  it('getScore', async () => {
+
+  it('calculateScore', async () => {
     const bufficorn_0 = auxBufficorn(0, [10, 20, 30, 40, 50, 60])
     const bufficorn_1 = auxBufficorn(6, [21, 31, 41, 51, 61, 11])
     const bufficorn_2 = auxBufficorn(12, [32, 42, 52, 62, 12, 22])
@@ -28,7 +29,8 @@ describe('ranch.ts', () => {
       bufficorn_2,
       bufficorn_3,
     ])
-    expect(ranch.getScore()).toStrictEqual(10)
+
+    expect(ranch.calculateScore()).toStrictEqual(10)
   })
 
   function auxRanchInfo(

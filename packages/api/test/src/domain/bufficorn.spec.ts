@@ -2,27 +2,35 @@ import { Bufficorn } from '../../../src/domain/bufficorn'
 import { Trait, BufficornLeaderboardInfo } from '../../../src/types'
 
 describe('bufficorn.ts', () => {
-  it('getScore', async () => {
+  it('calculateScore', async () => {
     const bufficorn = new Bufficorn(undefined, 0)
-    expect(bufficorn.getScore()).toStrictEqual(0)
-    expect(bufficorn.getScore(Trait.Vigor)).toStrictEqual(0)
+    const emptyBufficorn = bufficorn
 
     bufficorn.stats.vigor = 10
-    expect(bufficorn.getScore()).toStrictEqual(0)
-    expect(bufficorn.getScore(Trait.Vigor)).toStrictEqual(10)
+    const onlyVigorBufficorn = bufficorn
 
     bufficorn.stats.agility = 20
     bufficorn.stats.coat = 30
     bufficorn.stats.coolness = 40
     bufficorn.stats.speed = 50
     bufficorn.stats.stamina = 60
-    expect(bufficorn.getScore()).toStrictEqual(10)
-    expect(bufficorn.getScore(Trait.Vigor)).toStrictEqual(10)
-    expect(bufficorn.getScore(Trait.Agility)).toStrictEqual(20)
-    expect(bufficorn.getScore(Trait.Coat)).toStrictEqual(30)
-    expect(bufficorn.getScore(Trait.Coolness)).toStrictEqual(40)
-    expect(bufficorn.getScore(Trait.Speed)).toStrictEqual(50)
-    expect(bufficorn.getScore(Trait.Stamina)).toStrictEqual(60)
+
+    // Empty bufficorn
+    expect(emptyBufficorn.calculateScore()).toStrictEqual(0)
+    expect(emptyBufficorn.calculateScore(Trait.Vigor)).toStrictEqual(0)
+
+    // Bufficorn with only one valued trait
+    expect(onlyVigorBufficorn.calculateScore()).toStrictEqual(0)
+    expect(onlyVigorBufficorn.calculateScore(Trait.Vigor)).toStrictEqual(10)
+
+    // Bufficorn with all valued traits
+    expect(bufficorn.calculateScore()).toStrictEqual(10)
+    expect(bufficorn.calculateScore(Trait.Vigor)).toStrictEqual(10)
+    expect(bufficorn.calculateScore(Trait.Agility)).toStrictEqual(20)
+    expect(bufficorn.calculateScore(Trait.Coat)).toStrictEqual(30)
+    expect(bufficorn.calculateScore(Trait.Coolness)).toStrictEqual(40)
+    expect(bufficorn.calculateScore(Trait.Speed)).toStrictEqual(50)
+    expect(bufficorn.calculateScore(Trait.Stamina)).toStrictEqual(60)
   })
 
   function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
@@ -58,29 +66,30 @@ describe('bufficorn.ts', () => {
     const bufficorn_1 = auxBufficorn(1, [21, 31, 41, 51, 61, 11])
     const bufficorn_2 = auxBufficorn(2, [32, 42, 52, 62, 12, 22])
 
-    let sortedBufficorns = Bufficorn.getLeaderboard([
+    const sortedBufficorns = Bufficorn.getLeaderboard([
       bufficorn_0,
       bufficorn_1,
       bufficorn_2,
     ])
-
-    let expected_0 = auxBufficornInfo(bufficorn_0, 2, 10)
-    let expected_1 = auxBufficornInfo(bufficorn_1, 1, 11)
-    let expected_2 = auxBufficornInfo(bufficorn_2, 0, 12)
-    expect(sortedBufficorns).toStrictEqual([expected_2, expected_1, expected_0])
-
-    let sortedBufficornsByStamina = Bufficorn.getLeaderboard(
+    const sortedBufficornsByStamina = Bufficorn.getLeaderboard(
       [bufficorn_0, bufficorn_1, bufficorn_2],
       Trait.Stamina
     )
 
-    expected_0 = auxBufficornInfo(bufficorn_0, 0, 60)
-    expected_1 = auxBufficornInfo(bufficorn_1, 2, 11)
-    expected_2 = auxBufficornInfo(bufficorn_2, 1, 22)
+    // GetLeaderboard without a specified trait
+    const expected_0 = auxBufficornInfo(bufficorn_0, 2, 10)
+    const expected_1 = auxBufficornInfo(bufficorn_1, 1, 11)
+    const expected_2 = auxBufficornInfo(bufficorn_2, 0, 12)
+    expect(sortedBufficorns).toStrictEqual([expected_2, expected_1, expected_0])
+
+    // GetLeaderboard using Stamina trait
+    const expectedByStamina_0 = auxBufficornInfo(bufficorn_0, 0, 60)
+    const expectedByStamina_1 = auxBufficornInfo(bufficorn_1, 2, 11)
+    const expectedByStamina_2 = auxBufficornInfo(bufficorn_2, 1, 22)
     expect(sortedBufficornsByStamina).toStrictEqual([
-      expected_0,
-      expected_2,
-      expected_1,
+      expectedByStamina_0,
+      expectedByStamina_1,
+      expectedByStamina_2,
     ])
   })
 })

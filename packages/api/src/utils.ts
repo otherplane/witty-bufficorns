@@ -66,11 +66,11 @@ export function groupBufficornsByRanch(
 ): Record<RanchName, Array<Bufficorn>> {
   const bufficornsByRanch = {} as Record<RanchName, Array<Bufficorn>>
 
-  for (let b of bufficorns) {
-    if (bufficornsByRanch[b.ranch]) {
-      bufficornsByRanch[b.ranch].push(b)
+  for (let bufficorn of bufficorns) {
+    if (bufficornsByRanch[bufficorn.ranch]) {
+      bufficornsByRanch[bufficorn.ranch].push(bufficorn)
     } else {
-      bufficornsByRanch[b.ranch] = [b]
+      bufficornsByRanch[bufficorn.ranch] = [bufficorn]
     }
   }
   return bufficornsByRanch

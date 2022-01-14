@@ -50,12 +50,8 @@ export class Bufficorn {
     }
   }
 
-  getScore(trait?: Trait) {
-    const { vigor, speed, coolness, stamina, coat, agility } = this.stats
-
-    return trait
-      ? this.stats[trait]
-      : Math.min(vigor, speed, coolness, stamina, coat, agility)
+  calculateScore(trait?: Trait) {
+    return trait ? this.stats[trait] : Math.min(...Object.values(this.stats))
   }
 
   static getLeaderboard(
@@ -63,15 +59,13 @@ export class Bufficorn {
     trait?: Trait
   ): Array<BufficornLeaderboardInfo> {
     return bufficorns
-      .sort((a, b) => b.getScore(trait) - a.getScore(trait))
-      .map((b, index) => {
-        return {
-          name: b.name,
-          ranch: b.ranch,
-          ...b.stats,
-          score: b.getScore(trait),
-          position: index,
-        }
-      })
+      .sort((a, b) => b.calculateScore(trait) - a.calculateScore(trait))
+      .map((b, index) => ({
+        name: b.name,
+        ranch: b.ranch,
+        ...b.stats,
+        score: b.calculateScore(trait),
+        position: index,
+      }))
   }
 }

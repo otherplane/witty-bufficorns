@@ -41,11 +41,9 @@ export class Player {
   ): Array<PlayerLeaderboardInfo> {
     return players
       .sort((a, b) => b.points - a.points)
-      .map((p, index) => {
-        return {
-          ...p,
-          position: index,
-        }
-      })
+      .map((p, index) => ({
+        ...p,
+        position: index,
+      }))
   }
 }

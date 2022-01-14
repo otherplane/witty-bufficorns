@@ -29,9 +29,7 @@ export class RanchModel {
     const vtos = await this.repository.bootstrap(
       (_: null, index: number) => {
         const filteredBufficorns = bufficornsByRanch[indexToRanch[index]]
-        const ranch = new Ranch(undefined, index, filteredBufficorns)
-
-        return ranch.toDbVTO()
+        return new Ranch(undefined, index, filteredBufficorns).toDbVTO()
       },
       RANCHES_COUNT,
       force
