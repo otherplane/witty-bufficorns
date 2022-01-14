@@ -1,5 +1,7 @@
-import { Static, Type } from '@sinclair/typebox'
+import { Static, Type, TSchema } from '@sinclair/typebox'
 export { Db, Collection, ObjectId, WithId } from 'mongodb'
+
+const Nullable = <T extends TSchema>(type: T) => Type.Union([type, Type.Null()])
 
 export const ClaimPlayerParams = Type.Object({
   key: Type.String(),
@@ -97,10 +99,10 @@ export const PlayerVTO = Type.Object({
   username: Type.String(),
   ranch: RanchVTO,
   points: Type.Integer(),
-  lastTradeIn: Type.Optional(Type.Integer()),
-  lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String())),
 })
+
+export const ProtectedPlayerVTO = Type.Omit(PlayerVTO, ['token'])
 
 export type PlayerVTO = Static<typeof PlayerVTO>
 
@@ -110,8 +112,6 @@ export const DbPlayerVTO = Type.Object({
   username: Type.String(),
   ranch: RanchNameEnum,
   points: Type.Integer(),
-  lastTradeIn: Type.Optional(Type.Integer()),
-  lastTradeOut: Type.Optional(Type.Integer()),
   medals: Type.Array(Type.Optional(Type.String())),
   id: Type.Optional(Type.String()),
 })
@@ -180,11 +180,6 @@ export const JwtVerifyPayload = Type.Object({
   iat: Type.Number(),
 })
 export type JwtVerifyPayload = Static<typeof JwtVerifyPayload>
-
-export const IncubateParams = Type.Object({
-  target: Type.String(),
-})
-export type IncubateParams = Static<typeof IncubateParams>
 
 export const MintParams = Type.Object({
   address: Type.String(),
@@ -265,3 +260,11 @@ export type Stats = {
   coat: number
   agility: number
 }
+
+export const ExtendedPlayerVTO = Type.Object({
+  player: ProtectedPlayerVTO,
+  lastTradeIn: Nullable(DbTradeVTO),
+  lastTradeOut: Nullable(DbTradeVTO),
+})
+
+export type ExtendedPlayerVTO = Static<typeof ExtendedPlayerVTO>

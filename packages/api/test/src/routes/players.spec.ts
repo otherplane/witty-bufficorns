@@ -91,13 +91,17 @@ describe('player.ts', () => {
       },
       (err, response) => {
         const {
-          key,
-          username,
-          ranch,
-          points,
-          lastTradeIn,
-          lastTradeOut,
-          medals,
+          tradeIn,
+          tradeOut,
+          player: {
+            key,
+            username,
+            ranch,
+            points,
+            lastTradeIn,
+            lastTradeOut,
+            medals,
+          },
         } = response.json()
 
         expect(key).toBeTruthy()
@@ -107,21 +111,22 @@ describe('player.ts', () => {
         expect(lastTradeIn).toBe(undefined)
         expect(lastTradeOut).toBe(undefined)
         expect(medals).toStrictEqual([])
+        expect(tradeIn).toBeFalsy()
+        expect(tradeOut).toBeFalsy()
       }
     )
   })
 
   // test('should get EGG #1 - get after incubation', async (t) => {
-  //   // Before test: Claim an egg
-  //   const token = await claimEgg(t)(0)
+  //   const token = await authenticatePlayer(initialPlayers[0].key)
 
   //   await new Promise((resolve) => {
   //     server.inject(
   //       {
   //         method: 'POST',
-  //         url: '/eggs/incubate',
+  //         url: '/trades',
   //         payload: {
-  //           target: initialEggs[0].key,
+  //           to,
   //         },
   //         headers: {
   //           Authorization: `${token}`,

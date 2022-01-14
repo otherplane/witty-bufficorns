@@ -3,12 +3,15 @@ import {
   DbPlayerVTO,
   PlayerLeaderboardInfo,
   ObjectId,
+  ExtendedPlayerVTO,
 } from '../types'
+import { Ranch } from './ranch'
+import { Trade } from './trade'
 
 export class Player {
-  token?: string | undefined
-  lastTradeIn?: number | undefined
-  lastTradeOut?: number | undefined
+  token?: string
+  lastTradeIn?: Trade
+  lastTradeOut?: Trade
   key: string
   username: string
   ranch: RanchName
@@ -17,8 +20,6 @@ export class Player {
   id?: ObjectId
 
   constructor(vto: DbPlayerVTO) {
-    this.lastTradeIn = vto.lastTradeIn || undefined
-    this.lastTradeOut = vto.lastTradeOut || undefined
     this.key = vto.key
     this.username = vto.username
     this.ranch = vto.ranch
@@ -30,8 +31,6 @@ export class Player {
 
   toDbVTO(shoWToken: boolean = false): DbPlayerVTO {
     const vto = {
-      lastTradeIn: this.lastTradeIn,
-      lastTradeOut: this.lastTradeOut,
       key: this.key,
       username: this.username,
       ranch: this.ranch,
@@ -51,5 +50,24 @@ export class Player {
         ...p,
         position: index,
       }))
+  }
+
+  toExtendedPlayerVTO(
+    ranch: Ranch,
+    {
+      lastTradeOut,
+      lastTradeIn,
+    }: { lastTradeIn?: Trade | null; lastTradeOut: Trade | null }
+  ): ExtendedPlayerVTO {
+    // Get all Player attributes except token
+    const { token, ...protectedplayerVTO } = this.toDbVTO()
+    return {
+      player: {
+        ...protectedplayerVTO,
+        ranch: ranch.toVTO(),
+      },
+      lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
+      lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
+    }
   }
 }

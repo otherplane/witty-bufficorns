@@ -13,9 +13,10 @@ import {
 
 describe('Route /trade', () => {
   it('should return the trade object after trade with itself', async () => {
-    // Before test: Claim a player
+    let trade = null
     const token = await authenticatePlayer(initialPlayers[0].key)
 
+    // Trade with yourself
     await serverInject(
       {
         method: 'POST',
@@ -29,6 +30,7 @@ describe('Route /trade', () => {
         },
       },
       (err, response) => {
+        trade = response.json()
         expect(err).toBeFalsy()
         expect(response.statusCode).toBe(200)
         expect(response.headers['content-type']).toBe(
@@ -45,6 +47,7 @@ describe('Route /trade', () => {
       }
     )
 
+    // Get information
     await serverInject(
       {
         method: 'GET',
@@ -62,10 +65,11 @@ describe('Route /trade', () => {
         expect(
           response
             .json()
-            .ranch.bufficorns.find(
+            .player.ranch.bufficorns.find(
               (bufficorn) => bufficorn.name === 'Bufficorn-0'
             ).vigor
         ).toBe(TRADE_POINTS)
+        expect(response.json().lastTradeOut).toStrictEqual(trade)
       }
     )
   })
@@ -115,13 +119,13 @@ describe('Route /trade', () => {
         )
         const bufficorn = response
           .json()
-          .ranch.bufficorns.find(
+          .player.ranch.bufficorns.find(
             (bufficorn) => bufficorn.name === bufficornName
           )
         expect(
           response
             .json()
-            .ranch.bufficorns.find(
+            .player.ranch.bufficorns.find(
               (bufficorn) => bufficorn.name === bufficornName
             ).speed
         ).toBe(TRADE_POINTS)
@@ -165,9 +169,7 @@ describe('Route /trade', () => {
 
     await sleep(TRADE_COOLDOWN_MILLIS)
 
-    const secondIncubationPoints = Math.ceil(
-      TRADE_POINTS / TRADE_POINTS_DIVISOR
-    )
+    const secondTradePoints = Math.ceil(TRADE_POINTS / TRADE_POINTS_DIVISOR)
     await serverInject(
       {
         method: 'POST',
@@ -192,7 +194,7 @@ describe('Route /trade', () => {
         expect(response.json().ends).toBe(
           response.json().timestamp + TRADE_DURATION_MILLIS
         )
-        expect(response.json().resource.amount).toBe(secondIncubationPoints)
+        expect(response.json().resource.amount).toBe(secondTradePoints)
         expect(response.json().resource.trait).toBe('speed')
       }
     )
@@ -211,14 +213,13 @@ describe('Route /trade', () => {
         expect(response.headers['content-type']).toBe(
           'application/json; charset=utf-8'
         )
-
         expect(
           response
             .json()
-            .ranch.bufficorns.find(
+            .player.ranch.bufficorns.find(
               (bufficorn) => bufficorn.name === bufficornName
             ).speed
-        ).toBe(TRADE_POINTS + secondIncubationPoints)
+        ).toBe(TRADE_POINTS + secondTradePoints)
       }
     )
   })
