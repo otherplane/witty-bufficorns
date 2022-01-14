@@ -4,7 +4,7 @@ import {
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,
 } from './constants'
-import { Incubation, indexToRanch, RanchName } from './types'
+import { indexToRanch, RanchName } from './types'
 import { Bufficorn } from './domain/bufficorn'
 
 export function calculateRemainingCooldown(
@@ -20,22 +20,12 @@ export function calculateRemainingCooldown(
 }
 
 export function calculateRemainingDuration(
-  incubationEnds: number,
+  tradeEnds: number,
   currentTimestamp = Date.now()
 ) {
-  const remainingMillis = incubationEnds - currentTimestamp
+  const remainingMillis = tradeEnds - currentTimestamp
 
   return remainingMillis > 0 ? remainingMillis : 0
-}
-
-export function getIncubationExtendedFromBase(incubation: Incubation) {
-  return (
-    incubation && {
-      ...incubation,
-      remainingCooldown: calculateRemainingCooldown(incubation.ends),
-      remainingDuration: calculateRemainingDuration(incubation.ends),
-    }
-  )
 }
 
 export function getRanchFromIndex(index: number): RanchName {

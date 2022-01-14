@@ -38,7 +38,7 @@ export const TRADE_POINTS_MIN = process.env.TRADE_POINTS_MIN
   ? parseInt(process.env.TRADE_POINTS_MIN)
   : 50
 
-// Trade point divisor to be applied every time the same incubation happens
+// Trade point divisor to be applied every time the same trade happens
 export const TRADE_POINTS_DIVISOR = process.env.TRADE_POINTS_DIVISOR
   ? parseInt(process.env.TRADE_POINTS_DIVISOR)
   : 2
