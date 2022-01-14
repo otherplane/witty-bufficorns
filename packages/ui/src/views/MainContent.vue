@@ -11,39 +11,7 @@
       </div>
       <TradeInfo />
       <NFTPreview v-if="player.preview" :preview="player.preview" />
-      <div
-        class="mint-status"
-        v-if="player.mintInfo && player.mintInfo.transactionHash"
-      >
-        <p class="label">TRANSACTION HASH</p>
-        <div class="address">
-          <a
-            :href="`${etherscanBaseUrl}/${player.mintInfo.transactionHash}`"
-            target="_blank"
-            >{{ player.mintInfo.transactionHash }}
-          </a>
-          <img class="external-link-icon" src="@/assets/external.svg" alt="" />
-        </div>
-      </div>
-      <div
-        class="mint-status"
-        v-if="
-          player.data &&
-            player.data.tokenId &&
-            parseInt(player.data.tokenId) !== 0
-        "
-      >
-        <div class="opensea">
-          <a :href="`${openseaBaseUrl}/${player.data.tokenId}`" target="_blank"
-            >See on OpenSea
-          </a>
-          <img
-            class="external-link-icon"
-            src="@/assets/external-black.svg"
-            alt=""
-          />
-        </div>
-      </div>
+      <MintInformation />
       <BufficornsList />
       <div class="buttons">
         <Button
