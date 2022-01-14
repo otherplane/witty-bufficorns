@@ -3,9 +3,17 @@
     <div class="main-content">
       <div class="header">
         <div>
-          <p class="subtitle">PLAYER ID: {{ player.username }}</p>
-          <p class="subtitle">RANCH NAME: {{ player.ranch.name }}</p>
-          <p class="subtitle">RANCH RESOURCE: {{ player.ranch.trait }}</p>
+          <p class="subtitle">
+            <span class="subtitle label">PLAYER ID:</span> {{ player.username }}
+          </p>
+          <p class="subtitle">
+            <span class="subtitle label">RANCH NAME:</span>
+            {{ player.ranch.name }}
+          </p>
+          <p class="subtitle">
+            <span class="subtitle label">RANCH RESOURCE:</span>
+            {{ player.ranch.trait }}
+          </p>
         </div>
         <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
       </div>
@@ -71,7 +79,7 @@ export default {
   setup () {
     const modal = useModal()
     const player = useStore()
-    const web3Witmon = useWeb3()
+    const web3WittyBufficorns = useWeb3()
     const modals = reactive({
       mint: false,
       export: false,
@@ -86,7 +94,7 @@ export default {
       await player.getMintInfo()
       await player.getPreview()
       if (player.gameOver) {
-        const data = await web3Witmon.getData()
+        const data = await web3WittyBufficorns.getData()
         player.setData(data)
       }
 
@@ -102,7 +110,8 @@ export default {
     })
 
     const type = computed(() =>
-      player.incubating || (player.data && parseInt(player.data.tokenId) !== 0)
+      // TODO: update player.incubating naming when contracts are available
+      player.incubating || (player.data && parseInt(player.data.tokenId) < 0)
         ? 'disable'
         : 'primary'
     )
@@ -112,7 +121,7 @@ export default {
 
     function openModal (name) {
       const needProvider = name === 'mint' || name === 'preview'
-      if (!web3Witmon.isProviderConnected.value && needProvider) {
+      if (!web3WittyBufficorns.isProviderConnected.value && needProvider) {
         modals['gameOver'] = true
       } else {
         modals[name] = true
@@ -147,10 +156,10 @@ export default {
       modal,
       modals,
       mintStatus,
-      enableProvider: web3Witmon.enableProvider,
-      preview: web3Witmon.preview,
-      isProviderConnected: web3Witmon.isProviderConnected,
-      getData: web3Witmon.getData
+      enableProvider: web3WittyBufficorns.enableProvider,
+      preview: web3WittyBufficorns.preview,
+      isProviderConnected: web3WittyBufficorns.isProviderConnected,
+      getData: web3WittyBufficorns.getData
     }
   }
 }

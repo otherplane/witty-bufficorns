@@ -1,28 +1,23 @@
 <template>
-  <div class="main-content">
-    <div
-      class="mint-status"
-      v-if="player.mintInfo && player.mintInfo.transactionHash"
-    >
-      <p class="label">TRANSACTION HASH</p>
-      <div class="address">
+  <div v-if="player.mintInfo" class="mint-content shadow-xl">
+    <LabelMintStatus v-if="player.mintInfo" :status="mintStatus" />
+    <p class="label">TRANSACTION HASH</p>
+    <div class="mint-status" v-if="player?.mintInfo?.transactionHash">
+      <div class="info address">
         <a
           :href="`${etherscanBaseUrl}/${player.mintInfo.transactionHash}`"
           target="_blank"
           >{{ player.mintInfo.transactionHash }}
         </a>
-        <img class="external-link-icon" src="@/assets/external.svg" alt="" />
+        <img
+          class="external-link-icon"
+          src="@/assets/external-black.svg"
+          alt=""
+        />
       </div>
     </div>
-    <div
-      class="mint-status"
-      v-if="
-        player.data &&
-          player.data.tokenId &&
-          parseInt(player.data.tokenId) !== 0
-      "
-    >
-      <div class="opensea">
+    <div class="mint-status" v-if="parseInt(player?.data?.tokenId) !== 0">
+      <div class="info opensea">
         <a :href="`${openseaBaseUrl}/${player.data.tokenId}`" target="_blank"
           >See on OpenSea
         </a>
@@ -61,8 +56,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main-content {
+.mint-content {
+  border: 1px solid $brown;
+  justify-items: center;
+  border-radius: 4px;
   display: grid;
-  row-gap: 48px;
+  row-gap: 8px;
+  padding: 16px;
+  .external-link-icon {
+    margin-left: 8px;
+    width: 10px;
+  }
+  .label {
+    font-weight: bold;
+  }
+  .info {
+    font-size: 16px;
+    color: $black;
+    justify-content: center;
+    text-decoration: underline;
+    display: flex;
+  }
 }
 </style>

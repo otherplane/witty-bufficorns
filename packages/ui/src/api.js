@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { API_BASE_URL } from './constants'
 
-export class WittyApi {
+export class ApiService {
   constructor () {
     this.baseUrl = API_BASE_URL
   }

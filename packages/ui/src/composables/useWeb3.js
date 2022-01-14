@@ -81,10 +81,7 @@ export function useWeb3 () {
           CONTRACT_ADDRESS
         )
         const from = (await requestAccounts(web3))[0]
-        const data = await contract.methods.getData(player.index).call()
-        if (data) {
-          return data
-        }
+        return await contract.methods.getData(player.index).call()
       } catch (err) {
         console.error(err)
         player.setError('contractData', createErrorMessage(errorDataMessage))

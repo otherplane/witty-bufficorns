@@ -18,6 +18,9 @@ body {
 .bg-beige {
   background-color: $beige !important;
 }
+.bg-beige-transparent {
+  background-color: $opacity-beige !important;
+}
 .bg-orange {
   background-color: $orange !important;
 }
@@ -44,6 +47,11 @@ body {
 .subtitle {
   font-size: 14px;
   font-weight: lighter;
+  &.label {
+    font-size: 12px;
+    color: $brown;
+    font-weight: bold;
+  }
 }
 .title {
   font-family: Road Store, Zilla Slab sans-serif;
@@ -58,8 +66,8 @@ body {
   font-weight: 600;
 }
 .label {
-  font-size: 10px;
-  color: grey;
+  font-size: 12px;
+  color: $brown;
 }
 .time {
   font-size: 10px;

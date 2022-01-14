@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { WittyApi } from '@/api'
+import { ApiService } from '@/api'
 import router from '../router'
 import { isThisSecond } from 'date-fns'
 
 export const useStore = defineStore('player', {
   state: () => {
     return {
-      api: new WittyApi(),
+      api: new ApiService(),
       id: null,
       medals: [],
       username: '',
@@ -34,8 +34,7 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      // return this.gameOverTimeMilli < Date.now()
-      return true
+      return this.gameOverTimeMilli < Date.now()
     }
   },
   actions: {
