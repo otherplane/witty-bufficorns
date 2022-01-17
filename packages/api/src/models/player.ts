@@ -1,10 +1,5 @@
 import crypto from 'crypto'
 import { Collection, Db } from 'mongodb'
-import {
-  uniqueNamesGenerator,
-  adjectives,
-  animals,
-} from 'unique-names-generator'
 
 import {
   PLAYER_KEY_LENGTH_BYTES,
@@ -13,7 +8,7 @@ import {
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
 } from '../constants'
-import { getRanchFromIndex } from '../utils'
+import { getRanchFromIndex, generateUsernameList } from '../utils'
 import {
   DbPlayerVTO,
   DbTradeVTO,
@@ -33,7 +28,10 @@ export class PlayerModel {
     this.repository = new Repository(this.collection, 'username')
   }
 
-  public createPlayer(index: number): Player {
+  public createPlayer(
+    index: number,
+    getUsername: (index: number) => string
+  ): Player {
     // Generate the player data.
     // First we derive a deterministic 32-bytes sequence of bytes from a fixed salt plus the player nonce.
     const seed = crypto
@@ -42,14 +40,7 @@ export class PlayerModel {
       .digest()
     // We will be using the hexadecimal representation of the first `PLAYER_ID_LENGTH_BYTES` of the seed as the player key.
     const key: string = seed.slice(0, PLAYER_KEY_LENGTH_BYTES).toString('hex')
-    // FIXME: avoid repeated usernames
-    // The rest of the bytes of the seed will be used for seeding the unique names generator.
-    const username: string = uniqueNamesGenerator({
-      dictionaries: [adjectives, animals],
-      seed: seed.slice(PLAYER_KEY_LENGTH_BYTES).readUInt32BE(),
-      separator: '-',
-      style: 'lowerCase',
-    })
+    const username = getUsername(index)
     const medals: Array<string> = []
     const ranch = getRanchFromIndex(index)
     const points: number = 0
@@ -66,24 +57,19 @@ export class PlayerModel {
     count: number,
     force: boolean = false
   ): Promise<Array<Player> | null> {
+    // Generate list of unique usernames to avoid name collisions
+    const usernamesList = generateUsernameList(count)
+    const getUsername = (index: number) => {
+      return usernamesList[index]
+    }
     const vtos = await this.repository.bootstrap(
-      (_: null, index: number) => this.createPlayer(index).toDbVTO(),
+      (_: null, index: number) =>
+        this.createPlayer(index, getUsername).toDbVTO(),
       count,
       force
     )
 
     return vtos?.map((vto) => new Player(vto)) || null
-  }
-
-  public async create(player: DbPlayerVTO): Promise<Player> {
-    const { username } = player
-    const bufficornExists = await this.repository.getOne({ username })
-
-    if (bufficornExists) {
-      throw new Error(`Player with name ${username} already exists`)
-    }
-
-    return new Player(await this.repository.create(player))
   }
 
   public async update(player: DbPlayerVTO): Promise<Player> {

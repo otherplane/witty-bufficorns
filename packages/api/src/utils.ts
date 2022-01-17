@@ -5,6 +5,7 @@ import {
   TRADE_DURATION_MILLIS,
 } from './constants'
 import { indexToRanch, RanchName } from './types'
+import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator'
 import { Bufficorn } from './domain/bufficorn'
 
 export function calculateRemainingCooldown(
@@ -64,4 +65,29 @@ export function groupBufficornsByRanch(
     }
   }
   return bufficornsByRanch
+}
+
+export function generateUsernameList(count: number): Array<string> {
+  const usernames = new Set<string>()
+  // The seed must start at 1 because 0 means "use Math.random"
+  let counter = 1
+
+  while (usernames.size < count) {
+    let username = uniqueNamesGenerator({
+      dictionaries: [adjectives, names],
+      seed: counter,
+      separator: '-',
+      style: 'lowerCase',
+    })
+    usernames.add(username)
+    counter += 1
+  }
+
+  // Convert set into array to allow indexing by index
+  const usernameList = [] as Array<string>
+  usernames.forEach((value) => {
+    usernameList.push(value)
+  })
+
+  return usernameList
 }
