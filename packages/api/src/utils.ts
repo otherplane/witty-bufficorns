@@ -84,10 +84,5 @@ export function generateUsernameList(count: number): Array<string> {
   }
 
   // Convert set into array to allow indexing by index
-  const usernameList = [] as Array<string>
-  usernames.forEach((value) => {
-    usernameList.push(value)
-  })
-
-  return usernameList
+  return Array.from(usernames)
 }

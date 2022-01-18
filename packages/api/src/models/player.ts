@@ -59,9 +59,7 @@ export class PlayerModel {
   ): Promise<Array<Player> | null> {
     // Generate list of unique usernames to avoid name collisions
     const usernamesList = generateUsernameList(count)
-    const getUsername = (index: number) => {
-      return usernamesList[index]
-    }
+    const getUsername = (index: number) => usernamesList[index]
     const vtos = await this.repository.bootstrap(
       (_: null, index: number) =>
         this.createPlayer(index, getUsername).toDbVTO(),

@@ -79,11 +79,11 @@ async function sleep(ms: number) {
 const initialPlayers = [
   {
     key: 'ef12efbd765f9ad3',
-    username: 'planned-lory',
+    username: 'planned-meaghan',
   },
   {
     key: 'b75c34545e8cb4d2',
-    username: 'running-myranda',
+    username: 'running-carolina',
   },
 ]
 
