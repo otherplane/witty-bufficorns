@@ -1,11 +1,11 @@
 <template>
-  <p>{{ timeLeft > 1 ? time : '00:00:00' }}</p>
+  <span>{{ timeLeft }}</span>
 </template>
 
 <script>
 import { intervalToDuration, formatDuration } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
-import { ref, watch } from 'vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
 
 const timeZone = 'Europe/Lisbon'
 
@@ -14,14 +14,16 @@ export default {
     timestamp: Number,
     seconds: Boolean
   },
-  beforeUnmount () {
-    clearInterval(this.polling)
-  },
   setup (props, { emit }) {
+    onBeforeUnmount(() => {
+      clearInterval(polling)
+    })
     const dateNow = ref(new Date())
-    const polling = setInterval(() => {
-      dateNow.value = new Date()
-    }, 0)
+    const polling = ref(
+      setInterval(() => {
+        dateNow.value = new Date()
+      }, 0)
+    )
     const timeLeft = ref(1)
     const formatWithSeconds = ['days', 'hours', 'minutes', 'seconds']
     const format = ['days', 'hours', 'minutes']
@@ -49,11 +51,11 @@ export default {
         utcToZonedTime(new Date(props.timestamp), timeZone) <
         utcToZonedTime(dateNow.value, timeZone).getTime()
       ) {
-        emit('clear-incubation')
-        clearInterval(polling)
+        timeLeft.value = '0s'
+        clearInterval(polling.value)
       }
     })
-    return { timeLeft, dateNow, polling }
+    return { timeLeft, dateNow }
   }
 }
 </script>

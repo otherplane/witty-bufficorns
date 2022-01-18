@@ -9,7 +9,7 @@
         </div>
         <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
       </div>
-      <TradeInfo :tradeInfo="tradeInfo" />
+      <TradeInfo />
       <WittyCreature
         v-if="player.creaturePreview"
         :creature-preview="player.creaturePreview"
@@ -79,7 +79,7 @@
         <Button @click="openModal('export')" type="dark">
           BACKUP
         </Button>
-        <router-link :to="'/stats'">
+        <router-link to="/stats">
           <Button type="dark">
             STATS
           </Button>
@@ -148,13 +148,6 @@ export default {
       player.mintInfo.blockHash ? 'minted' : 'pending'
     )
 
-    const tradeInfo = computed(() => {
-      return {
-        tradeIn: player.tradeIn,
-        tradeOut: player.tradeOut
-      }
-    })
-
     function openModal (name) {
       const needProvider = name === 'mint' || name === 'preview'
       if (!web3Witmon.isProviderConnected.value && needProvider) {
@@ -195,8 +188,7 @@ export default {
       enableProvider: web3Witmon.enableProvider,
       preview: web3Witmon.preview,
       isProviderConnected: web3Witmon.isProviderConnected,
-      getCreatureData: web3Witmon.getCreatureData,
-      tradeInfo
+      getCreatureData: web3Witmon.getCreatureData
     }
   }
 }

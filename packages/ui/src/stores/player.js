@@ -137,11 +137,11 @@ export const useStore = defineStore('player', {
           this.id = key
           this.username = username
           this.ranch = ranch
-          if (request.tradeIn) {
-            this.tradeIn = request.tradeIn
+          if (request.lastTradeIn) {
+            this.tradeIn = request.lastTradeIn
           }
-          if (request.tradeOut) {
-            this.tradeOut = request.tradeOut
+          if (request.lastTradeOut) {
+            this.tradeOut = request.lastTradeOut
           }
           if (!this.selectedBufficorn) {
             this.selectedBufficorn = ranch.bufficorns[0].name

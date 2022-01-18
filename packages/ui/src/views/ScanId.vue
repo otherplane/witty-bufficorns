@@ -3,11 +3,20 @@
     <QrStream class="qr-code pl-4 pr-4 pb-4" @decode="onDecode"></QrStream>
     <div class="content">
       <p class="small-title import-label">Scan a QR code</p>
-      <!-- ef12efbd765f9ad3 -->
-      <Button class="btn" type="primary" @click="onDecode('/b75c34545e8cb4d2')">
+      <Button
+        v-if="VITE_TEST"
+        class="btn"
+        type="primary"
+        @click="onDecode('/b75c34545e8cb4d2')"
+      >
         REGISTER FARMER example
       </Button>
-      <Button class="btn" type="primary" @click="onDecode('/ef12efbd765f9ad3')">
+      <Button
+        v-if="VITE_TEST"
+        class="btn"
+        type="primary"
+        @click="onDecode('/ef12efbd765f9ad3')"
+      >
         TRADE EXAMPLE
       </Button>
     </div>
@@ -23,6 +32,7 @@ import { useStore } from '@/stores/player'
 import { QrStream } from 'vue3-qr-reader'
 import { useRouter } from 'vue-router'
 import { useModal } from '../composables/useModal'
+import { VITE_TEST } from '../constants'
 
 export default {
   components: {
@@ -68,7 +78,8 @@ export default {
       onDecode,
       previousRoute,
       register,
-      modal
+      modal,
+      VITE_TEST
     }
   },
 

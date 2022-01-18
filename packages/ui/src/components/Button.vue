@@ -4,16 +4,18 @@
   </button>
 </template>
 
-<script setup>
-defineProps({
-  type: {
-    type: String,
-    default: 'default',
-    validator (value) {
-      return ['primary', 'secondary', 'disable', 'dark'].includes(value)
+<script>
+export default {
+  props: {
+    type: {
+      type: String,
+      default: 'default',
+      validator (value) {
+        return ['primary', 'secondary', 'disable', 'dark'].includes(value)
+      }
     }
   }
-})
+}
 </script>
 
 <style scoped lang="scss">

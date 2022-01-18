@@ -16,7 +16,24 @@
         style="height:max-content;"
       >
         <p>Time left to trade</p>
-        <TimeLeft :timestamp="tradeInfo.tradeOut?.timestamp" :seconds="true" />
+        <p>
+          in:
+          <TimeLeft
+            v-if="player.tradeIn"
+            :timestamp="player.tradeIn.timestamp"
+            :seconds="true"
+            @clear-timestamp="clearTimestamp"
+          /><span v-else>0s</span>
+        </p>
+        <p>
+          out:
+          <TimeLeft
+            v-if="player.tradeOut"
+            :timestamp="player.tradeOut.timestamp"
+            :seconds="true"
+            @clear-timestamp="clearTimestamp"
+          /><span v-else>0s</span>
+        </p>
       </div>
       <label
         for="carousel-3"
@@ -45,7 +62,8 @@
         style="height:max-content;"
       >
         <p>Last trade resource</p>
-        <p>{{ (tradeInfo && tradeInfo.tradeOut?.resource) || 'null' }}</p>
+        <p>in: {{ player.tradeIn?.resource.trait || 'null' }}</p>
+        <p>out: {{ player.tradeOut?.resource.trait || 'null' }}</p>
       </div>
       <label
         for="carousel-1"
@@ -71,7 +89,8 @@
       />
       <div class="carousel-item absolute opacity-0" style="height:max-content;">
         <p>Last trade partner</p>
-        <p>{{ (tradeInfo && tradeInfo.tradeOut?.from) || 'null' }}</p>
+        <p>in: {{ player.tradeIn?.to || 'null' }}</p>
+        <p>out: {{ player.tradeOut?.to || 'null' }}</p>
       </div>
       <label
         for="carousel-2"
@@ -89,13 +108,18 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  tradeInfo: {
-    type: Object,
-    required: true
+<script>
+import { ref } from 'vue'
+import { useStore } from '@/stores/player'
+export default {
+  setup (props) {
+    const player = useStore()
+    const clearTimestamp = () => {
+      tradeInfo.value = null
+    }
+    return { player, clearTimestamp }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>

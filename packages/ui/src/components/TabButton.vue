@@ -4,17 +4,19 @@
   </button>
 </template>
 
-<script setup>
-defineProps({
-  active: {
-    type: Boolean,
-    default: false
-  },
-  label: {
-    type: String,
-    required: true
+<script>
+export default {
+  props: {
+    active: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      required: true
+    }
   }
-})
+}
 </script>
 
 <style scoped lang="scss">
