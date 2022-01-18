@@ -38,13 +38,9 @@ export default {
 <style lang="scss" scoped>
 .bufficorns-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, max-content);
   grid-template-rows: 1fr 1fr;
-  grid-gap: 40px;
-}
-@media (max-width: 600px) {
-  .bufficorns-container {
-    grid-template-columns: 1fr;
-  }
+  justify-content: center;
+  grid-gap: 16px;
 }
 </style>

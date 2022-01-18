@@ -14,7 +14,8 @@ export class TradeModel {
   }
 
   public async create(vto: DbTradeVTO): Promise<Trade> {
-    return new Trade(await this.repository.create(vto))
+    const result = new Trade(await this.repository.create(vto))
+    return result
   }
 
   public async getLast(search: {
@@ -22,7 +23,6 @@ export class TradeModel {
     to?: string
   }): Promise<Trade | null> {
     const vto = await this.repository.getLast(search)
-
     return vto ? new Trade(vto) : null
   }
 

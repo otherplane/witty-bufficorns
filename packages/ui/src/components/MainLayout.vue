@@ -72,7 +72,7 @@ export default defineComponent({
   margin: 0 auto;
   display: grid;
   align-items: flex-start;
-  padding: 32px;
+  padding: 16px;
 }
 @media (max-width: 600px) {
   .bufficorn-img {

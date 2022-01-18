@@ -101,6 +101,10 @@ export class Repository<T> {
   }
 
   public async getLast(filter: Filter<T>) {
-    return await this.collection.findOne(filter, { sort: { timestamp: -1 } })
+    const result = await this.collection.findOne(filter, {
+      sort: { timestamp: -1 },
+    })
+    console.log('result', result)
+    return result
   }
 }

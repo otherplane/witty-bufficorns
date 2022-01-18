@@ -1,18 +1,5 @@
 <template>
-  <div class="bufficorn-container">
-    <div class="stats">
-      <div class="stat-container" v-for="resource in stats" :key="resource.key">
-        <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
-        <div class="stat">
-          <p class="key">{{ resource.key.toUpperCase() }}</p>
-          <p class="score">{{ resource.score }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="small-title item user">
-      <p class="bufficorn-name">{{ name }}</p>
-    </div>
-    <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
+  <div class="bufficorn-list-container">
     <input
       class="select custom"
       v-if="selectable"
@@ -20,12 +7,25 @@
       v-model="player.selectedBufficorn"
       :value="name"
     />
+    <div class="card-container">
+      <div
+        class="card"
+        @click="showStats = !showStats"
+        :class="{ flipped: showStats }"
+      >
+        <div class="face front">
+          <BufficornImage :name="name" />
+        </div>
+        <div class="face back">
+          <BufficornAttributesList :attributes="attributes" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
-import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
 import { ref } from 'vue'
 
 export default {
@@ -43,72 +43,61 @@ export default {
       default: false
     }
   },
-  setup (props) {
+  setup () {
     const player = useStore()
-    const stats = ref(getStatsFromAttributes(props.attributes))
-    return { player, stats, getAssetPath }
+    const showStats = ref(false)
+    return { player, showStats }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.bufficorn-container {
+.card-container {
+  width: 160px;
+  height: 160px;
+  perspective: 600px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.front {
+  background-color: $opacity-beige;
+}
+
+.back {
   display: grid;
-  column-gap: 16px;
-  grid-template-columns: 1fr 1fr max-content;
+  justify-content: center;
+  grid-template-rows: repeat(4, 34px);
   justify-items: center;
-  grid-template-rows: max-content 1fr;
+  align-content: center;
+  transform: rotateY(180deg);
+}
+
+.bufficorn-list-container {
+  grid-gap: 8px;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
   align-items: center;
-  .bufficorn-name {
-    color: $brown;
-  }
-  .item {
-    padding: 8px;
-    text-align: center;
-  }
-  .stat-container {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    justify-content: center;
-    .icon {
-      width: 30px;
-      margin-right: 8px;
-      max-height: 30px;
-    }
-  }
-  .stats {
-    display: grid;
-    grid-row: 1 / span 2;
-    padding: 4px;
-    grid-column: 2;
-    row-gap: 8px;
-    grid-template-rows: repeat(3, auto);
-    grid-template-columns: 1fr;
-    .stat {
-      height: max-content;
-      align-items: center;
-      padding: 0 4px;
-      display: grid;
-      grid-gap: 8px;
-      width: 120px;
-      background: linear-gradient(90deg, $opacity-brown 0%, $transparent 60%);
-      grid-template-columns: max-content 1fr;
-      border-radius: 4px;
-      font-size: 12px;
-      border: 0.5px solid $black;
-      .score {
-        justify-self: flex-end;
-      }
-    }
-  }
-  .select {
-    grid-row: 1 / span 2;
-    grid-column: 3;
-  }
-  .bufficorn-image {
-    grid-column: 1;
-    height: auto;
-    width: 80px;
-  }
 }
 </style>

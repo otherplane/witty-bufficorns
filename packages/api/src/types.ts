@@ -93,31 +93,6 @@ export const DbRanchVTO = Type.Object({
 
 export type DbRanchVTO = Static<typeof DbRanchVTO>
 
-export const PlayerVTO = Type.Object({
-  key: Type.String(),
-  token: Type.Optional(Type.String()),
-  username: Type.String(),
-  ranch: RanchVTO,
-  points: Type.Integer(),
-  medals: Type.Array(Type.Optional(Type.String())),
-})
-
-export const ProtectedPlayerVTO = Type.Omit(PlayerVTO, ['token'])
-
-export type PlayerVTO = Static<typeof PlayerVTO>
-
-export const DbPlayerVTO = Type.Object({
-  key: Type.String(),
-  token: Type.Optional(Type.String()),
-  username: Type.String(),
-  ranch: RanchNameEnum,
-  points: Type.Integer(),
-  medals: Type.Array(Type.Optional(Type.String())),
-  id: Type.Optional(Type.String()),
-})
-
-export type DbPlayerVTO = Static<typeof DbPlayerVTO>
-
 //TODO: define Medal type
 export const Medal = Type.String()
 export type Medal = Static<typeof Medal>
@@ -262,6 +237,30 @@ export const TradeHistoryResponse = Type.Object({
   trades: Type.Array(DbTradeVTO),
 })
 export type TradeHistoryResponse = Static<typeof TradeHistoryResponse>
+export const PlayerVTO = Type.Object({
+  key: Type.String(),
+  token: Type.Optional(Type.String()),
+  username: Type.String(),
+  ranch: RanchVTO,
+  points: Type.Integer(),
+  medals: Type.Array(Type.Optional(Type.String())),
+})
+
+export const ProtectedPlayerVTO = Type.Omit(PlayerVTO, ['token'])
+
+export type PlayerVTO = Static<typeof PlayerVTO>
+
+export const DbPlayerVTO = Type.Object({
+  key: Type.String(),
+  token: Type.Optional(Type.String()),
+  username: Type.String(),
+  ranch: RanchNameEnum,
+  points: Type.Integer(),
+  medals: Type.Array(Type.Optional(Type.String())),
+  id: Type.Optional(Type.String()),
+})
+
+export type DbPlayerVTO = Static<typeof DbPlayerVTO>
 
 export type Stats = {
   vigor: number

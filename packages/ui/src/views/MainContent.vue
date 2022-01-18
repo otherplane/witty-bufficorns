@@ -168,7 +168,7 @@ export default {
 <style lang="scss" scoped>
 .main-content {
   display: grid;
-  row-gap: 48px;
+  row-gap: 16px;
 }
 .header {
   display: grid;
