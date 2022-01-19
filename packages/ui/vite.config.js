@@ -2,9 +2,11 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import Components from 'unplugin-vue-components/vite'
+import { radar } from 'svg-radar-chart'
+import { stringify } from 'virtual-dom-stringify'
 
 export default defineConfig({
-  plugins: [vue(), Components()],
+  plugins: [vue(), Components(), radar, stringify],
   css: {
     preprocessorOptions: {
       scss: {

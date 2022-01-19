@@ -33,8 +33,10 @@ export default {
     index: Number,
     attributes: {
       vigor: Number,
+      stamina: Number,
       speed: Number,
       agility: Number,
+      coat: Number,
       coolness: Number
     },
     name: String,
@@ -54,7 +56,7 @@ export default {
 <style scoped lang="scss">
 .card-container {
   width: 160px;
-  height: 160px;
+  height: 300px;
   perspective: 600px;
 }
 
@@ -87,7 +89,8 @@ export default {
 .back {
   display: grid;
   justify-content: center;
-  grid-template-rows: repeat(4, 34px);
+  grid-template-rows: repeat(2, max-content);
+  row-gap: 4px;
   justify-items: center;
   align-content: center;
   transform: rotateY(180deg);

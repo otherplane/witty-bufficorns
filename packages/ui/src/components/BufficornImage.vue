@@ -18,8 +18,10 @@ export default {
 <style scoped lang="scss">
 .bufficorn-image-container {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: max-content 1fr;
   justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 .bufficorn-name {
   color: $brown;

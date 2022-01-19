@@ -9,7 +9,9 @@
         vigor: bufficorn.vigor,
         agility: bufficorn.agility,
         speed: bufficorn.speed,
-        coolness: bufficorn.coolness
+        coolness: bufficorn.coolness,
+        coat: bufficorn.coat,
+        stamina: bufficorn.stamina
       }"
       :selectable="selectable"
     />
