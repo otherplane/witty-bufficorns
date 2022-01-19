@@ -5,6 +5,7 @@ import InitGame from '../views/InitGame.vue'
 import Disclaimer from '../views/GameDisclaimer.vue'
 import BreedBufficorns from '../views/BreedBufficorns.vue'
 import GlobalStats from '../views/GlobalStats.vue'
+import TradeHistory from '../views/TradeHistory.vue'
 import { useStore } from '@/stores/player'
 import { createApp } from 'vue'
 import ScanId from '../views/ScanId.vue'
@@ -69,6 +70,11 @@ const routes = [
     name: 'stats',
     path: '/stats',
     component: GlobalStats
+  },
+  {
+    name: 'tradeHistory',
+    path: '/trades',
+    component: TradeHistory
   },
   {
     name: 'import',

@@ -45,6 +45,13 @@ export class ApiService {
     })
   }
 
+  getTradeHistory (params) {
+    return this._get({
+      url: `${this.baseUrl}/trades`,
+      params: { headers: { authorization: params.token } }
+    })
+  }
+
   getLeaderboardInfo () {
     return this._get({
       url: `${this.baseUrl}/leaderboard`

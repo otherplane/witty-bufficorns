@@ -41,7 +41,6 @@
         <router-link
           v-if="!player.gameOver"
           :to="type === 'disable' ? '' : '/scan'"
-          class="center-item"
         >
           <Button type="dark">
             TRADE
@@ -50,6 +49,11 @@
         <Button @click="openModal('export')" type="dark">
           BACKUP
         </Button>
+        <router-link to="/trades">
+          <Button type="dark">
+            HISTORY
+          </Button>
+        </router-link>
         <router-link to="/stats">
           <Button type="dark">
             STATS

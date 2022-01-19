@@ -7,7 +7,7 @@ import { intervalToDuration, formatDuration } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 import { ref, watch, onBeforeUnmount } from 'vue'
 
-const timeZone = 'Europe/Lisbon'
+const timeZone = 'America/Denver'
 
 export default {
   props: {
