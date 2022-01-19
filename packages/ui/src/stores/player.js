@@ -17,6 +17,7 @@ export const useStore = defineStore('player', {
       tradeOut: null,
       gameOverTimeMilli: 1645380000000,
       preview: null,
+      tradeHistory: null,
       mintInfo: null,
       mintParams: null,
       color: null,
@@ -27,7 +28,9 @@ export const useStore = defineStore('player', {
       errors: {
         auth: null,
         trade: null,
-        info: null
+        info: null,
+        tradeHistory: null,
+        getLeaderboardInfo: null
       }
     }
   },
@@ -120,6 +123,20 @@ export const useStore = defineStore('player', {
         this.bufficornsGlobalStats = request.bufficorns
         this.playersGlobalStats = request.players
         this.ranchesGlobalStats = request.ranches
+      }
+    },
+    async getTradeHistory () {
+      const tokenInfo = this.getToken()
+      const request = await this.api.getTradeHistory({
+        token: tokenInfo && tokenInfo.token,
+        id: tokenInfo && tokenInfo.key
+      })
+      if (request.error) {
+        router.push('/init-game')
+        this.setError('tradeHistory', request.error)
+      } else {
+        this.clearError('tradeHistory')
+        this.tradeHistory = request.trades
       }
     },
     async getInfo () {
