@@ -252,6 +252,17 @@ export const DbTradeVTO = Type.Object({
 })
 export type DbTradeVTO = Static<typeof DbTradeVTO>
 
+export const TradeHistoryParams = Type.Object({
+  limit: Type.Optional(Type.Integer()),
+  offset: Type.Optional(Type.Integer()),
+})
+export type TradeHistoryParams = Static<typeof TradeHistoryParams>
+
+export const TradeHistoryResponse = Type.Object({
+  trades: Type.Array(DbTradeVTO),
+})
+export type TradeHistoryResponse = Static<typeof TradeHistoryResponse>
+
 export type Stats = {
   vigor: number
   speed: number

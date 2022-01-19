@@ -25,4 +25,10 @@ export class TradeModel {
 
     return vto ? new Trade(vto) : null
   }
+
+  public async getAllByPlayer(username: string): Promise<Array<DbTradeVTO>> {
+    return await this.repository.get({
+      $or: [{ from: username }, { to: username }],
+    })
+  }
 }
