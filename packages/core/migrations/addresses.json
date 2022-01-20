@@ -1,0 +1,10 @@
+{
+    "polygon.goerli": {
+        "WittyBufficornsToken": "",
+        "WittyBufficornsDecorator": ""
+    },
+    "develop": {
+        "WittyBufficornsDecorator": "0x324354A3989e17e0cde56CcF2aBe8A4E6889653F",
+        "WittyBufficornsToken": "0xC219788599413719A48EA6aCDD37e5bD9E5c748f"
+    }
+}

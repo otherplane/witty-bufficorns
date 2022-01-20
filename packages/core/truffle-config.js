@@ -30,28 +30,15 @@ module.exports = {
    */
 
   networks: {
-    "ethereum.goerli": {
-      network_id: 5,
-      host: "localhost",
-      port: 8545,
-      skipDryRun: true,
-      gasPrice: 10 * 10 ** 9,
-      gasLimit: 30000000,
-    },
-    "ethereum.mainnet": {
-      network_id: 1,
-      host: "localhost",
-      port: 9545,
-      gasPrice: 100 * 10 ** 9,
-      skipDryRun: true,
-      confirmations: 3
-    },
-    "ethereum.rinkeby": {
-      network_id: 4,
-      host: "localhost",
-      port: 8544,
-      skipDryRun: true,
-      gasPrice: 5 * 10 ** 9,
+    polygon: {
+      "polygon.goerli": {
+        host: "localhost",
+        port: 8535,
+        network_id: 80001,
+        skipDryRun: true,
+        gasPrice: 30 * 10 ** 9,
+        confirmations: 3,
+      },
     },
   },
 
@@ -64,7 +51,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.7",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.11",    // Fetch exact version from solc-bin (default: truffle's version)
       settings: {          // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
           enabled: true,
