@@ -1,4 +1,10 @@
-import { Collection, Filter, ObjectId, OptionalId, WithId } from 'mongodb'
+import {
+  Collection,
+  Filter,
+  ObjectId,
+  OptionalUnlessRequiredId,
+  WithId,
+} from 'mongodb'
 
 export class Repository<T> {
   private collection: Collection<T>
@@ -32,7 +38,9 @@ export class Repository<T> {
   }
 
   public async create(element: T): Promise<WithId<T>> {
-    const success = await this.collection.insertOne(element as OptionalId<T>)
+    const success = await this.collection.insertOne(
+      element as OptionalUnlessRequiredId<T>
+    )
 
     if (!success.acknowledged)
       throw new Error(
@@ -49,7 +57,7 @@ export class Repository<T> {
   public async createWithId(element: T, id: ObjectId): Promise<WithId<T>> {
     const elementWithId = { ...element, _id: id }
     const success = await this.collection.insertOne(
-      elementWithId as OptionalId<T>
+      elementWithId as OptionalUnlessRequiredId<T>
     )
 
     if (!success.acknowledged)
@@ -73,9 +81,13 @@ export class Repository<T> {
   }
 
   public async getById(id: ObjectId | string): Promise<WithId<T> | null> {
-    return await this.collection.findOne({
+    // TODO: Remove any
+    const filter: Filter<T> = {
       _id: typeof id === 'string' ? new ObjectId(id) : id,
-    })
+    } as any
+    const findOneResult = this.collection.findOne(filter)
+
+    return findOneResult
   }
 
   public async updateOne(
