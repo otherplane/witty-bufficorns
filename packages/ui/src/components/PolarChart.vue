@@ -1,14 +1,11 @@
 <template>
   <div v-html="svg" ref="chart" class="chart"></div>
-  <div></div>
 </template>
 
 <script>
 import radar from 'svg-radar-chart'
 import stringify from 'virtual-dom-stringify'
 import smoothing from 'svg-radar-chart/smoothing'
-import { normalizedChartData } from '../utils'
-import { useStore } from '@/stores/player'
 
 export default {
   props: {
@@ -22,12 +19,6 @@ export default {
     }
   },
   setup (props) {
-    const player = useStore()
-    const normalizedData = normalizedChartData(
-      props.stats,
-      player.ranch.bufficorns
-    )
-
     const chart = radar(
       {
         vigor: `Vigor`,
@@ -37,7 +28,7 @@ export default {
         coat: `Coat`,
         agility: `Agility`
       },
-      [normalizedData],
+      [props.stats],
       {
         smoothing: smoothing(1), // tension of .3
         captionsPosition: 1,

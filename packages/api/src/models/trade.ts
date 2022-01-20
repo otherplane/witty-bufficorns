@@ -14,8 +14,7 @@ export class TradeModel {
   }
 
   public async create(vto: DbTradeVTO): Promise<Trade> {
-    const result = new Trade(await this.repository.create(vto))
-    return result
+    return new Trade(await this.repository.create(vto))
   }
 
   public async getLast(search: {

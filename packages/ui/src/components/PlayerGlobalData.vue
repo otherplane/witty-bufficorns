@@ -1,5 +1,5 @@
 <template>
-  <div class="players-container" :class="{ even: index % 2 }">
+  <div class="players-container">
     <p class="item player-name">{{ position }}</p>
     <p class="item player-name">{{ name }}</p>
     <p class="item player-score">{{ score }}</p>
@@ -18,10 +18,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.even {
-  background: $opacity-beige;
-  border-radius: 4px;
-}
 .players-container {
   display: grid;
   grid-template-columns: max-content max-content 1fr;

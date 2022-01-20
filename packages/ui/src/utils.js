@@ -10,21 +10,14 @@ export function normalizedChartData (stats, bufficornsArray) {
     return calculateHightestNumber(bufficorn)
   })
   const finalResult = calculateHightestNumber(result)
-  const normalizedData = {}
-  Object.entries(stats).map(entry => {
-    normalizedData[entry[0]] = entry[1] / finalResult
-  })
-  return normalizedData
+  return Object.entries(stats).reduce(
+    (acc, [key, value]) => ({ ...acc, [key]: value / finalResult }),
+    []
+  )
 }
 
 function calculateHightestNumber (list) {
-  return Object.values(list).reduce((prev, cur, index, array) => {
-    if (typeof prev !== 'number') {
-      return cur
-    } else {
-      return prev > cur ? prev : cur
-    }
-  })
+  return Math.max(...Object.values(list).filter(Number.isFinite))
 }
 
 export function getAssetPath (name) {

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div v-if="gameEntity === 'bufficorns'">
-      <BufficornGlobalData
+    <div v-if="gameEntity === 'bufficorns'" class="list">
+      <BufficornData
         v-for="(bufficorn, index) in sortedBufficornsData"
+        :bufficorn-list="sortedBufficornsData"
+        :class="{ even: index % 2 }"
         :index="index"
         :key="bufficorn.name"
         :name="bufficorn.name"
@@ -10,13 +12,17 @@
           vigor: bufficorn.vigor,
           agility: bufficorn.agility,
           speed: bufficorn.speed,
-          coolness: bufficorn.coolness
+          coolness: bufficorn.coolness,
+          coat: bufficorn.coat,
+          stamina: bufficorn.stamina
         }"
+        :horizontal="true"
       />
     </div>
-    <div v-if="gameEntity === 'players'">
+    <div v-if="gameEntity === 'players'" class="list">
       <PlayerGlobalData
         v-for="(player, index) in sortedPlayersData"
+        :class="{ even: index % 2 }"
         :index="index"
         :key="player.username"
         :name="player.username"
@@ -24,9 +30,10 @@
         :score="player.points"
       />
     </div>
-    <div v-if="gameEntity === 'ranches'">
+    <div v-if="gameEntity === 'ranches'" class="list">
       <RancheGlobalData
         v-for="(ranch, index) in sortedRanchesData"
+        :class="{ even: index % 2 }"
         :index="index"
         :key="ranch.name"
         :score="ranch.score"
@@ -84,6 +91,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.even {
+  background: $opacity-beige;
+  border-radius: 4px;
+}
 .list-container {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -1,5 +1,4 @@
 <template>
-  <PolarChart :stats="attributes" />
   <div class="stat-container" v-for="resource in stats" :key="resource.key">
     <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
     <div class="stat">

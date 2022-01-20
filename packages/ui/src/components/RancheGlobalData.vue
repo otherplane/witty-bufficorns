@@ -1,5 +1,5 @@
 <template>
-  <div class="stats-container" :class="{ even: index % 2 }">
+  <div class="stats-container">
     <div class="stats">
       <p class="score">{{ score }}</p>
     </div>
@@ -25,10 +25,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.even {
-  background: $opacity-beige;
-  border-radius: 4px;
-}
 .stats-container {
   padding: 16px;
   display: grid;

@@ -19,7 +19,7 @@ export default {
 .bufficorn-image-container {
   display: grid;
   grid-template-rows: max-content 1fr;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
   height: 100%;
 }

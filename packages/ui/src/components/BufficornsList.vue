@@ -2,6 +2,7 @@
   <div class="bufficorns-container">
     <BufficornData
       v-for="(bufficorn, index) in bufficornsData"
+      :bufficorn-list="bufficornsData"
       :index="index"
       :key="bufficorn.name"
       :name="bufficorn.name"
