@@ -6,6 +6,8 @@
       :index="index"
       :key="bufficorn.name"
       :name="bufficorn.name"
+      :background-front="true"
+      :background-back="false"
       :attributes="{
         vigor: bufficorn.vigor,
         agility: bufficorn.agility,
