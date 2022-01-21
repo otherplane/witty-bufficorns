@@ -1,7 +1,14 @@
 <template>
   <div class="stat-container" v-for="resource in stats" :key="resource.key">
     <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
-    <div class="stat">
+    <div
+      class="stat"
+      :style="{
+        backgroundImage: `linear-gradient(90deg, #bd390075 0%, transparent ${data[
+          resource.key
+        ] * 100}%)`
+      }"
+    >
       <p class="key">{{ resource.key.toUpperCase() }}</p>
       <p class="score">{{ resource.score }}</p>
     </div>
@@ -15,6 +22,14 @@ import { ref } from 'vue'
 
 export default {
   props: {
+    data: {
+      vigor: Number,
+      stamina: Number,
+      speed: Number,
+      coat: Number,
+      agility: Number,
+      coolness: Number
+    },
     attributes: {
       vigor: Number,
       stamina: Number,
@@ -47,7 +62,6 @@ export default {
     display: grid;
     grid-gap: 2px;
     width: 120px;
-    background: linear-gradient(90deg, $opacity-brown 0%, $transparent 60%);
     grid-template-columns: max-content 1fr;
     border-radius: 4px;
     font-size: 10px;

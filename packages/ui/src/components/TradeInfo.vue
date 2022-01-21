@@ -1,112 +1,32 @@
 <template>
-  <div
-    class="carousel relative rounded relative overflow-hidden bg-transparent shadow-xl"
-  >
-    <div class="carousel-inner relative overflow-hidden w-full">
-      <!--Slide 1-->
-      <input
-        class="carousel-open"
-        type="radio"
-        id="carousel-1"
-        name="carousel"
-        aria-hidden="true"
-        hidden=""
-        checked="checked"
-      />
-      <div
-        class="carousel-item absolute opacity-0 bg-center"
-        style="height:max-content;"
-      >
-        <p class="label">TIME LEFT TO TRADE</p>
-        <p>
-          in:
+  <div class="counter">
+    <transition name="fade">
+      <div v-if="tradeInfo && player.tradeOut" class="left">
+        <p class="label">TIME LEFT TO SEND</p>
+        <div class="time-container">
           <TimeLeft
-            v-if="player.tradeIn"
-            :timestamp="player.tradeIn.timestamp"
-            :seconds="true"
-            @clear-timestamp="clearTimestamp"
-          /><span v-else>0s</span>
-        </p>
-        <p>
-          out:
-          <TimeLeft
-            v-if="player.tradeOut"
+            class="time-left"
             :timestamp="player.tradeOut.timestamp"
             :seconds="true"
             @clear-timestamp="clearTimestamp"
-          /><span v-else>0s</span>
-        </p>
+          />
+        </div>
       </div>
-      <label
-        for="carousel-3"
-        class="control-1 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden font-bold text-black rounded-full leading-tight text-center z-10 inset-y-0 left-0 my-auto flex justify-center content-center"
-      >
-        <img src="@/assets/angle-left.svg" alt="angle-left" />
-      </label>
-      <label
-        for="carousel-2"
-        class="next control-1 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden font-bold text-black rounded-full leading-tight text-center z-10 inset-y-0 right-0 my-auto"
-      >
-        <img src="@/assets/angle-right.svg" alt="angle-left" />
-      </label>
-
-      <!--Slide 2-->
-      <input
-        class="carousel-open"
-        type="radio"
-        id="carousel-2"
-        name="carousel"
-        aria-hidden="true"
-        hidden=""
-      />
-      <div
-        class="carousel-item absolute opacity-0 bg-center"
-        style="height:max-content;"
-      >
-        <p class="label">LAST TRADE RESOURCE</p>
-        <p>in: {{ player.tradeIn?.resource.trait || 'null' }}</p>
-        <p>out: {{ player.tradeOut?.resource.trait || 'null' }}</p>
+    </transition>
+    <transition name="fade">
+      <div v-if="tradeInfo && player.tradeIn" class="right">
+        <p class="label">TIME LEFT TO RECEIVE</p>
+        <div class="time-container">
+          <TimeLeft
+            class="time-left"
+            :timestamp="player.tradeIn.timestamp"
+            :seconds="true"
+            @clear-timestamp="clearTimestamp"
+          />
+        </div>
       </div>
-      <label
-        for="carousel-1"
-        class=" control-2 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden font-bold text-black rounded-full leading-tight text-center z-10 inset-y-0 left-0 my-auto"
-      >
-        <img src="@/assets/angle-left.svg" alt="angle-left" />
-      </label>
-      <label
-        for="carousel-3"
-        class="next control-2 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden font-bold text-black rounded-full leading-tight text-center z-10 inset-y-0 right-0 my-auto"
-      >
-        <img src="@/assets/angle-right.svg" alt="angle-left" />
-      </label>
-
-      <!--Slide 3-->
-      <input
-        class="carousel-open"
-        type="radio"
-        id="carousel-3"
-        name="carousel"
-        aria-hidden="true"
-        hidden=""
-      />
-      <div class="carousel-item absolute opacity-0" style="height:max-content;">
-        <p class="label">LAST TRADE PARTNER</p>
-        <p>in: {{ player.tradeIn?.to || 'null' }}</p>
-        <p>out: {{ player.tradeOut?.to || 'null' }}</p>
-      </div>
-      <label
-        for="carousel-2"
-        class="control-3 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden font-bold text-black hover:text-white rounded-full leading-tight text-center z-10 inset-y-0 left-0 my-auto"
-      >
-        <img src="@/assets/angle-left.svg" alt="angle-left" />
-      </label>
-      <label
-        for="carousel-1"
-        class="next control-3 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden font-bold text-black hover:text-white rounded-full leading-tight text-center z-10 inset-y-0 right-0 my-auto"
-      >
-        <img src="@/assets/angle-right.svg" alt="angle-left" />
-      </label>
-    </div>
+    </transition>
+    <div></div>
   </div>
 </template>
 
@@ -119,12 +39,57 @@ export default {
     const clearTimestamp = () => {
       tradeInfo.value = null
     }
-    return { player, clearTimestamp }
+    const show = ref(false)
+    return { player, clearTimestamp, show }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+  opacity: 0;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.counter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  text-align: center;
+  grid-template-rows: max-content;
+  .time-container {
+    width: 100%;
+    background-color: $opacity-pink;
+    color: $brown;
+    font-weight: 600;
+    padding: 0px 8px;
+    border-radius: 4px;
+    text-align: left;
+  }
+  .left {
+    grid-column: 1;
+  }
+  .right {
+    grid-column: 2;
+  }
+  .label {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .time-left {
+    width: max-content;
+    overflow: hidden;
+    text-align: left;
+    font-size: 18px;
+  }
+}
 .carousel {
   border-radius: 4px;
   border: 1px solid $brown;

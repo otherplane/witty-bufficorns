@@ -5,14 +5,23 @@
       @click="showStats = !showStats"
       :class="{ flipped: showStats }"
     >
-      <div class="face front" :class="{ horizontal }">
+      <div
+        class="face front"
+        :class="{ horizontal, background: backgroundFront }"
+      >
         <BufficornImage :name="name" />
         <PolarChart :stats="normalizedData" />
       </div>
-      <div class="face back" :class="{ horizontal }">
+      <div
+        class="face back"
+        :class="{ horizontal, background: backgroundBack }"
+      >
         <BufficornImage :name="name" />
-        <div>
-          <BufficornAttributesList :attributes="attributes" />
+        <div class="attributes" :class="{ horizontal }">
+          <BufficornAttributesList
+            :attributes="attributes"
+            :data="normalizedData"
+          />
         </div>
       </div>
     </div>
@@ -43,6 +52,14 @@ export default {
     horizontal: {
       type: Boolean,
       default: false
+    },
+    backgroundFront: {
+      type: Boolean,
+      default: false
+    },
+    backgroundBack: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
@@ -52,7 +69,7 @@ export default {
       props.attributes,
       props.bufficornList
     )
-
+    console.log(normalizedData)
     return { player, showStats, normalizedData }
   }
 }
@@ -96,7 +113,6 @@ export default {
   justify-items: center;
   align-content: center;
   &.horizontal {
-    background-color: transparent;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
@@ -105,11 +121,18 @@ export default {
   }
 }
 
-.front {
+.background {
   background-color: $opacity-beige;
+  border-radius: 4px;
 }
 
 .back {
   transform: rotateY(180deg);
+  .attributes {
+    grid-row: 2;
+    &.horizontal {
+      grid-row: 1;
+    }
+  }
 }
 </style>

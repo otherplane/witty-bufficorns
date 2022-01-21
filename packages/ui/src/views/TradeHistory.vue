@@ -16,8 +16,18 @@
             )
           }}
         </p>
-        <p><span class="trade-label">From:</span> {{ trade.from }}</p>
-        <p><span class="trade-label">To:</span> {{ trade.to }}</p>
+        <p>
+          <span class="trade-label">From:</span>
+          <span :class="{ self: player.username === trade.from }">{{
+            trade.from
+          }}</span>
+        </p>
+        <p>
+          <span class="trade-label">To:</span>
+          <span :class="{ self: player.username === trade.to }">{{
+            trade.to
+          }}</span>
+        </p>
         <p>
           <span class="trade-label">Resource:</span> {{ trade.resource.trait }}
         </p>
@@ -31,7 +41,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 
@@ -58,6 +68,10 @@ export default {
   grid-template-rows: repeat(5, max-content);
 }
 .trade-label {
+  color: $brown;
+  font-weight: bold;
+}
+.self {
   color: $brown;
   font-weight: bold;
 }

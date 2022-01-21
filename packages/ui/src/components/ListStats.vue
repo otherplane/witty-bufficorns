@@ -4,10 +4,11 @@
       <BufficornData
         v-for="(bufficorn, index) in sortedBufficornsData"
         :bufficorn-list="sortedBufficornsData"
-        :class="{ even: index % 2 }"
         :index="index"
         :key="bufficorn.name"
         :name="bufficorn.name"
+        :background-front="!!(index % 2)"
+        :background-back="!(index % 2)"
         :attributes="{
           vigor: bufficorn.vigor,
           agility: bufficorn.agility,

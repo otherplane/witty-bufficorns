@@ -2,10 +2,9 @@
   <MainLayout v-if="player.username">
     <div class="main-content">
       <div class="header">
-        <div>
-          <p class="subtitle">
-            <span class="subtitle label">PLAYER ID:</span> {{ player.username }}
-          </p>
+        <div class="farmer-info">
+          <NavBar class="navbar" @openExportModal="openModal('export')" />
+          <p class="subtitle">{{ player.username.toUpperCase() }}</p>
           <p class="subtitle">
             <span class="subtitle label">RANCH NAME:</span>
             {{ player.ranch.name }}
@@ -14,16 +13,35 @@
             <span class="subtitle label">RANCH RESOURCE:</span>
             {{ player.ranch.trait }}
           </p>
+          <p class="subtitle">
+            <span class="subtitle label">GAME OVER:</span>
+            <TimeLeft
+              class="time-left"
+              :timestamp="1644568954000"
+              :seconds="true"
+            />
+          </p>
         </div>
-        <img src="@/assets/ranchLogo.svg" alt="Witty Bufficorns ranch logo" />
+        <img
+          class="logo"
+          src="@/assets/ranchLogo.svg"
+          alt="Witty Bufficorns ranch logo"
+        />
       </div>
       <TradeInfo />
       <NFTPreview v-if="player.preview" :preview="player.preview" />
       <MintInformation />
       <BufficornsList />
-      <div class="buttons">
+      <router-link
+        v-if="!player.gameOver"
+        class="trade-btn"
+        :to="type === 'disable' ? '' : '/scan'"
+      >
+        <img class="trade-img" src="@/assets/trade.svg" alt="" />
+      </router-link>
+      <div class="buttons" v-if="player.gameOver">
         <Button
-          v-if="player.gameOver && !player.preview"
+          v-if="!player.preview"
           @click="openModal('preview')"
           type="dark"
           class="center-item"
@@ -31,34 +49,13 @@
           PREVIEW NFT
         </Button>
         <Button
-          v-else-if="player.gameOver && player.preview"
+          v-else-if="player.preview"
           @click="mint"
           type="dark"
           class="center-item"
         >
           MINT NFT
         </Button>
-        <router-link
-          v-if="!player.gameOver"
-          :to="type === 'disable' ? '' : '/scan'"
-        >
-          <Button type="dark">
-            TRADE
-          </Button>
-        </router-link>
-        <Button @click="openModal('export')" type="dark">
-          BACKUP
-        </Button>
-        <router-link to="/trades">
-          <Button type="dark">
-            HISTORY
-          </Button>
-        </router-link>
-        <router-link to="/stats">
-          <Button type="dark">
-            STATS
-          </Button>
-        </router-link>
       </div>
     </div>
   </MainLayout>
@@ -170,15 +167,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.time-left {
+  margin-left: 4px;
+}
 .main-content {
   display: grid;
   row-gap: 16px;
 }
 .header {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: max-content 1fr;
   justify-items: flex-end;
-  align-items: center;
+  align-items: flex-end;
+  .farmer-info {
+    margin-top: 34px;
+  }
+  .logo {
+    align-self: center;
+  }
+  .navbar {
+    top: 8px;
+    grid-row: 1;
+  }
+}
+.trade-btn {
+  background-color: $opacity-pink-2;
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  .trade-img {
+    width: 48px;
+  }
 }
 .buttons {
   display: grid;

@@ -12,6 +12,8 @@
       :index="index"
       :key="name"
       :name="name"
+      :background-front="backgroundFront"
+      :background-back="backgroundBack"
       :attributes="{
         vigor: attributes.vigor,
         agility: attributes.agility,
@@ -26,6 +28,8 @@
 </template>
 
 <script>
+import { useStore } from '@/stores/player'
+
 export default {
   props: {
     index: Number,
@@ -49,7 +53,19 @@ export default {
     selectable: {
       type: Boolean,
       default: false
+    },
+    backgroundFront: {
+      type: Boolean,
+      default: false
+    },
+    backgroundBack: {
+      type: Boolean,
+      default: false
     }
+  },
+  setup () {
+    const player = useStore()
+    return { player }
   }
 }
 </script>
