@@ -18,11 +18,11 @@ services:
 
   server:
     # production
-    # image: witnet/witty-bufficorns-server
+    image: witnet/witty-bufficorns-api
     # development
     build:
       context: packages/api
-    container_name: witty-bufficorns-server
+    container_name: witty-bufficorns-api
     ports:
       - $SERVER_PORT:3000
     links:
@@ -32,3 +32,4 @@ services:
     environment:
       MONGO_URI: $MONGO_URI
       JWT_SECRET: $JWT_SECRET
+      MINT_PRIVATE_KEY: $MINT_PRIVATE_KEY
