@@ -14,7 +14,7 @@
             {{ player.ranch.trait }}
           </p>
           <p class="subtitle">
-            <span class="subtitle label">GAME OVER:</span>
+            <span class="subtitle label">GAME ENDS IN:</span>
             <TimeLeft
               class="time-left"
               :timestamp="1644568954000"
@@ -37,7 +37,7 @@
         class="trade-btn"
         :to="type === 'disable' ? '' : '/scan'"
       >
-        <img class="trade-img" src="@/assets/trade.svg" alt="" />
+        TRADE
       </router-link>
       <div class="buttons" v-if="player.gameOver">
         <Button
@@ -184,6 +184,7 @@ export default {
   }
   .logo {
     align-self: center;
+    width: 150px;
   }
   .navbar {
     top: 8px;
@@ -191,7 +192,11 @@ export default {
   }
 }
 .trade-btn {
-  background-color: $opacity-pink-2;
+  font-family: Road Store;
+  color: $brown;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: $pink;
   position: fixed;
   right: 8px;
   bottom: 8px;

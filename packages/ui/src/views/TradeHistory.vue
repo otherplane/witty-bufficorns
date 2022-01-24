@@ -17,22 +17,10 @@
           }}
         </p>
         <p>
-          <span class="trade-label">From:</span>
-          <span :class="{ self: player.username === trade.from }">{{
-            trade.from
-          }}</span>
-        </p>
-        <p>
-          <span class="trade-label">To:</span>
-          <span :class="{ self: player.username === trade.to }">{{
-            trade.to
-          }}</span>
-        </p>
-        <p>
-          <span class="trade-label">Resource:</span> {{ trade.resource.trait }}
-        </p>
-        <p>
-          <span class="trade-label">Amount:</span> {{ trade.resource.amount }}
+          <span class="highlight">{{ trade.from }}</span>
+          sent <span class="highlight">{{ trade.resource.amount }}</span> points
+          of <span class="highlight">{{ trade.resource.trait }}</span> to
+          <span class="highlight">{{ trade.to }}</span>
         </p>
       </div>
     </div>
@@ -60,22 +48,28 @@ export default {
 <style lang="scss" scoped>
 .even {
   background: $opacity-beige;
-  padding: 8px;
   border-radius: 4px;
 }
+.container {
+  row-gap: 0px;
+}
 .trade-container {
+  padding: 16px;
   display: grid;
-  grid-template-rows: repeat(5, max-content);
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content;
+  text-align: left;
 }
 .trade-label {
   color: $brown;
   font-weight: bold;
 }
-.self {
+.highlight {
   color: $brown;
-  font-weight: bold;
+  font-weight: 600;
 }
 .date {
-  font-size: 24px;
+  width: 100px;
+  font-size: 218x;
 }
 </style>

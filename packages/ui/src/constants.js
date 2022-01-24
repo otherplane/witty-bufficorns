@@ -23,10 +23,10 @@ export const STATS_FILTERS = {
   players: {
     key: 'players',
     active: false,
-    default: 'score',
+    default: 'overall',
     subTabs: {
       score: {
-        key: 'score',
+        key: 'overall',
         active: false
       }
     }
@@ -37,7 +37,7 @@ export const STATS_FILTERS = {
     default: 'vigor',
     subTabs: {
       score: {
-        key: 'score',
+        key: 'overall',
         active: false
       },
       vigor: {
@@ -61,10 +61,10 @@ export const STATS_FILTERS = {
   ranches: {
     key: 'ranches',
     active: false,
-    default: 'score',
+    default: 'overall',
     subTabs: {
       score: {
-        key: 'score',
+        key: 'overall',
         active: false
       }
     }

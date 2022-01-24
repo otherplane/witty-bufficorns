@@ -42,12 +42,12 @@ export default {
   .angle {
     margin-right: 8px;
   }
-  .rang-img {
-    width: 80px;
+  .ranch-img {
+    width: 138px;
   }
   .title-section {
     font-family: Road Store;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: bold;
     color: $brown;
   }

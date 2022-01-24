@@ -1,7 +1,7 @@
 <template>
   <div class="counter">
     <transition name="fade">
-      <div v-if="tradeInfo && player.tradeOut" class="left">
+      <div v-if="player.tradeInfo && player.tradeOut" class="left">
         <p class="label">TIME LEFT TO SEND</p>
         <div class="time-container">
           <TimeLeft
@@ -14,12 +14,12 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="tradeInfo && player.tradeIn" class="right">
+      <div v-if="player.tradeInfo && player.tradeIn.timestamp" class="right">
         <p class="label">TIME LEFT TO RECEIVE</p>
         <div class="time-container">
           <TimeLeft
             class="time-left"
-            :timestamp="player.tradeIn.timestamp"
+            :timestamp="123455"
             :seconds="true"
             @clear-timestamp="clearTimestamp"
           />
@@ -37,7 +37,7 @@ export default {
   setup (props) {
     const player = useStore()
     const clearTimestamp = () => {
-      tradeInfo.value = null
+      player.tradeInfo = null
     }
     const show = ref(false)
     return { player, clearTimestamp, show }
