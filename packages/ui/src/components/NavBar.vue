@@ -12,18 +12,18 @@
       <div class="dropdown">
         <ul class="tab-container" :class="{ visible: isMenuVisible }">
           <li class="tab" @click="closeMenu">
-            <router-link to="/trades">
-              HISTORY
+            <router-link to="/stats">
+              Leaderboard
             </router-link>
           </li>
           <li class="tab" @click="closeMenu">
-            <router-link to="/stats">
-              LEADERBOARD
+            <router-link to="/trades">
+              Trade history
             </router-link>
           </li>
           <li class="tab" @click="closeMenu">
             <div @click="openExportModal()" type="dark">
-              BACKUP
+              Get backup
             </div>
           </li>
         </ul>
@@ -109,11 +109,11 @@ export default {
   }
 }
 .tab-container {
-  background-color: $opacity-pink-2;
+  background-color: $pink;
   background-image: url('../assets/grainy-gradient.svg');
   list-style: none;
   visibility: hidden;
-  text-align: center;
+  text-align: left;
   width: max-content;
   height: max-content;
   border: 1px solid $brown;
@@ -131,25 +131,23 @@ export default {
     padding: 0;
     top: 8px;
     opacity: 1;
-    width: 200px;
-    height: 250px;
+    width: 148px;
+    height: 130px;
     .tab {
       opacity: 1;
-      transition: all 1s;
+      transition: all 1.5s;
     }
   }
   .tab {
     cursor: pointer;
     display: block;
-    align-items: center;
+    align-items: left;
     text-decoration: none;
-    padding: 24px;
+    padding: 8px 16px;
     border-radius: 4px;
     color: $brown;
-    font-family: Road Store;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
-    transition: color 0.1s ease;
     opacity: 0;
     .btn {
       max-width: max-content;

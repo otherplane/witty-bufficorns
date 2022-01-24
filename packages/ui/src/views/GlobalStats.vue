@@ -1,7 +1,7 @@
 <template>
   <MainLayout>
     <div class="container">
-      <SectionHeader title="GLOBAL STATS" />
+      <SectionHeader title="LEADERBOARD" />
       <div class="tabs-container">
         <div v-for="tab in Object.values(tabs)" :key="tab.key">
           <TabButton
