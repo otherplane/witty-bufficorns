@@ -24,7 +24,7 @@ services:
       context: packages/api
     container_name: witty-bufficorns-api
     ports:
-      - $SERVER_PORT:3000
+      - $SERVER_PORT:4000
     links:
       - database
     depends_on:
