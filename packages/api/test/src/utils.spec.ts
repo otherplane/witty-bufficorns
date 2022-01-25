@@ -1,6 +1,6 @@
 import { generateUsernameList } from '../../src/utils'
 
-describe('utils.ts', () => {
+describe.skip('utils.ts', () => {
   it('should generate unique usernames', () => {
     // Old versions of the library failed to generate more than 6410 unique usernames,
     // entering an infinite loop

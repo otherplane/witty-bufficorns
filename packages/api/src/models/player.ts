@@ -45,7 +45,16 @@ export class PlayerModel {
     const ranch = getRanchFromIndex(index)
     const points: number = 0
 
-    return new Player({ key, username, ranch, medals, points })
+    const selectedBufficorn = index % 4
+
+    return new Player({
+      key,
+      username,
+      ranch,
+      medals,
+      points,
+      selectedBufficorn,
+    })
   }
 
   /**
@@ -118,6 +127,18 @@ export class PlayerModel {
 
   public async getOne(id: string): Promise<Player | null> {
     const vto = await this.repository.getById(id)
+
+    return vto ? new Player(vto) : null
+  }
+
+  public async updateSelectedBufficorn(
+    username: string,
+    index: number
+  ): Promise<Player | null> {
+    const vto = await this.repository.updateOne(
+      { username },
+      { selectedBufficorn: index }
+    )
 
     return vto ? new Player(vto) : null
   }

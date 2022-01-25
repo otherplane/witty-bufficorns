@@ -2,7 +2,7 @@ import { Bufficorn } from '../../../src/domain/bufficorn'
 import { Ranch } from '../../../src/domain/ranch'
 import { RanchLeaderboardInfo } from '../../../src/types'
 
-describe('ranch.ts', () => {
+describe.skip('ranch.ts', () => {
   function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
     const b = new Bufficorn(undefined, index)
     b.stats = {
