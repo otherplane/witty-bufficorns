@@ -124,21 +124,17 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (index < 0 || index > 3) {
         return reply.status(404).send(new Error(`Index must be from 0 to 3`))
       }
-      console.log('1')
       const updatedPlayer = await playerModel.updateSelectedBufficorn(
         player.username,
         index
       )
 
-      console.log('2')
       if (!updatedPlayer) {
         return reply
           .status(404)
           .send(new Error(`Bufficorn ${index} couldn't be selected`))
       }
 
-      console.log('3', index)
-      console.log('3', typeof index)
       return reply.status(200).send({ index })
     },
   })

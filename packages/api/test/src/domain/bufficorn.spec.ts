@@ -27,7 +27,7 @@ function auxBufficornInfo(
     score,
   }
 }
-describe.skip('bufficorn.ts', () => {
+describe('bufficorn.ts', () => {
   it('calculateScore', async () => {
     const bufficorn = new Bufficorn(undefined, 0)
 
