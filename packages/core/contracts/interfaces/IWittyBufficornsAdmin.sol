@@ -18,7 +18,8 @@ interface IWittyBufficornsAdmin {
 
     /// Sets final scores for the given bufficorn.
     function setBufficornScores(
-        uint256 _id, 
+        uint256 _id,
+        uint256 _ranchId,
         string calldata _name,
         uint256[6] calldata _scores
     ) external;

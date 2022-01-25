@@ -68,6 +68,7 @@ library WittyBufficorns {
     struct Bufficorn {
         string name;
         uint256[6] scores;
+        uint256 ranchId;
         uint256[] tokenIds;
     }
 

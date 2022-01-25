@@ -130,6 +130,7 @@ contract WittyBufficornsToken
     /// @dev Fails if not in Breeding status. 
     function setBufficornScores(
             uint256 _id,
+            uint256 _ranchId,
             string calldata _name,
             uint256[6] calldata _scores
         )
@@ -137,12 +138,18 @@ contract WittyBufficornsToken
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
+        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        require(
+            bytes(__ranch.name).length > 0,
+            "WittyBufficornsToken: ranch not set"
+        );
         WittyBufficorns.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__bufficorn.name).length == 0) {
                 __storage.stats.totalBufficorns ++;
             }
         }
+        __bufficorn.ranchId = _ranchId;
         __bufficorn.scores = _scores;
         emit BufficornSet(_id, _name, _scores);
     }
