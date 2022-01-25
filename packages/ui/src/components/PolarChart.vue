@@ -144,7 +144,6 @@ export default {
       </g>
     </svg>
     `
-    console.log(svg)
     return { svg }
   }
 }

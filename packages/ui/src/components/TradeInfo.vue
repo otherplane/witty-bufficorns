@@ -19,7 +19,7 @@
         <div class="time-container">
           <TimeLeft
             class="time-left"
-            :timestamp="123455"
+            :timestamp="player.tradeIn.timestamp"
             :seconds="true"
             @clear-timestamp="clearTimestamp"
           />

@@ -126,7 +126,7 @@ export default {
   height: 0px;
   &.visible {
     box-sizing: border-box;
-    transition: width 0.3s, height 0.3s;
+    transition: all 0.1s;
     visibility: visible;
     padding: 0;
     top: 8px;
@@ -135,7 +135,7 @@ export default {
     height: 130px;
     .tab {
       opacity: 1;
-      transition: all 1.5s;
+      transition: all 0.3s;
     }
   }
   .tab {

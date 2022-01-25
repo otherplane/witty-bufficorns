@@ -2,7 +2,7 @@
   <div class="bufficorns-container">
     <BufficornData
       v-for="(bufficorn, index) in bufficornsData"
-      :bufficorn-list="bufficornsData"
+      :bufficorn-list="player.bufficornsGlobalStats"
       :index="index"
       :key="bufficorn.name"
       :name="bufficorn.name"
@@ -23,7 +23,6 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { onMounted } from 'vue'
 
 export default {
   props: {
@@ -35,7 +34,7 @@ export default {
   setup () {
     const player = useStore()
     const bufficornsData = player.ranch.bufficorns
-    return { bufficornsData }
+    return { bufficornsData, player }
   }
 }
 </script>
@@ -47,5 +46,10 @@ export default {
   grid-template-rows: 1fr 1fr;
   justify-content: center;
   grid-gap: 16px;
+}
+@media (max-width: 330px) {
+  .bufficorns-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
