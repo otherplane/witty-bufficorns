@@ -6,10 +6,6 @@
           <NavBar class="navbar" @openExportModal="openModal('export')" />
           <p class="subtitle">{{ player.username.toUpperCase() }}</p>
           <p class="subtitle">
-            <span class="subtitle label">RANCH NAME:</span>
-            {{ player.ranch.name }}
-          </p>
-          <p class="subtitle">
             <span class="subtitle label">RANCH RESOURCE:</span>
             {{ player.ranch.trait }}
           </p>
@@ -31,7 +27,7 @@
       <TradeInfo />
       <NFTPreview v-if="player.preview" :preview="player.preview" />
       <MintInformation />
-      <BufficornsList />
+      <BufficornsList v-if="player.bufficornsGlobalStats" />
       <router-link
         v-if="!player.gameOver"
         class="trade-btn"
@@ -92,6 +88,7 @@ export default {
 
     onBeforeMount(async () => {
       await player.getInfo()
+      await player.getGlobalStats()
       await player.getMintInfo()
       await player.getPreview()
       if (player.gameOver) {
@@ -218,6 +215,23 @@ export default {
     align-self: center;
     width: max-content;
     justify-self: center;
+  }
+}
+@media (max-width: 330px) {
+  .header {
+    grid-template-columns: 1fr;
+    justify-items: flex-start;
+    align-items: flex-start;
+
+    .farmer-info {
+      margin-top: 24px;
+    }
+    .logo {
+      grid-row: 1;
+      width: 150px;
+      margin-top: 28px;
+      justify-self: center;
+    }
   }
 }
 </style>

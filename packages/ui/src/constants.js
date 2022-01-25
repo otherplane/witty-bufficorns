@@ -25,7 +25,7 @@ export const STATS_FILTERS = {
     active: false,
     default: 'overall',
     subTabs: {
-      score: {
+      overall: {
         key: 'overall',
         active: false
       }
@@ -36,7 +36,7 @@ export const STATS_FILTERS = {
     active: false,
     default: 'vigor',
     subTabs: {
-      score: {
+      overall: {
         key: 'overall',
         active: false
       },
@@ -55,6 +55,14 @@ export const STATS_FILTERS = {
       coolness: {
         key: 'coolness',
         active: false
+      },
+      coat: {
+        key: 'coat',
+        active: false
+      },
+      stamina: {
+        key: 'stamina',
+        active: false
       }
     }
   },
@@ -63,7 +71,7 @@ export const STATS_FILTERS = {
     active: false,
     default: 'overall',
     subTabs: {
-      score: {
+      overall: {
         key: 'overall',
         active: false
       }

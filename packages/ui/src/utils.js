@@ -6,14 +6,25 @@ export function getStatsFromAttributes (bufficornAttributes) {
 }
 
 export function normalizedChartData (stats, bufficornsArray) {
-  const result = bufficornsArray.map(bufficorn => {
-    return calculateHightestNumber(bufficorn)
-  })
-  const finalResult = calculateHightestNumber(result)
-  return Object.entries(stats).reduce(
-    (acc, [key, value]) => ({ ...acc, [key]: value / finalResult }),
-    []
-  )
+  if (bufficornsArray) {
+    const result = bufficornsArray.map(bufficorn => {
+      return calculateHightestNumber(bufficorn)
+    })
+    const finalResult = calculateHightestNumber(result)
+    return Object.entries(stats).reduce(
+      (acc, [key, value]) => ({ ...acc, [key]: value / finalResult }),
+      []
+    )
+  } else {
+    return {
+      vigor: 0,
+      stamina: 0,
+      speed: 0,
+      agility: 0,
+      coat: 0,
+      coolness: 0
+    }
+  }
 }
 
 function calculateHightestNumber (list) {

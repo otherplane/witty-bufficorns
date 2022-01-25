@@ -10,7 +10,7 @@
         :class="{ horizontal, background: backgroundFront }"
       >
         <BufficornImage :name="name" />
-        <PolarChart :stats="normalizedData" />
+        <PolarChart v-if="normalizedData" :stats="normalizedData" />
       </div>
       <div
         class="face back"
@@ -30,7 +30,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { ref } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import { normalizedChartData } from '../utils'
 
 export default {
@@ -43,10 +43,6 @@ export default {
       agility: Number,
       coat: Number,
       coolness: Number
-    },
-    bufficornList: {
-      type: Array,
-      required: true
     },
     name: String,
     horizontal: {
@@ -65,11 +61,9 @@ export default {
   setup (props) {
     const player = useStore()
     const showStats = ref(false)
-    const normalizedData = normalizedChartData(
-      props.attributes,
-      props.bufficornList
+    const normalizedData = computed(() =>
+      normalizedChartData(props.attributes, player.bufficornsGlobalStats)
     )
-    console.log(normalizedData)
     return { player, showStats, normalizedData }
   }
 }

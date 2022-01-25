@@ -8,7 +8,6 @@
       :value="name"
     />
     <FlipCard
-      :bufficorn-list="bufficornList"
       :index="index"
       :key="name"
       :name="name"
@@ -40,10 +39,6 @@ export default {
       agility: Number,
       coat: Number,
       coolness: Number
-    },
-    bufficornList: {
-      type: Array,
-      required: true
     },
     name: String,
     horizontal: {

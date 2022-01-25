@@ -15,6 +15,7 @@
         <div
           v-for="tab in Object.values(tabs[primaryTab].subTabs)"
           :key="tab.key"
+          class="tab"
         >
           <SubtabButton
             :active="tab.active"
@@ -76,8 +77,11 @@ export default {
   grid-gap: 8px;
 }
 .subtabs-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 70px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  .tab {
+    margin: 4px 8px;
+  }
 }
 </style>
