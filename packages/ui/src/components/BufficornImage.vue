@@ -1,6 +1,6 @@
 <template>
   <div class="bufficorn-image-container">
-    <div class="small-title item">
+    <div v-if="name" class="small-title item">
       <p class="bufficorn-name">{{ name }}</p>
     </div>
     <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
@@ -22,9 +22,6 @@ export default {
   justify-items: center;
   align-items: center;
   height: 100%;
-}
-.bufficorn-name {
-  color: $brown;
 }
 .item {
   padding: 8px;

@@ -7,10 +7,14 @@
     >
       <div
         class="face front"
-        :class="{ horizontal, background: backgroundFront }"
+        :class="{ horizontal, background: backgroundFront, selected }"
       >
-        <BufficornImage :name="name" />
-        <PolarChart v-if="normalizedData" :stats="normalizedData" />
+        <BufficornImage :class="{ selected }" :name="name" />
+        <PolarChart
+          v-if="normalizedData"
+          :stats="normalizedData"
+          :selected="selected"
+        />
       </div>
       <div
         class="face back"
@@ -43,6 +47,10 @@ export default {
       agility: Number,
       coat: Number,
       coolness: Number
+    },
+    selected: {
+      type: Boolean,
+      default: false
     },
     name: String,
     horizontal: {
@@ -106,6 +114,11 @@ export default {
   grid-template-rows: repeat(2, max-content);
   justify-items: center;
   align-content: center;
+  color: $brown;
+  &.selected {
+    background-color: $opacity-brown;
+    color: $pink;
+  }
   &.horizontal {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
