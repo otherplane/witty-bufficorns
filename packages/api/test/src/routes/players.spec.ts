@@ -58,7 +58,7 @@ describe('player.ts', () => {
       )
     })
 
-    test('should NOT get PLAYER #12345 - valid token but non-existent player', async () => {
+    it('should NOT get PLAYER #12345 - valid token but non-existent player', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -165,7 +165,7 @@ describe('player.ts', () => {
       )
     })
 
-    it('should not update selected bufficorn - index greater than 3', async () => {
+    it('should NOT update selected bufficorn - index greater than 3', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -178,13 +178,13 @@ describe('player.ts', () => {
         },
         (err, response) => {
           expect(err).toBeFalsy()
-          expect(response.json().statusCode).toBe(404)
+          expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe('Index must be from 0 to 3')
         }
       )
     })
 
-    it('should not update selected bufficorn - index smaller than 0', async () => {
+    it('should NOT update selected bufficorn - index smaller than 0', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -197,13 +197,13 @@ describe('player.ts', () => {
         },
         (err, response) => {
           expect(err).toBeFalsy()
-          expect(response.json().statusCode).toBe(404)
+          expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe('Index must be from 0 to 3')
         }
       )
     })
 
-    it('should not update selected bufficorn - index should be an integer', async () => {
+    it('should NOT update selected bufficorn - index should be an integer', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -216,13 +216,13 @@ describe('player.ts', () => {
         },
         (err, response) => {
           expect(err).toBeFalsy()
-          expect(response.json().statusCode).toBe(400)
+          expect(response.statusCode).toBe(400)
           expect(response.json().message).toBe('params/index should be integer')
         }
       )
     })
 
-    it('should not update selected bufficorn - index should be an integer', async () => {
+    it('should NOT update selected bufficorn - index should be an integer', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -235,7 +235,7 @@ describe('player.ts', () => {
         },
         (err, response) => {
           expect(err).toBeFalsy()
-          expect(response.json().statusCode).toBe(400)
+          expect(response.statusCode).toBe(400)
           expect(response.json().message).toBe('params/index should be integer')
         }
       )
@@ -273,7 +273,7 @@ describe('player.ts', () => {
         },
         (err, response) => {
           expect(err).toBeFalsy()
-          expect(response.json().statusCode).toBe(200)
+          expect(response.statusCode).toBe(200)
         }
       )
     })

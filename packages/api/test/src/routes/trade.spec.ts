@@ -11,7 +11,7 @@ import {
   sleep,
 } from '../../setup'
 
-describe.skip('Route /trade', () => {
+describe('Route /trade', () => {
   it('should return the trade object after trade with itself', async () => {
     let trade = null
     const token = await authenticatePlayer(initialPlayers[0].key)
