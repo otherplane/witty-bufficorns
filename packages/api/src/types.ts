@@ -244,11 +244,12 @@ export const PlayerVTO = Type.Object({
   ranch: RanchVTO,
   points: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
+  selectedBufficorn: Type.Integer(),
 })
+export type PlayerVTO = Static<typeof PlayerVTO>
 
 export const ProtectedPlayerVTO = Type.Omit(PlayerVTO, ['token'])
-
-export type PlayerVTO = Static<typeof PlayerVTO>
+export type ProtectedPlayerVTO = Static<typeof ProtectedPlayerVTO>
 
 export const DbPlayerVTO = Type.Object({
   key: Type.String(),
@@ -258,6 +259,7 @@ export const DbPlayerVTO = Type.Object({
   points: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
   id: Type.Optional(Type.String()),
+  selectedBufficorn: Type.Integer(),
 })
 
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
@@ -278,3 +280,16 @@ export const ExtendedPlayerVTO = Type.Object({
 })
 
 export type ExtendedPlayerVTO = Static<typeof ExtendedPlayerVTO>
+
+// Provided index is valid from 0 - 3
+export const SelectBufficornParams = Type.Object({
+  index: Type.Integer(),
+})
+export type SelectBufficornParams = Static<typeof SelectBufficornParams>
+
+// Provided index is valid from 0 - 3
+export const SelectBufficornReply = Type.Object({
+  index: Type.Integer(),
+})
+
+export type SelectBufficornReply = Static<typeof SelectBufficornReply>

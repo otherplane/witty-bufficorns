@@ -7,6 +7,8 @@ import {
   ExtendedPlayerVTO,
   GetByStringKeyParams,
   JwtVerifyPayload,
+  SelectBufficornParams,
+  SelectBufficornReply,
 } from '../types'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
@@ -80,6 +82,64 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           }),
         })
       )
+    },
+  })
+
+  fastify.post<{
+    Params: SelectBufficornParams
+    Reply: SelectBufficornReply | Error
+  }>('/players/selected-bufficorn/:index', {
+    schema: {
+      params: SelectBufficornParams,
+      headers: AuthorizationHeader,
+      response: {
+        200: SelectBufficornParams,
+      },
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: SelectBufficornParams }>,
+      reply
+    ) => {
+      // Check 1: token is valid
+      let fromKey: string
+      try {
+        const decoded: JwtVerifyPayload = fastify.jwt.verify(
+          request.headers.authorization as string
+        )
+        fromKey = decoded.id
+      } catch (err) {
+        return reply.status(403).send(new Error(`Forbidden: invalid token`))
+      }
+
+      // Check 2 (unreachable): valid server issued token refers to non-existent player
+      const player = await playerModel.get(fromKey)
+      if (!player) {
+        return reply
+          .status(404)
+          .send(new Error(`Player does not exist (key: ${fromKey})`))
+      }
+      const index = request.params.index
+
+      // Check 3: bufficorn index is valid
+      if (index < 0 || index > 3) {
+        return reply.status(404).send(new Error(`Index must be from 0 to 3`))
+      }
+      console.log('1')
+      const updatedPlayer = await playerModel.updateSelectedBufficorn(
+        player.username,
+        index
+      )
+
+      console.log('2')
+      if (!updatedPlayer) {
+        return reply
+          .status(404)
+          .send(new Error(`Bufficorn ${index} couldn't be selected`))
+      }
+
+      console.log('3', index)
+      console.log('3', typeof index)
+      return reply.status(200).send({ index })
     },
   })
 }

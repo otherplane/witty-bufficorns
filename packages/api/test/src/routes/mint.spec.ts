@@ -14,7 +14,7 @@ const MESSAGE_DIGEST =
 const INVALID_ETH_ADDRESS_1 = '0x00'
 const INVALID_ETH_ADDRESS_2 = 'foo'
 
-describe('mint.ts', () => {
+describe.skip('mint.ts', () => {
   it('should mint a claimed egg', async () => {
     const token = await authenticatePlayer(initialPlayers[0].key)
 
