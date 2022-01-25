@@ -16,6 +16,10 @@ export default {
       coat: Number,
       agility: Number,
       coolness: Number
+    },
+    selected: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
@@ -70,6 +74,10 @@ export default {
           stroke: #bd3800;
           fill: #bd3800;
           fill-opacity: .3;
+        }
+        .selected .shape {
+          stroke: #ffe8ff;
+          fill: #ffe8ff;
         }
         .shape:hover {
           fill-opacity: .6;

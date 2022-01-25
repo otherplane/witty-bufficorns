@@ -55,6 +55,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+  color: $black;
   .stat {
     height: max-content;
     align-items: center;

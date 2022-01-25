@@ -27,7 +27,7 @@
       <TradeInfo />
       <NFTPreview v-if="player.preview" :preview="player.preview" />
       <MintInformation />
-      <BufficornsList v-if="player.bufficornsGlobalStats" />
+      <BufficornsList v-if="player.bufficornsGlobalStats" :selectable="true" />
       <router-link
         v-if="!player.gameOver"
         class="trade-btn"
