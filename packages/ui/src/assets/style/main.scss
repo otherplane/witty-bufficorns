@@ -20,15 +20,22 @@ body {
 }
 .bg-beige {
   background-color: $beige !important;
+  background-image: url('../grainy-gradient.svg');
+}
+.text-pink {
+  color: $pink;
+}
+.text-brown {
+  color: $brown;
 }
 .bg-beige-transparent {
   background-color: $opacity-beige !important;
 }
 .bg-orange {
-  background-color: $orange !important;
+  background-color: $brown !important;
 }
 .border-orange {
-  border: 2px solid $orange !important;
+  border: 2px solid $brown !important;
 }
 .text-red {
   color: $brown;

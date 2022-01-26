@@ -33,17 +33,19 @@
       <BufficornsList v-if="player.bufficornsGlobalStats" :selectable="true" />
       <router-link
         v-if="!player.gameOver"
-        class="trade-btn"
+        class="sticky-btn"
         :to="type === 'disable' ? '' : '/scan'"
       >
-        TRADE
+        <Button type="dark" :slim="true">
+          TRADE
+        </Button>
       </router-link>
-      <div class="buttons" v-if="player.gameOver">
+      <div class="sticky-btn" v-if="player.gameOver">
         <Button
           v-if="!player.preview"
           @click="openModal('preview')"
           type="dark"
-          class="center-item"
+          :slim="true"
         >
           PREVIEW NFT
         </Button>
@@ -51,7 +53,7 @@
           v-else-if="player.preview"
           @click="mint"
           type="dark"
-          class="center-item"
+          :slim="true"
         >
           MINT NFT
         </Button>
@@ -199,20 +201,10 @@ export default {
     font-size: 18px;
   }
 }
-.trade-btn {
-  font-family: Road Store;
-  color: $brown;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: $pink;
-  position: fixed;
-  right: 8px;
+.sticky-btn {
+  position: sticky;
   bottom: 8px;
-  padding: 8px;
-  border-radius: 4px;
-  .trade-img {
-    width: 48px;
-  }
+  text-align: center;
 }
 .buttons {
   display: grid;

@@ -10,7 +10,7 @@
         egg into a different browser.
       </p>
       <router-link to="/scan" class="link">
-        <Button class="btn" type="primary">
+        <Button class="btn" type="dark">
           CONTINUE
         </Button>
       </router-link>

@@ -63,6 +63,7 @@ export default {
   display: grid;
   row-gap: 8px;
   padding: 16px;
+  margin-bottom: 16px;
   .external-link-icon {
     margin-left: 8px;
     width: 10px;
