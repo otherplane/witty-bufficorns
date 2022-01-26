@@ -114,6 +114,22 @@ export const useStore = defineStore('player', {
         router.push('/')
       }
     },
+    async updateSelectedBufficorn (index) {
+      const tokenInfo = this.getToken()
+      const request = await this.api.selectBufficorn({
+        token: tokenInfo.token,
+        bufficorn: index
+      })
+      if (request.error) {
+        this.setError('updateSelectedBufficorn', request.error)
+        router.push('/')
+      } else {
+        this.clearError('updateSelectedBufficorn')
+        this.selectedBufficorn = request
+        this.getInfo()
+        router.push('/')
+      }
+    },
     async getGlobalStats () {
       const request = await this.api.getLeaderboardInfo()
       if (request.error) {
@@ -151,10 +167,11 @@ export const useStore = defineStore('player', {
           this.setError('info', request.error)
         } else {
           this.clearError('info')
-          const { key, username, ranch } = request.player
+          const { key, username, ranch, selectedBufficorn } = request.player
           this.id = key
           this.username = username
           this.ranch = ranch
+          this.selectedBufficorn = selectedBufficorn
           if (request.lastTradeIn) {
             this.tradeIn = request.lastTradeIn
           }
@@ -162,13 +179,10 @@ export const useStore = defineStore('player', {
             this.tradeOut = request.lastTradeOut
           }
           if (!this.selectedBufficorn) {
-            this.selectedBufficorn = ranch.bufficorns[0].name
+            this.selectedBufficorn = 0
           }
           if (this.id !== router.currentRoute.value.params.id) {
-            router.push({
-              name: 'trade',
-              params: { id: router.currentRoute.value.params.id }
-            })
+            this.trade({ key: router.currentRoute.value.params.id })
           }
         }
       } else {

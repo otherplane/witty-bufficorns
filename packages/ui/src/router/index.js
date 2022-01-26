@@ -62,11 +62,6 @@ const routes = [
     component: ScanId
   },
   {
-    name: 'trade',
-    path: '/trade/:id',
-    component: BreedBufficorns
-  },
-  {
     name: 'stats',
     path: '/stats',
     component: GlobalStats
