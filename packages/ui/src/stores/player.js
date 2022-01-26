@@ -22,6 +22,7 @@ export const useStore = defineStore('player', {
       mintParams: null,
       color: null,
       data: null,
+      playerPoints: null,
       bufficornsGlobalStats: null,
       playersGlobalStats: null,
       ranchesGlobalStats: null,
@@ -167,10 +168,18 @@ export const useStore = defineStore('player', {
           this.setError('info', request.error)
         } else {
           this.clearError('info')
-          const { key, username, ranch, selectedBufficorn } = request.player
+          const {
+            key,
+            username,
+            ranch,
+            selectedBufficorn,
+            points
+          } = request.player
+          console.log(request.player)
           this.id = key
           this.username = username
           this.ranch = ranch
+          this.playerPoints = points
           this.selectedBufficorn = selectedBufficorn
           if (request.lastTradeIn) {
             this.tradeIn = request.lastTradeIn

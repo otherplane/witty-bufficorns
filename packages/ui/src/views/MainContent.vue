@@ -4,7 +4,10 @@
       <div class="header">
         <div class="farmer-info">
           <NavBar class="navbar" @openExportModal="openModal('export')" />
-          <p class="subtitle">{{ player.username.toUpperCase() }}</p>
+          <p class="subtitle player-id">{{ player.username.toUpperCase() }}:</p>
+          <p class="subtitle">
+            <span class="points-bold">{{ player.playerPoints }}</span> points
+          </p>
           <p class="subtitle">
             <span class="subtitle label">RANCH RESOURCE:</span>
             {{ player.ranch.trait }}
@@ -186,6 +189,14 @@ export default {
   .navbar {
     top: 8px;
     grid-row: 1;
+  }
+  .player-id {
+    color: $brown;
+    font-weight: bold;
+  }
+  .points-bold {
+    font-weight: bold;
+    font-size: 18px;
   }
 }
 .trade-btn {
