@@ -71,6 +71,7 @@ export const BufficornVTO = Type.Object({
   [Trait.Coat]: Type.Integer(),
   [Trait.Agility]: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
+  creationIndex: Type.Integer(),
 })
 
 export type BufficornVTO = Static<typeof BufficornVTO>
@@ -199,7 +200,6 @@ export const GetByNumericKeyParams = Type.Object({
 export type GetByNumericKeyParams = Static<typeof GetByNumericKeyParams>
 
 export const TradeParams = Type.Object({
-  bufficorn: Type.String(),
   to: Type.String(),
 })
 export type TradeParams = Static<typeof TradeParams>
