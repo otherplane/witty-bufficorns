@@ -90,6 +90,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
     // Initialize game repositories and bootstrap
     await fastify.playerModel.bootstrap(PLAYERS_COUNT)
     const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
+    // Get bufficorns if they are already bootstrapped
     const bufficorns =
       bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
     await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)

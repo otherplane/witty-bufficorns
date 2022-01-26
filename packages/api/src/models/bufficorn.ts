@@ -73,27 +73,27 @@ export class BufficornModel {
   }
 
   public async feed(
-    creationIndex: number,
+    index: number,
     resource: Resource,
     ranch: RanchName
   ): Promise<Bufficorn> {
-    const bufficorn = await this.repository.getOne({ creationIndex, ranch })
+    const bufficorn = await this.repository.getOne({ index })
 
     if (!bufficorn) {
       throw new Error(
-        `Bufficorn with creation index ${creationIndex} and ranch ${ranch} doesn't exist`
+        `Bufficorn with creation index ${index} and ranch ${ranch} doesn't exist`
       )
     }
 
     if (ranch !== bufficorn.ranch) {
       throw new Error(
-        `Bufficorn with name creation index ${creationIndex} and ranch ${ranch} doesn't belong to your ranch`
+        `Bufficorn with name creation index ${index} and ranch ${ranch} doesn't belong to your ranch`
       )
     }
 
     return new Bufficorn(
       await this.repository.updateOne(
-        { creationIndex, ranch },
+        { index, ranch },
         {
           [resource.trait]: resource.amount + bufficorn[resource.trait],
         }

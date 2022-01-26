@@ -9,13 +9,14 @@ export const ClaimPlayerParams = Type.Object({
 export type ClaimPlayerParams = Static<typeof ClaimPlayerParams>
 
 export enum RanchName {
-  Ranch1 = 'Ranch1',
-  Ranch2 = 'Ranch2',
-  Ranch3 = 'Ranch3',
-  Ranch4 = 'Ranch4',
-  Ranch5 = 'Ranch5',
-  Ranch6 = 'Ranch6',
+  Ranch1 = 'Opolis Reservation',
+  Ranch2 = "The Ol' Algoranch",
+  Ranch3 = 'Vega Slopes Range',
+  Ranch4 = 'Balancer Peak State',
+  Ranch5 = 'Gold Reef Co.',
+  Ranch6 = 'Infinite Harmony Farm',
 }
+
 export const RanchNameEnum = Type.Enum(RanchName)
 
 export enum Trait {
@@ -37,24 +38,6 @@ export enum RanchIndex {
   Ranch6 = 5,
 }
 
-export const indexToRanch: Record<number, RanchName> = {
-  [RanchIndex.Ranch1]: RanchName.Ranch1,
-  [RanchIndex.Ranch2]: RanchName.Ranch2,
-  [RanchIndex.Ranch3]: RanchName.Ranch3,
-  [RanchIndex.Ranch4]: RanchName.Ranch4,
-  [RanchIndex.Ranch5]: RanchName.Ranch5,
-  [RanchIndex.Ranch6]: RanchName.Ranch6,
-}
-
-export const ranchToTrait: Record<RanchName, Trait> = {
-  [RanchName.Ranch1]: Trait.Vigor,
-  [RanchName.Ranch2]: Trait.Speed,
-  [RanchName.Ranch3]: Trait.Stamina,
-  [RanchName.Ranch4]: Trait.Coolness,
-  [RanchName.Ranch5]: Trait.Coat,
-  [RanchName.Ranch6]: Trait.Agility,
-}
-
 export const Resource = Type.Object({
   trait: TraitEnum,
   amount: Type.Number(),
@@ -71,7 +54,7 @@ export const BufficornVTO = Type.Object({
   [Trait.Coat]: Type.Integer(),
   [Trait.Agility]: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
-  creationIndex: Type.Integer(),
+  index: Type.Integer(),
 })
 
 export type BufficornVTO = Static<typeof BufficornVTO>
@@ -293,3 +276,30 @@ export const SelectBufficornReply = Type.Object({
 })
 
 export type SelectBufficornReply = Static<typeof SelectBufficornReply>
+
+export enum BufficornName {
+  Bufficorn0 = 'Bufficorn-0',
+  Bufficorn1 = 'Bufficorn-1',
+  Bufficorn2 = 'Bufficorn-2',
+  Bufficorn3 = 'Bufficorn-3',
+  Bufficorn4 = 'Bufficorn-4',
+  Bufficorn5 = 'Bufficorn-5',
+  Bufficorn6 = 'Bufficorn-6',
+  Bufficorn7 = 'Bufficorn-7',
+  Bufficorn8 = 'Bufficorn-8',
+  Bufficorn9 = 'Bufficorn-9',
+  Bufficorn10 = 'Bufficorn-10',
+  Bufficorn11 = 'Bufficorn-11',
+  Bufficorn12 = 'Bufficorn-12',
+  Bufficorn13 = 'Bufficorn-13',
+  Bufficorn14 = 'Bufficorn-14',
+  Bufficorn15 = 'Bufficorn-15',
+  Bufficorn16 = 'Bufficorn-16',
+  Bufficorn17 = 'Bufficorn-17',
+  Bufficorn18 = 'Bufficorn-18',
+  Bufficorn19 = 'Bufficorn-19',
+  Bufficorn20 = 'Bufficorn-20',
+  Bufficorn21 = 'Bufficorn-21',
+  Bufficorn22 = 'Bufficorn-22',
+  Bufficorn23 = 'Bufficorn-23',
+}

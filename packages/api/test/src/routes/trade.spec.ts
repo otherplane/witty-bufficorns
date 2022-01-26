@@ -132,10 +132,9 @@ describe('Route /trade', () => {
   })
 
   it('should sum less points if traded several times', async () => {
-    const bufficornName = 'Bufficorn-0'
-
     const token = await authenticatePlayer(initialPlayers[0].key)
-    await authenticatePlayer(initialPlayers[1].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
+
     await serverInject(
       {
         method: 'POST',
@@ -198,9 +197,9 @@ describe('Route /trade', () => {
     await serverInject(
       {
         method: 'GET',
-        url: `/players/${initialPlayers[0].key}`,
+        url: `/players/${initialPlayers[1].key}`,
         headers: {
-          Authorization: token,
+          Authorization: token1,
         },
       },
       (err, response) => {
@@ -212,9 +211,8 @@ describe('Route /trade', () => {
         expect(
           response
             .json()
-            .player.ranch.bufficorns.find(
-              (bufficorn) => bufficorn.name === bufficornName
-            ).speed
+            .player.ranch.bufficorns.find((bufficorn) => bufficorn.index === 1)
+            .vigor
         ).toBe(TRADE_POINTS + secondTradePoints)
       }
     )

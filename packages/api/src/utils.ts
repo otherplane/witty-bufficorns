@@ -1,10 +1,11 @@
 import {
+  INDEX_TO_RANCH,
   PLAYER_MINT_TIMESTAMP,
   RANCHES_COUNT,
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,
 } from './constants'
-import { indexToRanch, RanchName } from './types'
+import { RanchName } from './types'
 import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator'
 import { Bufficorn } from './domain/bufficorn'
 
@@ -32,7 +33,7 @@ export function calculateRemainingDuration(
 export function getRanchFromIndex(index: number): RanchName {
   const ranchIndex = index % RANCHES_COUNT
 
-  return indexToRanch[ranchIndex]
+  return INDEX_TO_RANCH[ranchIndex]
 }
 
 export function fromHexToUint8Array(hex: string) {

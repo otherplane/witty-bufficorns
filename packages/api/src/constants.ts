@@ -2,6 +2,8 @@
  * Constants. These can be customized through environment variables.
  */
 
+import { BufficornName, RanchIndex, RanchName, Trait } from './types'
+
 // Byte length of players keys. This can be adjusted for usability vs. security trade-offs.
 let playerKeyLengthBytes: number = process.env.PLAYER_KEY_LENGTH_BYTES
   ? parseInt(process.env.PLAYER_KEY_LENGTH_BYTES)
@@ -81,6 +83,63 @@ export const MONGO_URI: string =
   process.env.MONGO_URI ||
   'MONGO_URI=mongodb://your_username:your_password@localhost:27017/database'
 
+export const BUFFICORN_INDEX: Record<number, BufficornName> = {
+  0: BufficornName.Bufficorn0,
+  1: BufficornName.Bufficorn1,
+  2: BufficornName.Bufficorn2,
+  3: BufficornName.Bufficorn3,
+  4: BufficornName.Bufficorn4,
+  5: BufficornName.Bufficorn5,
+  6: BufficornName.Bufficorn6,
+  7: BufficornName.Bufficorn7,
+  8: BufficornName.Bufficorn8,
+  9: BufficornName.Bufficorn9,
+  10: BufficornName.Bufficorn10,
+  11: BufficornName.Bufficorn11,
+  12: BufficornName.Bufficorn12,
+  13: BufficornName.Bufficorn13,
+  14: BufficornName.Bufficorn14,
+  15: BufficornName.Bufficorn15,
+  16: BufficornName.Bufficorn16,
+  17: BufficornName.Bufficorn17,
+  18: BufficornName.Bufficorn18,
+  19: BufficornName.Bufficorn19,
+  20: BufficornName.Bufficorn20,
+  21: BufficornName.Bufficorn21,
+  22: BufficornName.Bufficorn22,
+  23: BufficornName.Bufficorn23,
+}
+
+export const BUFFICORNS_INDEX_GROUP_BY_RANCH: Record<
+  RanchName,
+  Array<number>
+> = {
+  [RanchName.Ranch1]: [0, 6, 12, 18],
+  [RanchName.Ranch2]: [1, 7, 13, 19],
+  [RanchName.Ranch3]: [2, 8, 14, 20],
+  [RanchName.Ranch4]: [3, 9, 15, 21],
+  [RanchName.Ranch5]: [4, 10, 16, 22],
+  [RanchName.Ranch6]: [5, 11, 17, 23],
+}
+
+export const INDEX_TO_RANCH: Record<number, RanchName> = {
+  [RanchIndex.Ranch1]: RanchName.Ranch1,
+  [RanchIndex.Ranch2]: RanchName.Ranch2,
+  [RanchIndex.Ranch3]: RanchName.Ranch3,
+  [RanchIndex.Ranch4]: RanchName.Ranch4,
+  [RanchIndex.Ranch5]: RanchName.Ranch5,
+  [RanchIndex.Ranch6]: RanchName.Ranch6,
+}
+
+export const TRAIT_BY_RANCH: Record<RanchName, Trait> = {
+  [RanchName.Ranch1]: Trait.Vigor,
+  [RanchName.Ranch2]: Trait.Speed,
+  [RanchName.Ranch3]: Trait.Stamina,
+  [RanchName.Ranch4]: Trait.Coolness,
+  [RanchName.Ranch5]: Trait.Coat,
+  [RanchName.Ranch6]: Trait.Agility,
+}
+
 export default {
   RANCHES_COUNT,
   PLAYER_KEY_LENGTH_BYTES,
@@ -93,4 +152,7 @@ export default {
   TRADE_POINTS_MIN,
   MONGO_URI,
   WITMON_ERC721_ADDRESS,
+  TRAIT_BY_RANCH,
+  INDEX_TO_RANCH,
+  BUFFICORNS_INDEX_GROUP_BY_RANCH,
 }

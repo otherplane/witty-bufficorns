@@ -1,3 +1,4 @@
+import { BUFFICORNS_INDEX_GROUP_BY_RANCH } from '../../../src/constants'
 import {
   server,
   authenticatePlayer,
@@ -108,7 +109,7 @@ describe('player.ts', () => {
 
           expect(key).toBeTruthy()
           expect(username).toBeTruthy()
-          expect(selectedBufficorn <= 3).toBeTruthy()
+          expect(selectedBufficorn <= 23).toBeTruthy()
           expect(selectedBufficorn >= 0).toBeTruthy()
           expect(points).toBe(0)
           expect(lastTradeIn).toBe(undefined)
@@ -165,13 +166,13 @@ describe('player.ts', () => {
       )
     })
 
-    it('should NOT update selected bufficorn - index greater than 3', async () => {
+    it('should NOT update selected bufficorn - index greater than 24', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
         {
           method: 'POST',
-          url: `/players/selected-bufficorn/4`,
+          url: `/players/selected-bufficorn/24`,
           headers: {
             authorization: token,
           },
@@ -179,7 +180,9 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
-          expect(response.json().message).toBe('Index must be from 0 to 3')
+          expect(response.json().message).toBe(
+            "Bufficorn with index 24 doesn't belong to ranch Opolis Reservation"
+          )
         }
       )
     })
@@ -198,7 +201,9 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
-          expect(response.json().message).toBe('Index must be from 0 to 3')
+          expect(response.json().message).toBe(
+            "Bufficorn with index -1 doesn't belong to ranch Opolis Reservation"
+          )
         }
       )
     })
@@ -243,7 +248,8 @@ describe('player.ts', () => {
 
     it('should update selected bufficorn', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
-      let initialSelectedBufficorn
+
+      let initialSelectedBufficorn, playerRanch
 
       await serverInject(
         {
@@ -255,18 +261,30 @@ describe('player.ts', () => {
         },
         (err, response) => {
           const {
-            player: { selectedBufficorn },
+            player: {
+              selectedBufficorn,
+              ranch: { name },
+            },
           } = response.json()
           initialSelectedBufficorn = selectedBufficorn
+          playerRanch = name
         }
       )
 
-      const selectedBufficorn = initialSelectedBufficorn === 0 ? 1 : 0
+      const bufficornPositionIndex = BUFFICORNS_INDEX_GROUP_BY_RANCH[
+        playerRanch
+      ].findIndex((idx) => idx === initialSelectedBufficorn)
+      const newSelectedBufficorn =
+        BUFFICORNS_INDEX_GROUP_BY_RANCH[playerRanch][
+          bufficornPositionIndex - 1 < 0
+            ? bufficornPositionIndex + 1
+            : bufficornPositionIndex - 1
+        ]
 
       await serverInject(
         {
           method: 'POST',
-          url: `/players/selected-bufficorn/${selectedBufficorn}`,
+          url: `/players/selected-bufficorn/${newSelectedBufficorn}`,
           headers: {
             authorization: token,
           },
@@ -274,6 +292,7 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(200)
+          expect(response.json().index).toBe(newSelectedBufficorn)
         }
       )
     })

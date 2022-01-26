@@ -1,9 +1,12 @@
 import {
+  BUFFICORNS_INDEX_GROUP_BY_RANCH,
+  INDEX_TO_RANCH,
+  TRAIT_BY_RANCH,
+} from '../constants'
+import {
   RanchName,
   Trait,
   DbRanchVTO,
-  indexToRanch,
-  ranchToTrait,
   RanchVTO,
   RanchLeaderboardInfo,
 } from '../types'
@@ -22,14 +25,20 @@ export class Ranch {
       this.medals = vto.medals
     } else {
       const idx = index || 0
-      const ranchName = indexToRanch[idx]
+      const ranchName = INDEX_TO_RANCH[idx]
 
       this.name = ranchName
-      this.trait = ranchToTrait[ranchName]
+      this.trait = TRAIT_BY_RANCH[ranchName]
       this.medals = []
     }
 
     if (bufficorns) {
+      // Throw an error if they don't belong to the current ranch
+      Ranch.checkIfBufficornsBelongToRanch(
+        bufficorns.map((b) => b.index),
+        this.name
+      )
+
       this.bufficorns = bufficorns
     }
   }
@@ -38,6 +47,13 @@ export class Ranch {
     if (bufficorns.length !== 4) {
       console.error('You must provide 4 bufficorns')
     }
+
+    // Throw an error if they don't belong to the current ranch
+    Ranch.checkIfBufficornsBelongToRanch(
+      bufficorns.map((b) => b.index),
+      this.name
+    )
+
     this.bufficorns = bufficorns
   }
 
@@ -78,5 +94,19 @@ export class Ranch {
         score: r.calculateScore(trait),
         position: index,
       }))
+  }
+
+  // Throw an error if they don't belong to the current ranch
+  static checkIfBufficornsBelongToRanch(
+    bufficornsIndex: Array<number>,
+    ranchName: RanchName
+  ) {
+    bufficornsIndex.forEach((index) => {
+      if (!BUFFICORNS_INDEX_GROUP_BY_RANCH[ranchName].includes(index)) {
+        throw new Error(
+          `Bufficorn with index ${index} doesn't belong to ranch ${ranchName}`
+        )
+      }
+    })
   }
 }

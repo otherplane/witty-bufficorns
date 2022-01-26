@@ -1,7 +1,7 @@
 import { Collection, Db } from 'mongodb'
 
-import { DbRanchVTO, indexToRanch, RanchName } from '../types'
-import { RANCHES_COUNT } from '../constants'
+import { DbRanchVTO, RanchName } from '../types'
+import { INDEX_TO_RANCH, RANCHES_COUNT } from '../constants'
 import { Repository } from '../repository'
 import { Ranch } from '../domain/ranch'
 import { Bufficorn } from '../domain/bufficorn'
@@ -26,9 +26,11 @@ export class RanchModel {
     force: boolean = false
   ): Promise<Array<Ranch> | null> {
     const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+
     const vtos = await this.repository.bootstrap(
       (_: null, index: number) => {
-        const filteredBufficorns = bufficornsByRanch[indexToRanch[index]]
+        const filteredBufficorns = bufficornsByRanch[INDEX_TO_RANCH[index]]
+
         return new Ranch(undefined, index, filteredBufficorns).toDbVTO()
       },
       RANCHES_COUNT,
@@ -38,7 +40,7 @@ export class RanchModel {
     return vtos
       ? vtos.map(
           (vto, index) =>
-            new Ranch(vto, undefined, bufficornsByRanch[indexToRanch[index]])
+            new Ranch(vto, undefined, bufficornsByRanch[INDEX_TO_RANCH[index]])
         )
       : null
   }
