@@ -4,6 +4,7 @@ import { Collection, Db } from 'mongodb'
 import {
   PLAYER_KEY_LENGTH_BYTES,
   PLAYER_KEY_SALT,
+  RANCHES_COUNT,
   TRADE_POINTS,
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
@@ -45,7 +46,7 @@ export class PlayerModel {
     const ranch = getRanchFromIndex(index)
     const points: number = 0
 
-    const selectedBufficorn = index % 4
+    const selectedBufficorn = Math.floor(index / RANCHES_COUNT) % 4
 
     return new Player({
       key,

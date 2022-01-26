@@ -13,6 +13,7 @@ import {
   isTimeToMint,
   printRemainingMillis,
 } from '../utils'
+import { Bufficorn } from '../domain/bufficorn'
 
 const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
@@ -114,16 +115,17 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       const resource: Resource = playerModel.generateResource(
-        toPlayer.toDbVTO(),
+        fromPlayer.toDbVTO(),
         lastTrade
       )
 
+      let bufficorn: Bufficorn
       try {
         // Feed bufficorn
-        await bufficornModel.feed(
-          request.body.bufficorn,
+        bufficorn = await bufficornModel.feed(
+          toPlayer.selectedBufficorn,
           resource,
-          fromPlayer.ranch
+          toPlayer.ranch
         )
       } catch (error) {
         return reply.status(403).send(error as Error)
@@ -136,7 +138,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         to: toPlayer.username,
         resource,
         timestamp: currentTimestamp,
-        bufficorn: request.body.bufficorn,
+        bufficorn: bufficorn.name,
       })
 
       return reply.status(200).send(trade)

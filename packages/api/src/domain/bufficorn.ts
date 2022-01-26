@@ -6,6 +6,7 @@ import {
   Trait,
 } from '../types'
 import { getRanchFromIndex } from '../utils'
+import { RANCHES_COUNT } from '../constants'
 
 export class Bufficorn {
   public stats: Stats = {
@@ -18,6 +19,7 @@ export class Bufficorn {
   }
   public medals: Array<string> = []
   public name: string
+  public creationIndex: number
   public ranch: RanchName
 
   constructor(vto?: BufficornVTO, index?: number) {
@@ -33,11 +35,13 @@ export class Bufficorn {
         vigor: vto.vigor,
       }
       this.ranch = vto.ranch
+      this.creationIndex = vto.creationIndex
     } else {
       const idx = index || 0
 
       this.name = `Bufficorn-${idx}`
       this.ranch = getRanchFromIndex(idx)
+      this.creationIndex = Math.floor(idx / RANCHES_COUNT)
     }
   }
 
@@ -46,6 +50,7 @@ export class Bufficorn {
       name: this.name,
       ranch: this.ranch,
       medals: this.medals,
+      creationIndex: this.creationIndex,
       ...this.stats,
     }
   }
