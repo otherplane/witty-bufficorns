@@ -116,8 +116,7 @@ export default {
   align-content: center;
   color: $brown;
   &.selected {
-    background-color: $opacity-brown;
-    color: $pink;
+    background-color: $opacity-brown-2;
   }
   &.horizontal {
     display: grid;

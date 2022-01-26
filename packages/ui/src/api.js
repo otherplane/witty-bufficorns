@@ -58,6 +58,13 @@ export class ApiService {
     })
   }
 
+  selectBufficorn ({ token, bufficorn }) {
+    return this._post({
+      url: `${this.baseUrl}/players/selected-bufficorn/${bufficorn}`,
+      params: { headers: { authorization: token } }
+    })
+  }
+
   trade ({ bufficorn, to, token }) {
     return this._post({
       url: `${this.baseUrl}/trades`,

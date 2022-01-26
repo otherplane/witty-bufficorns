@@ -75,10 +75,6 @@ export default {
           fill: #bd3800;
           fill-opacity: .3;
         }
-        .selected .shape {
-          stroke: #ffe8ff;
-          fill: #ffe8ff;
-        }
         .shape:hover {
           fill-opacity: .6;
         }

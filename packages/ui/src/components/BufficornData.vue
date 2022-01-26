@@ -2,7 +2,7 @@
   <div class="bufficorn-list-container">
     <div v-if="selectable" class="name-container">
       <p class="name">{{ name }}</p>
-      <div class="pointer" @click="player.selectedBufficorn = name">
+      <div class="pointer" @click="player.updateSelectedBufficorn(index)">
         <svg
           width="26"
           height="25"
@@ -11,7 +11,7 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            :class="{ fill: player.selectedBufficorn === name }"
+            :class="{ fill: player.selectedBufficorn === index }"
             d="M23 10L25.9187 18.6373H35.3637L27.7225 23.9754L30.6412 32.6127L23 27.2746L15.3588 32.6127L18.2775 23.9754L10.6363 18.6373H20.0813L23 10Z"
             fill="transparent"
           />
@@ -29,7 +29,7 @@
       :name="!selectable ? name : null"
       :background-front="backgroundFront"
       :background-back="backgroundBack"
-      :selected="player.selectedBufficorn === name"
+      :selected="player.selectedBufficorn === index"
       :attributes="{
         vigor: attributes.vigor,
         agility: attributes.agility,
@@ -75,7 +75,7 @@ export default {
       default: false
     }
   },
-  setup () {
+  setup (props) {
     const player = useStore()
     return { player }
   }
@@ -96,7 +96,7 @@ export default {
     padding: 0px 8px;
     grid-template-columns: 1fr max-content;
     .fill {
-      fill: $opacity-brown;
+      fill: $brown;
     }
     .name {
       color: $brown;
