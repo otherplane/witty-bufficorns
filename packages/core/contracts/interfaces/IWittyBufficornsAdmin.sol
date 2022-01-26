@@ -38,6 +38,10 @@ interface IWittyBufficornsAdmin {
     /// Sets externally owned account that is authorized to sign farmer awards.
     function setSignator(address _signator) external;
 
-    /// Activates the awarding/minting phase.
+    /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
+    /// and (b), randomness will be requested to the Witnet's oracle.
+    function stopBreeding() external payable;
+
+    /// Starts the Awarding phase, in which players will be able to mint their tokens.
     function startAwarding() external;    
 }

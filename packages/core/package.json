@@ -1,7 +1,7 @@
 {
   "name": "witty-bufficorns-awards",
   "version": "1.0.0",
-  "description": "Witty bufficorns Solidity Contracts",
+  "description": "Witty Bufficorns Solidity Contracts",
   "author": "Witnet Devs <devs@witnet.io>",
   "license": "MIT",
   "private": false,
@@ -16,7 +16,7 @@
   "keywords": [],
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.2",
-    "witnet-solidity-bridge": "~0.5.4"
+    "witnet-solidity-bridge": "^0.5.4"
   },
   "devDependencies": {
     "chai": "4.3.4",

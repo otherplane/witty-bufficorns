@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol";
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -26,10 +28,14 @@ contract WittyBufficornsToken
         IWittyBufficornsView
 {
     using Strings for uint256;
+    using WittyBufficorns for WittyBufficorns.Storage;
+
+    IWitnetRandomness public immutable randomizer;
+    WittyBufficorns.Storage internal __storage;
 
     modifier inStatus(WittyBufficorns.Status status) {
         require(
-            __storage.status == status,
+            __storage.status() == status,
             "WittyBufficornsToken: bad mood"
         );
         _;
@@ -51,18 +57,17 @@ contract WittyBufficornsToken
         _;
     }
 
-    WittyBufficorns.Storage internal __storage;
-
     constructor(
             string memory _name,
             string memory _symbol,
-            address _decorator
+            IWitnetRandomness _randomizer,
+            IWittyBufficornsDecorator _decorator
         )
         ERC721(_name, _symbol)
     {
-        setDecorator(_decorator);
+        setDecorator(address(_decorator));
+        randomizer = _randomizer;
         __storage.signator = msg.sender;
-        __storage.status = WittyBufficorns.Status.Breeding;
     }
 
     // ========================================================================
@@ -122,7 +127,7 @@ contract WittyBufficornsToken
         external view
         returns (WittyBufficorns.Status)
     {
-        return __storage.status;
+        return __storage.status();
     }
 
     /// Sets final scores for the given bufficorn.
@@ -203,17 +208,37 @@ contract WittyBufficornsToken
         emit SignatorSet(_signator);
     }
 
-    /// Activates the minting of farmer awards. 
-    /// @dev Must be called from the signator's address.
-    /// @dev Fails if not in Breeding status.
-    function startAwarding()
-        external
+    /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
+    /// and (b), randomness will be requested to the Witnet's oracle. 
+    /// @dev Must be called from the Signator's address. Fails if not in Breeding status. 
+    /// @dev If no WitnetRandomness address was provided in construction, contract status will directly change to Awarding.
+    function stopBreeding()
+        external payable
         virtual override
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
-        __storage.status = WittyBufficorns.Status.Awarding;
-        emit AwardingBegins(owner());
+        __storage.witnetRandomizeBlock = block.number;
+        if (address(randomizer) != address(0)) {
+            uint _usedFunds = randomizer.randomize{value: msg.value}();
+            if (_usedFunds < msg.value) {
+                payable(msg.sender).transfer(msg.value - _usedFunds);
+            }
+        } else {
+            __storage.witnetRandomness = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+        }   
+    }
+
+    /// Starts the Awarding phase, in which players will be able to mint their tokens.
+    /// @dev Must be called from the Owner's address. Fails if not in Randomizing status. 
+    function startAwarding()
+        external
+        virtual override
+        onlyOwner
+        inStatus(WittyBufficorns.Status.Randomizing)
+    {
+        __storage.witnetRandomness = randomizer.getRandomnessAfter(__storage.witnetRandomizeBlock);
+        emit AwardingBegins(msg.sender);
     }
 
 
@@ -412,20 +437,18 @@ contract WittyBufficornsToken
         __farmer.tokenIds.push(_tokenId);
 
         uint8 _category = uint8(_tokenInfo.award.category);
-        if (_category > uint8(WittyBufficorns.Awards.ThanksForPlaying)) {
-            require(
-                _tokenInfo.award.ranking > 0,
-                "WittyBufficornsToken: special award with no ranking"
-            );
-            if (_category >= uint8(WittyBufficorns.Awards.BestBufficorn)) {
-                // Add token id reference to Bufficorns entity:
-                __storage.bufficorns[
-                    _tokenInfo.award.bufficornId
-                ].tokenIds.push(_tokenId);                    
-            } else {
-                // Add token id reference to Ranches entity:
-                __ranch.tokenIds.push(_tokenId);
-            }
+        require(
+            _tokenInfo.award.ranking > 0,
+            "WittyBufficornsToken: special award with no ranking"
+        );
+        if (_category >= uint8(WittyBufficorns.Awards.BestBufficorn)) {
+            // Best Bufficorns categories: add token id reference to Bufficorns entity
+            __storage.bufficorns[
+                _tokenInfo.award.bufficornId
+            ].tokenIds.push(_tokenId);                    
+        } else {
+            // Best Ranch category: add token id reference to Ranches entity:
+            __ranch.tokenIds.push(_tokenId);
         }
     }
 

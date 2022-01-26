@@ -15,7 +15,9 @@ library WittyBufficorns {
         address signator;
 
         Stats   stats;
-        Status  status;
+
+        uint256 witnetRandomizeBlock;
+        bytes32 witnetRandomness;
         
         mapping (/* tokenId => FarmerAward */ uint256 => TokenInfo) awards;
         mapping (/* bufficornId => Bufficorn */ uint256 => Bufficorn) bufficorns;
@@ -28,8 +30,6 @@ library WittyBufficorns {
     // --- Enums --------------------------------------------------------------
 
     enum Awards {
-        ThanksForPlaying,
-
         BestBreeder,
         BestRanch,
 
@@ -44,6 +44,7 @@ library WittyBufficorns {
 
     enum Status {
         Breeding,
+        Randomizing,
         Awarding
     }
 
@@ -97,40 +98,24 @@ library WittyBufficorns {
         uint256 farmerId;  
         uint256 timestamp;
     }
+
+
+    // ========================================================================
+    // --- Internal: 'Storage' selectors --------------------------------------
+
+    function status(Storage storage self) internal view returns (Status) {
+        if (self.witnetRandomness != bytes32(0)) {
+            return Status.Awarding;
+        } else if (self.witnetRandomizeBlock > 0) {
+            return Status.Randomizing;
+        } else {
+            return Status.Breeding;
+        }
+    }
     
 
     // ========================================================================
     // --- Internal: helper functions -----------------------------------------
-
-    // /// Returns index of Most Significant Bit of given number, applying De Bruijn O(1) algorithm.
-    // function msbDeBruijn32(uint32 _v)
-    //     internal pure
-    //     returns (uint8)
-    // {
-    //     uint8[32] memory _bitPosition = [
-    //             0, 9, 1, 10, 13, 21, 2, 29, 11, 14, 16, 18, 22, 25, 3, 30,
-    //             8, 12, 20, 28, 15, 17, 24, 7, 19, 27, 23, 6, 26, 5, 4, 31
-    //         ];
-    //     _v |= _v >> 1;
-    //     _v |= _v >> 2;
-    //     _v |= _v >> 4;
-    //     _v |= _v >> 8;
-    //     _v |= _v >> 16;
-    //     return _bitPosition[
-    //         uint32(_v * uint256(0x07c4acdd)) >> 27
-    //     ];
-    // }
-
-    // /// Generates pseudo-random number uniformly distributed in range [0 .. _range).
-    // function randomUint8(bytes32 _seed, uint256 _index, uint8 _range)
-    //     internal pure
-    //     returns (uint8)
-    // {
-    //     assert(_range > 0);
-    //     uint8 _flagBits = uint8(255 - msbDeBruijn32(uint32(_range)));
-    //     uint256 _number = uint256(keccak256(abi.encode(_seed, _index))) & uint256(2 ** _flagBits - 1);
-    //     return uint8((_number * _range) >> _flagBits); 
-    // }
 
     /// Recovers address from hash and signature.
     function recoverAddr(bytes32 _hash, bytes memory _signature)
