@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="[type]">
+  <button class="btn" :class="{ [type]: type, slim }">
     <slot class="btn-content"> </slot>
   </button>
 </template>
@@ -13,6 +13,10 @@ export default {
       validator (value) {
         return ['primary', 'secondary', 'disable', 'dark'].includes(value)
       }
+    },
+    slim: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -24,12 +28,11 @@ export default {
   color: white;
   padding: 16px 16px;
   border-radius: 4px;
-  font-family: Zilla Slab;
+  font-family: Road Store, sans-serif;
   font-weight: bold;
-
   &.primary {
-    color: $black;
-    background: $orange;
+    color: $pink;
+    background: $brown;
   }
   &.secondary {
     color: $black;
@@ -38,11 +41,14 @@ export default {
   }
   &.dark {
     color: $brown;
-    background: $beige;
+    background: $pink;
   }
   &.disable {
     opacity: 0.6;
     cursor: no-drop;
+  }
+  &.slim {
+    padding: 8px 8px;
   }
 }
 </style>

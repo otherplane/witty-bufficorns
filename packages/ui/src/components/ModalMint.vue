@@ -2,22 +2,24 @@
   <div class="bg-beige px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
     <div class="sm:flex sm:items-start">
       <div
-        class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10"
+        class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-beige sm:mx-0 sm:h-10 sm:w-10"
       >
-        <!-- Heroicon name: outline/exclamation -->
         <svg
-          class="h-6 w-6 text-yellow-600"
-          xmlns="http://www.w3.org/2000/svg"
+          width="46"
+          height="45"
+          viewBox="0 0 46 45"
           fill="none"
-          viewBox="0 0 24 24"
-          stroke="black"
-          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            class="fill"
+            d="M23 10L25.9187 18.6373H35.3637L27.7225 23.9754L30.6412 32.6127L23 27.2746L15.3588 32.6127L18.2775 23.9754L10.6363 18.6373H20.0813L23 10Z"
+            fill="#BD3800"
+          />
+          <path
+            d="M23 3.1725L27.2148 15.8623L27.4422 16.5471H28.1638H41.7412L30.7759 24.3407L30.1731 24.7691L30.4062 25.471L34.6063 38.1166L23.5793 30.2791L23 29.8674L22.4207 30.2791L11.3937 38.1166L15.5938 25.471L15.8269 24.7691L15.2241 24.3407L4.25881 16.5471H17.8362H18.5578L18.7852 15.8623L23 3.1725Z"
+            stroke="black"
             stroke-width="2"
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
           />
         </svg>
       </div>
@@ -42,14 +44,14 @@
     <button
       @click="mint"
       type="button"
-      class="w-full inline-flex justify-center rounded-md border border-orange shadow-sm px-4 py-2 bg-orange text-base font-bold text-black hover:bg-orange focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+      class="w-full inline-flex justify-center rounded-md border border-orange shadow-sm px-4 py-2 bg-orange text-base font-bold text-pink hover:bg-orange focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
     >
       CONTINUE
     </button>
     <button
       @click="$parent.$emit('close')"
       type="button"
-      class="mt-3 w-full inline-flex justify-center rounded-md border-orange shadow-sm px-4 py-2 bg-beige text-base font-bold text-black hover:bg-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+      class="mt-3 w-full inline-flex justify-center rounded-md border-orange shadow-sm px-4 py-2 bg-transparent text-base font-bold text-brown hover:bg-orange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
     >
       CANCEL
     </button>
