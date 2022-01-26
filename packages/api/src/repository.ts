@@ -80,6 +80,10 @@ export class Repository<T> {
     return await this.collection.find(filter).toArray()
   }
 
+  public async getSortedByName(filter: Filter<T>): Promise<Array<WithId<T>>> {
+    return await this.collection.find(filter, { sort: { name: 1 } }).toArray()
+  }
+
   public async getById(id: ObjectId | string): Promise<WithId<T> | null> {
     // TODO: Remove any
     const filter: Filter<T> = {
