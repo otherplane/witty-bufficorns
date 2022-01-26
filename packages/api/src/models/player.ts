@@ -2,21 +2,17 @@ import crypto from 'crypto'
 import { Collection, Db } from 'mongodb'
 
 import {
+  BUFFICORNS_INDEX_GROUP_BY_RANCH,
   PLAYER_KEY_LENGTH_BYTES,
   PLAYER_KEY_SALT,
   RANCHES_COUNT,
   TRADE_POINTS,
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
+  TRAIT_BY_RANCH,
 } from '../constants'
 import { getRanchFromIndex, generateUsernameList } from '../utils'
-import {
-  DbPlayerVTO,
-  DbTradeVTO,
-  RanchName,
-  ranchToTrait,
-  Resource,
-} from '../types'
+import { DbPlayerVTO, DbTradeVTO, Resource } from '../types'
 import { Repository } from '../repository'
 import { Player } from '../domain/player'
 
@@ -46,7 +42,10 @@ export class PlayerModel {
     const ranch = getRanchFromIndex(index)
     const points: number = 0
 
-    const selectedBufficorn = Math.floor(index / RANCHES_COUNT) % 4
+    const bufficornIndex = Math.floor(index / RANCHES_COUNT) % 4
+
+    const selectedBufficorn =
+      BUFFICORNS_INDEX_GROUP_BY_RANCH[ranch][bufficornIndex]
 
     return new Player({
       key,
@@ -108,8 +107,8 @@ export class PlayerModel {
     }
 
     // Get trait
-    const ranchName = RanchName[player.ranch]
-    const trait = ranchToTrait[ranchName]
+    const ranchName = player.ranch
+    const trait = TRAIT_BY_RANCH[ranchName]
 
     return {
       amount,

@@ -1,12 +1,13 @@
 import {
   BufficornLeaderboardInfo,
+  BufficornName,
   BufficornVTO,
   RanchName,
   Stats,
   Trait,
 } from '../types'
 import { getRanchFromIndex } from '../utils'
-import { RANCHES_COUNT } from '../constants'
+import { BUFFICORN_INDEX } from '../constants'
 
 export class Bufficorn {
   public stats: Stats = {
@@ -18,9 +19,9 @@ export class Bufficorn {
     vigor: 0,
   }
   public medals: Array<string> = []
-  public name: string
-  public creationIndex: number
+  public name
   public ranch: RanchName
+  public index: number
 
   constructor(vto?: BufficornVTO, index?: number) {
     if (vto) {
@@ -35,13 +36,14 @@ export class Bufficorn {
         vigor: vto.vigor,
       }
       this.ranch = vto.ranch
-      this.creationIndex = vto.creationIndex
+      this.index = vto.index
     } else {
       const idx = index || 0
 
-      this.name = `Bufficorn-${idx}`
+      this.name = Bufficorn.getBufficornName(idx)
       this.ranch = getRanchFromIndex(idx)
-      this.creationIndex = Math.floor(idx / RANCHES_COUNT)
+      // number from 0 to 23
+      this.index = idx
     }
   }
 
@@ -50,7 +52,7 @@ export class Bufficorn {
       name: this.name,
       ranch: this.ranch,
       medals: this.medals,
-      creationIndex: this.creationIndex,
+      index: this.index,
       ...this.stats,
     }
   }
@@ -72,5 +74,13 @@ export class Bufficorn {
         score: b.calculateScore(trait),
         position: index,
       }))
+  }
+
+  static getBufficornName(index: number): BufficornName {
+    if (index < 0 || index > 23) {
+      throw new Error('Invalid index')
+    }
+
+    return BUFFICORN_INDEX[index]
   }
 }

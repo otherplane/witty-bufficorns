@@ -120,10 +120,13 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
       const index = request.params.index
 
-      // Check 3: bufficorn index is valid
-      if (index < 0 || index > 3) {
-        return reply.status(404).send(new Error(`Index must be from 0 to 3`))
+      // Check 3: bufficorn belong to player's ranch
+      try {
+        Ranch.checkIfBufficornsBelongToRanch([index], player.ranch)
+      } catch (err) {
+        return reply.status(404).send(err as Error)
       }
+
       const updatedPlayer = await playerModel.updateSelectedBufficorn(
         player.username,
         index

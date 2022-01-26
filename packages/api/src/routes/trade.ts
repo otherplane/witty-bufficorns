@@ -80,6 +80,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const lastTradeFrom = await tradeModel.getLast({
         from: fromPlayer.username,
       })
+
       if (lastTradeFrom && lastTradeFrom.ends > currentTimestamp) {
         return reply
           .status(409)

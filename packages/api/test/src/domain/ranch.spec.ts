@@ -51,14 +51,15 @@ describe('ranch.ts', () => {
     const bufficorn_2 = auxBufficorn(2, [32, 42, 52, 62, 12, 22])
 
     const ranch_0 = new Ranch(undefined, 0, [bufficorn_0])
-    const ranch_1 = new Ranch(undefined, 0, [bufficorn_1])
-    const ranch_2 = new Ranch(undefined, 0, [bufficorn_2])
+    const ranch_1 = new Ranch(undefined, 1, [bufficorn_1])
+    const ranch_2 = new Ranch(undefined, 2, [bufficorn_2])
 
     const sortedRanches = Ranch.getLeaderboard([ranch_0, ranch_1, ranch_2])
 
     const expected_0 = auxRanchInfo(ranch_0, 2, 10)
     const expected_1 = auxRanchInfo(ranch_1, 1, 11)
     const expected_2 = auxRanchInfo(ranch_2, 0, 12)
+
     expect(sortedRanches).toStrictEqual([expected_2, expected_1, expected_0])
   })
 })
