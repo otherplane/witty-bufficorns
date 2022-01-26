@@ -23,7 +23,6 @@ describe('Route /trade', () => {
         url: '/trades',
         payload: {
           to: initialPlayers[0].key,
-          bufficorn: 'Bufficorn-0',
         },
         headers: {
           Authorization: token,
@@ -75,10 +74,10 @@ describe('Route /trade', () => {
   })
 
   it('should sum points bufficorn after feed', async () => {
-    const bufficornName = 'Bufficorn-6'
+    const bufficornName = 'Bufficorn-1'
 
-    const token = await authenticatePlayer(initialPlayers[0].key)
-    await authenticatePlayer(initialPlayers[1].key)
+    const token0 = await authenticatePlayer(initialPlayers[0].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
 
     await serverInject(
       {
@@ -86,10 +85,9 @@ describe('Route /trade', () => {
         url: '/trades',
         payload: {
           to: initialPlayers[1].key,
-          bufficorn: bufficornName,
         },
         headers: {
-          Authorization: token,
+          Authorization: token0,
         },
       },
       (err, response) => {
@@ -99,16 +97,16 @@ describe('Route /trade', () => {
           'application/json; charset=utf-8'
         )
         expect(response.json().resource.amount).toBe(TRADE_POINTS)
-        expect(response.json().resource.trait).toBe('speed')
+        expect(response.json().resource.trait).toBe('vigor')
       }
     )
 
     await serverInject(
       {
         method: 'GET',
-        url: `/players/${initialPlayers[0].key}`,
+        url: `/players/${initialPlayers[1].key}`,
         headers: {
-          Authorization: token,
+          Authorization: token1,
         },
       },
       (err, response) => {
@@ -127,13 +125,13 @@ describe('Route /trade', () => {
             .json()
             .player.ranch.bufficorns.find(
               (bufficorn) => bufficorn.name === bufficornName
-            ).speed
+            ).vigor
         ).toBe(TRADE_POINTS)
       }
     )
   })
 
-  it('should sum less points if incubated several times', async () => {
+  it('should sum less points if traded several times', async () => {
     const bufficornName = 'Bufficorn-0'
 
     const token = await authenticatePlayer(initialPlayers[0].key)
@@ -144,7 +142,6 @@ describe('Route /trade', () => {
         url: '/trades',
         payload: {
           to: initialPlayers[1].key,
-          bufficorn: 'Bufficorn-0',
         },
         headers: {
           Authorization: token,
@@ -163,7 +160,7 @@ describe('Route /trade', () => {
           response.json().timestamp + TRADE_DURATION_MILLIS
         )
         expect(response.json().resource.amount).toBe(TRADE_POINTS)
-        expect(response.json().resource.trait).toBe('speed')
+        expect(response.json().resource.trait).toBe('vigor')
       }
     )
 
@@ -176,7 +173,6 @@ describe('Route /trade', () => {
         url: '/trades',
         payload: {
           to: initialPlayers[1].key,
-          bufficorn: bufficornName,
         },
         headers: {
           Authorization: token,
@@ -195,7 +191,7 @@ describe('Route /trade', () => {
           response.json().timestamp + TRADE_DURATION_MILLIS
         )
         expect(response.json().resource.amount).toBe(secondTradePoints)
-        expect(response.json().resource.trait).toBe('speed')
+        expect(response.json().resource.trait).toBe('vigor')
       }
     )
 
