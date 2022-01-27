@@ -1,9 +1,9 @@
 <template>
   <div class="bufficorns-container">
     <BufficornData
-      v-for="(bufficorn, index) in bufficornsData"
+      v-for="bufficorn in bufficornsData"
       :bufficorn-list="player.bufficornsGlobalStats"
-      :index="index"
+      :index="bufficorn.index"
       :key="bufficorn.name"
       :name="bufficorn.name"
       :background-front="true"

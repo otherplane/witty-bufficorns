@@ -1,27 +1,53 @@
 <template>
   <div class="counter">
     <transition name="fade">
-      <div v-if="player.tradeInfo && player.tradeOut" class="left">
-        <p class="label">TIME LEFT TO SEND</p>
+      <div v-if="player.tradeOut" class="left">
+        <p class="label">
+          Sending
+          <span class="highlight">{{
+            player.tradeOut?.resource?.amount || 'null'
+          }}</span>
+          points of
+          <span class="highlight">{{
+            player.tradeOut?.resource?.trait.toUpperCase() || 'null'
+          }}</span>
+          to
+          <span class="highlight">{{
+            player.tradeOut?.to.toUpperCase() || 'null'
+          }}</span>
+        </p>
         <div class="time-container">
           <TimeLeft
             class="time-left"
-            :timestamp="player.tradeOut.timestamp"
+            :timestamp="player.tradeOut.ends"
             :seconds="true"
-            @clear-timestamp="clearTimestamp"
+            @clear-timestamp="player.tradeOut = null"
           />
         </div>
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="player.tradeInfo && player.tradeIn.timestamp" class="right">
-        <p class="label">TIME LEFT TO RECEIVE</p>
+      <div v-if="player.tradeIn" class="right">
+        <p class="label">
+          Receiving
+          <span class="highlight">{{
+            player.tradeIn?.resource?.amount || 'null'
+          }}</span>
+          points of
+          <span class="highlight">{{
+            player.tradeIn?.resource?.trait.toUpperCase() || 'null'
+          }}</span>
+          from
+          <span class="highlight">{{
+            player.tradeIn?.to.toUpperCase() || 'null'
+          }}</span>
+        </p>
         <div class="time-container">
           <TimeLeft
             class="time-left"
-            :timestamp="player.tradeIn.timestamp"
+            :timestamp="player.tradeIn.ends"
             :seconds="true"
-            @clear-timestamp="clearTimestamp"
+            @clear-timestamp="player.tradeIn = null"
           />
         </div>
       </div>
@@ -36,11 +62,8 @@ import { useStore } from '@/stores/player'
 export default {
   setup (props) {
     const player = useStore()
-    const clearTimestamp = () => {
-      player.tradeInfo = null
-    }
     const show = ref(false)
-    return { player, clearTimestamp, show }
+    return { player, show }
   }
 }
 </script>
@@ -80,8 +103,14 @@ export default {
     grid-column: 2;
   }
   .label {
-    font-weight: bold;
+    text-align: left;
     margin-bottom: 8px;
+    color: $brown;
+    font-weight: bold;
+    font-size: 12px;
+    .highlight {
+      color: $brown;
+    }
   }
   .time-left {
     width: max-content;

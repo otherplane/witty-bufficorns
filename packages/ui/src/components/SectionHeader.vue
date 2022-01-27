@@ -7,19 +7,29 @@
       </div>
     </router-link>
     <router-link to="/">
-      <img class="ranch-img" src="@/assets/ranchLogo.svg" alt="Back button" />
+      <img
+        class="ranch-img"
+        :src="ranchImage(player.ranch.name)"
+        alt="Back button"
+      />
     </router-link>
     <h3 class="title-section">{{ title }}</h3>
   </div>
 </template>
 
 <script>
+import { ranchImage } from '@/composables/importRanchImage.js'
+import { useStore } from '@/stores/player'
 export default {
   props: {
     title: {
       type: String,
       required: true
     }
+  },
+  setup () {
+    const player = useStore()
+    return { ranchImage, player }
   }
 }
 </script>
@@ -44,6 +54,8 @@ export default {
   }
   .ranch-img {
     width: 138px;
+    height: 100px;
+    margin-bottom: 8px;
   }
   .title-section {
     font-family: Road Store;

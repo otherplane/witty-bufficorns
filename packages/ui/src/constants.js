@@ -20,12 +20,12 @@ export const BASE_URL =
   import.meta.env.VITE_BASE_URL || 'https://wittycreatures.com'
 
 export const RANCHES = {
-  ['Opolis Reservation']: 'opolis3',
-  [`The Ol' Algoranch`]: 'reef3',
-  [`Vega Slopes Range`]: 'vega3',
-  [`Balancer Peak State`]: 'harmony3',
-  [`Gold Reef Co.`]: 'balancer3',
-  [`Infinite Harmony Farm`]: 'algorand'
+  ['Opolis Reservation']: 'opolis',
+  [`The Ol' Algoranch`]: 'algorand',
+  [`Vega Slopes Range`]: 'vega',
+  [`Balancer Peak State`]: 'balancer',
+  [`Gold Reef Co.`]: 'reef',
+  [`Infinite Harmony Farm`]: 'harmony'
 }
 
 export const STATS_FILTERS = {

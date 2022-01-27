@@ -23,7 +23,7 @@
         </div>
         <img
           class="logo"
-          :src="ranchImage(`Infinite Harmony Farm`)"
+          :src="ranchImage(player.ranch.name)"
           alt="Witty Bufficorns ranch logo"
         />
       </div>
@@ -76,7 +76,7 @@ import imageUrl from '@/assets/egg-example.png'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
-import { RANCHES } from '../constants'
+import { ranchImage } from '@/composables/importRanchImage.js'
 
 export default {
   setup () {
@@ -93,7 +93,6 @@ export default {
     let timeout
 
     onBeforeMount(async () => {
-      await player.getInfo()
       await player.getGlobalStats()
       await player.getMintInfo()
       await player.getPreview()
@@ -122,10 +121,6 @@ export default {
     const mintStatus = computed(() =>
       player.mintInfo.blockHash ? 'minted' : 'pending'
     )
-
-    const ranchImage = (name) => {
-      return new URL(`/src/assets/${RANCHES[name]}.svg`, import.meta.url).href
-    }
 
     function openModal (name) {
       const needProvider = name === 'mint' || name === 'preview'
@@ -193,6 +188,7 @@ export default {
   .logo {
     align-self: center;
     width: 150px;
+    height: 120px;
   }
   .navbar {
     top: 8px;

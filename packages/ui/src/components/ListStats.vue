@@ -4,7 +4,7 @@
       <BufficornData
         v-for="(bufficorn, index) in sortedBufficornsData"
         :bufficorn-list="sortedBufficornsData"
-        :index="index"
+        :index="bufficorn.index"
         :key="bufficorn.name"
         :name="bufficorn.name"
         :background-front="!!(index % 2)"
