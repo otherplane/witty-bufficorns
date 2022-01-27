@@ -84,9 +84,18 @@ export class Repository<T> {
     filter: Filter<T>,
     sortBy: {
       [key: string]: 1 | -1 | 'asc' | 'desc' | 'ascending' | 'descending'
-    }
+    },
+    paginationParams?: { limit: number; offset: number }
   ): Promise<Array<WithId<T>>> {
-    return await this.collection.find(filter, { sort: sortBy }).toArray()
+    if (paginationParams) {
+      return this.collection
+        .find(filter, { sort: sortBy })
+        .limit(paginationParams.limit)
+        .skip(paginationParams.offset)
+        .toArray()
+    } else {
+      return this.collection.find(filter, { sort: sortBy }).toArray()
+    }
   }
 
   public async getById(id: ObjectId | string): Promise<WithId<T> | null> {

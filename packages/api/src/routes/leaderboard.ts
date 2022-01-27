@@ -42,7 +42,10 @@ const leaderboard: FastifyPluginAsync = async (
       })
       const sorted_ranches = Ranch.getLeaderboard(ranches)
 
-      const players: Array<Player> = await playerModel.getAll()
+      const players: Array<Player> = await playerModel.getMany({
+        limit: request.query.limit || 10,
+        offset: request.query.offset || 0,
+      })
       const sorted_players = Player.getLeaderboard(players)
 
       return reply.status(200).send({

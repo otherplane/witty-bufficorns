@@ -116,11 +116,20 @@ export class PlayerModel {
     }
   }
 
-  public async getAll(): Promise<Array<Player>> {
+  public async getMany(paginationParams: {
+    limit: number
+    offset: number
+  }): Promise<Array<Player>> {
     // TODO: Remove mongoDB $exists from model
-    const vtos = await this.repository.get({
-      token: { $exists: true },
-    })
+    const vtos = await this.repository.getSortedBy(
+      {
+        token: { $exists: true },
+      },
+      {
+        score: 1,
+      },
+      paginationParams
+    )
 
     return vtos.map((vto) => new Player(vto))
   }

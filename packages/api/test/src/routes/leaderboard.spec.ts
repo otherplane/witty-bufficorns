@@ -223,15 +223,33 @@ describe('Route /leaderboard', () => {
       )
     })
 
-    it.skip('players', async () => {
-      const token = await authenticatePlayer(initialPlayers[0].key)
+    it('players', async () => {
+      const token0 = await authenticatePlayer(initialPlayers[0].key)
+      await authenticatePlayer(initialPlayers[1].key)
+
+      // Trade with player 1
+      await serverInject(
+        {
+          method: 'POST',
+          url: '/trades',
+          payload: {
+            to: initialPlayers[1].key,
+          },
+          headers: {
+            Authorization: token0,
+          },
+        },
+        (err, response) => {
+          expect(response.statusCode).toBe(200)
+        }
+      )
 
       await serverInject(
         {
           method: 'GET',
           url: '/leaderboard',
           headers: {
-            Authorization: token,
+            Authorization: token0,
           },
         },
         (err, response) => {
@@ -242,7 +260,11 @@ describe('Route /leaderboard', () => {
 
           players.forEach((player, index) => {
             expect(player.username).toBeTruthy()
-            expect(typeof player.points).toBe('number')
+            if (player.username === initialPlayers[1].username) {
+              expect(player.points).toBe(800)
+            } else {
+              expect(player.points).toBe(0)
+            }
             expect(typeof player.position).toBe('number')
             expect(player.position).toBe(index)
           })
@@ -251,7 +273,76 @@ describe('Route /leaderboard', () => {
     })
   })
 
-  it.todo('should return correct values when RESOURCE param is given')
-  it.todo('should return correct values when TRAIT param is given')
-  it.todo('should return correct values when PAGINATION param are given')
+  it('should return sorted bufficorns when RESOURCE param is given', async () => {
+    const token0 = await authenticatePlayer(initialPlayers[0].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
+
+    // Trade with player 1
+    await serverInject(
+      {
+        method: 'POST',
+        url: '/trades',
+        payload: {
+          to: initialPlayers[1].key,
+        },
+        headers: {
+          Authorization: token0,
+        },
+      },
+      (err, response) => {
+        expect(response.statusCode).toBe(200)
+      }
+    )
+
+    await serverInject(
+      {
+        method: 'GET',
+        url: '/leaderboard?resource=vigor',
+        headers: {
+          Authorization: token1,
+        },
+      },
+      (err, response) => {
+        expect(response.statusCode).toBe(200)
+        expect(response.json().bufficorns[0].vigor).toBe(TRADE_POINTS)
+      }
+    )
+  })
+
+  it('should return correct values when PAGINATION params are given', async () => {
+    const token = await authenticatePlayer(initialPlayers[0].key)
+
+    let firstPlayer
+    await serverInject(
+      {
+        method: 'GET',
+        url: '/leaderboard?limit=1&offset=0',
+        headers: {
+          Authorization: token,
+        },
+      },
+      (err, response) => {
+        expect(response.statusCode).toBe(200)
+        expect(response.json().players.length).toBe(1)
+        firstPlayer = response.json().players[0]
+      }
+    )
+
+    await serverInject(
+      {
+        method: 'GET',
+        url: '/leaderboard?limit=1&offset=1',
+        headers: {
+          Authorization: token,
+        },
+      },
+      (err, response) => {
+        expect(response.statusCode).toBe(200)
+        expect(response.json().players.length).toBe(1)
+        expect(response.json().players[0].username).not.toBe(
+          firstPlayer.username
+        )
+      }
+    )
+  })
 })
