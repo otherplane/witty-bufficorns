@@ -43,7 +43,7 @@ export const STATS_FILTERS = {
   bufficorns: {
     key: 'bufficorns',
     active: false,
-    default: 'vigor',
+    default: 'overall',
     subTabs: {
       overall: {
         key: 'overall',

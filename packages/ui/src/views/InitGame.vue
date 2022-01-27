@@ -1,7 +1,7 @@
 <template>
-  <MainLayout :isBackground="true">
+  <MainLayout :isBackground="true" :isBufficorn="true">
     <div class="init-container">
-      <h1 class="main-title">WITTY BUFFICORNS</h1>
+      <svgImage :svg="title" />
       <h2 class="main-subtile">A SOCIAL GAME BY WITNET X ETHDENVER</h2>
       <router-link to="/disclaimer" class="link">
         <Button class="btn" type="dark">
@@ -12,10 +12,20 @@
   </MainLayout>
 </template>
 
+<script>
+import title from '@/assets/title.svg?raw'
+export default {
+  setup () {
+    return { title }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .init-container {
   display: grid;
   align-items: center;
+  row-gap: 16px;
   .main-title,
   .main-subtile {
     font-family: Road Store;

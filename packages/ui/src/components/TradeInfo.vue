@@ -89,8 +89,8 @@ export default {
   grid-template-rows: max-content;
   .time-container {
     width: 100%;
-    background-color: $opacity-pink;
-    color: $brown;
+    background-color: var(--primary-color-opacity-2);
+    color: var(--primary-color);
     font-weight: 600;
     padding: 0px 8px;
     border-radius: 4px;
@@ -105,11 +105,11 @@ export default {
   .label {
     text-align: left;
     margin-bottom: 8px;
-    color: $brown;
+    color: var(--primary-color);
     font-weight: bold;
     font-size: 12px;
     .highlight {
-      color: $brown;
+      color: var(--primary-color);
     }
   }
   .time-left {
@@ -121,7 +121,7 @@ export default {
 }
 .carousel {
   border-radius: 4px;
-  border: 1px solid $brown;
+  border: 1px solid var(--primary-color);
   .label {
     font-weight: bold;
   }

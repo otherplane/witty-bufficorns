@@ -2,14 +2,14 @@
   <div class="header">
     <router-link to="/">
       <div class="back-container">
-        <img class="angle" src="@/assets/angle-left.svg" alt="angle-left" />
+        <svgImage class="angle" :svg="angleLeft" />
         <p>BACK</p>
       </div>
     </router-link>
     <router-link to="/">
       <img
         class="ranch-img"
-        :src="ranchImage(player.ranch.name)"
+        :src="importSvg(RANCHES[player.ranch.name])"
         alt="Back button"
       />
     </router-link>
@@ -18,8 +18,11 @@
 </template>
 
 <script>
-import { ranchImage } from '@/composables/importRanchImage.js'
+import { importSvg } from '@/composables/importSvg.js'
+import { RANCHES } from '@/constants.js'
+import angleLeft from '@/assets/angle-left.svg?raw'
 import { useStore } from '@/stores/player'
+
 export default {
   props: {
     title: {
@@ -29,7 +32,7 @@ export default {
   },
   setup () {
     const player = useStore()
-    return { ranchImage, player }
+    return { player, RANCHES, importSvg, angleLeft }
   }
 }
 </script>
@@ -47,7 +50,7 @@ export default {
     top: 16px;
     left: 16px;
     font-weight: 600;
-    color: $brown;
+    color: var(--primary-color);
   }
   .angle {
     margin-right: 8px;
@@ -58,10 +61,10 @@ export default {
     margin-bottom: 8px;
   }
   .title-section {
-    font-family: Road Store;
+    font-family: 'Road Store', sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: $brown;
+    color: var(--primary-color);
   }
 }
 </style>

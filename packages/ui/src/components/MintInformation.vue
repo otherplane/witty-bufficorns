@@ -9,11 +9,7 @@
           target="_blank"
           >{{ player.mintInfo.transactionHash }}
         </a>
-        <img
-          class="external-link-icon"
-          src="@/assets/external-black.svg"
-          alt=""
-        />
+        <svgImage class="external-link-icon" :svg="externalLink" />
       </div>
     </div>
     <div class="mint-status" v-if="parseInt(player?.data?.tokenId) !== 0">
@@ -21,11 +17,7 @@
         <a :href="`${openseaBaseUrl}/${player.data.tokenId}`" target="_blank"
           >See on OpenSea
         </a>
-        <img
-          class="external-link-icon"
-          src="@/assets/external-black.svg"
-          alt=""
-        />
+        <svgImage class="external-link-icon" :svg="externalLink" />
       </div>
     </div>
   </div>
@@ -35,6 +27,7 @@
 import { useStore } from '@/stores/player'
 import { computed } from 'vue'
 import imageUrl from '@/assets/egg-example.png'
+import externalLink from '@/assets/external-black.svg?raw'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
 
 export default {
@@ -49,6 +42,7 @@ export default {
       openseaBaseUrl: OPENSEA_BASE_URL,
       player,
       imageUrl,
+      externalLink,
       mintStatus
     }
   }
@@ -57,7 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 .mint-content {
-  border: 1px solid $brown;
+  border: 1px solid var(--primary-color);
   justify-items: center;
   border-radius: 4px;
   display: grid;

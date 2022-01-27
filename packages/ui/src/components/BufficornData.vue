@@ -96,10 +96,10 @@ export default {
     padding: 0px 8px;
     grid-template-columns: 1fr max-content;
     .fill {
-      fill: $brown;
+      fill: var(--primary-color);
     }
     .name {
-      color: $brown;
+      color: var(--primary-color);
       font-weight: bold;
     }
     .pointer {

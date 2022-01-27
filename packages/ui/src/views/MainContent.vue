@@ -4,7 +4,7 @@
       <div class="header">
         <div class="farmer-info">
           <NavBar class="navbar" @openExportModal="openModal('export')" />
-          <p class="subtitle player-id">{{ player.username.toUpperCase() }}:</p>
+          <p class="subtitle player-id">{{ player.username.toUpperCase() }}</p>
           <p class="subtitle">
             <span class="points-bold">{{ player.playerPoints }}</span> points
           </p>
@@ -23,7 +23,7 @@
         </div>
         <img
           class="logo"
-          :src="ranchImage(player.ranch.name)"
+          :src="importSvg(RANCHES[player.ranch.name])"
           alt="Witty Bufficorns ranch logo"
         />
       </div>
@@ -75,8 +75,8 @@ import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
 import imageUrl from '@/assets/egg-example.png'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
-import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
-import { ranchImage } from '@/composables/importRanchImage.js'
+import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL, RANCHES } from '../constants'
+import { importSvg } from '@/composables/importSvg.js'
 
 export default {
   setup () {
@@ -163,7 +163,8 @@ export default {
       preview: web3WittyBufficorns.preview,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
       getData: web3WittyBufficorns.getData,
-      ranchImage
+      importSvg,
+      RANCHES
     }
   }
 }
@@ -183,19 +184,21 @@ export default {
   justify-items: flex-end;
   align-items: flex-end;
   .farmer-info {
-    margin-top: 34px;
+    margin-bottom: 16px;
   }
   .logo {
     align-self: center;
     width: 150px;
-    height: 120px;
+    height: 148px;
   }
   .navbar {
     top: 8px;
     grid-row: 1;
   }
   .player-id {
-    color: $brown;
+    font-family: Road Store;
+    font-size: 18px;
+    color: var(--primary-color);
     font-weight: bold;
   }
   .points-bold {

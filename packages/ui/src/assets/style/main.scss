@@ -4,41 +4,121 @@
   src: local('Road Store'), url('../fonts/ROADSTORE.ttf') format('truetype'),
     url('../fonts/ROADSTORE.otf') format('otf');
 }
+@font-face {
+  font-family: 'Brother Bear';
+  src: local('Brother Bear'), url('../fonts/BrotherBear.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Confetti Western';
+  src: local('Confetti Western'),
+    url('../fonts/ConfettiWestern.otf') format('otf');
+}
+@font-face {
+  font-family: 'Golden Silver';
+  src: local('Golden Silver'),
+    url('../fonts/GoldenSilver.ttf') format('truetype'),
+    url('../fonts/Golden Silver.otf') format('otf');
+}
+@font-face {
+  font-family: 'Mount Hills';
+  src: local('Mount Hills'), url('../fonts/MountHills.otf') format('otf');
+}
+@font-face {
+  font-family: 'Soccer Leage';
+  src: local('Soccer Leage'), url('../fonts/SoccerLeage.ttf') format('truetype');
+}
+
+$primary-color: var(--primary-color);
+$primary-color-opacity-1: var(--primary-color-opacity-1);
+$primary-color-opacity-2: var(--primary-color-opacity-2);
+
 $beige: #eedba5;
+$white: #f0f0f0;
 $opacity-beige: #eedba570;
-$orange: #fc9700;
+$orange: #ff9100;
+$yellow: #ffcc00;
 $brown: #bd3800;
 $opacity-brown: #bd390075;
-$opacity-brown-2: #bd390034;
-$pink: #ffe8ff;
+$opacity-brown-2: #bd39001a;
 $opacity-pink: #ffe8ff70;
 $opacity-pink-2: #ffe8ffc5;
+$pink: #ffe8ffc5;
+
+$balancer: #1a1a1a;
+$balancer-opacity-1: #1a1a1a75;
+$balancer-opacity-2: #1a1a1a10;
+$reef: #cc1919;
+$reef-opacity-1: #cc191975;
+$reef-opacity-2: #cc191910;
+$vega: #124ca1;
+$vega-opacity-1: #124ca175;
+$vega-opacity-2: #124ca110;
+$algorand: #ee9c03;
+$algorand-opacity-1: #ffad0075;
+$algorand-opacity-2: #ffad0010;
+$opolis: #512791;
+$opolis-opacity-1: #51279175;
+$opolis-opacity-2: #51279110;
+$harmony: #217821;
+$harmony-opacity-1: #21782175;
+$harmony-opacity-2: #21782110;
 
 html,
 body {
-  font-family: Zilla Slab;
+  font-family: 'Zilla Slab';
+  --primary-color: #{$brown};
 }
-.bg-beige {
-  background-color: $beige !important;
-  background-image: url('../grainy-gradient.svg');
+.opolis {
+  --primary-color: #{$opolis};
+  --primary-color-opacity-1: #{$opolis-opacity-1};
+  --primary-color-opacity-2: #{$opolis-opacity-2};
+}
+.harmony {
+  --primary-color: #{$harmony};
+  --primary-color-opacity-1: #{$harmony-opacity-1};
+  --primary-color-opacity-2: #{$harmony-opacity-2};
+}
+.algorand {
+  --primary-color: #{$algorand};
+  --primary-color-opacity-1: #{$algorand-opacity-1};
+  --primary-color-opacity-2: #{$algorand-opacity-2};
+}
+.vega {
+  --primary-color: #{$vega};
+  --primary-color-opacity-1: #{$vega-opacity-1};
+  --primary-color-opacity-2: #{$vega-opacity-2};
+}
+.reef {
+  --primary-color: #{$reef};
+  --primary-color-opacity-1: #{$reef-opacity-1};
+  --primary-color-opacity-2: #{$reef-opacity-2};
+}
+.balancer {
+  --primary-color: #{$balancer};
+  --primary-color-opacity-1: #{$balancer-opacity-1};
+  --primary-color-opacity-2: #{$balancer-opacity-2};
+}
+
+.bg-white {
+  background-color: $white !important;
 }
 .text-pink {
-  color: $pink;
+  color: $white;
 }
 .text-brown {
-  color: $brown;
+  color: var(--primary-color);
 }
 .bg-beige-transparent {
   background-color: $opacity-beige !important;
 }
-.bg-orange {
-  background-color: $brown !important;
+.bg-primary {
+  background-color: var(--primary-color) !important;
 }
-.border-orange {
-  border: 2px solid $brown !important;
+.border-primary {
+  border: 2px solid var(--primary-color) !important;
 }
-.text-red {
-  color: $brown;
+.text-primary {
+  color: var(--primary-color);
 }
 
 .container {
@@ -60,7 +140,7 @@ body {
   font-weight: lighter;
   &.label {
     font-size: 12px;
-    color: $brown;
+    color: var(--primary-color);
     font-weight: bold;
   }
 }
@@ -68,7 +148,7 @@ body {
   font-family: Road Store, Zilla Slab sans-serif;
   font-size: 48px;
   font-weight: 700;
-  color: $brown;
+  color: var(--primary-color);
 }
 .text {
   font-size: 20px;
@@ -78,7 +158,7 @@ body {
 }
 .label {
   font-size: 12px;
-  color: $brown;
+  color: var(--primary-color);
 }
 .time {
   font-size: 10px;
@@ -115,7 +195,7 @@ input[type='radio'] {
     border-radius: 50%;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em $opacity-brown;
+    box-shadow: inset 1em 1em var(--primary-color-opacity-1);
   }
 }
 

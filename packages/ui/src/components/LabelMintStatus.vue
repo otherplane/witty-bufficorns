@@ -18,10 +18,10 @@ export default {
   border-radius: 4px;
   font-weight: bold;
   height: min-content;
-  color: $brown;
+  color: var(--primary-color);
 }
 .minted {
-  border: 1px solid $brown;
+  border: 1px solid var(--primary-color);
 }
 .pending {
   border: 1px solid $orange;

@@ -25,14 +25,14 @@ export default {
 <style scoped lang="scss">
 .btn {
   width: 100%;
-  color: white;
+  color: $white;
   padding: 16px 16px;
   border-radius: 4px;
   font-family: Road Store, sans-serif;
   font-weight: bold;
   &.primary {
-    color: $pink;
-    background: $brown;
+    color: $white;
+    background: var(--primary-color);
   }
   &.secondary {
     color: $black;
@@ -40,8 +40,8 @@ export default {
     border: 1px solid $orange;
   }
   &.dark {
-    color: $brown;
-    background: $pink;
+    color: $white;
+    background: var(--primary-color);
   }
   &.disable {
     opacity: 0.6;
