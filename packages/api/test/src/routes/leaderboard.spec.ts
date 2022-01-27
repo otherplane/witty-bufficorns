@@ -4,11 +4,7 @@ import {
   TRADE_POINTS,
   TRADE_POINTS_DIVISOR,
 } from '../../../src/constants'
-import {
-  authenticatePlayer,
-  initialPlayers,
-  serverInject,
-} from '../../setup'
+import { authenticatePlayer, initialPlayers, serverInject } from '../../setup'
 
 describe('Route /leaderboard', () => {
   describe('should return leaderboard values for each entity', () => {
@@ -120,9 +116,6 @@ describe('Route /leaderboard', () => {
         }
       )
 
-      // wait until trade is over to calculate points
-      // await sleep(1300)
-
       let selectedBufficorn
       // Get player information to know their selected bufficorn
       await serverInject(
@@ -160,7 +153,7 @@ describe('Route /leaderboard', () => {
           expect(bufficorns.length).toBe(24)
 
           const fedBufficorn = bufficorns.find(
-            (b) => Number(b.index) === selectedBufficorn.index
+            (b) => Number(b.index) === selectedBufficorn
           )
           // Traded ranch gives vigor
           expect(fedBufficorn.vigor).toBe(TRADE_POINTS)

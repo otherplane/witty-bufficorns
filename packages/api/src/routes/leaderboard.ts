@@ -14,7 +14,7 @@ const leaderboard: FastifyPluginAsync = async (
 
   const { playerModel, ranchModel, bufficornModel } = fastify
 
-  //GET /leaderboard?resource=RESOURCE&limit=LIMIT&offset=OFFSET&filter=STAT
+  //GET /leaderboard?resource=RESOURCE&limit=LIMIT&offset=OFFSET
   fastify.get<{
     Querystring: LeaderboardParams
     Reply: LeaderboardResponse | Error
