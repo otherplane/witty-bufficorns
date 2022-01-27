@@ -70,6 +70,9 @@ contract WittyBufficornsToken
         __storage.signator = msg.sender;
     }
 
+    receive() external payable {}
+
+
     // ========================================================================
     // --- 'ERC721Metadata' overriden functions -------------------------------
     
