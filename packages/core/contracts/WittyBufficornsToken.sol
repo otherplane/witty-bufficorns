@@ -450,6 +450,14 @@ contract WittyBufficornsToken
             // Best Ranch category: add token id reference to Ranches entity:
             __ranch.tokenIds.push(_tokenId);
         }
+
+        // Emit event:
+        emit FarmerAward(
+            _tokenId,
+            _tokenInfo.farmerId,
+            _tokenInfo.award.category,
+            _tokenInfo.award.ranking
+        );
     }
 
     function _verifySignatorSignature(
