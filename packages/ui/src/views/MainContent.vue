@@ -23,7 +23,7 @@
         </div>
         <img
           class="logo"
-          src="@/assets/ranchLogo.svg"
+          :src="ranchImage(`Infinite Harmony Farm`)"
           alt="Witty Bufficorns ranch logo"
         />
       </div>
@@ -76,6 +76,7 @@ import imageUrl from '@/assets/egg-example.png'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
+import { RANCHES } from '../constants'
 
 export default {
   setup () {
@@ -122,6 +123,10 @@ export default {
       player.mintInfo.blockHash ? 'minted' : 'pending'
     )
 
+    const ranchImage = (name) => {
+      return new URL(`/src/assets/${RANCHES[name]}.svg`, import.meta.url).href
+    }
+
     function openModal (name) {
       const needProvider = name === 'mint' || name === 'preview'
       if (!web3WittyBufficorns.isProviderConnected.value && needProvider) {
@@ -162,7 +167,8 @@ export default {
       enableProvider: web3WittyBufficorns.enableProvider,
       preview: web3WittyBufficorns.preview,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
-      getData: web3WittyBufficorns.getData
+      getData: web3WittyBufficorns.getData,
+      ranchImage
     }
   }
 }

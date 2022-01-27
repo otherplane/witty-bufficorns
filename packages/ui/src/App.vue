@@ -3,6 +3,19 @@
   <Notification />
 </template>
 
+<script>
+import { getCurrentInstance } from 'vue'
+
+export default {
+  setup() {
+    const useImage = ((url) => {
+      return new URL(`/src/${url}`, import.meta.url).href;
+    });
+    getCurrentInstance().appContext.config.globalProperties.$image = useImage
+  },
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: Zilla Slab, sans-serif;
