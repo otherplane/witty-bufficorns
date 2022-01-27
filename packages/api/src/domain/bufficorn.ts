@@ -73,6 +73,7 @@ export class Bufficorn {
         ...b.stats,
         score: b.calculateScore(trait),
         position: index,
+        index: b.index,
       }))
   }
 

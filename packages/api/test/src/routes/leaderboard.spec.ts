@@ -8,7 +8,6 @@ import {
   authenticatePlayer,
   initialPlayers,
   serverInject,
-  sleep,
 } from '../../setup'
 
 describe('Route /leaderboard', () => {
@@ -160,9 +159,8 @@ describe('Route /leaderboard', () => {
           expect(response.statusCode).toBe(200)
           expect(bufficorns.length).toBe(24)
 
-          // TODO: this test will break when we update the bufficorn names to not include a number
           const fedBufficorn = bufficorns.find(
-            (b) => Number(b.name.split('-')[1]) === selectedBufficorn
+            (b) => Number(b.index) === selectedBufficorn.index
           )
           // Traded ranch gives vigor
           expect(fedBufficorn.vigor).toBe(TRADE_POINTS)

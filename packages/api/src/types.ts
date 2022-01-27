@@ -102,6 +102,7 @@ export const BufficornLeaderboardInfo = Type.Object({
   [Trait.Agility]: Type.Integer(),
   score: Type.Integer(),
   position: Type.Integer(),
+  index: Type.Integer(),
 })
 export type BufficornLeaderboardInfo = Static<typeof BufficornLeaderboardInfo>
 
