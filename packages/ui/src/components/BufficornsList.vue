@@ -3,7 +3,7 @@
     <BufficornData
       v-for="bufficorn in bufficornsData"
       :bufficorn-list="player.bufficornsGlobalStats"
-      :index="bufficorn.index"
+      :index="bufficorn.creationIndex"
       :key="bufficorn.name"
       :name="bufficorn.name"
       :background-front="true"

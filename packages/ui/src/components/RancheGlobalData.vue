@@ -3,13 +3,18 @@
     <div class="stats">
       <p class="score">{{ score }}</p>
     </div>
-    <img class="bufficorn-image" :src="ranchImage(name)" alt="Bufficorn" />
+    <img
+      class="bufficorn-image"
+      :src="importSvg(RANCHES[name])"
+      alt="Bufficorn"
+    />
   </div>
 </template>
 
 <script>
 import { getAssetPath } from '@/utils.js'
-import { ranchImage } from '@/composables/importRanchImage.js'
+import { importSvg } from '@/composables/importSvg.js'
+import { RANCHES } from '@/constants.js'
 export default {
   props: {
     index: Number,
@@ -17,7 +22,7 @@ export default {
     score: Number
   },
   setup () {
-    return { getAssetPath, ranchImage }
+    return { getAssetPath, importSvg, RANCHES }
   }
 }
 </script>
@@ -33,7 +38,7 @@ export default {
   align-items: center;
   .bufficorn-name {
     justify-self: center;
-    color: $brown;
+    color: var(--primary-color);
   }
   .item {
     padding: 8px;
@@ -66,7 +71,11 @@ export default {
       display: grid;
       grid-gap: 8px;
       width: 120px;
-      background: linear-gradient(90deg, $opacity-brown 0%, $transparent 60%);
+      background: linear-gradient(
+        90deg,
+        var(--primary-color-opacity-1) 0%,
+        $transparent 60%
+      );
       grid-template-columns: max-content 1fr;
       border-radius: 4px;
       font-size: 12px;

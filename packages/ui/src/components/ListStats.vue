@@ -4,7 +4,7 @@
       <BufficornData
         v-for="(bufficorn, index) in sortedBufficornsData"
         :bufficorn-list="sortedBufficornsData"
-        :index="bufficorn.index"
+        :index="bufficorn.creationIndex"
         :key="bufficorn.name"
         :name="bufficorn.name"
         :background-front="!!(index % 2)"
@@ -27,7 +27,7 @@
         :index="index"
         :key="player.username"
         :name="player.username"
-        :position="player.position"
+        :position="player.position + 1"
         :score="player.points"
       />
     </div>
@@ -64,8 +64,9 @@ export default {
       await player.getGlobalStats()
     })
     function filterListByLabel ({ list, label }) {
+      const filter = label === 'overall' ? 'score' : label
       return list.sort((e1, e2) => {
-        return e2[label] - e1[label]
+        return e2[filter] - e1[filter]
       })
     }
     const sortedBufficornsData = computed(() =>
@@ -93,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 .even {
-  background: $opacity-beige;
+  background: var(--primary-color-opacity-2);
   border-radius: 4px;
 }
 .list-container {

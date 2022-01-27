@@ -86,12 +86,12 @@ export default {
     .logo-subtitle-color {
       font-size: 18px;
       align-self: flex-start;
-      color: $brown;
+      color: var(--primary-color);
     }
     .logo-subtitle {
       font-size: 18px;
       align-self: flex-end;
-      color: $brown;
+      color: var(--primary-color);
     }
   }
   .responsive-menu {
@@ -109,14 +109,13 @@ export default {
   }
 }
 .tab-container {
-  background-color: $pink;
-  background-image: url('../assets/grainy-gradient.svg');
+  background-color: $white;
+  border: 2px solid var(--primary-color);
   list-style: none;
   visibility: hidden;
   text-align: left;
   width: max-content;
   height: max-content;
-  border: 1px solid $brown;
   border-radius: 4px;
   margin: 0;
   cursor: pointer;
@@ -128,11 +127,11 @@ export default {
     box-sizing: border-box;
     transition: all 0.1s;
     visibility: visible;
-    padding: 0;
+    padding: 8px 0px;
     top: 8px;
     opacity: 1;
     width: 148px;
-    height: 130px;
+    height: 140px;
     .tab {
       opacity: 1;
       transition: all 0.3s;
@@ -143,9 +142,11 @@ export default {
     display: block;
     align-items: left;
     text-decoration: none;
-    padding: 8px 16px;
+    padding: 0px 16px;
+    display: flex;
+    align-items: center;
     border-radius: 4px;
-    color: $brown;
+    color: var(--primary-color);
     font-size: 18px;
     font-weight: 600;
     opacity: 0;
@@ -157,7 +158,7 @@ export default {
     }
 
     &:hover {
-      color: $brown;
+      color: var(--primary-color);
     }
   }
 }
@@ -165,6 +166,9 @@ export default {
   display: block;
   transition: 0.5s;
   margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     cursor: pointer;
     opacity: opacity(0.45);
@@ -194,11 +198,11 @@ export default {
       color 1s cubic-bezier(0.23, 1, 0.32, 1);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    color: $brown;
+    color: var(--primary-color);
     .bun {
       width: 100%;
       height: 3px;
-      background-color: $brown;
+      background-color: var(--primary-color);
       position: absolute;
       top: 50%;
       margin-top: -0.75px;

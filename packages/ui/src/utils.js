@@ -12,23 +12,23 @@ export function normalizedChartData (stats, bufficornsArray) {
     })
     const finalResult = calculateHightestNumber(result)
     return Object.entries(stats).reduce(
-      (acc, [key, value]) => ({ ...acc, [key]: value / finalResult }),
+      (acc, [key, value]) => ({ ...acc, [key]: value / finalResult + 0.05 }),
       []
     )
   } else {
     return {
-      vigor: 0,
-      stamina: 0,
-      speed: 0,
-      agility: 0,
-      coat: 0,
-      coolness: 0
+      vigor: 0.1,
+      stamina: 0.1,
+      speed: 0.1,
+      agility: 0.1,
+      coat: 0.1,
+      coolness: 0.1
     }
   }
 }
 
 function calculateHightestNumber (list) {
-  return Math.max(...Object.values(list).filter(Number.isFinite))
+  return Math.max(...Object.values(list).filter(Number.isFinite)) - 0.05
 }
 
 export function getAssetPath (name) {

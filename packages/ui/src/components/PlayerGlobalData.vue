@@ -26,7 +26,7 @@ export default {
   padding: 16px;
 
   .player-name {
-    color: $brown;
+    color: var(--primary-color);
     font-weight: bold;
     justify-self: flex-start;
   }

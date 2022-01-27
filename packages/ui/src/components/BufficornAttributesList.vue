@@ -4,7 +4,7 @@
     <div
       class="stat"
       :style="{
-        backgroundImage: `linear-gradient(90deg, #bd390075 0%, transparent ${data[
+        backgroundImage: `linear-gradient(90deg, var(--primary-color-opacity-1) 0%, transparent ${data[
           resource.key
         ] * 100}%)`
       }"

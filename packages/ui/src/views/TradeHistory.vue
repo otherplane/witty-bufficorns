@@ -47,7 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .even {
-  background: $opacity-beige;
+  background: var(--primary-color-opacity-2);
   border-radius: 4px;
 }
 .container {
@@ -61,11 +61,11 @@ export default {
   text-align: left;
 }
 .trade-label {
-  color: $brown;
+  color: var(--primary-color);
   font-weight: bold;
 }
 .highlight {
-  color: $brown;
+  color: var(--primary-color);
   font-weight: 600;
 }
 .date {

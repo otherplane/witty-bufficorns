@@ -3,14 +3,20 @@
     <div v-if="name" class="small-title item">
       <p class="bufficorn-name">{{ name }}</p>
     </div>
-    <img class="bufficorn-image" src="@/assets/bufficorn.svg" alt="Bufficorn" />
+    <svgImage class="bufficorn-image" :svg="bufficornMain" />
   </div>
 </template>
 
 <script>
+import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import SvgImage from './SvgImage.vue'
 export default {
+  components: { SvgImage },
   props: {
     name: String
+  },
+  setup () {
+    return { bufficornMain }
   }
 }
 </script>

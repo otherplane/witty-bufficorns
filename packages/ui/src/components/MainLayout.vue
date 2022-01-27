@@ -1,14 +1,7 @@
 <template>
-  <div class="background">
-    <div class="grain-background"></div>
-    <img class="mountains-img" src="@/assets/mountains.svg" />
-    <img
-      v-if="isBackground"
-      class="bufficorn-img"
-      src="@/assets/bufficorn-main.svg"
-      alt="bufficorn"
-    />
-    <img class="mountains-img" src="@/assets/mountains.svg" alt="bufficorn" />
+  <div class="background" :class="RANCHES[player?.ranch?.name]">
+    <div v-if="isBackground" class="grain-background"></div>
+    <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="bufficornMain" />
     <div class="layout">
       <slot />
     </div>
@@ -17,16 +10,28 @@
 
 <script>
 import { defineComponent } from 'vue-demi'
-import backgroundImage from '../assets/bufficorns-background.png'
+import { useStore } from '@/stores/player'
+import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import { RANCHES } from '../constants'
+
 export default defineComponent({
   props: {
     isBackground: {
       type: Boolean,
       default: false
+    },
+    isBufficorn: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props, ctx) {
-    return { backgroundUrl: props.isBackground ? backgroundImage : null }
+    const player = useStore()
+    return {
+      player,
+      bufficornMain,
+      RANCHES
+    }
   }
 })
 </script>
@@ -38,8 +43,8 @@ export default defineComponent({
   left: 0;
   right: 0;
   z-index: 3;
-  background-color: $orange;
-  background: linear-gradient(0deg, $orange 0%, $beige 90%);
+  background-color: $white;
+  background: $white;
 }
 .mountains-img {
   width: 100vw;
@@ -59,8 +64,10 @@ export default defineComponent({
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 6;
-  background: url('../assets/grainy-gradient.svg');
+  z-index: 4;
+  background-position: bottom left;
+  background-size: cover;
+  background-image: url('../assets/background.svg');
 }
 .layout {
   position: relative;

@@ -21,8 +21,7 @@ export default {
 
 <style scoped lang="scss">
 .small-tab {
-  color: $brown;
-  font-family: Zilla Slab;
+  color: var(--primary-color);
   font-weight: bold;
 
   &.active {

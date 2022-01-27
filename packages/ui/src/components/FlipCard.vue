@@ -114,9 +114,9 @@ export default {
   grid-template-rows: repeat(2, max-content);
   justify-items: center;
   align-content: center;
-  color: $brown;
+  color: var(--primary-color);
   &.selected {
-    background-color: $opacity-brown-2;
+    border: 2px solid var(--primary-color);
   }
   &.horizontal {
     display: grid;
@@ -128,7 +128,7 @@ export default {
 }
 
 .background {
-  background-color: $opacity-beige;
+  background-color: var(--primary-color-opacity-2);
   border-radius: 4px;
 }
 

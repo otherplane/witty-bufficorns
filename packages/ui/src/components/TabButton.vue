@@ -22,16 +22,15 @@ export default {
 <style scoped lang="scss">
 .tab {
   width: 100%;
-  color: $brown;
+  color: var(--primary-color);
   padding: 4px 8px;
-  background: $pink;
+  background: $white;
   border-radius: 4px;
-  font-family: Zilla Slab;
   font-weight: bold;
 
   &.active {
-    background: $brown;
-    color: $pink;
+    background: var(--primary-color);
+    color: $white;
   }
 }
 </style>

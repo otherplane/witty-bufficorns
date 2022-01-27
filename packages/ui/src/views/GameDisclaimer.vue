@@ -1,7 +1,7 @@
 <template>
-  <MainLayout>
+  <MainLayout :isBackground="true">
     <div class="container">
-      <p class="title">DISCLAIMER</p>
+      <svgImage :svg="disclaimerTitle" />
       <p class="text">
         <span class="bold">Remember:</span> once you register your farmer, it
         will be forever linked to your web browser and the QR code will not work
@@ -18,8 +18,22 @@
   </MainLayout>
 </template>
 
+<script>
+import disclaimerTitle from '@/assets/disclaimerTitle.svg?raw'
+export default {
+  setup () {
+    return { disclaimerTitle }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .btn {
   width: max-content;
+}
+.text {
+  font-family: Zilla Slab, sans-serif;
+  color: $black;
+  font-weight: bold;
 }
 </style>
