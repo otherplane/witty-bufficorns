@@ -16,12 +16,12 @@ interface IWittyBufficornsAdmin {
     /// Returns tender's current status
     function getStatus() external view returns (WittyBufficorns.Status);
 
-    /// Sets final scores for the given bufficorn.
+    /// Sets final traits for the given bufficorn.
     function setBufficornScores(
         uint256 _id,
         uint256 _ranchId,
         string calldata _name,
-        uint256[6] calldata _scores
+        uint256[6] calldata _traits
     ) external;
 
     /// Sets Opensea-compliant Decorator contract
@@ -38,7 +38,7 @@ interface IWittyBufficornsAdmin {
     /// Sets externally owned account that is authorized to sign farmer awards.
     function setSignator(address _signator) external;
 
-    /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
+    /// Stops Breeding phase, which means: (a) ranches and bufficorns' traits cannot be modified any more;
     /// and (b), randomness will be requested to the Witnet's oracle.
     /// @param _totalRanches Total of ranches that must have been previously set.
     /// @param _totalBufficorns Total of bufficorns that must have been previoustly set.

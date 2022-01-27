@@ -130,27 +130,27 @@ contract WittyBufficornsToken
         return __storage.status();
     }
 
-    /// Sets final scores for the given bufficorn.
+    /// Sets final traits for the given bufficorn.
     /// @dev Must be called from the signators's address.
     /// @dev Fails if not in Breeding status. 
     function setBufficornScores(
             uint256 _id,
             uint256 _ranchId,
             string calldata _name,
-            uint256[6] calldata _scores
+            uint256[6] calldata _traits
         )
         external
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
-        require(
-            bytes(_name).length > 0,
-            "WittyBufficornsToken: no name"
-        );
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
         require(
             bytes(__ranch.name).length > 0,
             "WittyBufficornsToken: inexistent ranch"
+        );
+        require(
+            bytes(_name).length > 0,
+            "WittyBufficornsToken: no name"
         );
         WittyBufficorns.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
         if (bytes(_name).length > 0) {
@@ -158,9 +158,21 @@ contract WittyBufficornsToken
                 __storage.stats.totalBufficorns ++;
             }
         }
+        uint _score = _traits[0];
+        for (uint _i = 1; _i < 6; _i ++) {
+            if (_traits[_i] < _score) {
+                // Bufficorn's score correspond to the minimum or its traits
+                _score = _traits[_i];
+            }
+        }
+        require( 
+            _score >= __ranch.score,
+            "WittyBufficornsToken: score below ranch'es"
+        );
         __bufficorn.ranchId = _ranchId;
-        __bufficorn.scores = _scores;
-        emit BufficornSet(_id, _name, _scores);
+        __bufficorn.score = _score;
+        __bufficorn.traits = _traits;
+        emit BufficornSet(_id, _name, _score, _traits);
     }
 
     /// Sets Opensea-compliant Decorator contract
@@ -194,10 +206,6 @@ contract WittyBufficornsToken
             bytes(_name).length > 0,
             "WittyBufficornsToken: no name"
         );
-        require(
-            _score > 0,
-            "WittyBufficornsToken: no score"
-        );
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__ranch.name).length == 0) {
@@ -227,7 +235,7 @@ contract WittyBufficornsToken
         emit SignatorSet(_signator);
     }
 
-    /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
+    /// Stops Breeding phase, which means: (a) ranches and bufficorns' traits cannot be modified any more;
     /// and (b), randomness will be requested to the Witnet's oracle. 
     /// @param _totalRanches Total of ranches that must have been previously set.
     /// @param _totalBufficorns Total of bufficorns that must have been previoustly set.

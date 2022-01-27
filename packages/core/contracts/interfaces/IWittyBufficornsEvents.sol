@@ -7,7 +7,7 @@ import "../libs/WittyBufficorns.sol";
 /// @author Otherplane Labs, 2022.
 interface IWittyBufficornsEvents {
     event AwardingBegins(address signator, uint totalRanches, uint totalBufficorns);
-    event BufficornSet(uint id, string name, uint[6] scores);
+    event BufficornSet(uint id, string name, uint score, uint[6] traits);
     event DecoratorSet(address decorator);
     event FarmerAward(uint indexed tokenId, uint indexed farmerId, WittyBufficorns.Awards indexed awardCategory, uint awardRanking);
     event RanchSet(uint id, string name, uint score);
