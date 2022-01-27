@@ -107,6 +107,12 @@ export class Ranch {
     bufficornsIndex: Array<number>,
     ranchName: RanchName
   ) {
+    console.log(
+      'check if bufficorn ranch name:',
+      ranchName,
+      'bufficorn index group',
+      BUFFICORNS_INDEX_GROUP_BY_RANCH
+    )
     bufficornsIndex.forEach((index) => {
       if (!BUFFICORNS_INDEX_GROUP_BY_RANCH[ranchName].includes(index)) {
         throw new Error(

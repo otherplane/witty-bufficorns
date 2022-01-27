@@ -7,12 +7,12 @@
 import { getCurrentInstance } from 'vue'
 
 export default {
-  setup() {
-    const useImage = ((url) => {
-      return new URL(`/src/${url}`, import.meta.url).href;
-    });
+  setup () {
+    const useImage = url => {
+      return new URL(`/src/${url}`, import.meta.url).href
+    }
     getCurrentInstance().appContext.config.globalProperties.$image = useImage
-  },
+  }
 }
 </script>
 

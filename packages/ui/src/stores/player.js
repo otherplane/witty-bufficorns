@@ -87,12 +87,12 @@ export const useStore = defineStore('player', {
     async authorize ({ key }) {
       const request = await this.api.authorize({ key })
       if (request.error) {
-        router.push({ name: 'init-game' })
+        router.push('/init-game')
         this.setError('auth', request.error)
       } else if (request.token) {
         await this.saveClaimInfo(request)
         this.clearError('auth')
-        this.getInfo()
+        await this.getInfo()
       }
     },
     breed ({ bufficorns }) {
@@ -102,17 +102,15 @@ export const useStore = defineStore('player', {
       const tokenInfo = this.getToken()
       const request = await this.api.trade({
         token: tokenInfo.token,
-        to: key,
-        bufficorn: this.selectedBufficorn
+        to: key
       })
       if (request.error) {
         this.setError('trade', request.error)
-        router.push('/')
+        router.push('/init-game')
       } else {
         this.clearError('trade')
         this.tradeInfo = request
-        this.getInfo()
-        router.push('/')
+        router.push('/init-game')
       }
     },
     async updateSelectedBufficorn (index) {
@@ -123,15 +121,15 @@ export const useStore = defineStore('player', {
       })
       if (request.error) {
         this.setError('updateSelectedBufficorn', request.error)
-        router.push('/')
+        router.push('/init-game')
       } else {
         this.clearError('updateSelectedBufficorn')
         this.selectedBufficorn = request
-        this.getInfo()
-        router.push('/')
+        await this.getInfo()
       }
     },
     async getGlobalStats () {
+      await this.getInfo()
       const request = await this.api.getLeaderboardInfo()
       if (request.error) {
         this.setError('getLeaderboardInfo', request.error)
@@ -159,6 +157,14 @@ export const useStore = defineStore('player', {
     async getInfo () {
       const tokenInfo = this.getToken()
       if (tokenInfo) {
+        if (
+          this.id &&
+          router.currentRoute.value.params.id &&
+          this.id !== router.currentRoute.value.params.id
+        ) {
+          await this.trade({ key: router.currentRoute.value.params.id })
+        }
+
         const request = await this.api.getInfo({
           token: tokenInfo && tokenInfo.token,
           id: tokenInfo && tokenInfo.key
@@ -175,7 +181,6 @@ export const useStore = defineStore('player', {
             selectedBufficorn,
             points
           } = request.player
-          console.log(request.player)
           this.id = key
           this.username = username
           this.ranch = ranch
@@ -189,9 +194,6 @@ export const useStore = defineStore('player', {
           }
           if (!this.selectedBufficorn) {
             this.selectedBufficorn = 0
-          }
-          if (this.id !== router.currentRoute.value.params.id) {
-            this.trade({ key: router.currentRoute.value.params.id })
           }
         }
       } else {

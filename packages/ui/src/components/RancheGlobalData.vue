@@ -3,15 +3,13 @@
     <div class="stats">
       <p class="score">{{ score }}</p>
     </div>
-    <div class="small-title item user">
-      <p class="bufficorn-name">{{ name }}</p>
-    </div>
-    <img class="bufficorn-image" src="@/assets/ranchLogo.svg" alt="Bufficorn" />
+    <img class="bufficorn-image" :src="ranchImage(name)" alt="Bufficorn" />
   </div>
 </template>
 
 <script>
 import { getAssetPath } from '@/utils.js'
+import { ranchImage } from '@/composables/importRanchImage.js'
 export default {
   props: {
     index: Number,
@@ -19,7 +17,7 @@ export default {
     score: Number
   },
   setup () {
-    return { getAssetPath }
+    return { getAssetPath, ranchImage }
   }
 }
 </script>
@@ -86,7 +84,8 @@ export default {
     justify-self: flex-start;
     grid-column: 1;
     height: auto;
-    width: 80px;
+    width: 100px;
+    height: 100px;
   }
 }
 </style>

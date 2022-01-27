@@ -68,7 +68,7 @@ export class ApiService {
   trade ({ bufficorn, to, token }) {
     return this._post({
       url: `${this.baseUrl}/trades`,
-      data: { to, bufficorn },
+      data: { to },
       params: { headers: { authorization: token } }
     })
   }

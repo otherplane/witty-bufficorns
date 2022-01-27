@@ -52,6 +52,7 @@ export default {
         utcToZonedTime(dateNow.value, timeZone).getTime()
       ) {
         timeLeft.value = '0s'
+        emit('clear-timestamp')
         clearInterval(polling.value)
       }
     })
