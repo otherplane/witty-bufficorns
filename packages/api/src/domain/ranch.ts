@@ -104,7 +104,11 @@ export class Ranch {
     trait?: Trait
   ): Array<RanchLeaderboardInfo> {
     return bufficorns
-      .sort((a, b) => b.calculateScore(trait) - a.calculateScore(trait))
+      .sort(
+        (a, b) =>
+          b.calculateScore(trait) - a.calculateScore(trait) ||
+          a.name.localeCompare(b.name)
+      )
       .map((r, index) => ({
         name: r.name,
         score: r.calculateScore(trait),
