@@ -9,7 +9,7 @@ interface IWittyBufficornsEvents {
     event AwardingBegins(address signator, uint totalRanches, uint totalBufficorns);
     event BufficornSet(uint id, string name, uint score, uint[6] traits);
     event DecoratorSet(address decorator);
-    event FarmerAward(uint indexed tokenId, uint indexed farmerId, WittyBufficorns.Awards indexed awardCategory, uint awardRanking);
+    event FarmerAward(uint indexed tokenId, uint indexed farmerId, WittyBufficorns.Awards indexed category, uint ranking);
     event RanchSet(uint id, string name, uint score);
     event SignatorSet(address signator);
 }
