@@ -169,6 +169,7 @@ contract WittyBufficornsToken
             _score >= __ranch.score,
             "WittyBufficornsToken: score below ranch'es"
         );
+        __bufficorn.name = _name;
         __bufficorn.ranchId = _ranchId;
         __bufficorn.score = _score;
         __bufficorn.traits = _traits;
