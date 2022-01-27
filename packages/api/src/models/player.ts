@@ -117,6 +117,15 @@ export class PlayerModel {
     }
   }
 
+  public async getAllRegistered(): Promise<Array<Player>> {
+    // TODO: Remove mongoDB $exists from model
+    const vtos = await this.repository.get({
+      token: { $exists: true, $ne: undefined },
+    })
+
+    return vtos.map((vto) => new Player(vto))
+  }
+
   public async getMany(paginationParams: {
     limit: number
     offset: number

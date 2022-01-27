@@ -29,6 +29,7 @@ describe('mint.ts', () => {
       },
       (err, response) => {
         expect(err).toBeFalsy()
+        console.log('signature:', response)
         expect(response.statusCode).toBe(200)
         expect(response.headers['content-type']).toBe(
           'application/json; charset=utf-8'
@@ -181,6 +182,70 @@ describe('mint.ts', () => {
         expect(responseJson.envelopedSignature.message).toBeTruthy()
         expect(responseJson.envelopedSignature.signature).toBeTruthy()
         expect(responseJson.envelopedSignature.messageHash).toBe(MESSAGE_DIGEST)
+      }
+    )
+  })
+
+  it('should mint best player medal', async () => {
+    const token0 = await authenticatePlayer(initialPlayers[0].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
+
+    // Give points to player 0
+    await serverInject(
+      {
+        method: 'POST',
+        url: '/trades',
+        payload: {
+          to: initialPlayers[0].key,
+        },
+        headers: {
+          Authorization: token1,
+        },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+      }
+    )
+
+    await serverInject(
+      {
+        method: 'POST',
+        url: `/mint`,
+        headers: {
+          Authorization: `${token0}`,
+        },
+        payload: { address: VALID_ETH_ADDRESS },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        console.log('signature:', response)
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+        const responseJson = response?.json()
+        expect(responseJson.envelopedSignature).toBeTruthy()
+        expect(responseJson.envelopedSignature.message).toBeTruthy()
+        expect(responseJson.envelopedSignature.signature).toBeTruthy()
+        //expect(responseJson.envelopedSignature.messageHash).toBe(MESSAGE_DIGEST)
+        expect(responseJson.data).toStrictEqual({
+          address: VALID_ETH_ADDRESS,
+          farmerAwards: [
+            {
+              bufficornId: 0,
+              category: 0,
+              ranking: 1,
+            },
+          ],
+          farmerId: 0,
+          farmerName: 'planned-meaghan',
+          farmerScore: 800,
+          ranchId: 0,
+        })
       }
     )
   })

@@ -161,9 +161,17 @@ export const MintOutput = Type.Object({
   }),
   data: Type.Object({
     address: Type.String(),
-    points: Type.Number(),
-    playerMedals: Type.Array(Type.Optional(Type.String())),
-    ranchMedals: Type.Array(Type.Optional(Type.String())),
+    ranchId: Type.Number(),
+    farmerId: Type.Number(),
+    farmerScore: Type.Number(),
+    farmerName: Type.String(),
+    farmerAwards: Type.Array(
+      Type.Object({
+        category: Type.Number(),
+        ranking: Type.Number(),
+        bufficornId: Type.Number(),
+      })
+    ),
   }),
 })
 export type MintOutput = Static<typeof MintOutput>

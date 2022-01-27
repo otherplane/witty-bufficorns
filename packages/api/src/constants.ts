@@ -135,6 +135,15 @@ export const INDEX_TO_RANCH: Record<number, RanchName> = {
   [RanchIndex.Ranch6]: RanchName.Ranch6,
 }
 
+export const RANCH_TO_INDEX: Record<RanchName, number> = {
+  [RanchName.Ranch1]: RanchIndex.Ranch1,
+  [RanchName.Ranch2]: RanchIndex.Ranch2,
+  [RanchName.Ranch3]: RanchIndex.Ranch3,
+  [RanchName.Ranch4]: RanchIndex.Ranch4,
+  [RanchName.Ranch5]: RanchIndex.Ranch5,
+  [RanchName.Ranch6]: RanchIndex.Ranch6,
+}
+
 export const TRAIT_BY_RANCH: Record<RanchName, Trait> = {
   [RanchName.Ranch1]: Trait.Coat,
   [RanchName.Ranch2]: Trait.Coolness,

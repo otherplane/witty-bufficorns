@@ -66,7 +66,11 @@ export class Bufficorn {
     trait?: Trait
   ): Array<BufficornLeaderboardInfo> {
     return bufficorns
-      .sort((a, b) => b.calculateScore(trait) - a.calculateScore(trait))
+      .sort(
+        (a, b) =>
+          b.calculateScore(trait) - a.calculateScore(trait) ||
+          a.creationIndex - b.creationIndex
+      )
       .map((b, index) => ({
         name: b.name,
         ranch: b.ranch,
