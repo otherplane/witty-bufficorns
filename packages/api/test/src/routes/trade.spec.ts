@@ -551,4 +551,98 @@ describe('Route /trade', () => {
       }
     )
   })
+
+  it('should sum points to player after feed', async () => {
+    const bufficornName = 'Bufficorn-1'
+
+    const token0 = await authenticatePlayer(initialPlayers[0].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
+
+    await serverInject(
+      {
+        method: 'POST',
+        url: '/trades',
+        payload: {
+          to: initialPlayers[1].key,
+        },
+        headers: {
+          Authorization: token0,
+        },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+        expect(response.json().resource.amount).toBe(TRADE_POINTS)
+        expect(response.json().resource.trait).toBe('vigor')
+      }
+    )
+
+    await serverInject(
+      {
+        method: 'GET',
+        url: `/players/${initialPlayers[1].key}`,
+        headers: {
+          Authorization: token1,
+        },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+        expect(response.json().player.points).toBe(800)
+      }
+    )
+  })
+
+  it('should NOT sum points to player that initiates the trade', async () => {
+    const bufficornName = 'Bufficorn-1'
+
+    const token = await authenticatePlayer(initialPlayers[0].key)
+    await authenticatePlayer(initialPlayers[1].key)
+
+    await serverInject(
+      {
+        method: 'POST',
+        url: '/trades',
+        payload: {
+          to: initialPlayers[1].key,
+        },
+        headers: {
+          Authorization: token,
+        },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+        expect(response.json().resource.amount).toBe(TRADE_POINTS)
+        expect(response.json().resource.trait).toBe('vigor')
+      }
+    )
+
+    await serverInject(
+      {
+        method: 'GET',
+        url: `/players/${initialPlayers[0].key}`,
+        headers: {
+          Authorization: token,
+        },
+      },
+      (err, response) => {
+        expect(err).toBeFalsy()
+        expect(response.statusCode).toBe(200)
+        expect(response.headers['content-type']).toBe(
+          'application/json; charset=utf-8'
+        )
+        expect(response.json().player.points).toBe(0)
+      }
+    )
+  })
 })
