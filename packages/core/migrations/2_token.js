@@ -3,7 +3,7 @@ const addresses = require("./addresses.json")
 const witnetAddresses = require("witnet-solidity-bridge/migrations/witnet.addresses")
 const WittyBufficornsToken = artifacts.require("WittyBufficornsToken");
 const WittyBufficornsDecorator = artifacts.require("WittyBufficornsDecorator");
-// const WitnetRequestBoard = artifacts.require("WitnetRequestBoard")
+const WitnetRandomness = artifacts.require("IWitnetRandomness")
 module.exports = async function (deployer, network, accounts) {  
   network = network.split("-")[0]
   if (network !== "test" && network !== "develop") {
@@ -13,15 +13,15 @@ module.exports = async function (deployer, network, accounts) {
     if (!addresses[network].WittyBufficornsToken) {
       addresses[network].WittyBufficornsToken = ""
     }
-    // WitnetRequestBoard.address = witnetAddresses.default[network].WitnetRequestBoard
-    // console.info("   > Using WitnetRequestBoard at", WitnetRequestBoard.address)
+    WitnetRandomness.address = witnetAddresses.polygon[network].WitnetRandomness
+    console.info("   > Using WitnetRandomness at", WitnetRandomness.address)
   } else {
-    // const WitnetRequestBoardMock = artifacts.require("WitnetRequestBoardMock")
-    // if (!WitnetRequestBoardMock.isDeployed()) {
-    //   await deployer.deploy(WitnetRequestBoardMock)
-    // }
-    // WitnetRequestBoard.address = WitnetRequestBoardMock.address;
-    // console.info("   > Using WitnetRequestBoardMock at", WitnetRequestBoard.address)
+    const WitnetRandomnessMock = artifacts.require("WitnetRandomnessMock")
+    if (!WitnetRandomnessMock.isDeployed()) {
+      await deployer.deploy(WitnetRandomnessMock)
+    }
+    WitnetRandomness.address = WitnetRandomnessMock.address;
+    console.info("   > Using WitnetRandomnessMock at", WitnetRandomness.address)
   }
   if (
     network === "test"
@@ -29,9 +29,10 @@ module.exports = async function (deployer, network, accounts) {
   ) {
     await deployer.deploy(
       WittyBufficornsToken,
-      "Witty Bufficorns - ETHDenver 2022", // ERC721 Token Name
-      "WITTY22A", // ERC721 Token Symbol
-      WittyBufficornsDecorator.address, // Decorator contract address
+      /* ERC-721 Token Name   */ "Witty Bufficorns - ETHDenver 2022", 
+      /* ERC-721 Token Symbol */ "DENVER22", // ERC721 Token Symbol
+      /* _witnetRandomness    */ WitnetRandomness.address,
+      /* _wittyBufficornsDeco */ WittyBufficornsDecorator.address,
     )
     if (network !== "test" && network !== "develop") {
       addresses[network].WittyBufficornsToken = WittyBufficornsToken.address
