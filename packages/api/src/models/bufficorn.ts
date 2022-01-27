@@ -55,9 +55,14 @@ export class BufficornModel {
   public async getBufficornsByRanch(
     name: string
   ): Promise<Array<Bufficorn> | null> {
-    const vtos = await this.repository.getSortedByName({
-      ranch: name as RanchName,
-    })
+    const vtos = await this.repository.getSortedBy(
+      {
+        ranch: name as RanchName,
+      },
+      {
+        index: 1,
+      }
+    )
 
     return vtos.map((vto) => new Bufficorn(vto))
   }

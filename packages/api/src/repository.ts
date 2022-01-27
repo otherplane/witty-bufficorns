@@ -80,8 +80,13 @@ export class Repository<T> {
     return await this.collection.find(filter).toArray()
   }
 
-  public async getSortedByName(filter: Filter<T>): Promise<Array<WithId<T>>> {
-    return await this.collection.find(filter, { sort: { name: 1 } }).toArray()
+  public async getSortedBy(
+    filter: Filter<T>,
+    sortBy: {
+      [key: string]: 1 | -1 | 'asc' | 'desc' | 'ascending' | 'descending'
+    }
+  ): Promise<Array<WithId<T>>> {
+    return await this.collection.find(filter, { sort: sortBy }).toArray()
   }
 
   public async getById(id: ObjectId | string): Promise<WithId<T> | null> {
