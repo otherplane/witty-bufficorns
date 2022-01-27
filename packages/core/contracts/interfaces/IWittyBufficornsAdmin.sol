@@ -40,7 +40,9 @@ interface IWittyBufficornsAdmin {
 
     /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
     /// and (b), randomness will be requested to the Witnet's oracle.
-    function stopBreeding() external payable;
+    /// @param _totalRanches Total of ranches that must have been previously set.
+    /// @param _totalBufficorns Total of bufficorns that must have been previoustly set.
+    function stopBreeding(uint256 _totalRanches, uint256 _totalBufficorns) external payable;
 
     /// Starts the Awarding phase, in which players will be able to mint their tokens.
     function startAwarding() external;    

@@ -143,10 +143,14 @@ contract WittyBufficornsToken
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
+        require(
+            bytes(_name).length > 0,
+            "WittyBufficornsToken: no name"
+        );
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
         require(
             bytes(__ranch.name).length > 0,
-            "WittyBufficornsToken: ranch not set"
+            "WittyBufficornsToken: inexistent ranch"
         );
         WittyBufficorns.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
         if (bytes(_name).length > 0) {
@@ -166,7 +170,10 @@ contract WittyBufficornsToken
         virtual override
         onlyOwner
     {
-        require(address(_decorator) != address(0), "WittyBufficornsToken: no decorator");
+        require(
+            address(_decorator) != address(0),
+            "WittyBufficornsToken: no decorator"
+        );
         __storage.decorator = _decorator;
         emit DecoratorSet(_decorator);
     }
@@ -183,9 +190,18 @@ contract WittyBufficornsToken
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
+        require(
+            bytes(_name).length > 0,
+            "WittyBufficornsToken: no name"
+        );
+        require(
+            _score > 0,
+            "WittyBufficornsToken: no score"
+        );
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__ranch.name).length == 0) {
+                // Increase ranches count if first time set
                 __storage.stats.totalRanches ++;
             }
         }
@@ -203,21 +219,37 @@ contract WittyBufficornsToken
         onlyOwner
         inStatus(WittyBufficorns.Status.Breeding)
     {
-        require(_signator != address(0), "WittyBufficornsToken: no signator");
+        require(
+            _signator != address(0),
+            "WittyBufficornsToken: no signator"
+        );
         __storage.signator = _signator;        
         emit SignatorSet(_signator);
     }
 
     /// Stops Breeding phase, which means: (a) ranches and bufficorns' scores cannot be modified any more;
     /// and (b), randomness will be requested to the Witnet's oracle. 
+    /// @param _totalRanches Total of ranches that must have been previously set.
+    /// @param _totalBufficorns Total of bufficorns that must have been previoustly set.
     /// @dev Must be called from the Signator's address. Fails if not in Breeding status. 
     /// @dev If no WitnetRandomness address was provided in construction, contract status will directly change to Awarding.
-    function stopBreeding()
+    function stopBreeding(
+            uint256 _totalRanches,
+            uint256 _totalBufficorns
+        )
         external payable
         virtual override
         onlySignator
         inStatus(WittyBufficorns.Status.Breeding)
     {
+        require(
+            __storage.stats.totalRanches == _totalRanches,
+            "WittyBufficornsToken: ranches mismatch"
+        );
+        require(
+            __storage.stats.totalBufficorns == _totalBufficorns,
+            "WittyBufficornsToken: bufficorns mismatch"
+        );
         __storage.witnetRandomizeBlock = block.number;
         if (address(randomizer) != address(0)) {
             uint _usedFunds = randomizer.randomize{value: msg.value}();
@@ -226,19 +258,28 @@ contract WittyBufficornsToken
             }
         } else {
             __storage.witnetRandomness = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+            emit AwardingBegins(
+                msg.sender,
+                _totalRanches,
+                _totalBufficorns
+            );
         }   
     }
 
     /// Starts the Awarding phase, in which players will be able to mint their tokens.
-    /// @dev Must be called from the Owner's address. Fails if not in Randomizing status. 
+    /// @dev Must be called from the Signator's address. Fails if not in Randomizing status. 
     function startAwarding()
         external
         virtual override
-        onlyOwner
+        onlySignator
         inStatus(WittyBufficorns.Status.Randomizing)
     {
         __storage.witnetRandomness = randomizer.getRandomnessAfter(__storage.witnetRandomizeBlock);
-        emit AwardingBegins(msg.sender);
+        emit AwardingBegins(
+            msg.sender,
+            __storage.stats.totalRanches,
+            __storage.stats.totalBufficorns
+        );
     }
 
 
@@ -265,7 +306,7 @@ contract WittyBufficornsToken
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
         WittyBufficorns.Farmer storage __farmer = __storage.farmers[_farmerId];
 
-        require(__ranch.score > 0, "WittyBufficornsToken: no score ranch");
+        require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
         require(__farmer.tokenIds.length == 0, "WittyBufficornsToken: already minted");
         
         _verifySignatorSignature(
@@ -283,8 +324,9 @@ contract WittyBufficornsToken
         __farmer.score = _farmerScore;
         __farmer.ranchId = _ranchId;
 
-        // Set common parameters to all tokens minted within this call:
         WittyBufficorns.TokenInfo memory _tokenInfo;
+
+        // Set common parameters to all tokens minted within this call:
         _tokenInfo.farmerId = _farmerId;
         _tokenInfo.timestamp = block.timestamp;
 
@@ -295,7 +337,7 @@ contract WittyBufficornsToken
             uint8 _category = uint8(_farmerAwards[_ix].category);
             require(
                 !_isChecked[_category],
-                "WittyBufficornsToken: repeated category"
+                "WittyBufficornsToken: repeated award category"
             );
             _isChecked[_category] = true;
             _tokenInfo.award = _farmerAwards[_ix];
