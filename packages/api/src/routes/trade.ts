@@ -132,6 +132,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return reply.status(403).send(error as Error)
       }
 
+      // Update player score
+      let updatedToPlayer = toPlayer
+      updatedToPlayer.points += resource.amount
+      playerModel.update(updatedToPlayer.toDbVTO())
+
       // Create and return `trade` object
       const trade = await tradeModel.create({
         ends: currentTimestamp + TRADE_DURATION_MILLIS,
