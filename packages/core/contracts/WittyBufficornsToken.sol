@@ -344,15 +344,7 @@ contract WittyBufficornsToken
         _tokenInfo.timestamp = block.timestamp;
 
         // Loop: Mint one token per received award:
-        bool[] memory _isChecked = new bool[](uint8(type(WittyBufficorns.Awards).max) + 1);
         for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
-            // Make sure there are no repeated award categories:
-            uint8 _category = uint8(_farmerAwards[_ix].category);
-            require(
-                _category < _isChecked.length && !_isChecked[_category],
-                "WittyBufficornsToken: repeated award category"
-            );
-            _isChecked[_category] = true;
             _tokenInfo.award = _farmerAwards[_ix];
             __mintFarmerAward(_tokenOwner, _tokenInfo, __farmer, __ranch);
         }
