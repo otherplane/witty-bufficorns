@@ -30,6 +30,7 @@
         :position="player.position + 1"
         :score="player.points"
       />
+      <CustomPagination :limit="10" @update-page="updateCurrentPage" />
     </div>
     <div v-if="gameEntity === 'ranches'" class="list">
       <RancheGlobalData
@@ -46,7 +47,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { computed, onBeforeMount, nextTick } from 'vue'
+import { computed, onBeforeMount, nextTick, ref, watch } from 'vue'
 export default {
   props: {
     gameEntity: {
@@ -60,9 +61,23 @@ export default {
   },
   setup (props) {
     const player = useStore()
+    // paginate data
+    const currentPage = ref(0)
+    const limit = ref(25)
+    const offset = computed(() => {
+      return limit.value * currentPage.value
+    })
     onBeforeMount(async () => {
       await player.getGlobalStats()
     })
+    watch(currentPage, async () => {
+      await player.getGlobalStats(offset.value, limit.value)
+    })
+    function updateCurrentPage (page) {
+      console.log('updated---', page)
+      currentPage.value = page
+    }
+    // filter list by attribute
     function filterListByLabel ({ list, label }) {
       const filter = label === 'overall' ? 'score' : label
       const result = list.sort((e1, e2) => {
@@ -88,7 +103,12 @@ export default {
         label: props.entityAttribute
       })
     )
-    return { sortedBufficornsData, sortedPlayersData, sortedRanchesData }
+    return {
+      sortedBufficornsData,
+      sortedPlayersData,
+      sortedRanchesData,
+      updateCurrentPage
+    }
   }
 }
 </script>

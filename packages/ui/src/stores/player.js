@@ -128,9 +128,14 @@ export const useStore = defineStore('player', {
         await this.getInfo()
       }
     },
-    async getGlobalStats () {
+    async getGlobalStats (offset = 0, limit = 25) {
+      console.log('offset', offset, 'limit', limit)
       await this.getInfo()
-      const request = await this.api.getLeaderboardInfo()
+      const request = await this.api.getLeaderboardInfo({
+        offset,
+        limit
+      })
+      console.log(request)
       if (request.error) {
         this.setError('getLeaderboardInfo', request.error)
       } else {
