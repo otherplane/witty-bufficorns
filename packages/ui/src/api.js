@@ -52,9 +52,10 @@ export class ApiService {
     })
   }
 
-  getLeaderboardInfo () {
+  getLeaderboardInfo (params) {
     return this._get({
-      url: `${this.baseUrl}/leaderboard`
+      url: `${this.baseUrl}/leaderboard`,
+      data: { offset: params.offset, limit: params.limit }
     })
   }
 

@@ -8,6 +8,7 @@
     "lint": "prettier-standard --format"
   },
   "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
     "@vueuse/core": "7.4.1",
     "axios": "0.24.0",
     "date-fns": "2.27.0",
