@@ -33,7 +33,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, onBeforeMount } from 'vue'
 import { STATS_FILTERS } from '../constants'
 
 export default {
@@ -47,6 +47,9 @@ export default {
     onMounted(() => {
       tabs.value[primaryTab.value].active = true
       tabs.value[primaryTab.value].subTabs[secondaryTab.value].active = true
+    })
+    onBeforeMount(() => {
+      resetTabs()
     })
 
     const resetTabs = () => {

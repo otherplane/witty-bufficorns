@@ -65,9 +65,10 @@ export default {
     })
     function filterListByLabel ({ list, label }) {
       const filter = label === 'overall' ? 'score' : label
-      return list.sort((e1, e2) => {
+      const result = list.sort((e1, e2) => {
         return e2[filter] - e1[filter]
       })
+      return result
     }
     const sortedBufficornsData = computed(() =>
       filterListByLabel({
