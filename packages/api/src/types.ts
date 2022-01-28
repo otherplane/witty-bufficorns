@@ -200,6 +200,7 @@ export type GetByNumericKeyParams = Static<typeof GetByNumericKeyParams>
 
 export const TradeParams = Type.Object({
   to: Type.String(),
+  cooldown: Type.Optional(Type.Number()),
 })
 export type TradeParams = Static<typeof TradeParams>
 

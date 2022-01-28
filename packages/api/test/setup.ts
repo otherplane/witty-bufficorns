@@ -101,6 +101,10 @@ const initialPlayers = [
     key: '895aa6083cc2dfaf',
     username: 'mental-farica',
   },
+  {
+    key: '104d81cea432f871',
+    username: 'acute-fredrika',
+  },
 ]
 
 export { server, authenticatePlayer, serverInject, sleep, initialPlayers }

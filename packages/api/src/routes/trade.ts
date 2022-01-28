@@ -35,6 +35,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (PLAYER_MINT_TIMESTAMP && isTimeToMint())
         return reply.status(403).send(new Error(`Trade period is over.`))
 
+      // Cooldown parameter is only allowed in tests
+      if (process.env.NODE_ENV !== 'test') {
+        request.body.cooldown = undefined
+      }
+
       // Check 1: token is valid
       let fromKey: string
       try {
@@ -113,10 +118,9 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const remainingCooldown: number = lastTrade
         ? calculateRemainingCooldown(lastTrade.ends)
         : 0
-      if (remainingCooldown) {
+      if (remainingCooldown && request.body.cooldown !== 0) {
         fastify.sendResourceCooldowns.delete(fromKey)
         fastify.receiveResourceCooldowns.delete(toKey)
-
         return reply
           .status(409)
           .send(
@@ -154,8 +158,14 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       playerModel.update(updatedToPlayer.toDbVTO())
 
       // Create and return `trade` object
+      let tradeDuration
+      if (request.body.cooldown === 0) {
+        tradeDuration = 0
+      } else {
+        tradeDuration = TRADE_DURATION_MILLIS
+      }
       const trade = await tradeModel.create({
-        ends: currentTimestamp + TRADE_DURATION_MILLIS,
+        ends: currentTimestamp + tradeDuration,
         from: fromPlayer.username,
         to: toPlayer.username,
         resource,

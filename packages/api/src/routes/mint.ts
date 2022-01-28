@@ -91,6 +91,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       // Build message to sign
+      // This is the solidity function we will need to call:
       /*
         function mintFarmerAwards(
             address _tokenOwner,
@@ -105,7 +106,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         virtual override
         nonReentrant
         inStatus(WittyBufficorns.Status.Awarding)
-    {
+        {
        */
       // Fake values for testing
       /*
@@ -125,7 +126,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           bufficornId: 0,
         },
       ]
-     */
+       */
       /*
       enum Awards {
           BestBreeder,
@@ -170,7 +171,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       })
       const sorted_ranches = Ranch.getLeaderboard(ranches)
       const top_3_sorted_ranches = sorted_ranches.splice(0, 3)
-      // TODO: test BestRanch medal
       for (let topRanch of top_3_sorted_ranches) {
         if (topRanch.name === player.ranch) {
           farmerAwards.push({
@@ -195,7 +195,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       ].entries()) {
         const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns, category)
         const top_3_sorted_bufficorns = sorted_bufficorns.splice(0, 3)
-        // TODO: add test with multiple medals
         for (let topBufficorn of top_3_sorted_bufficorns) {
           if (topBufficorn.ranch === player.ranch) {
             farmerAwards.push({
