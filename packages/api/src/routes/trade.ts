@@ -38,6 +38,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (GAME_END_TIMESTAMP && gameOver())
         return reply.status(403).send(new Error(`Trade period is over.`))
 
+      // Cooldown parameter is only allowed in tests
+      if (process.env.NODE_ENV !== 'test') {
+        request.body.cooldown = undefined
+      }
+
       // Check 1: token is valid
       let fromKey: string
       try {
@@ -117,10 +122,9 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const remainingCooldown: number = lastTrade
         ? calculateRemainingCooldown(lastTrade.ends)
         : 0
-      if (remainingCooldown) {
+      if (remainingCooldown && request.body.cooldown !== 0) {
         fastify.sendResourceCooldowns.delete(fromKey)
         fastify.receiveResourceCooldowns.delete(toKey)
-
         return reply
           .status(409)
           .send(
@@ -146,9 +150,16 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         updatedToPlayer.points += resource.amount
         playerModel.update(updatedToPlayer.toDbVTO())
 
+
+        let tradeDuration
+        if (request.body.cooldown === 0) {
+          tradeDuration = 0
+        } else {
+          tradeDuration = TRADE_DURATION_MILLIS
+        }
         // Create and return `trade` object
         const trade = await tradeModel.create({
-          ends: currentTimestamp + TRADE_DURATION_MILLIS,
+          ends: tradeDuration,
           from: fromPlayer.username,
           to: toPlayer.username,
           resource,
@@ -194,9 +205,15 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         updatedToPlayer.points += resource.amount
         playerModel.update(updatedToPlayer.toDbVTO())
 
+        let tradeDuration
+        if (request.body.cooldown === 0) {
+          tradeDuration = 0
+        } else {
+          tradeDuration = TRADE_DURATION_MILLIS
+        }
         // Create and return `trade` object
         const trade = await tradeModel.create({
-          ends: currentTimestamp + TRADE_DURATION_MILLIS,
+          ends: tradeDuration, 
           from: fromPlayer.username,
           to: toPlayer.username,
           resource,
