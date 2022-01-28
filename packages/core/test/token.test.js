@@ -54,40 +54,14 @@ contract("WittyBufficornsToken", accounts => {
                             tender.getTokenInfo.call(0),
                             "inexistent"
                         )
+                        await truffleAssert.reverts(
+                            tender.getTokenInfo.call(1),
+                            "inexistent"
+                        )
                     })
                 })
             })
             describe("IWittyBufficornsAdmin", async() => {
-                describe("setDecorator(..)", async () => {
-                    it("signator cannot change decorator", async () => {
-                        await truffleAssert.reverts(
-                            tender.setDecorator(stranger, { from: signator }),
-                            "Ownable"
-                        )
-                    })
-                    it("stranger cannot change decorator", async() => {
-                        await truffleAssert.reverts(
-                            tender.setDecorator(stranger, { from: stranger }),
-                            "Ownable"
-                        )
-                    })
-                    it("decorator cannot be set to zero", async () => {
-                        await truffleAssert.reverts(
-                            tender.setDecorator(
-                                "0x0000000000000000000000000000000000000000",
-                                { from: owner }
-                            ),
-                            "no decorator"
-                        )
-                    })
-                    it("owner can change decorator", async() => {
-                        await tender.setDecorator(WittyBufficornsDecorator.address, { from: owner })
-                        assert.equal(
-                            WittyBufficornsDecorator.address, 
-                            await tender.getDecorator.call()
-                        )
-                    })
-                })
                 describe("setSignator(..)", async () => {
                     it("stranger cannot change signatorship", async () => {
                         await truffleAssert.reverts(
@@ -121,6 +95,36 @@ contract("WittyBufficornsToken", accounts => {
                         )
                     })
                 })
+                describe("setDecorator(..)", async () => {
+                    it("stranger cannot change decorator", async() => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(stranger, { from: stranger }),
+                            "Ownable"
+                        )
+                    })
+                    it("decorator cannot be set to zero", async () => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(
+                                "0x0000000000000000000000000000000000000000",
+                                { from: owner }
+                            ),
+                            "no decorator"
+                        )
+                    })
+                    it("signator cannot change decorator", async () => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(stranger, { from: signator }),
+                            "Ownable"
+                        )
+                    })
+                    it("owner can change decorator", async() => {
+                        await tender.setDecorator(WittyBufficornsDecorator.address, { from: owner })
+                        assert.equal(
+                            WittyBufficornsDecorator.address, 
+                            await tender.getDecorator.call()
+                        )
+                    })
+                })                
                 describe("setRanchScore(..)", async () => {
                     it("stranger cannot set ranch score", async() => {
                         await truffleAssert.reverts(
@@ -363,163 +367,233 @@ contract("WittyBufficornsToken", accounts => {
             })
         })
 
-        // describe("In status: 'Randomizing'", async () => {
-        //     beforeEach(async () => {
-        //         let status = await tender.getStatus.call()
-        //         assert.equal(status.toString(), "1")
-        //     })
-        //     describe("IWittyBufficornsSurrogates", async() => {
-        //         describe("mintFarmerAwards(..)", async () => {
-        //             it("creatures cannot be minted", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.mintFarmerAwards(
-        //                         eggOwner0,
-        //                         0,
-        //                         1,
-        //                         800,
-        //                         2,
-        //                         "0xbd8846c16175582d498d6bbf26513cb5dd932f980c5a3033a660be7dd2f5d05072fbd26b22ce700e3b09c8c11f6af2e8977cc21790535847d79166898cd6f5c61b"
-        //                     ),
-        //                     "not in Hatching"
-        //                 )
-        //             })
-        //         })
-        //         describe("previewCreature(..)", async() => {
-        //             it("creature images cannot be previewed", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.previewCreatureImage(
-        //                         eggOwner0,
-        //                         0,
-        //                         1,
-        //                         800,
-        //                         2,
-        //                         "0xbd8846c16175582d498d6bbf26513cb5dd932f980c5a3033a660be7dd2f5d05072fbd26b22ce700e3b09c8c11f6af2e8977cc21790535847d79166898cd6f5c61b"
-        //                     ),
-        //                     "not in Hatching"
-        //                 )
-        //             })
-        //         })
-        //     })
-        //     describe("IWittyBufficornsView", async () => {
-        //         describe("getCreatureStatus(..)", async () => {
-        //             it("creature #0 is in 'Incubating' status", async() => {
-        //                 let cStatus = await tender.getCreatureStatus.call(0)
-        //                 assert.equal(cStatus.toString(), "1")
-        //             })
-        //         })
-        //     })
-        //     describe("IWittyBufficornsAdmin", async() => {
-        //         describe("setDecorator(..)", async () => {
-        //             it("signator cannot change decorator", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setDecorator(stranger, { from: signator }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("stranger cannot change decorator", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setDecorator(stranger, { from: stranger }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("decorator cannot be set to zero", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setDecorator(
-        //                         "0x0000000000000000000000000000000000000000",
-        //                         { from: owner }
-        //                     ),
-        //                     "no decorator"
-        //                 )
-        //             })
-        //             it("owner can change decorator", async() => {
-        //                 await tender.setDecorator(WittyBufficornsDecorator.address, { from: owner })
-        //             })
-        //         })
-        //         describe("setParameters(..)", async () => {
-        //             it("owner cannot change valid parameters", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setParameters(
-        //                         signator,
-        //                         [10, 30, 60],
-        //                         80640,
-        //                         { from: owner }
-        //                     ),
-        //                     "not in Batching"
-        //                 )
-        //             })
-        //             it("stranger cannot change parameters", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setParameters(
-        //                         stranger,
-        //                         [10, 30, 60],
-        //                         80640,
-        //                         { from: stranger }
-        //                     ),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("signator cannot change parameters", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.setParameters(
-        //                         stranger,
-        //                         [10, 30, 60],
-        //                         80640,
-        //                         { from: signator }
-        //                     )
-        //                 )
-        //             })
-        //         })
-        //         describe("stopBatching()", async () => {
-        //             it("signator cannot stop batching", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.stopBatching({
-        //                         from: signator,
-        //                         value: 10 ** 10 // 10 gwei
-        //                     }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("stranger cannot stop batching", async () => {
-        //                 await truffleAssert.reverts(
-        //                     tender.stopBatching({
-        //                         from: stranger,
-        //                         value: 10 ** 10 // 10 gwei
-        //                     }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("owner cannot stop batching", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.stopBatching({ 
-        //                         from: owner,
-        //                         value: 10 ** 10 // 10 gwei
-        //                     }),
-        //                     "not in Batching"
-        //                 )
-        //             })
-        //         })
-        //         describe("startHatching()", async () => {
-        //             it("signator cannot start hatching", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.startHatching({ from: signator }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("stranger cannot start hatching", async() => {
-        //                 await truffleAssert.reverts(
-        //                     tender.startHatching({ from: stranger }),
-        //                     "Ownable"
-        //                 )
-        //             })
-        //             it("owner can start hatching", async () => {
-        //                 await tender.startHatching({ from: owner })
-        //                 // check status changed to 'Hatching'
-        //                 let status = await tender.getStatus.call()
-        //                 assert.equal(status.toString(), "2")
-        //             })
-        //         })
-        //     })
-        // })
+        describe("In status: 'Randomizing'", async () => {
+            beforeEach(async () => {
+                let status = await tender.getStatus.call()
+                assert.equal(status.toString(), "1")
+            })
+            describe("IWittyBufficornsSurrogates", async() => {
+                describe("mintFarmerAwards(..)", async () => {
+                    it("awards cannot be minted", async () => {
+                        await truffleAssert.reverts(
+                            tender.mintFarmerAwards(
+                                farmer0,
+                                0,
+                                1,
+                                800,
+                                "farmer0",
+                                [
+                                    [ 0, 1, 0 ]
+                                ],
+                                "0xbd8846c16175582d498d6bbf26513cb5dd932f980c5a3033a660be7dd2f5d05072fbd26b22ce700e3b09c8c11f6af2e8977cc21790535847d79166898cd6f5c61b"
+                            ),
+                            "bad mood"
+                        )
+                    })
+                })
+            })
+            describe("IWittyBufficornsView", async () => {
+                describe("getTokenInfo(..)", async () => {
+                    it("getting inexistent token fails", async() => {
+                        await truffleAssert.reverts(
+                            tender.getTokenInfo.call(0),
+                            "inexistent"
+                        )
+                        await truffleAssert.reverts(
+                            tender.getTokenInfo.call(1),
+                            "inexistent"
+                        )
+                    })
+                })
+            })
+            describe("IWittyBufficornsAdmin", async() => {
+                describe("setSignator(..)", async () => {
+                    it("stranger cannot change signatorship", async () => {
+                        await truffleAssert.reverts(
+                            tender.setSignator(
+                                signator,
+                                { from: stranger }
+                            ),
+                            "Ownable"
+                        )
+                    })
+                    it("signator cannot transfer signatorship", async () => {
+                        await truffleAssert.reverts(
+                            tender.setSignator(
+                                stranger,
+                                { from: signator }
+                            ),
+                            "Ownable"
+                        )
+                    })
+                    it("owner cannot transfer signatorship if not in 'Breeding' status", async () => {
+                        await truffleAssert.reverts(
+                            tender.setSignator(
+                                signator,
+                                { from: owner }
+                            ),
+                            "bad mood"
+                        )
+                    })                    
+                })
+                describe("setDecorator(..)", async () => {
+                    it("stranger cannot change decorator", async() => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(stranger, { from: stranger }),
+                            "Ownable"
+                        )
+                    })
+                    it("decorator cannot be set to zero", async () => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(
+                                "0x0000000000000000000000000000000000000000",
+                                { from: owner }
+                            ),
+                            "no decorator"
+                        )
+                    })
+                    it("signator cannot change decorator", async () => {
+                        await truffleAssert.reverts(
+                            tender.setDecorator(stranger, { from: signator }),
+                            "Ownable"
+                        )
+                    })
+                    it("owner can change decorator", async() => {
+                        await tender.setDecorator(WittyBufficornsDecorator.address, { from: owner })
+                        assert.equal(
+                            WittyBufficornsDecorator.address, 
+                            await tender.getDecorator.call()
+                        )
+                    })
+                })
+                describe("setRanchScore(..)", async () => {
+                    it("stranger cannot set ranch score", async() => {
+                        await truffleAssert.reverts(
+                            tender.setRanchScore(
+                                0,
+                                "Ranch.0",
+                                12345,
+                                { from: stranger }
+                            ),
+                            "only signator"
+                        )
+                    })
+                    it("owner cannot set ranch score", async() => {
+                        await truffleAssert.reverts(
+                            tender.setRanchScore(
+                                0,
+                                "Ranch.0",
+                                12345,
+                                { from: stranger }
+                            ),
+                            "only signator"
+                        )
+                    })
+                    it("signator cannot add/edit ranches if not in 'Breeding' status", async () => {
+                        await truffleAssert.reverts(
+                            tender.setRanchScore(
+                                0,
+                                "Ranch.0",
+                                10,
+                                { from: signator }
+                            ),
+                            "bad mood"
+                        )
+                    })
+                })
+                describe("setBufficornScores(..)", async () => {
+                    it("stranger cannot set bufficorn traits", async() => {
+                        await truffleAssert.reverts(
+                            tender.setBufficornScores(
+                                0,
+                                0,
+                                "Bufficorn.0",
+                                [ 1, 2, 3, 4, 5, 6 ],
+                                { from: stranger }
+                            ),
+                            "only signator"
+                        )
+                    })
+                    it("owner cannot set bufficorn traits", async() => {
+                        await truffleAssert.reverts(
+                            tender.setBufficornScores(
+                                0,
+                                0,
+                                "Bufficorn.0",
+                                [ 1, 2, 3, 4, 5, 6 ],
+                                { from: owner }
+                            ),
+                            "only signator"
+                        )
+                    })
+                    it("signator cannot add/edit bufficorns if not in 'Breeding' status", async () => {
+                        await truffleAssert.reverts(
+                            tender.setBufficornScores(
+                                0,
+                                0,
+                                "Bufficorn.0",
+                                [ 10, 20, 30, 40, 50, 60 ],
+                                { from: signator }
+                            ),
+                            "bad mood"
+                        )
+                    })
+                })
+                describe("stopBreeding(..)", async () => {
+                    it("breeding cannot be stopped twice", async () => {
+                        await truffleAssert.reverts(
+                            tender.stopBreeding(
+                                1, // _totalRanches
+                                1, // _totalBufficorns
+                                { from: signator, value: 10 ** 10 }
+                            ),
+                            "bad mood"
+                        )
+                    })
+                    it("fails it trying to stop twice a tender with no randomizer", async () => {
+                        let tender2 = await WittyBufficornsToken.new(                 
+                            "Witty Bufficorns Test",
+                            "TEST",
+                            "0x0000000000000000000000000000000000000000",
+                            WittyBufficornsDecorator.address
+                        )
+                        await tender2.setRanchScore(0, "Ranch.0", 10)
+                        await tender2.setBufficornScores(0, 0, "Bufficorn.0", [ 10, 20, 30, 40, 50, 60 ])
+                        await tender2.stopBreeding(1, 1)
+                        await truffleAssert.reverts(
+                            tender2.stopBreeding(1, 1),
+                            "bad mood"
+                        )
+                    })
+                })
+                describe("startAwarding()", async () => {
+                    it("stranger cannot start awarding", async () => {
+                        await truffleAssert.reverts(
+                            tender.startAwarding({ from: stranger }),
+                            "only signator"
+                        )
+                    })
+                    it("owner cannot start awarding", async () => {
+                        await truffleAssert.reverts(
+                            tender.startAwarding({ from: owner }),
+                            "only signator"
+                        )
+                    })
+                    it("signator cannot start awarding if randomness was not solved yet", async () => {
+                        await truffleAssert.reverts(
+                            tender.startAwarding({ from: signator }),
+                            ""
+                        )
+                    })
+                    it("signator can start awarding if randomness is solved", async () => {
+                        let randomizer = await WitnetRandomnessMock.at(WitnetRandomnessMock.address)
+                        await randomizer.setRandomness()
+                        await tender.startAwarding({ from: signator })
+                        assert.equal("2", await tender.getStatus.call())
+                    })
+                })
+            })
+        })
 
         // describe("In status: 'Hatching'", async () => {
         //     beforeEach(async () => {
