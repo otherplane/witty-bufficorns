@@ -36,6 +36,7 @@ describe('Route /leaderboard', () => {
             expect(bufficorn.agility).toBe(0)
             expect(bufficorn.score).toBe(0)
             expect(bufficorn.position).toBe(index)
+            expect(typeof bufficorn.creationIndex).toBe('number')
           })
         }
       )
@@ -62,6 +63,7 @@ describe('Route /leaderboard', () => {
             expect(ranch.name).toBeTruthy()
             expect(ranch.score).toBe(0)
             expect(ranch.position).toBe(index)
+            expect(typeof ranch.creationIndex).toBe('number')
           })
         }
       )
@@ -88,6 +90,7 @@ describe('Route /leaderboard', () => {
             expect(player.username).toBeTruthy()
             expect(player.points).toBe(0)
             expect(player.position).toBe(index)
+            expect(typeof player.creationIndex).toBe('number')
           })
         }
       )
@@ -153,7 +156,7 @@ describe('Route /leaderboard', () => {
           expect(bufficorns.length).toBe(24)
 
           const fedBufficorn = bufficorns.find(
-            (b) => Number(b.index) === selectedBufficorn
+            (b) => Number(b.creationIndex) === selectedBufficorn
           )
           // Traded ranch gives vigor
           expect(fedBufficorn.vigor).toBe(TRADE_POINTS)

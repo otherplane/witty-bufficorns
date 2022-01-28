@@ -88,7 +88,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.post<{
     Params: SelectBufficornParams
     Reply: SelectBufficornReply | Error
-  }>('/players/selected-bufficorn/:index', {
+  }>('/players/selected-bufficorn/:creationIndex', {
     schema: {
       params: SelectBufficornParams,
       headers: AuthorizationHeader,
@@ -118,27 +118,27 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .status(404)
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
-      const index = request.params.index
+      const creationIndex = request.params.creationIndex
 
       // Check 3: bufficorn belong to player's ranch
       try {
-        Ranch.checkIfBufficornsBelongToRanch([index], player.ranch)
+        Ranch.checkIfBufficornsBelongToRanch([creationIndex], player.ranch)
       } catch (err) {
         return reply.status(404).send(err as Error)
       }
 
       const updatedPlayer = await playerModel.updateSelectedBufficorn(
         player.username,
-        index
+        creationIndex
       )
 
       if (!updatedPlayer) {
         return reply
           .status(404)
-          .send(new Error(`Bufficorn ${index} couldn't be selected`))
+          .send(new Error(`Bufficorn ${creationIndex} couldn't be selected`))
       }
 
-      return reply.status(200).send({ index })
+      return reply.status(200).send({ creationIndex })
     },
   })
 }

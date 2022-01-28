@@ -211,8 +211,9 @@ describe('Route /trade', () => {
         expect(
           response
             .json()
-            .player.ranch.bufficorns.find((bufficorn) => bufficorn.index === 1)
-            .vigor
+            .player.ranch.bufficorns.find(
+              (bufficorn) => bufficorn.creationIndex === 1
+            ).vigor
         ).toBe(TRADE_POINTS + secondTradePoints)
       }
     )

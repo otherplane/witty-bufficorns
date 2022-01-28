@@ -54,6 +54,7 @@ export class PlayerModel {
       medals,
       points,
       selectedBufficorn,
+      creationIndex: index,
     })
   }
 
@@ -142,11 +143,11 @@ export class PlayerModel {
 
   public async updateSelectedBufficorn(
     username: string,
-    index: number
+    creationIndex: number
   ): Promise<Player | null> {
     const vto = await this.repository.updateOne(
       { username },
-      { selectedBufficorn: index }
+      { selectedBufficorn: creationIndex }
     )
 
     return vto ? new Player(vto) : null

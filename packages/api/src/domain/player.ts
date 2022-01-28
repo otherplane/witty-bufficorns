@@ -19,6 +19,7 @@ export class Player {
   medals: Array<string> = []
   id?: ObjectId
   selectedBufficorn: number
+  creationIndex: number
 
   constructor(vto: DbPlayerVTO) {
     this.key = vto.key
@@ -29,6 +30,7 @@ export class Player {
     this.token = vto.token
     this.id = new ObjectId(vto.id)
     this.selectedBufficorn = vto.selectedBufficorn
+    this.creationIndex = vto.creationIndex
   }
 
   toDbVTO(shoWToken: boolean = false): DbPlayerVTO {
@@ -41,6 +43,7 @@ export class Player {
       token: this.token,
       id: this.id?.toString(),
       selectedBufficorn: this.selectedBufficorn,
+      creationIndex: this.creationIndex,
     }
 
     return shoWToken ? { ...vto, token: this.token } : vto

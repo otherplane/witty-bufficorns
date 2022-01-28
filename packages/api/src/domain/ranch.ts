@@ -17,12 +17,14 @@ export class Ranch {
   public trait: Trait
   public medals: Array<string>
   public bufficorns: Array<Bufficorn> = []
+  public creationIndex: number
 
   constructor(vto?: DbRanchVTO, index?: number, bufficorns?: Array<Bufficorn>) {
     if (vto) {
       this.name = vto.name
       this.trait = vto.trait
       this.medals = vto.medals
+      this.creationIndex = vto.creationIndex
     } else {
       const idx = index || 0
       const ranchName = INDEX_TO_RANCH[idx]
@@ -30,12 +32,13 @@ export class Ranch {
       this.name = ranchName
       this.trait = TRAIT_BY_RANCH[ranchName]
       this.medals = []
+      this.creationIndex = idx
     }
 
     if (bufficorns) {
       // Throw an error if they don't belong to the current ranch
       Ranch.checkIfBufficornsBelongToRanch(
-        bufficorns.map((b) => b.index),
+        bufficorns.map((b) => b.creationIndex),
         this.name
       )
 
@@ -50,7 +53,7 @@ export class Ranch {
 
     // Throw an error if they don't belong to the current ranch
     Ranch.checkIfBufficornsBelongToRanch(
-      bufficorns.map((b) => b.index),
+      bufficorns.map((b) => b.creationIndex),
       this.name
     )
 
@@ -63,6 +66,7 @@ export class Ranch {
       bufficorns: this.bufficorns.map((bufficorn) => bufficorn.toVTO()),
       medals: this.medals,
       trait: this.trait,
+      creationIndex: this.creationIndex,
     }
   }
 
@@ -72,6 +76,7 @@ export class Ranch {
       bufficorns: this.bufficorns.map((bufficorn) => bufficorn.name),
       medals: this.medals,
       trait: this.trait,
+      creationIndex: this.creationIndex,
     }
   }
 
@@ -93,6 +98,7 @@ export class Ranch {
         name: r.name,
         score: r.calculateScore(trait),
         position: index,
+        creationIndex: r.creationIndex,
       }))
   }
 
@@ -104,7 +110,7 @@ export class Ranch {
     bufficornsIndex.forEach((index) => {
       if (!BUFFICORNS_INDEX_GROUP_BY_RANCH[ranchName].includes(index)) {
         throw new Error(
-          `Bufficorn with index ${index} doesn't belong to ranch ${ranchName}`
+          `Bufficorn with creationIndex ${index} doesn't belong to ranch ${ranchName}`
         )
       }
     })

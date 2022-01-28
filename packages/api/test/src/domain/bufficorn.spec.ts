@@ -25,7 +25,7 @@ function auxBufficornInfo(
     ...b.stats,
     position,
     score,
-    index: b.index,
+    creationIndex: b.creationIndex,
   }
 }
 describe('bufficorn.ts', () => {

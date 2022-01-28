@@ -104,6 +104,7 @@ describe('player.ts', () => {
               lastTradeOut,
               medals,
               selectedBufficorn,
+              creationIndex,
             },
           } = response.json()
 
@@ -117,12 +118,14 @@ describe('player.ts', () => {
           expect(medals).toStrictEqual([])
           expect(tradeIn).toBeFalsy()
           expect(tradeOut).toBeFalsy()
+          expect(typeof creationIndex).toBe('number')
 
           // Check ranch integrity
           expect(ranch.name).toBeTruthy()
           expect(ranch.bufficorns.length).toBe(4)
           expect(ranch.bufficorns[0].name).toBeTruthy()
           expect(ranch.bufficorns[0].ranch).toBeTruthy()
+          expect(typeof ranch.creationIndex).toBe('number')
 
           // Check bufficorn integrity
           expect(ranch.bufficorns[0].vigor).toBe(0)
@@ -131,12 +134,13 @@ describe('player.ts', () => {
           expect(ranch.bufficorns[0].coat).toBe(0)
           expect(ranch.bufficorns[0].agility).toBe(0)
           expect(ranch.bufficorns[0].medals).toStrictEqual([])
+          expect(typeof ranch.bufficorns[0].creationIndex).toBe('number')
         }
       )
     })
   })
 
-  describe('POST /player/selected-bufficorn/:index', () => {
+  describe('POST /player/selected-bufficorn/:creationIndex', () => {
     it('Should not update selected bufficorn - no authorization header', async () => {
       await serverInject(
         {
@@ -166,7 +170,7 @@ describe('player.ts', () => {
       )
     })
 
-    it('should NOT update selected bufficorn - index greater than 24', async () => {
+    it('should NOT update selected bufficorn - creation index greater than 24', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -181,13 +185,13 @@ describe('player.ts', () => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe(
-            "Bufficorn with index 24 doesn't belong to ranch Opolis Reservation"
+            "Bufficorn with creationIndex 24 doesn't belong to ranch Opolis Reservation"
           )
         }
       )
     })
 
-    it('should NOT update selected bufficorn - index smaller than 0', async () => {
+    it('should NOT update selected bufficorn - creation index smaller than 0', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -202,13 +206,13 @@ describe('player.ts', () => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe(
-            "Bufficorn with index -1 doesn't belong to ranch Opolis Reservation"
+            "Bufficorn with creationIndex -1 doesn't belong to ranch Opolis Reservation"
           )
         }
       )
     })
 
-    it('should NOT update selected bufficorn - index should be an integer', async () => {
+    it('should NOT update selected bufficorn - creation index should be an integer', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -222,12 +226,14 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(400)
-          expect(response.json().message).toBe('params/index should be integer')
+          expect(response.json().message).toBe(
+            'params/creationIndex should be integer'
+          )
         }
       )
     })
 
-    it('should NOT update selected bufficorn - index should be an integer', async () => {
+    it('should NOT update selected bufficorn - creation index should be an integer', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -241,7 +247,9 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(400)
-          expect(response.json().message).toBe('params/index should be integer')
+          expect(response.json().message).toBe(
+            'params/creationIndex should be integer'
+          )
         }
       )
     })
@@ -292,7 +300,7 @@ describe('player.ts', () => {
         (err, response) => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(200)
-          expect(response.json().index).toBe(newSelectedBufficorn)
+          expect(response.json().creationIndex).toBe(newSelectedBufficorn)
         }
       )
     })

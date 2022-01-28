@@ -42,6 +42,7 @@ describe('ranch.ts', () => {
       name: r.name,
       score,
       position,
+      creationIndex: r.creationIndex,
     }
   }
 

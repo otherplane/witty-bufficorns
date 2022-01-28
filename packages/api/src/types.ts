@@ -54,7 +54,7 @@ export const BufficornVTO = Type.Object({
   [Trait.Coat]: Type.Integer(),
   [Trait.Agility]: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
-  index: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 
 export type BufficornVTO = Static<typeof BufficornVTO>
@@ -64,6 +64,7 @@ export const RanchVTO = Type.Object({
   bufficorns: Type.Array(BufficornVTO),
   medals: Type.Array(Type.Optional(Type.String())),
   trait: TraitEnum,
+  creationIndex: Type.Integer(),
 })
 
 export type RanchVTO = Static<typeof RanchVTO>
@@ -73,6 +74,7 @@ export const DbRanchVTO = Type.Object({
   trait: TraitEnum,
   bufficorns: Type.Array(Type.String()),
   medals: Type.Array(Type.Optional(Type.String())),
+  creationIndex: Type.Integer(),
 })
 
 export type DbRanchVTO = Static<typeof DbRanchVTO>
@@ -102,7 +104,7 @@ export const BufficornLeaderboardInfo = Type.Object({
   [Trait.Agility]: Type.Integer(),
   score: Type.Integer(),
   position: Type.Integer(),
-  index: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 export type BufficornLeaderboardInfo = Static<typeof BufficornLeaderboardInfo>
 
@@ -110,6 +112,7 @@ export const RanchLeaderboardInfo = Type.Object({
   name: Type.String(),
   score: Type.Integer(),
   position: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 export type RanchLeaderboardInfo = Static<typeof RanchLeaderboardInfo>
 
@@ -117,6 +120,7 @@ export const PlayerLeaderboardInfo = Type.Object({
   username: Type.String(),
   points: Type.Integer(),
   position: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 export type PlayerLeaderboardInfo = Static<typeof PlayerLeaderboardInfo>
 
@@ -229,6 +233,7 @@ export const PlayerVTO = Type.Object({
   points: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
   selectedBufficorn: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 export type PlayerVTO = Static<typeof PlayerVTO>
 
@@ -244,6 +249,7 @@ export const DbPlayerVTO = Type.Object({
   medals: Type.Array(Type.Optional(Type.String())),
   id: Type.Optional(Type.String()),
   selectedBufficorn: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
@@ -267,13 +273,13 @@ export type ExtendedPlayerVTO = Static<typeof ExtendedPlayerVTO>
 
 // Provided index is valid from 0 - 3
 export const SelectBufficornParams = Type.Object({
-  index: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 export type SelectBufficornParams = Static<typeof SelectBufficornParams>
 
 // Provided index is valid from 0 - 3
 export const SelectBufficornReply = Type.Object({
-  index: Type.Integer(),
+  creationIndex: Type.Integer(),
 })
 
 export type SelectBufficornReply = Static<typeof SelectBufficornReply>

@@ -21,7 +21,7 @@ export class Bufficorn {
   public medals: Array<string> = []
   public name
   public ranch: RanchName
-  public index: number
+  public creationIndex: number
 
   constructor(vto?: BufficornVTO, index?: number) {
     if (vto) {
@@ -36,14 +36,14 @@ export class Bufficorn {
         vigor: vto.vigor,
       }
       this.ranch = vto.ranch
-      this.index = vto.index
+      this.creationIndex = vto.creationIndex
     } else {
       const idx = index || 0
 
       this.name = Bufficorn.getBufficornName(idx)
       this.ranch = getRanchFromIndex(idx)
       // number from 0 to 23
-      this.index = idx
+      this.creationIndex = idx
     }
   }
 
@@ -52,7 +52,7 @@ export class Bufficorn {
       name: this.name,
       ranch: this.ranch,
       medals: this.medals,
-      index: this.index,
+      creationIndex: this.creationIndex,
       ...this.stats,
     }
   }
@@ -73,7 +73,7 @@ export class Bufficorn {
         ...b.stats,
         score: b.calculateScore(trait),
         position: index,
-        index: b.index,
+        creationIndex: b.creationIndex,
       }))
   }
 
