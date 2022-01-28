@@ -263,18 +263,18 @@ contract WittyBufficornsToken
             "WittyBufficornsToken: bufficorns mismatch"
         );
         __storage.witnetRandomizeBlock = block.number;
-        if (address(randomizer) != address(0)) {
-            uint _usedFunds = randomizer.randomize{value: msg.value}();
-            if (_usedFunds < msg.value) {
-                payable(msg.sender).transfer(msg.value - _usedFunds);
-            }
-        } else {
+        if (address(randomizer) == address(0)) {
             __storage.witnetRandomness = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
             emit AwardingBegins(
                 msg.sender,
                 _totalRanches,
                 _totalBufficorns
             );
+        } else {
+            uint _usedFunds = randomizer.randomize{value: msg.value}();
+            if (_usedFunds < msg.value) {
+                payable(msg.sender).transfer(msg.value - _usedFunds);
+            }
         }   
     }
 
@@ -340,6 +340,7 @@ contract WittyBufficornsToken
 
         // Set common parameters to all tokens minted within this call:
         _tokenInfo.farmerId = _farmerId;
+        // solhint-disable-next-line not-rely-on-time
         _tokenInfo.timestamp = block.timestamp;
 
         // Loop: Mint one token per received award:
@@ -540,18 +541,4 @@ contract WittyBufficornsToken
             "WittyBufficornsToken: bad signature"
         );
     }
-    
-    // // ------------------------------------------------------------------------
-    // // --- PRIVATE METHODS ----------------------------------------------------
-    // // ------------------------------------------------------------------------
-
-    // function _bytesToBytes32(bytes memory _bb)
-    //     private pure
-    //     returns (bytes32 _r)
-    // {
-    //     uint _len = _bb.length > 32 ? 32 : _bb.length;
-    //     for (uint _i = 0; _i < _len; _i ++) {
-    //         _r |= bytes32(_bb[_i] & 0xff) >> (_i * 8);
-    //     }
-    // }
 }
