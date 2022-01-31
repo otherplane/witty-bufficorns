@@ -30,7 +30,8 @@
         :position="player.position + 1"
         :score="player.points"
       />
-      <CustomPagination :limit="10" @update-page="updateCurrentPage" />
+      <!-- TODO: Uncomment when pagination is fixed -->
+      <!-- <CustomPagination :limit="10" @update-page="updateCurrentPage" /> -->
     </div>
     <div v-if="gameEntity === 'ranches'" class="list">
       <RancheGlobalData
@@ -74,7 +75,6 @@ export default {
       await player.getGlobalStats(offset.value, limit.value)
     })
     function updateCurrentPage (page) {
-      console.log('updated---', page)
       currentPage.value = page
     }
     // filter list by attribute

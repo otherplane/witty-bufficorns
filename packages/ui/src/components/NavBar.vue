@@ -114,8 +114,6 @@ export default {
   list-style: none;
   visibility: hidden;
   text-align: left;
-  width: max-content;
-  height: max-content;
   border-radius: 4px;
   margin: 0;
   cursor: pointer;

@@ -17,9 +17,9 @@ export class ApiService {
     return { error }
   }
 
-  _get ({ url, params }) {
+  _get ({ url, config }) {
     return axios
-      .get(url, params)
+      .get(url, config)
       .then(this._handleResponse)
       .catch(this._handleError)
   }
@@ -41,21 +41,21 @@ export class ApiService {
   getInfo (params) {
     return this._get({
       url: `${this.baseUrl}/players/${params.id}`,
-      params: { headers: { authorization: params.token } }
+      config: { headers: { authorization: params.token } }
     })
   }
 
   getTradeHistory (params) {
     return this._get({
       url: `${this.baseUrl}/trades`,
-      params: { headers: { authorization: params.token } }
+      config: { headers: { authorization: params.token } }
     })
   }
 
   getLeaderboardInfo (params) {
     return this._get({
       url: `${this.baseUrl}/leaderboard`,
-      data: { offset: params.offset, limit: params.limit }
+      config: { params: { offset: params.offset, limit: params.limit } }
     })
   }
 

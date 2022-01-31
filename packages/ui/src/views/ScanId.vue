@@ -10,7 +10,7 @@
         :slim="true"
         @click="onDecode('/b75c34545e8cb4d2')"
       >
-        REGISTER FARMER example
+        The Ol' Algoranch
       </Button>
       <Button
         v-if="VITE_TEST"
@@ -19,7 +19,7 @@
         :slim="true"
         @click="onDecode('/a17b86baba0cb804')"
       >
-        REGISTER Vega Slopes Range
+        Vega Slopes Range
       </Button>
       <Button
         v-if="VITE_TEST"
@@ -28,7 +28,7 @@
         :slim="true"
         @click="onDecode('/21234f47b1c46620')"
       >
-        REGISTER Balancer Peak State'
+        Balancer Peak State'
       </Button>
       <Button
         v-if="VITE_TEST"
@@ -37,7 +37,7 @@
         :slim="true"
         @click="onDecode('/bf70268a8f1e2d67')"
       >
-        REGISTER Gold Reef Co.'
+        Gold Reef Co.'
       </Button>
       <Button
         v-if="VITE_TEST"
@@ -46,7 +46,7 @@
         :slim="true"
         @click="onDecode('/895aa6083cc2dfaf')"
       >
-        REGISTER Infinite Harmony Farm'
+        Infinite Harmony Farm'
       </Button>
       <Button
         v-if="VITE_TEST"
@@ -55,7 +55,7 @@
         :slim="true"
         @click="onDecode('/ef12efbd765f9ad3')"
       >
-        TRADE EXAMPLE
+        Opolis Reservation
       </Button>
     </div>
     <ModalDialog :show="modal.visible.value" v-on:close="modal.hideModal">

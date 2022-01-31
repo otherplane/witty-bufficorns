@@ -29,6 +29,7 @@ const leaderboard: FastifyPluginAsync = async (
       request: FastifyRequest<{ Querystring: LeaderboardParams }>,
       reply
     ) => {
+      console.log('request::', request.query)
       const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
       const sorted_bufficorns = Bufficorn.getLeaderboard(
         bufficorns,

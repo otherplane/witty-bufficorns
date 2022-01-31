@@ -115,27 +115,27 @@ export const useStore = defineStore('player', {
     },
     async updateSelectedBufficorn (index) {
       const tokenInfo = this.getToken()
-      const request = await this.api.selectBufficorn({
-        token: tokenInfo.token,
-        bufficorn: index
-      })
-      if (request.error) {
-        this.setError('updateSelectedBufficorn', request.error)
-        router.push('/init-game')
-      } else {
-        this.clearError('updateSelectedBufficorn')
-        this.selectedBufficorn = request
-        await this.getInfo()
+      if (index !== this.selectedBufficorn) {
+        const request = await this.api.selectBufficorn({
+          token: tokenInfo.token,
+          bufficorn: index
+        })
+        if (request.error) {
+          this.setError('updateSelectedBufficorn', request.error)
+          router.push('/init-game')
+        } else {
+          this.clearError('updateSelectedBufficorn')
+          this.selectedBufficorn = request
+          await this.getInfo()
+        }
       }
     },
     async getGlobalStats (offset = 0, limit = 25) {
-      console.log('offset', offset, 'limit', limit)
       await this.getInfo()
       const request = await this.api.getLeaderboardInfo({
         offset,
         limit
       })
-      console.log(request)
       if (request.error) {
         this.setError('getLeaderboardInfo', request.error)
       } else {
