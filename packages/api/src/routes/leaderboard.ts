@@ -46,12 +46,18 @@ const leaderboard: FastifyPluginAsync = async (
         limit: request.query.limit || 10,
         offset: request.query.offset || 0,
       })
-      const sorted_players = Player.getLeaderboard(players)
+
+      const totalPlayers = await playerModel.countActive()
+      const paginatedPlayers = Player.getLeaderboard(
+        players,
+        totalPlayers,
+        request.query.offset
+      )
 
       return reply.status(200).send({
         bufficorns: sorted_bufficorns,
         ranches: sorted_ranches,
-        players: sorted_players,
+        players: paginatedPlayers,
       })
     },
   })
