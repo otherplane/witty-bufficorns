@@ -11,6 +11,7 @@ export function normalizedChartData (stats, bufficornsArray) {
       return calculateHightestNumber(bufficorn)
     })
     const finalResult = calculateHightestNumber(result)
+    // Added minimun area of 0.05 to improve polar graph UI
     return Object.entries(stats).reduce(
       (acc, [key, value]) => ({ ...acc, [key]: value / finalResult + 0.05 }),
       []
@@ -28,6 +29,7 @@ export function normalizedChartData (stats, bufficornsArray) {
 }
 
 function calculateHightestNumber (list) {
+  // Added minimun area of 0.05 to improve polar graph UI
   return Math.max(...Object.values(list).filter(Number.isFinite)) - 0.05
 }
 
