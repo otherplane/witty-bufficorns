@@ -71,6 +71,11 @@ describe('Route /leaderboard', () => {
 
     it('players', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
+      await authenticatePlayer(initialPlayers[1].key)
+      await authenticatePlayer(initialPlayers[2].key)
+      await authenticatePlayer(initialPlayers[3].key)
+      await authenticatePlayer(initialPlayers[4].key)
+      await authenticatePlayer(initialPlayers[5].key)
 
       await serverInject(
         {
@@ -84,9 +89,10 @@ describe('Route /leaderboard', () => {
           const players = response.json().players
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(200)
-          expect(players.length).toBe(10)
+          expect(players.players.length).toBe(6)
+          expect(players.total).toBe(6)
 
-          players.forEach((player, index) => {
+          players.players.forEach((player, index) => {
             expect(player.username).toBeTruthy()
             expect(player.points).toBe(0)
             expect(player.position).toBe(index)
@@ -222,6 +228,9 @@ describe('Route /leaderboard', () => {
     it('players', async () => {
       const token0 = await authenticatePlayer(initialPlayers[0].key)
       await authenticatePlayer(initialPlayers[1].key)
+      await authenticatePlayer(initialPlayers[2].key)
+      await authenticatePlayer(initialPlayers[3].key)
+      await authenticatePlayer(initialPlayers[4].key)
 
       // Trade with player 1
       await serverInject(
@@ -252,9 +261,10 @@ describe('Route /leaderboard', () => {
           const players = response.json().players
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(200)
-          expect(players.length).toBe(10)
+          expect(players.players.length).toBe(5)
+          expect(players.total).toBe(5)
 
-          players.forEach((player, index) => {
+          players.players.forEach((player, index) => {
             expect(player.username).toBeTruthy()
             if (player.username === initialPlayers[1].username) {
               expect(player.points).toBe(800)
@@ -307,6 +317,10 @@ describe('Route /leaderboard', () => {
 
   it('should return correct values when PAGINATION params are given', async () => {
     const token = await authenticatePlayer(initialPlayers[0].key)
+    await authenticatePlayer(initialPlayers[1].key)
+    await authenticatePlayer(initialPlayers[2].key)
+    await authenticatePlayer(initialPlayers[3].key)
+    await authenticatePlayer(initialPlayers[4].key)
 
     let firstPlayer
     await serverInject(
@@ -319,10 +333,13 @@ describe('Route /leaderboard', () => {
       },
       (err, response) => {
         expect(response.statusCode).toBe(200)
-        expect(response.json().players.length).toBe(1)
-        firstPlayer = response.json().players[0]
+        expect(response.json().players.players.length).toBe(1)
+        expect(response.json().players.total).toBe(5)
+        firstPlayer = response.json().players.players[0]
       }
     )
+
+    await authenticatePlayer(initialPlayers[5].key)
 
     await serverInject(
       {
@@ -334,8 +351,9 @@ describe('Route /leaderboard', () => {
       },
       (err, response) => {
         expect(response.statusCode).toBe(200)
-        expect(response.json().players.length).toBe(1)
-        expect(response.json().players[0].username).not.toBe(
+        expect(response.json().players.players.length).toBe(1)
+        expect(response.json().players.total).toBe(6)
+        expect(response.json().players.players[0].username).not.toBe(
           firstPlayer.username
         )
       }

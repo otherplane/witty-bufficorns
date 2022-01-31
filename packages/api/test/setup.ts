@@ -85,6 +85,22 @@ const initialPlayers = [
     key: 'b75c34545e8cb4d2',
     username: 'running-carolina',
   },
+  {
+    key: 'a17b86baba0cb804',
+    username: 'ridiculous-terrye',
+  },
+  {
+    key: '21234f47b1c46620',
+    username: 'verbal-fiona',
+  },
+  {
+    key: 'bf70268a8f1e2d67',
+    username: 'realistic-ilise',
+  },
+  {
+    key: '895aa6083cc2dfaf',
+    username: 'mental-farica',
+  },
 ]
 
 export { server, authenticatePlayer, serverInject, sleep, initialPlayers }

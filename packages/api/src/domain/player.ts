@@ -49,13 +49,18 @@ export class Player {
     return shoWToken ? { ...vto, token: this.token } : vto
   }
 
-  static getLeaderboard(players: Array<Player>): Array<PlayerLeaderboardInfo> {
-    return players
-      .sort((a, b) => b.points - a.points)
-      .map((p, index) => ({
+  static getLeaderboard(
+    players: Array<Player>,
+    totalPlayers: number,
+    paginationOffset: number = 0
+  ): { players: Array<PlayerLeaderboardInfo>; total: number } {
+    return {
+      players: players.map((p, index) => ({
         ...p,
-        position: index,
-      }))
+        position: paginationOffset + index,
+      })),
+      total: totalPlayers,
+    }
   }
 
   toExtendedPlayerVTO(

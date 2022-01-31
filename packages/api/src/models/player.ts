@@ -124,7 +124,7 @@ export class PlayerModel {
     // TODO: Remove mongoDB $exists from model
     const vtos = await this.repository.getSortedBy(
       {
-        token: { $exists: true },
+        token: { $exists: true, $ne: undefined },
       },
       {
         points: 1,
@@ -151,5 +151,9 @@ export class PlayerModel {
     )
 
     return vto ? new Player(vto) : null
+  }
+
+  public async countActive() {
+    return this.repository.count({ token: { $exists: true, $ne: undefined } })
   }
 }

@@ -135,4 +135,8 @@ export class Repository<T> {
       sort: { timestamp: -1 },
     })
   }
+
+  public async count(filter: Filter<T>) {
+    return this.collection.countDocuments(filter)
+  }
 }

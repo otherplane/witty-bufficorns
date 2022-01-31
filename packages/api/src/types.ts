@@ -135,7 +135,10 @@ export type LeaderboardParams = Static<typeof LeaderboardParams>
 export const LeaderboardResponse = Type.Object({
   bufficorns: Type.Array(BufficornLeaderboardInfo),
   ranches: Type.Array(RanchLeaderboardInfo),
-  players: Type.Array(PlayerLeaderboardInfo),
+  players: Type.Object({
+    players: Type.Array(PlayerLeaderboardInfo),
+    total: Type.Integer(),
+  }),
 })
 export type LeaderboardResponse = Static<typeof LeaderboardResponse>
 
