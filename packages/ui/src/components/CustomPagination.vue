@@ -22,7 +22,6 @@ export default {
   setup (props, { emit }) {
     const page = ref(1)
     function updatePage (page) {
-      console.log('page', page)
       emit('update-page', page)
     }
     return { updatePage, page }

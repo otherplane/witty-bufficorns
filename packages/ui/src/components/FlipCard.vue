@@ -10,11 +10,7 @@
         :class="{ horizontal, background: backgroundFront, selected }"
       >
         <BufficornImage :class="{ selected }" :name="name" />
-        <PolarChart
-          v-if="normalizedData"
-          :stats="normalizedData"
-          :selected="selected"
-        />
+        <PolarChart v-if="normalizedData" :stats="normalizedData" />
       </div>
       <div
         class="face back"
@@ -115,6 +111,7 @@ export default {
   justify-items: center;
   align-content: center;
   color: var(--primary-color);
+  background-color: $white;
   &.selected {
     border: 2px solid var(--primary-color);
   }

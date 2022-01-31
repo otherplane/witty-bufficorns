@@ -1,14 +1,7 @@
 <template>
   <div class="stat-container" v-for="resource in stats" :key="resource.key">
     <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
-    <div
-      class="stat"
-      :style="{
-        backgroundImage: `linear-gradient(90deg, var(--primary-color-opacity-1) 0%, transparent ${data[
-          resource.key
-        ] * 100}%)`
-      }"
-    >
+    <div class="stat" :style="createResourceGradient(resource)">
       <p class="key">{{ resource.key.toUpperCase() }}</p>
       <p class="score">{{ resource.score }}</p>
     </div>
@@ -42,7 +35,14 @@ export default {
   setup (props) {
     const player = useStore()
     const stats = ref(getStatsFromAttributes(props.attributes))
-    return { player, stats, getAssetPath }
+
+    function createResourceGradient (resource) {
+      const resourcePercentage = props.data[resource.key] * 100
+      return {
+        backgroundImage: `linear-gradient(90deg, var(--primary-color-opacity-1) 0%, transparent ${resourcePercentage}%)`
+      }
+    }
+    return { player, stats, getAssetPath, createResourceGradient }
   }
 }
 </script>

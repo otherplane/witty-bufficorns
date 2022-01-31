@@ -16,7 +16,7 @@
             <span class="subtitle label">GAME ENDS IN:</span>
             <TimeLeft
               class="time-left"
-              :timestamp="1644568954000"
+              :timestamp="1645376400000"
               :seconds="true"
             />
           </p>

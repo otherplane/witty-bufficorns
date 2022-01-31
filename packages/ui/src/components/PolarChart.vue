@@ -1,5 +1,5 @@
 <template>
-  <div v-html="svg" ref="chart" class="chart"></div>
+  <div v-html="svgChart" ref="chart" class="chart"></div>
 </template>
 
 <script>
@@ -16,10 +16,6 @@ export default {
       coat: Number,
       agility: Number,
       coolness: Number
-    },
-    selected: {
-      type: Boolean,
-      default: false
     }
   },
   setup (props) {
@@ -47,8 +43,7 @@ export default {
       }
     )
 
-    const svg = generateSvgChart(chart)
-    return { svg }
+    return { svgChart: generateSvgChart(chart) }
   }
 }
 </script>

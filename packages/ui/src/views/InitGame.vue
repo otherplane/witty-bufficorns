@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import title from '@/assets/title.svg?raw'
+import title from '@/assets/main-title.svg?raw'
 export default {
   setup () {
     return { title }
