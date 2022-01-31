@@ -22,9 +22,12 @@ export default {
 }
 .minted {
   border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+  color: $white;
 }
 .pending {
-  border: 1px solid $orange;
-  color: $orange;
+  border: 1px solid $yellow;
+  background-color: $yellow;
+  color: $black;
 }
 </style>

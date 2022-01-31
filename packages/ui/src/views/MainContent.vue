@@ -28,7 +28,7 @@
         />
       </div>
       <TradeInfo />
-      <NFTPreview v-if="player.preview" :preview="player.preview" />
+      <NFTPreview v-if="previews.length" :previews="previews" />
       <MintInformation />
       <BufficornsList v-if="player.bufficornsGlobalStats" :selectable="true" />
       <router-link
@@ -160,7 +160,7 @@ export default {
       modals,
       mintStatus,
       enableProvider: web3WittyBufficorns.enableProvider,
-      preview: web3WittyBufficorns.preview,
+      previews: web3WittyBufficorns.preview,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
       getData: web3WittyBufficorns.getData,
       importSvg,
@@ -173,10 +173,6 @@ export default {
 <style lang="scss" scoped>
 .time-left {
   margin-left: 4px;
-}
-.main-content {
-  display: grid;
-  row-gap: 16px;
 }
 .header {
   display: grid;
