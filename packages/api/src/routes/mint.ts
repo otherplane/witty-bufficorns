@@ -91,23 +91,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       // Build message to sign
-      // This is the solidity function we will need to call:
-      /*
-        function mintFarmerAwards(
-            address _tokenOwner,
-            uint256 _ranchId,
-            uint256 _farmerId,
-            uint256 _farmerScore,
-            string memory _farmerName,
-            WittyBufficorns.Award[] calldata _farmerAwards,
-            bytes memory _signature
-        )
-        public
-        virtual override
-        nonReentrant
-        inStatus(WittyBufficorns.Status.Awarding)
-        {
-       */
       // Fake values for testing
       /*
       const ranchId = 0
@@ -148,11 +131,11 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       let farmerAwards = []
 
       const players: Array<Player> = await playerModel.getAllRegistered()
-      const sorted_players = Player.getLeaderboard(
+      const sortedPlayers = Player.getLeaderboard(
         players,
         players.length
       ).players
-      for (let topPlayer of sorted_players) {
+      for (let topPlayer of sortedPlayers) {
         if (topPlayer.username === player.username) {
           farmerAwards.push({
             category: 0,
@@ -169,9 +152,9 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         r.addBufficorns(bufficornsByRanch[r.name])
         return r
       })
-      const sorted_ranches = Ranch.getLeaderboard(ranches)
-      const top_3_sorted_ranches = sorted_ranches.splice(0, 3)
-      for (let topRanch of top_3_sorted_ranches) {
+      const sortedRanches = Ranch.getLeaderboard(ranches)
+      const top3SortedRanches = sortedRanches.splice(0, 3)
+      for (let topRanch of top3SortedRanches) {
         if (topRanch.name === player.ranch) {
           farmerAwards.push({
             category: 1,
@@ -184,6 +167,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       // Iterate over all the traits and get corresponding medals
       for (const [categoryIndex, category] of [
+        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
         undefined,
         Trait.Coolness,
         Trait.Speed,
@@ -193,9 +177,9 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         Trait.Intelligence,
         Trait.Coat,
       ].entries()) {
-        const sorted_bufficorns = Bufficorn.getLeaderboard(bufficorns, category)
-        const top_3_sorted_bufficorns = sorted_bufficorns.splice(0, 3)
-        for (let topBufficorn of top_3_sorted_bufficorns) {
+        const sortedBufficorns = Bufficorn.getLeaderboard(bufficorns, category)
+        const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
+        for (let topBufficorn of top3SortedBufficorns) {
           if (topBufficorn.ranch === player.ranch) {
             farmerAwards.push({
               category: 2 + categoryIndex,

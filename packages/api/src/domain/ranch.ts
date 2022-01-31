@@ -95,6 +95,7 @@ export class Ranch {
     return bufficorns
       .sort(
         (a, b) =>
+          // sort alphabetically if ranches are tied
           b.calculateScore(trait) - a.calculateScore(trait) ||
           a.name.localeCompare(b.name)
       )

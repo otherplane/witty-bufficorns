@@ -68,6 +68,7 @@ export class Bufficorn {
     return bufficorns
       .sort(
         (a, b) =>
+          // sort by creation index if the bufficorns are tied
           b.calculateScore(trait) - a.calculateScore(trait) ||
           a.creationIndex - b.creationIndex
       )
