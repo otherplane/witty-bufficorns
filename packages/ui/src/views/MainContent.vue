@@ -179,6 +179,7 @@ export default {
   grid-template-columns: max-content 1fr;
   justify-items: flex-end;
   align-items: flex-end;
+  margin-bottom: 16px;
   .farmer-info {
     margin-bottom: 16px;
   }

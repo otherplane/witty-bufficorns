@@ -5,15 +5,15 @@
         <p class="label">
           Sending
           <span class="highlight">{{
-            player.tradeOut?.resource?.amount || 'null'
+            player.tradeOut?.resource?.amount || 0
           }}</span>
           points of
           <span class="highlight">{{
-            player.tradeOut?.resource?.trait.toUpperCase() || 'null'
+            player.tradeOut?.resource?.trait.toUpperCase() || ''
           }}</span>
           to
           <span class="highlight">{{
-            player.tradeOut?.to.toUpperCase() || 'null'
+            player.tradeOut?.to.toUpperCase() || ''
           }}</span>
         </p>
         <div class="time-container">
