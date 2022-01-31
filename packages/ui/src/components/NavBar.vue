@@ -106,6 +106,7 @@ export default {
   .dropdown {
     position: absolute;
     z-index: 50;
+    top: 48px;
   }
 }
 .tab-container {

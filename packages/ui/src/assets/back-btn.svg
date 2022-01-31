@@ -1,9 +1,1 @@
-<svg width="4" height="7" viewBox="0 0 4 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect class="fill-primary" y="2.99999" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="1" y="3.99999" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="2" y="4.99999" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="3" y="5.99999" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="2" y="0.999989" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="3" y="-1.14441e-05" width="1" height="1" fill="#F8971E"/>
-<rect class="fill-primary" x="1" y="1.99999" width="1" height="1" fill="#F8971E"/>
-</svg>
+<svg width="4" height="7" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="fill-primary" fill="#F8971E" d="M0 3h1v1H0zM1 4h1v1H1zM2 5h1v1H2zM3 6h1v1H3zM2 1h1v1H2zM3 0h1v1H3zM1 2h1v1H1z"/></svg>
