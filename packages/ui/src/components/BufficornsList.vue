@@ -9,12 +9,12 @@
       :background-front="true"
       :background-back="false"
       :attributes="{
-        vigor: bufficorn.vigor,
-        agility: bufficorn.agility,
-        speed: bufficorn.speed,
-        coolness: bufficorn.coolness,
         coat: bufficorn.coat,
-        stamina: bufficorn.stamina
+        coolness: bufficorn.coolness,
+        intelligence: bufficorn.intelligence,
+        speed: bufficorn.speed,
+        stamina: bufficorn.stamina,
+        vigor: bufficorn.vigor
       }"
       :selectable="selectable"
     />

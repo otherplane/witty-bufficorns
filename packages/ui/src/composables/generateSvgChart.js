@@ -1,5 +1,19 @@
 import stringify from 'virtual-dom-stringify'
 import agilityRaw from '@/assets/agility.svg?raw'
+import { ATTRIBUTES } from '../constants'
+import vigor from '@/assets/vigor.svg?raw'
+import stamina from '@/assets/stamina.svg?raw'
+import speed from '@/assets/speed.svg?raw'
+import coat from '@/assets/coat.svg?raw'
+import intelligence from '@/assets/intelligence.svg?raw'
+import coolness from '@/assets/coolness.svg?raw'
+
+export function extractPath (svg) {
+  return svg
+    .replace(/<svg[^>]+>/, '<g>')
+    .replace(/<\/svg>/, '</g>')
+    .replace(/transform=[^>]+/, '')
+}
 
 export function generateSvgChart (chart) {
   return `
@@ -35,23 +49,23 @@ export function generateSvgChart (chart) {
       }
     </style>
     ${stringify(chart)}
-    <g transform="translate(${70},${-30})">
-    ${agilityRaw}
+    <g transform="translate(${32},${-56})">
+    ${extractPath(coat)}
     </g>
-    <g transform="translate(${155},${18})">
-    ${agilityRaw}
+    <g transform="translate(${98},${-4})">
+    ${extractPath(coolness)}
     </g>
-    <g transform="translate(${155},${110})">
-    ${agilityRaw}
+    <g transform="translate(${134},${94})">
+    ${extractPath(intelligence)}
     </g>
-    <g transform="translate(${75},${160})">
-    ${agilityRaw}
+    <g transform="translate(${52},${162})">
+    ${extractPath(speed)}
     </g>
-    <g transform="translate(${-10},${115})">
-    ${agilityRaw}
+    <g transform="translate(${-34},${108})">
+    ${extractPath(stamina)}
     </g>
-    <g transform="translate(${-10},${15})">
-    ${agilityRaw}
+    <g transform="translate(${-42},${14})">
+    ${extractPath(vigor)}
     </g>
   </svg>
   `

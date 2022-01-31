@@ -1,5 +1,5 @@
 <template>
-  <span>{{ timeLeft }}</span>
+  <span>{{ timeLeft || '0 s' }}</span>
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
         utcToZonedTime(new Date(props.timestamp), timeZone) <
         utcToZonedTime(dateNow.value, timeZone).getTime()
       ) {
-        timeLeft.value = '0s'
+        timeLeft.value = '0 s'
         emit('clear-timestamp')
         clearInterval(polling.value)
       }

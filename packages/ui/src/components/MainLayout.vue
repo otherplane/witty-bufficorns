@@ -1,7 +1,7 @@
 <template>
   <div class="background" :class="RANCHES[player?.ranch?.name]">
     <div v-if="isBackground" class="grain-background"></div>
-    <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="bufficornMain" />
+    <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="wittyCorn" />
     <div class="layout">
       <slot />
     </div>
@@ -11,7 +11,7 @@
 <script>
 import { defineComponent } from 'vue-demi'
 import { useStore } from '@/stores/player'
-import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import wittyCorn from '@/assets/wittyCorn.svg?raw'
 import { RANCHES } from '../constants'
 
 export default defineComponent({
@@ -29,7 +29,7 @@ export default defineComponent({
     const player = useStore()
     return {
       player,
-      bufficornMain,
+      wittyCorn,
       RANCHES
     }
   }
@@ -84,7 +84,7 @@ export default defineComponent({
 @media (max-width: 600px) {
   .bufficorn-img {
     height: 50vh;
-    left: 10vw;
+    left: 20vw;
     position: absolute;
     bottom: 0;
   }

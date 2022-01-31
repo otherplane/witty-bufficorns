@@ -37,12 +37,12 @@ export default {
   props: {
     index: Number,
     attributes: {
-      vigor: Number,
-      stamina: Number,
-      speed: Number,
-      agility: Number,
       coat: Number,
-      coolness: Number
+      coolness: Number,
+      intelligence: Number,
+      speed: Number,
+      stamina: Number,
+      vigor: Number
     },
     selected: {
       type: Boolean,

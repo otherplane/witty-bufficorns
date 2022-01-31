@@ -6,12 +6,12 @@ describe('ranch.ts', () => {
   function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
     const b = new Bufficorn(undefined, index)
     b.stats = {
-      vigor: stats[0],
-      agility: stats[1],
-      coat: stats[2],
-      coolness: stats[3],
-      speed: stats[4],
-      stamina: stats[5],
+      coat: stats[0],
+      coolness: stats[1],
+      intelligence: stats[2],
+      speed: stats[3],
+      stamina: stats[4],
+      vigor: stats[5],
     }
 
     return b

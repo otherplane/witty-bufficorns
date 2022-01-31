@@ -174,8 +174,9 @@ export const useStore = defineStore('player', {
           token: tokenInfo && tokenInfo.token,
           id: tokenInfo && tokenInfo.key
         })
+        console.log('request', request)
         if (request.error) {
-          router.push('/init-game')
+          router.push({ name: 'init-game' })
           this.setError('info', request.error)
         } else {
           this.clearError('info')

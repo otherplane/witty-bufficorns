@@ -12,34 +12,37 @@
 import { useStore } from '@/stores/player'
 import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
 import { ref } from 'vue'
+import { ATTRIBUTES } from '@/constants.js'
 
 export default {
   props: {
     data: {
-      vigor: Number,
-      stamina: Number,
-      speed: Number,
       coat: Number,
-      agility: Number,
-      coolness: Number
+      coolness: Number,
+      intelligence: Number,
+      speed: Number,
+      stamina: Number,
+      vigor: Number
     },
     attributes: {
-      vigor: Number,
-      stamina: Number,
-      speed: Number,
       coat: Number,
-      agility: Number,
-      coolness: Number
+      coolness: Number,
+      intelligence: Number,
+      speed: Number,
+      stamina: Number,
+      vigor: Number
     }
   },
   setup (props) {
     const player = useStore()
     const stats = ref(getStatsFromAttributes(props.attributes))
-
     function createResourceGradient (resource) {
       const resourcePercentage = props.data[resource.key] * 100
+      console.log(ATTRIBUTES[resource.key].color)
       return {
-        backgroundImage: `linear-gradient(90deg, var(--primary-color-opacity-1) 0%, transparent ${resourcePercentage}%)`
+        backgroundImage: `linear-gradient(90deg, ${
+          ATTRIBUTES[resource.key].color
+        } 0%, transparent ${resourcePercentage}%)`
       }
     }
     return { player, stats, getAssetPath, createResourceGradient }

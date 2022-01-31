@@ -132,7 +132,7 @@ describe('player.ts', () => {
           expect(ranch.bufficorns[0].speed).toBe(0)
           expect(ranch.bufficorns[0].coolness).toBe(0)
           expect(ranch.bufficorns[0].coat).toBe(0)
-          expect(ranch.bufficorns[0].agility).toBe(0)
+          expect(ranch.bufficorns[0].intelligence).toBe(0)
           expect(ranch.bufficorns[0].medals).toStrictEqual([])
           expect(typeof ranch.bufficorns[0].creationIndex).toBe('number')
         }

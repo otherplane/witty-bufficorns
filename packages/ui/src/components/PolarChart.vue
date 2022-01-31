@@ -10,23 +10,23 @@ import smoothing from 'svg-radar-chart/smoothing'
 export default {
   props: {
     stats: {
-      vigor: Number,
-      stamina: Number,
-      speed: Number,
       coat: Number,
-      agility: Number,
-      coolness: Number
+      coolness: Number,
+      intelligence: Number,
+      speed: Number,
+      stamina: Number,
+      vigor: Number
     }
   },
   setup (props) {
     const chart = radar(
       {
-        vigor: `Vigor`,
-        stamina: `Stamina`,
-        speed: `Speed`,
-        coolness: `Coolness`,
         coat: `Coat`,
-        agility: `Agility`
+        coolness: `Coolness`,
+        intelligence: `Intelligence`,
+        speed: `Speed`,
+        stamina: `Stamina`,
+        vigor: `Vigor`
       },
       [props.stats],
       {

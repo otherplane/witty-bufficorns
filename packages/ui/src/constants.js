@@ -27,7 +27,32 @@ export const RANCHES = {
   [`Gold Reef Co.`]: 'reef',
   [`Infinite Harmony Farm`]: 'harmony'
 }
-
+export const ATTRIBUTES = {
+  coat: {
+    key: 'coat',
+    color: '#cc191975'
+  },
+  coolness: {
+    key: 'coolness',
+    color: '#21782175'
+  },
+  intelligence: {
+    key: 'intelligence',
+    color: '#1a1a1a75'
+  },
+  speed: {
+    key: 'speed',
+    color: '#ffad0075'
+  },
+  stamina: {
+    key: 'stamina',
+    color: '#124ca175'
+  },
+  vigor: {
+    key: 'vigor',
+    color: '#51279175'
+  }
+}
 export const STATS_FILTERS = {
   players: {
     key: 'players',
@@ -49,28 +74,28 @@ export const STATS_FILTERS = {
         key: 'overall',
         active: false
       },
-      vigor: {
-        key: 'vigor',
-        active: false
-      },
-      speed: {
-        key: 'speed',
-        active: false
-      },
-      agility: {
-        key: 'agility',
+      coat: {
+        key: 'coat',
         active: false
       },
       coolness: {
         key: 'coolness',
         active: false
       },
-      coat: {
-        key: 'coat',
+      intelligence: {
+        key: 'intelligence',
+        active: false
+      },
+      speed: {
+        key: 'speed',
         active: false
       },
       stamina: {
         key: 'stamina',
+        active: false
+      },
+      vigor: {
+        key: 'vigor',
         active: false
       }
     }
