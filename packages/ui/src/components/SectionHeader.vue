@@ -9,7 +9,7 @@
     <router-link to="/">
       <img
         class="ranch-img"
-        :src="importSvg(RANCHES[player.ranch.name])"
+        :src="importSvg(RANCHES[player.theme])"
         alt="RANCH image"
       />
     </router-link>

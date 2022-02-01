@@ -26,7 +26,7 @@
         </div>
         <img
           class="logo"
-          :src="importSvg(RANCHES[player.ranch.name])"
+          :src="importSvg(RANCHES[player.theme])"
           alt="Witty Bufficorns ranch logo"
         />
       </div>
@@ -75,7 +75,6 @@
 <script>
 import { useStore } from '@/stores/player'
 import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
-import imageUrl from '@/assets/egg-example.png'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL, RANCHES } from '../constants'
@@ -158,7 +157,6 @@ export default {
       type,
       closeModal,
       openModal,
-      imageUrl,
       modal,
       modals,
       mintStatus,

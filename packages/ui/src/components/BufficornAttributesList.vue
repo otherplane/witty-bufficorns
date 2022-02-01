@@ -1,6 +1,6 @@
 <template>
   <div class="stat-container" v-for="resource in stats" :key="resource.key">
-    <img class="icon" :src="getAssetPath(resource.key)" alt="icon" />
+    <img class="icon" :src="importSvg(resource.key)" alt="icon" />
     <div class="stat" :style="createResourceGradient(resource)">
       <p class="key">{{ resource.key.toUpperCase() }}</p>
       <p class="score">{{ resource.score }}</p>
@@ -10,7 +10,8 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { getStatsFromAttributes, getAssetPath } from '@/utils.js'
+import { getStatsFromAttributes } from '@/utils.js'
+import { importSvg } from '@/composables/importSvg.js'
 import { ref } from 'vue'
 import { ATTRIBUTES } from '@/constants.js'
 
@@ -44,7 +45,7 @@ export default {
         } 0%, transparent ${resourcePercentage}%)`
       }
     }
-    return { player, stats, getAssetPath, createResourceGradient }
+    return { player, stats, createResourceGradient, importSvg }
   }
 }
 </script>

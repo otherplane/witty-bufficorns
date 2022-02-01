@@ -32,7 +32,3 @@ function calculateHightestNumber (list) {
   // Added minimun area of 0.05 to improve polar graph UI
   return Math.max(...Object.values(list).filter(Number.isFinite)) - 0.05
 }
-
-export function getAssetPath (name) {
-  return `../src/assets/${name}.svg`
-}

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { getAssetPath } from '@/utils.js'
 import { importSvg } from '@/composables/importSvg.js'
 import { RANCHES } from '@/constants.js'
 export default {
@@ -22,7 +21,7 @@ export default {
     score: Number
   },
   setup () {
-    return { getAssetPath, importSvg, RANCHES }
+    return { importSvg, RANCHES }
   }
 }
 </script>
