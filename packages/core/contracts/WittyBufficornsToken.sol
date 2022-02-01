@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "witnet-solidity-bridge/contracts/UsingWitnet.sol";
 import "witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -31,7 +32,7 @@ contract WittyBufficornsToken
     using WittyBufficorns for WittyBufficorns.Storage;
 
     IWitnetRandomness public immutable randomizer;
-    WittyBufficorns.Storage internal __storage;
+    WitnetRequestBoard public immutable witnet;
 
     modifier inStatus(WittyBufficorns.Status status) {
         require(
@@ -57,6 +58,8 @@ contract WittyBufficornsToken
         _;
     }
 
+    WittyBufficorns.Storage internal __storage;
+
     constructor(
             string memory _name,
             string memory _symbol,
@@ -65,8 +68,9 @@ contract WittyBufficornsToken
         )
         ERC721(_name, _symbol)
     {
-        setDecorator(address(_decorator));
         randomizer = _randomizer;
+        witnet = UsingWitnet(address(_randomizer)).witnet();
+        setDecorator(address(_decorator));
         __storage.signator = msg.sender;
     }
 
