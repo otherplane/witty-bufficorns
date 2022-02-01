@@ -12,7 +12,16 @@ interface IWittyBufficornsSurrogates {
         uint256 _farmerId,
         uint256 _farmerScore,
         string calldata _farmerName,
-        WittyBufficorns.Award[] calldata _awards,
+        WittyBufficorns.Award[] calldata _farmerAwards,
         bytes calldata _signature
     ) external;
+    function previewFarmerAwards(
+        address _tokenOwner,
+        uint256 _ranchId,
+        uint256 _farmerId,
+        uint256 _farmerScore,
+        string calldata _farmerName,
+        WittyBufficorns.Award[] calldata _farmerAwards,
+        bytes calldata _signature
+    ) external view returns (string[] memory _svgs);
 }

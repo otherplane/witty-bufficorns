@@ -353,6 +353,59 @@ contract WittyBufficornsToken
         __storage.stats.totalFarmers ++;
     }
 
+    function previewFarmerAwards(
+            address _tokenOwner,
+            uint256 _ranchId,
+            uint256 _farmerId,
+            uint256 _farmerScore,
+            string calldata _farmerName,
+            WittyBufficorns.Award[] calldata _farmerAwards,
+            bytes calldata _signature
+        )
+        external view
+        virtual override
+        inStatus(WittyBufficorns.Status.Awarding)
+        returns (string[] memory _svgs)
+    {
+        require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
+        require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
+
+        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
+        
+        _verifySignatorSignature(
+            _tokenOwner,
+            _ranchId,
+            _farmerId,
+            _farmerScore,
+            _farmerName,
+            _farmerAwards,
+            _signature
+        );
+
+        WittyBufficorns.Farmer memory _farmer;
+        _farmer.name = _farmerName;
+        _farmer.score = _farmerScore;
+
+        WittyBufficorns.TokenInfo memory _tokenInfo;
+        _tokenInfo.farmerId = _farmerId;
+
+        _svgs = new string[](_farmerAwards.length);
+        for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
+            _tokenInfo.award = _farmerAwards[_ix];
+            _svgs[_ix] = IWittyBufficornsDecorator(__storage.decorator).toSVG(
+                _tokenInfo,
+                _farmer,
+                __ranch,
+                __storage.bufficorns[
+                    uint8(_tokenInfo.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
+                        ? _tokenInfo.award.bufficornId
+                        : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                ]
+            );
+        }
+    }
+
 
     // ========================================================================
     // --- Implementation of 'IWittyBufficornsView' ---------------------------
