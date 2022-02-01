@@ -16,8 +16,8 @@ interface IWittyBufficornsAdmin {
     /// Returns tender's current status
     function getStatus() external view returns (WittyBufficorns.Status);
 
-    /// Sets final traits for the given bufficorn.
-    function setBufficornScores(
+    /// Sets name, ranch and final traits for the given bufficorn.
+    function setBufficorn(
         uint256 _id,
         uint256 _ranchId,
         string calldata _name,
@@ -28,11 +28,12 @@ interface IWittyBufficornsAdmin {
     /// @param _decorator Decorating logic contract producing a creature's metadata, and picture.
     function setDecorator(address _decorator) external;
 
-    /// Sets a ranch's final score. 
-    function setRanchScore(
+    /// Sets a ranch's data, final score and weather station.
+    function setRanch(
         uint256 _id,
+        uint256 _score,
         string calldata _name,
-        uint256 _score
+        bytes4 _weatherStationAscii
     ) external;
         
     /// Sets externally owned account that is authorized to sign farmer awards.

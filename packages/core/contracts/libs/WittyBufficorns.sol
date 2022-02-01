@@ -85,7 +85,9 @@ library WittyBufficorns {
     struct Ranch {
         string  name;
         uint256 score;
-        
+        string  weatherDescription;
+        bytes4  weatherStationAscii;
+        uint256 weatherTimestamp;
     }
 
     struct Stats {

@@ -137,10 +137,10 @@ contract WittyBufficornsToken
         return __storage.status();
     }
 
-    /// Sets final traits for the given bufficorn.
+    /// Sets name, ranch and final traits for the given bufficorn.
     /// @dev Must be called from the signators's address.
     /// @dev Fails if not in Breeding status. 
-    function setBufficornScores(
+    function setBufficorn(
             uint256 _id,
             uint256 _ranchId,
             string calldata _name,
@@ -221,9 +221,12 @@ contract WittyBufficornsToken
                 __storage.stats.totalRanches ++;
             }
         }
+        if (_weatherStationAscii != __ranch.weatherStationAscii) {
+        }
         __ranch.name = _name;
         __ranch.score = _score;
-        emit RanchSet(_id, _name, _score);
+        __ranch.weatherStationAscii = _weatherStationAscii;
+        emit RanchSet(_id, _name, _score, _weatherStationAscii);
     }
 
     /// Sets externally owned account that is authorized to sign farmer awards.
@@ -433,9 +436,20 @@ contract WittyBufficornsToken
     function getRanch(uint256 _ranchId)
         external view
         override
-        returns (WittyBufficorns.Ranch memory)
+        returns (WittyBufficorns.Ranch memory _ranch)
     {
-        return __storage.ranches[_ranchId];
+        _ranch = __storage.ranches[_ranchId];
+        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_ranchId);
+    }
+
+    function getRanchWeather(uint256 _ranchId)
+        public view
+        override
+        returns (
+            uint256 _lastTimestamp,
+            string memory _lastDescription
+        )
+    {
     }
 
     function getTokenInfo(uint256 _tokenId)
@@ -472,6 +486,7 @@ contract WittyBufficornsToken
         WittyBufficorns.TokenInfo memory _token = __storage.awards[_tokenId];
         WittyBufficorns.Farmer memory _farmer = __storage.farmers[_token.farmerId];
         WittyBufficorns.Ranch memory _ranch = __storage.ranches[_farmer.ranchId];
+        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_farmer.ranchId);
         WittyBufficorns.Bufficorn memory _bufficorn;
         if (
             uint8(_token.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
@@ -495,6 +510,7 @@ contract WittyBufficornsToken
         WittyBufficorns.TokenInfo memory _token = __storage.awards[_tokenId];
         WittyBufficorns.Farmer memory _farmer = __storage.farmers[_token.farmerId];
         WittyBufficorns.Ranch memory _ranch = __storage.ranches[_farmer.ranchId];
+        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_farmer.ranchId);
         WittyBufficorns.Bufficorn memory _bufficorn;
         if (
             uint8(_token.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
