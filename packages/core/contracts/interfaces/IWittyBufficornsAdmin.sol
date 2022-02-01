@@ -47,4 +47,7 @@ interface IWittyBufficornsAdmin {
 
     /// Starts the Awarding phase, in which players will be able to mint their tokens.
     function startAwarding() external;    
+
+    /// Ask the Witnet oracle to update current weather for the given ranch.
+    function updateRanchWeather(uint256 _ranchId) external payable returns (uint256);
 }

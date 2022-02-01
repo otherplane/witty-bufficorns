@@ -88,6 +88,7 @@ library WittyBufficorns {
         string  weatherDescription;
         bytes4  weatherStationAscii;
         uint256 weatherTimestamp;
+        WitnetInfo witnet;
     }
 
     struct Stats {
@@ -102,6 +103,11 @@ library WittyBufficorns {
         uint256 farmerId;  
         uint256 inceptionTimestamp;
     }
+
+    struct WitnetInfo {
+        uint256 lastValidQueryId;
+        uint256 latestQueryId;
+        IWitnetRequest request;
     }
 
 

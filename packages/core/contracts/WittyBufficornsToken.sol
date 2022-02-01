@@ -198,13 +198,14 @@ contract WittyBufficornsToken
         emit DecoratorSet(_decorator);
     }
 
-    /// Sets a ranch's final score. 
+    /// Sets a ranch's data, final score and weather station.
     /// @dev Must be called from the signators's address.
     /// @dev Fails if not in Breeding status. 
-    function setRanchScore(
+    function setRanch(
             uint256 _id,
+            uint256 _score,
             string calldata _name,
-            uint256 _score
+            bytes4 _weatherStationAscii
         )
         external
         onlySignator
@@ -222,6 +223,28 @@ contract WittyBufficornsToken
             }
         }
         if (_weatherStationAscii != __ranch.weatherStationAscii) {
+            /** Javascript DSL:
+             *
+             *  import * as Witnet from "witnet-requests"
+             *  const weather = new Witnet.Source("https://api.weather.gov/stations/<code>/observations/latest")
+             *    .parseJSONMap()
+             *    .getMap("properties")
+             *    .getString("textDescription")
+             *
+             *  const weatherRequest = new WitnetRequest()
+             *    .addSource(weather)
+             *    .setAggregator(new Witnet.Aggregator({ reducer: Witnet.Types.REDUCERS.mode }))
+             *    .setTally(new Witnet.Aggregator({ reducer: Witnet.Types.REDUCERS.mode }))
+             *    .setQuorum(10, 51) // set witness count and minimum consensus percentage
+             *    .setFees(10 ** 6, 10 ** 6) // set Witnet economic incentives
+             *    .setCollateral(5 * 10 ** 9) // set 5 wits as collateral
+             */
+            __ranch.witnet.request = new WitnetRequest(abi.encode(
+                hex"0a6d12630801123968747470733a2f2f6170692e776561746865722e676f762f73746174696f6e732f",
+                _weatherStationAscii,
+                hex"2f6f62736572766174696f6e732f6c61746573741a248318778218666a70726f706572746965738218676f746578744465736372697074696f6e1a02",
+                hex"10022202100210c0843d180a20c0843d28333080e497d012"
+            ));
         }
         __ranch.name = _name;
         __ranch.score = _score;
@@ -301,6 +324,45 @@ contract WittyBufficornsToken
         );
     }
 
+    /// Ask the Witnet oracle to update current weather for the given ranch.
+    function updateRanchWeather(uint256 _ranchId)
+        external payable
+        virtual override
+        returns (uint256 _usedFunds)
+    {
+        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        if (address(__ranch.witnet.request) != address(0)) {
+            uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
+            uint _latestQueryId = __ranch.witnet.latestQueryId;            
+            // Check whether there's no previous request pending to be solved:
+            Witnet.QueryStatus _latestQueryStatus = witnet.getQueryStatus(_latestQueryId);
+            if (_latestQueryId == 0 || _latestQueryStatus != Witnet.QueryStatus.Posted) {
+                if (_latestQueryId > 0 && _latestQueryStatus == Witnet.QueryStatus.Reported) {
+                    Witnet.Result memory _latestResult  = witnet.readResponseResult(_latestQueryId);
+                    if (_latestResult.success) {
+                        // If latest request was solved with no errors...
+                        if (_lastValidQueryId > 0) {
+                            // ... delete last valid response, if any
+                            witnet.deleteQuery(_lastValidQueryId);
+                        }
+                        // ... and set latest request id as last valid request id.
+                        __ranch.witnet.lastValidQueryId = _latestQueryId;
+                    }
+                }
+                // Estimate request fee, in native currency:
+                _usedFunds = witnet.estimateReward(tx.gasprice);
+                
+                // Post weather update request to the WitnetRequestBoard contract:
+                __ranch.witnet.latestQueryId = witnet.postRequest{value: _usedFunds}(__ranch.witnet.request);
+                
+                if (_usedFunds < msg.value) {
+                    // Transfer back unused funds, if any:
+                    payable(msg.sender).transfer(msg.value - _usedFunds);
+                }
+            }
+        }
+    }
+
 
     // ========================================================================
     // --- Implementation of 'IWittyBufficornsSurrogates' ---------------------
@@ -377,8 +439,9 @@ contract WittyBufficornsToken
         require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
         require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
 
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
-        require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
+        WittyBufficorns.Ranch memory _ranch = __storage.ranches[_ranchId];
+        require(_ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
+        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_ranchId);
         
         _verifySignatorSignature(
             _tokenOwner,
@@ -403,7 +466,7 @@ contract WittyBufficornsToken
             _svgs[_ix] = IWittyBufficornsDecorator(__storage.decorator).toSVG(
                 _tokenInfo,
                 _farmer,
-                __ranch,
+                _ranch,
                 __storage.bufficorns[
                     uint8(_tokenInfo.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
                         ? _tokenInfo.award.bufficornId
@@ -450,6 +513,28 @@ contract WittyBufficornsToken
             string memory _lastDescription
         )
     {
+        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
+        uint _latestQueryId = __ranch.witnet.latestQueryId;
+        Witnet.QueryStatus _latestQueryStatus = witnet.getQueryStatus(_latestQueryId);
+        Witnet.Response memory _response;
+        Witnet.Result memory _result;
+        // First try to read weather from latest request, in case it was succesfully solved:
+        if (_latestQueryId > 0 && _latestQueryStatus == Witnet.QueryStatus.Reported) {
+            _response = witnet.readResponse(_latestQueryId);
+            _result = witnet.resultFromCborBytes(_response.cborBytes);
+            if (_result.success) {
+                return (
+                    _response.timestamp,
+                    witnet.asString(_result)
+                );
+            }
+        }
+        // If not solved, or solved with errors, read weather from last valid request:
+        _response = witnet.readResponse(_lastValidQueryId);
+        _result = witnet.resultFromCborBytes(_response.cborBytes);
+        _lastTimestamp = _response.timestamp;
+        _lastDescription = witnet.asString(_result);
     }
 
     function getTokenInfo(uint256 _tokenId)
