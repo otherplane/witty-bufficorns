@@ -316,10 +316,10 @@ contract WittyBufficornsToken
         require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
 
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
-        WittyBufficorns.Farmer storage __farmer = __storage.farmers[_farmerId];
-
         require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
-        require(__farmer.tokenIds.length == 0, "WittyBufficornsToken: already minted");
+
+        WittyBufficorns.Farmer storage __farmer = __storage.farmers[_farmerId];
+        require(bytes(__farmer.name).length == 0, "WittyBufficornsToken: already minted");
         
         _verifySignatorSignature(
             _tokenOwner,
@@ -341,12 +341,12 @@ contract WittyBufficornsToken
         // Set common parameters to all tokens minted within this call:
         _tokenInfo.farmerId = _farmerId;
         // solhint-disable-next-line not-rely-on-time
-        _tokenInfo.timestamp = block.timestamp;
+        _tokenInfo.inceptionTimestamp = block.timestamp;
 
         // Loop: Mint one token per received award:
         for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
             _tokenInfo.award = _farmerAwards[_ix];
-            __mintFarmerAward(_tokenOwner, _tokenInfo, __farmer, __ranch);
+            __doSafeMint(_tokenOwner, _tokenInfo);
         }
 
         // Increase total number of farmers that minted at least one award:
@@ -467,44 +467,6 @@ contract WittyBufficornsToken
         _tokenId = ++ __storage.stats.totalSupply;               
         __storage.awards[_tokenId] = _tokenInfo;
         _safeMint(_tokenOwner, _tokenId);
-    }
-
-    function __mintFarmerAward(
-            address _tokenOwner,
-            WittyBufficorns.TokenInfo memory _tokenInfo,
-            WittyBufficorns.Farmer storage __farmer,
-            WittyBufficorns.Ranch storage __ranch
-        )
-        internal
-    {
-        // Set, store and mint token info:
-        uint256 _tokenId = __doSafeMint(_tokenOwner, _tokenInfo);
-
-        // Add token id reference to Famers entity:
-        __farmer.tokenIds.push(_tokenId);
-
-        uint8 _category = uint8(_tokenInfo.award.category);
-        require(
-            _tokenInfo.award.ranking > 0,
-            "WittyBufficornsToken: special award with no ranking"
-        );
-        if (_category >= uint8(WittyBufficorns.Awards.BestBufficorn)) {
-            // Best Bufficorns categories: add token id reference to Bufficorns entity
-            __storage.bufficorns[
-                _tokenInfo.award.bufficornId
-            ].tokenIds.push(_tokenId);                    
-        } else {
-            // Best Ranch category: add token id reference to Ranches entity:
-            __ranch.tokenIds.push(_tokenId);
-        }
-
-        // Emit event:
-        emit FarmerAward(
-            _tokenId,
-            _tokenInfo.farmerId,
-            _tokenInfo.award.category,
-            _tokenInfo.award.ranking
-        );
     }
 
     function _verifySignatorSignature(

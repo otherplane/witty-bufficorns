@@ -71,20 +71,18 @@ library WittyBufficorns {
         uint256 score;
         uint256 ranchId;
         uint256[6] traits;
-        uint256[] tokenIds;
     }
 
     struct Farmer {
         string  name;
         uint256 score;
         uint256 ranchId;
-        uint256[] tokenIds;
     }
 
     struct Ranch {
         string  name;
         uint256 score;
-        uint256[] tokenIds;
+        
     }
 
     struct Stats {
@@ -97,7 +95,8 @@ library WittyBufficorns {
     struct TokenInfo {
         Award   award;
         uint256 farmerId;  
-        uint256 timestamp;
+        uint256 inceptionTimestamp;
+    }
     }
 
 
