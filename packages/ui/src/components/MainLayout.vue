@@ -1,7 +1,8 @@
 <template>
   <div class="background" :class="RANCHES[player?.ranch?.name]">
-    <div v-if="isBackground" class="grain-background"></div>
-    <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="bufficornMain" />
+    <WitnetStrip class="witnet-logo-strip" />
+    <div v-if="isBackground" class="main-background" />
+    <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="wittyCorn" />
     <div class="layout">
       <slot />
     </div>
@@ -11,7 +12,7 @@
 <script>
 import { defineComponent } from 'vue-demi'
 import { useStore } from '@/stores/player'
-import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import wittyCorn from '@/assets/wittyCorn.svg?raw'
 import { RANCHES } from '../constants'
 
 export default defineComponent({
@@ -29,7 +30,7 @@ export default defineComponent({
     const player = useStore()
     return {
       player,
-      bufficornMain,
+      wittyCorn,
       RANCHES
     }
   }
@@ -46,6 +47,10 @@ export default defineComponent({
   background-color: $white;
   background: $white;
 }
+.witnet-logo-strip {
+  position: relative;
+  z-index: 12;
+}
 .mountains-img {
   width: 100vw;
   position: fixed;
@@ -56,16 +61,17 @@ export default defineComponent({
 .bufficorn-img {
   height: 50vh;
   z-index: 5;
-  left: 40vw;
-  position: absolute;
+  right: 24vw;
+  position: fixed;
   bottom: 0;
 }
-.grain-background {
+.main-background {
   position: fixed;
   height: 100vh;
   width: 100vw;
+  bottom: 0px;
   z-index: 4;
-  background-position: bottom left;
+  background-position: bottom center;
   background-size: cover;
   background-image: url('../assets/background.svg');
 }
@@ -74,7 +80,7 @@ export default defineComponent({
   z-index: 7;
   width: 100%;
   max-width: 700px;
-  min-height: 100vh;
+  min-height: 90vh;
   margin-top: 32px;
   margin: 0 auto;
   display: grid;
@@ -84,8 +90,8 @@ export default defineComponent({
 @media (max-width: 600px) {
   .bufficorn-img {
     height: 50vh;
-    left: 10vw;
-    position: absolute;
+    left: 20vw;
+    position: fixed;
     bottom: 0;
   }
 }

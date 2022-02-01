@@ -3,12 +3,12 @@ import { Trait, BufficornLeaderboardInfo } from '../../../src/types'
 function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
   const b = new Bufficorn(undefined, index)
   b.stats = {
-    vigor: stats[0],
-    agility: stats[1],
-    coat: stats[2],
-    coolness: stats[3],
-    speed: stats[4],
-    stamina: stats[5],
+    coat: stats[0],
+    coolness: stats[1],
+    intelligence: stats[2],
+    speed: stats[3],
+    stamina: stats[4],
+    vigor: stats[5],
   }
 
   return b
@@ -42,7 +42,7 @@ describe('bufficorn.ts', () => {
     expect(bufficorn.calculateScore()).toStrictEqual(0)
     expect(bufficorn.calculateScore(Trait.Vigor)).toStrictEqual(10)
 
-    bufficorn.stats.agility = 20
+    bufficorn.stats.intelligence = 20
     bufficorn.stats.coat = 30
     bufficorn.stats.coolness = 40
     bufficorn.stats.speed = 50
@@ -51,7 +51,7 @@ describe('bufficorn.ts', () => {
     // Bufficorn with all valued traits
     expect(bufficorn.calculateScore()).toStrictEqual(10)
     expect(bufficorn.calculateScore(Trait.Vigor)).toStrictEqual(10)
-    expect(bufficorn.calculateScore(Trait.Agility)).toStrictEqual(20)
+    expect(bufficorn.calculateScore(Trait.Intelligence)).toStrictEqual(20)
     expect(bufficorn.calculateScore(Trait.Coat)).toStrictEqual(30)
     expect(bufficorn.calculateScore(Trait.Coolness)).toStrictEqual(40)
     expect(bufficorn.calculateScore(Trait.Speed)).toStrictEqual(50)

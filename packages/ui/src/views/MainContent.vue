@@ -9,6 +9,9 @@
             <span class="points-bold">{{ player.playerPoints }}</span> points
           </p>
           <p class="subtitle">
+            <span class="subtitle label">ID: </span>{{ player.id }}
+          </p>
+          <p class="subtitle">
             <span class="subtitle label">RANCH RESOURCE:</span>
             {{ player.ranch.trait }}
           </p>
@@ -171,6 +174,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-content {
+  margin-top: 16px;
+}
 .time-left {
   margin-left: 4px;
 }
@@ -179,10 +185,7 @@ export default {
   grid-template-columns: max-content 1fr;
   justify-items: flex-end;
   align-items: flex-end;
-  margin-bottom: 16px;
-  .farmer-info {
-    margin-bottom: 16px;
-  }
+  margin-bottom: 8px;
   .logo {
     align-self: center;
     width: 150px;
@@ -205,7 +208,7 @@ export default {
 }
 .sticky-btn {
   position: sticky;
-  bottom: 8px;
+  bottom: 24px;
   text-align: center;
 }
 .buttons {

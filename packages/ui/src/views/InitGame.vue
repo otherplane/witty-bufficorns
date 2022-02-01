@@ -2,7 +2,6 @@
   <MainLayout :isBackground="true" :isBufficorn="true">
     <div class="init-container">
       <svgImage :svg="title" />
-      <h2 class="main-subtile">A SOCIAL GAME BY WITNET X ETHDENVER</h2>
       <router-link to="/disclaimer" class="link">
         <Button class="btn" type="dark">
           PLAY NOW
@@ -13,7 +12,7 @@
 </template>
 
 <script>
-import title from '@/assets/main-title.svg?raw'
+import title from '@/assets/mainTitle.svg?raw'
 export default {
   setup () {
     return { title }
@@ -24,6 +23,7 @@ export default {
 <style lang="scss" scoped>
 .init-container {
   display: grid;
+  margin-top: 4vh;
   align-items: center;
   row-gap: 16px;
   .main-title,
@@ -38,7 +38,6 @@ export default {
     font-size: 24px;
   }
   .link {
-    margin-top: 24px;
     width: max-content;
     justify-self: center;
   }

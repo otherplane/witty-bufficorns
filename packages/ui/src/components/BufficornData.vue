@@ -31,12 +31,12 @@
       :background-back="backgroundBack"
       :selected="player.selectedBufficorn === index"
       :attributes="{
-        vigor: attributes.vigor,
-        agility: attributes.agility,
-        speed: attributes.speed,
-        coolness: attributes.coolness,
         coat: attributes.coat,
-        stamina: attributes.stamina
+        coolness: attributes.coolness,
+        intelligence: attributes.intelligence,
+        speed: attributes.speed,
+        stamina: attributes.stamina,
+        vigor: attributes.vigor
       }"
       :horizontal="horizontal"
     />
@@ -50,12 +50,12 @@ export default {
   props: {
     index: Number,
     attributes: {
-      vigor: Number,
-      stamina: Number,
-      speed: Number,
-      agility: Number,
       coat: Number,
-      coolness: Number
+      coolness: Number,
+      intelligence: Number,
+      speed: Number,
+      stamina: Number,
+      vigor: Number
     },
     name: String,
     horizontal: {

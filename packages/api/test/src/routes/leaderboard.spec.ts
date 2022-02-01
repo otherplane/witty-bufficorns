@@ -33,7 +33,7 @@ describe('Route /leaderboard', () => {
             expect(bufficorn.stamina).toBe(0)
             expect(bufficorn.speed).toBe(0)
             expect(bufficorn.coat).toBe(0)
-            expect(bufficorn.agility).toBe(0)
+            expect(bufficorn.intelligence).toBe(0)
             expect(bufficorn.score).toBe(0)
             expect(bufficorn.position).toBe(index)
             expect(typeof bufficorn.creationIndex).toBe('number')

@@ -33,14 +33,14 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { onMounted, ref, computed, onBeforeMount } from 'vue'
+import { onMounted, ref, computed, onBeforeUnmount } from 'vue'
 import { STATS_FILTERS } from '../constants'
 
 export default {
   setup () {
     const player = useStore()
     let primaryTab = ref('bufficorns')
-    let secondaryTab = ref('vigor')
+    let secondaryTab = ref('overall')
     let tabs = ref(STATS_FILTERS)
     let defaultSubTab = computed(() => tabs.value[primaryTab.value].default)
 
@@ -48,7 +48,7 @@ export default {
       tabs.value[primaryTab.value].active = true
       tabs.value[primaryTab.value].subTabs[secondaryTab.value].active = true
     })
-    onBeforeMount(() => {
+    onBeforeUnmount(() => {
       resetTabs()
     })
 

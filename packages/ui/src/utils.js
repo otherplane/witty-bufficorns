@@ -18,12 +18,12 @@ export function normalizedChartData (stats, bufficornsArray) {
     )
   } else {
     return {
-      vigor: 0.1,
-      stamina: 0.1,
-      speed: 0.1,
-      agility: 0.1,
       coat: 0.1,
-      coolness: 0.1
+      coolness: 0.1,
+      intelligence: 0.1,
+      speed: 0.1,
+      stamina: 0.1,
+      vigor: 0.1
     }
   }
 }

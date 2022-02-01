@@ -9,23 +9,23 @@ export const ClaimPlayerParams = Type.Object({
 export type ClaimPlayerParams = Static<typeof ClaimPlayerParams>
 
 export enum RanchName {
-  Ranch1 = 'Opolis Reservation',
-  Ranch2 = "The Ol' Algoranch",
-  Ranch3 = 'Vega Slopes Range',
-  Ranch4 = 'Balancer Peak State',
-  Ranch5 = 'Gold Reef Co.',
-  Ranch6 = 'Infinite Harmony Farm',
+  Ranch1 = 'Gold Reef Co.',
+  Ranch2 = 'Infinite Harmony Farm',
+  Ranch3 = 'Balancer Peak State',
+  Ranch4 = "The Ol' Algoranch",
+  Ranch5 = 'Vega Slopes Range',
+  Ranch6 = 'Opolis Reservation',
 }
 
 export const RanchNameEnum = Type.Enum(RanchName)
 
 export enum Trait {
-  Vigor = 'vigor',
+  Coat = 'coat',
+  Coolness = 'coolness',
+  Intelligence = 'intelligence',
   Speed = 'speed',
   Stamina = 'stamina',
-  Coolness = 'coolness',
-  Coat = 'coat',
-  Agility = 'agility',
+  Vigor = 'vigor',
 }
 export const TraitEnum = Type.Enum(Trait)
 
@@ -47,12 +47,12 @@ export type Resource = Static<typeof Resource>
 export const BufficornVTO = Type.Object({
   name: Type.String(),
   ranch: RanchNameEnum,
-  [Trait.Vigor]: Type.Integer(),
-  [Trait.Speed]: Type.Integer(),
-  [Trait.Coolness]: Type.Integer(),
-  [Trait.Stamina]: Type.Integer(),
   [Trait.Coat]: Type.Integer(),
-  [Trait.Agility]: Type.Integer(),
+  [Trait.Coolness]: Type.Integer(),
+  [Trait.Intelligence]: Type.Integer(),
+  [Trait.Speed]: Type.Integer(),
+  [Trait.Stamina]: Type.Integer(),
+  [Trait.Vigor]: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
   creationIndex: Type.Integer(),
 })
@@ -96,12 +96,12 @@ export type GetByStringKeyParams = Static<typeof GetByStringKeyParams>
 export const BufficornLeaderboardInfo = Type.Object({
   name: Type.String(),
   ranch: Type.String(),
-  [Trait.Vigor]: Type.Integer(),
-  [Trait.Speed]: Type.Integer(),
-  [Trait.Coolness]: Type.Integer(),
-  [Trait.Stamina]: Type.Integer(),
   [Trait.Coat]: Type.Integer(),
-  [Trait.Agility]: Type.Integer(),
+  [Trait.Coolness]: Type.Integer(),
+  [Trait.Intelligence]: Type.Integer(),
+  [Trait.Speed]: Type.Integer(),
+  [Trait.Stamina]: Type.Integer(),
+  [Trait.Vigor]: Type.Integer(),
   score: Type.Integer(),
   position: Type.Integer(),
   creationIndex: Type.Integer(),
@@ -258,12 +258,12 @@ export const DbPlayerVTO = Type.Object({
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
 
 export type Stats = {
-  vigor: number
-  speed: number
-  coolness: number
-  stamina: number
   coat: number
-  agility: number
+  coolness: number
+  intelligence: number
+  speed: number
+  stamina: number
+  vigor: number
 }
 
 export const ExtendedPlayerVTO = Type.Object({

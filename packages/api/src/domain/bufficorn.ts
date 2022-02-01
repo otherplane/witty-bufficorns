@@ -11,9 +11,9 @@ import { BUFFICORN_INDEX } from '../constants'
 
 export class Bufficorn {
   public stats: Stats = {
-    agility: 0,
     coat: 0,
     coolness: 0,
+    intelligence: 0,
     speed: 0,
     stamina: 0,
     vigor: 0,
@@ -28,9 +28,9 @@ export class Bufficorn {
       this.name = vto.name
       this.medals = vto.medals
       this.stats = {
-        agility: vto.agility,
-        coat: vto.agility,
+        coat: vto.coat,
         coolness: vto.coolness,
+        intelligence: vto.intelligence,
         speed: vto.speed,
         stamina: vto.stamina,
         vigor: vto.vigor,
