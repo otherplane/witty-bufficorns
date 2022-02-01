@@ -3,7 +3,7 @@
     <v-pagination
       class="pagination"
       v-model="page"
-      :pages="60"
+      :pages="limit"
       :range-size="1"
       active-color="var(--primary-color-opacity-2)"
       @update:modelValue="updatePage"
@@ -19,10 +19,16 @@ export default {
   components: {
     VPagination
   },
+  props: {
+    limit: {
+      type: Number,
+      required: true
+    }
+  },
   setup (props, { emit }) {
     const page = ref(1)
     function updatePage (page) {
-      emit('update-page', page)
+      emit('update-page', page ? page - 1 : 0)
     }
     return { updatePage, page }
   }

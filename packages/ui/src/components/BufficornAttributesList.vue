@@ -38,7 +38,6 @@ export default {
     const stats = ref(getStatsFromAttributes(props.attributes))
     function createResourceGradient (resource) {
       const resourcePercentage = props.data[resource.key] * 100
-      console.log(ATTRIBUTES[resource.key].color)
       return {
         backgroundImage: `linear-gradient(90deg, ${
           ATTRIBUTES[resource.key].color

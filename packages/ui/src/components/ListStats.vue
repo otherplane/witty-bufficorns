@@ -30,8 +30,11 @@
         :position="player.position + 1"
         :score="player.points"
       />
-      <!-- TODO: Uncomment when pagination is fixed -->
-      <!-- <CustomPagination :limit="10" @update-page="updateCurrentPage" /> -->
+      <CustomPagination
+        v-if="numberPages > 1"
+        :limit="numberPages"
+        @update-page="updateCurrentPage"
+      />
     </div>
     <div v-if="gameEntity === 'ranches'" class="list">
       <RancheGlobalData
@@ -65,6 +68,9 @@ export default {
     // paginate data
     const currentPage = ref(0)
     const limit = ref(25)
+    const numberPages = computed(() => {
+      return (player.playersGlobalStats?.total || 0) / limit.value
+    })
     const offset = computed(() => {
       return limit.value * currentPage.value
     })
@@ -93,7 +99,7 @@ export default {
     )
     const sortedPlayersData = computed(() =>
       filterListByLabel({
-        list: player.playersGlobalStats || [],
+        list: player.playersGlobalStats.players || [],
         label: props.entityAttribute
       })
     )
@@ -107,7 +113,8 @@ export default {
       sortedBufficornsData,
       sortedPlayersData,
       sortedRanchesData,
-      updateCurrentPage
+      updateCurrentPage,
+      numberPages
     }
   }
 }
