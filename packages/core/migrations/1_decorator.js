@@ -13,7 +13,7 @@ module.exports = async function (deployer, network) {
     if (addresses[network].WittyBufficornsDecorator === "") {
       await deployer.deploy(
         WittyBufficornsDecorator, 
-        "https://api-ethdenver22.witty-bufficorns.com/metadata/"
+        "https://api-ethdenver2022.wittybufficorns.com/metadata/"
       )
       addresses[network].WittyBufficornsDecorator = WittyBufficornsDecorator.address
       fs.writeFileSync(
@@ -28,7 +28,7 @@ module.exports = async function (deployer, network) {
   } else {
     await deployer.deploy(
       WittyBufficornsDecorator, 
-      "https://api-ethdenver22.witty-bufficorns.com/metadata/"
+      "https://api-ethdenver2022.wittybufficorns.com/metadata/"
     );
   }
   let tx, gasUsed = 0
