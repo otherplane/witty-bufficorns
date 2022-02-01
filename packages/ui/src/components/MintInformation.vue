@@ -26,7 +26,6 @@
 <script>
 import { useStore } from '@/stores/player'
 import { computed } from 'vue'
-import imageUrl from '@/assets/egg-example.png'
 import externalLink from '@/assets/external-black.svg?raw'
 import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
 
@@ -41,7 +40,6 @@ export default {
       etherscanBaseUrl: ETHERSCAN_BASE_URL,
       openseaBaseUrl: OPENSEA_BASE_URL,
       player,
-      imageUrl,
       externalLink,
       mintStatus
     }
