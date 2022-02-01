@@ -30,15 +30,21 @@ module.exports = {
    */
 
   networks: {
-    polygon: {
-      "polygon.goerli": {
-        host: "localhost",
-        port: 8535,
-        network_id: 80001,
-        skipDryRun: true,
-        gasPrice: 30 * 10 ** 9,
-        confirmations: 3,
-      },
+    "polygon.goerli": {
+      host: "localhost",
+      port: 8535,
+      network_id: 80001,
+      skipDryRun: true,
+      gasPrice: 30 * 10 ** 9,
+      confirmations: 3,
+    },
+    "polygon.mainnet": {
+      host: "localhost",
+      port: 9535,
+      network_id: 137,
+      skipDryRun: true,
+      gasPrice: 30 * 10 ** 9,
+      confirmations: 3,
     },
   },
 
