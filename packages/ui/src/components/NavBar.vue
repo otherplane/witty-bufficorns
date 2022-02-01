@@ -22,6 +22,11 @@
             </router-link>
           </li>
           <li class="tab" @click="closeMenu">
+            <router-link to="/instructions">
+              Instructions
+            </router-link>
+          </li>
+          <li class="tab" @click="closeMenu">
             <div @click="openExportModal()" type="dark">
               Get backup
             </div>

@@ -10,7 +10,7 @@
       <img
         class="ranch-img"
         :src="importSvg(RANCHES[player.ranch.name])"
-        alt="Back button"
+        alt="RANCH image"
       />
     </router-link>
     <h3 class="title-section">{{ title }}</h3>
