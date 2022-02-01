@@ -16,8 +16,8 @@ library WittyBufficorns {
 
         Stats   stats;
 
-        uint256 witnetRandomizeBlock;
-        bytes32 witnetRandomness;
+        uint256 stopBreedingBlock;
+        bytes32 stopBreedingRandomness;
         
         mapping (/* tokenId => FarmerAward */ uint256 => TokenInfo) awards;
         mapping (/* bufficornId => Bufficorn */ uint256 => Bufficorn) bufficorns;
@@ -30,31 +30,34 @@ library WittyBufficorns {
     // --- Enums --------------------------------------------------------------
 
     enum Awards {
-        BestBreeder,
-        BestRanch,
+        /* 0 => */ BestBreeder,
+        /* 1 => */ BestRanch,
 
-        BestBufficorn,
-        CoolestBufficorn,
-        FastestBufficorn,
-        MostVigorousBufficorn,
-        MostEnduringBufficorn,
-        MostAgileBufficorn,
-        WarmestBufficorn
+        /* 2 => */ BestBufficorn,
+
+        /* 3 => */ WarmestBufficorn,
+        /* 4 => */ CoolestBufficorn,
+        /* 5 => */ SmartestBufficorn,      
+        /* 6 => */ FastestBufficorn,
+        /* 7 => */ MostEnduringBufficorn,
+        /* 8 => */ MostVigorousBufficorn
     }
 
     enum Status {
-        Breeding,
-        Randomizing,
-        Awarding
+        /* 0 => */ Breeding,
+        /* 1 => */ Randomizing,
+        /* 2 => */ Awarding,
+        /* 3 => */ Prizing,
+        /* 4 => */ Finalized
     }
 
     enum Traits {
-        Agility,    // 0
-        Coat,       // 1
-        Coolness,   // 2
-        Speed,      // 3
-        Stamina,    // 4
-        Strength    // 5
+        /* 0 => */ Coat, 
+        /* 1 => */ Coolness,
+        /* 2 => */ Intelligence,
+        /* 3 => */ Speed,
+        /* 4 => */ Stamina,
+        /* 5 => */ Strength
     }
     
     // ========================================================================
@@ -104,9 +107,9 @@ library WittyBufficorns {
     // --- Internal: 'Storage' selectors --------------------------------------
 
     function status(Storage storage self) internal view returns (Status) {
-        if (self.witnetRandomness != bytes32(0)) {
+        if (self.stopBreedingRandomness != bytes32(0)) {
             return Status.Awarding;
-        } else if (self.witnetRandomizeBlock > 0) {
+        } else if (self.stopBreedingBlock > 0) {
             return Status.Randomizing;
         } else {
             return Status.Breeding;

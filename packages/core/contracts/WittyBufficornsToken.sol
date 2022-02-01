@@ -262,9 +262,9 @@ contract WittyBufficornsToken
             __storage.stats.totalBufficorns == _totalBufficorns,
             "WittyBufficornsToken: bufficorns mismatch"
         );
-        __storage.witnetRandomizeBlock = block.number;
+        __storage.stopBreedingBlock = block.number;
         if (address(randomizer) == address(0)) {
-            __storage.witnetRandomness = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
+            __storage.stopBreedingRandomness = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
             emit AwardingBegins(
                 msg.sender,
                 _totalRanches,
@@ -275,7 +275,7 @@ contract WittyBufficornsToken
             if (_usedFunds < msg.value) {
                 payable(msg.sender).transfer(msg.value - _usedFunds);
             }
-        }   
+        }
     }
 
     /// Starts the Awarding phase, in which players will be able to mint their tokens.
@@ -286,7 +286,7 @@ contract WittyBufficornsToken
         onlySignator
         inStatus(WittyBufficorns.Status.Randomizing)
     {
-        __storage.witnetRandomness = randomizer.getRandomnessAfter(__storage.witnetRandomizeBlock);
+        __storage.stopBreedingRandomness = randomizer.getRandomnessAfter(__storage.stopBreedingBlock);
         emit AwardingBegins(
             msg.sender,
             __storage.stats.totalRanches,
@@ -441,6 +441,22 @@ contract WittyBufficornsToken
         returns (WittyBufficorns.TokenInfo memory)
     {
         return __storage.awards[_tokenId];
+    }
+
+    function stopBreedingBlock()
+        external view
+        override
+        returns (uint256)
+    {
+        return __storage.stopBreedingBlock;
+    }
+
+    function stopBreedingRandomness()
+        external view
+        override
+        returns (bytes32)
+    {
+        return __storage.stopBreedingRandomness;
     }
 
     function toJSON(uint256 _tokenId)

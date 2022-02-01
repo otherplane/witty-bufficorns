@@ -12,6 +12,9 @@ interface IWittyBufficornsView {
     
     function getTokenInfo(uint256 _tokenId) external view returns (WittyBufficorns.TokenInfo memory);
 
+    function stopBreedingBlock() external view returns (uint256);
+    function stopBreedingRandomness() external view returns (bytes32);
+
     function toJSON(uint256 _tokenId) external view returns (string memory);
     function toSVG(uint256 _tokenId) external view returns (string memory);
 
