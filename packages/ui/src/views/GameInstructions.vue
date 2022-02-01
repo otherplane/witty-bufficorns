@@ -17,6 +17,7 @@ export default {
   setup () {
     const player = useStore()
     onMounted(() => {
+      player.getTheme()
       player.getTradeHistory()
     })
     const timeZone = 'America/Denver'

@@ -26,7 +26,7 @@
         </div>
         <img
           class="logo"
-          :src="importSvg(RANCHES[player.ranch.name])"
+          :src="importSvg(RANCHES[player.theme])"
           alt="Witty Bufficorns ranch logo"
         />
       </div>

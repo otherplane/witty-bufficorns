@@ -8,6 +8,7 @@ export const useStore = defineStore('player', {
     return {
       api: new ApiService(),
       id: null,
+      theme: null,
       medals: [],
       username: '',
       ranch: {},
@@ -58,6 +59,10 @@ export const useStore = defineStore('player', {
       localStorage.setItem('preview', preview)
       this.preview = preview
     },
+    saveTheme (theme) {
+      localStorage.setItem('theme', theme)
+      this.theme = theme
+    },
     saveMintInfo (info) {
       localStorage.setItem('mintInfo', JSON.stringify({ ...info }))
       this.mintInfo = info
@@ -66,6 +71,12 @@ export const useStore = defineStore('player', {
       const preview = localStorage.getItem('preview')
       if (preview) {
         this.preview = preview
+      }
+    },
+    getTheme () {
+      const theme = localStorage.getItem('theme')
+      if (theme) {
+        this.theme = theme
       }
     },
     getMintInfo () {
@@ -131,6 +142,7 @@ export const useStore = defineStore('player', {
       }
     },
     async getGlobalStats (offset = 0, limit = 25) {
+      await this.getTheme()
       await this.getInfo()
       const request = await this.api.getLeaderboardInfo({
         offset,
@@ -146,6 +158,7 @@ export const useStore = defineStore('player', {
       }
     },
     async getTradeHistory () {
+      await this.getTheme()
       const tokenInfo = this.getToken()
       const request = await this.api.getTradeHistory({
         token: tokenInfo && tokenInfo.token,
@@ -192,6 +205,7 @@ export const useStore = defineStore('player', {
           this.ranch = ranch
           this.playerPoints = points
           this.selectedBufficorn = selectedBufficorn
+          this.saveTheme(ranch.name)
           if (request.lastTradeIn) {
             this.tradeIn = request.lastTradeIn
           }

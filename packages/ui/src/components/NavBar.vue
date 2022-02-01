@@ -11,23 +11,23 @@
       </label>
       <div class="dropdown">
         <ul class="tab-container" :class="{ visible: isMenuVisible }">
-          <li class="tab" @click="closeMenu">
-            <router-link to="/stats">
+          <li class="close-box" @click="closeMenu">
+            <router-link class="tab" to="/stats">
               Leaderboard
             </router-link>
           </li>
-          <li class="tab" @click="closeMenu">
-            <router-link to="/trades">
+          <li class="close-box" @click="closeMenu">
+            <router-link class="tab" to="/trades">
               Trade history
             </router-link>
           </li>
-          <li class="tab" @click="closeMenu">
-            <router-link to="/instructions">
+          <li class="close-box" @click="closeMenu">
+            <router-link class="tab" to="/instructions">
               Instructions
             </router-link>
           </li>
-          <li class="tab" @click="closeMenu">
-            <div @click="openExportModal()" type="dark">
+          <li class="close-box" @click="closeMenu">
+            <div class="tab" @click="openExportModal()" type="dark">
               Get backup
             </div>
           </li>
@@ -101,7 +101,6 @@ export default {
   }
   .responsive-menu {
     display: block;
-    cursor: pointer;
     position: absolute;
     z-index: 50px;
     top: 0px;
@@ -122,7 +121,6 @@ export default {
   text-align: left;
   border-radius: 4px;
   margin: 0;
-  cursor: pointer;
   display: grid;
   opacity: 0;
   width: 0px;
@@ -137,11 +135,18 @@ export default {
     width: 148px;
     height: 174px;
     .tab {
+      cursor: pointer;
       opacity: 1;
       transition: all 0.3s;
     }
   }
+  .close-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
   .tab {
+    width: 148px;
     cursor: pointer;
     display: block;
     align-items: left;

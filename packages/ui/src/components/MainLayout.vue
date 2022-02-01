@@ -1,5 +1,5 @@
 <template>
-  <div class="background" :class="RANCHES[player?.ranch?.name]">
+  <div class="background" :class="RANCHES[player?.theme]">
     <WitnetStrip class="witnet-logo-strip" />
     <div v-if="isBackground" class="main-background" />
     <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="wittyCorn" />
@@ -90,7 +90,7 @@ export default defineComponent({
 @media (max-width: 600px) {
   .bufficorn-img {
     height: 50vh;
-    left: 20vw;
+    right: -10vw;
     position: fixed;
     bottom: 0;
   }
