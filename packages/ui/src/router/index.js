@@ -3,7 +3,7 @@ import Home from '../views/App.vue'
 import MainContent from '../views/MainContent.vue'
 import InitGame from '../views/InitGame.vue'
 import Disclaimer from '../views/GameDisclaimer.vue'
-import GameInfo from '../views/GameInfo.vue'
+import Instructions from '../views/GameInstructions.vue'
 import GlobalStats from '../views/GlobalStats.vue'
 import TradeHistory from '../views/TradeHistory.vue'
 import { useStore } from '@/stores/player'
@@ -72,9 +72,9 @@ const routes = [
     component: TradeHistory
   },
   {
-    name: 'gameInformation',
+    name: 'instructions',
     path: '/instructions',
-    component: GameInfo
+    component: Instructions
   },
   {
     name: 'import',

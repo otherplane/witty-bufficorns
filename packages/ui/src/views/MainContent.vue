@@ -171,6 +171,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-content {
+  margin-top: 16px;
+}
 .time-left {
   margin-left: 4px;
 }
@@ -205,7 +208,7 @@ export default {
 }
 .sticky-btn {
   position: sticky;
-  bottom: 8px;
+  bottom: 24px;
   text-align: center;
 }
 .buttons {

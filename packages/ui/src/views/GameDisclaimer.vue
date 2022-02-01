@@ -1,9 +1,9 @@
 <template>
   <MainLayout :isBackground="true">
     <div class="container">
-      <svgImage :svg="disclaimerTitle" />
+      <svgImage :svg="mainTitle" />
       <p class="text">
-        <span class="bold">Remember:</span> once you register your farmer, it
+        <span class="bold">DISCLAIMER:</span> Once you register your farmer, it
         will be forever linked to your web browser and the QR code will not work
         in a different browser. You are highly encouraged to create a backup
         from the main screen of the game, or in case that you need to move your
@@ -19,20 +19,24 @@
 </template>
 
 <script>
-import disclaimerTitle from '@/assets/disclaimerTitle.svg?raw'
+import mainTitle from '@/assets/mainTitle.svg?raw'
 export default {
   setup () {
-    return { disclaimerTitle }
+    return { mainTitle }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.container {
+  margin-top: 4vh;
+}
 .btn {
   width: max-content;
 }
 .text {
   font-family: Zilla Slab, sans-serif;
+  font-size: 16px;
   color: $black;
   font-weight: bold;
 }

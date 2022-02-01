@@ -47,7 +47,7 @@ export default {
   .back-container {
     position: absolute;
     display: flex;
-    top: 16px;
+    top: 24px;
     left: 16px;
     font-weight: 600;
     color: var(--primary-color);

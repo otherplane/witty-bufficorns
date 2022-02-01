@@ -111,7 +111,7 @@ export default {
   .dropdown {
     position: absolute;
     z-index: 50;
-    top: 48px;
+    top: 68px;
   }
 }
 .tab-container {
@@ -135,7 +135,7 @@ export default {
     top: 8px;
     opacity: 1;
     width: 148px;
-    height: 140px;
+    height: 174px;
     .tab {
       opacity: 1;
       transition: all 0.3s;
@@ -169,7 +169,7 @@ export default {
 .target-burger {
   display: block;
   transition: 0.5s;
-  margin-top: 8px;
+  margin-top: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
