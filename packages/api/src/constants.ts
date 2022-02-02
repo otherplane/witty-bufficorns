@@ -83,6 +83,10 @@ export const MONGO_URI: string =
   process.env.MONGO_URI ||
   'MONGO_URI=mongodb://your_username:your_password@localhost:27017/database'
 
+export const PLUGIN_TIMEOUT: number = parseInt(
+  process.env.PLUGIN_TIMEOUT || '30000'
+)
+
 export const BUFFICORN_INDEX: Record<number, BufficornName> = {
   0: BufficornName.Bufficorn0,
   1: BufficornName.Bufficorn1,
@@ -155,4 +159,5 @@ export default {
   TRAIT_BY_RANCH,
   INDEX_TO_RANCH,
   BUFFICORNS_INDEX_GROUP_BY_RANCH,
+  PLUGIN_TIMEOUT,
 }

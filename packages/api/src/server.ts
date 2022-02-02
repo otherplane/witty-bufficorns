@@ -2,9 +2,10 @@ import Fastify from 'fastify'
 import Web3 from 'web3'
 
 import app from './app'
-import constants, { MINT_PRIVATE_KEY } from './constants'
+import constants, { MINT_PRIVATE_KEY, PLUGIN_TIMEOUT } from './constants'
 
 const server = Fastify({
+  pluginTimeout: PLUGIN_TIMEOUT,
   logger: {
     level: 'info',
     prettyPrint: true,
