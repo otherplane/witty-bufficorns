@@ -3,7 +3,7 @@
     <div v-if="name" class="small-title item">
       <p class="bufficorn-name">{{ name }}</p>
     </div>
-    <svgImage class="bufficorn-image" :svg="bufficornMain" />
+    <svgImage class="bufficorn-image" :class="{ flip }" :svg="bufficornMain" />
   </div>
 </template>
 
@@ -13,7 +13,8 @@ import SvgImage from './SvgImage.vue'
 export default {
   components: { SvgImage },
   props: {
-    name: String
+    name: String,
+    flip: Boolean
   },
   setup () {
     return { bufficornMain }
@@ -37,5 +38,13 @@ export default {
   grid-column: 1;
   height: auto;
   width: 80px;
+  &.flip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -ms-filter: fliph;
+    filter: fliph;
+  }
 }
 </style>

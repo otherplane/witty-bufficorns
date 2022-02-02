@@ -137,8 +137,8 @@ export const INDEX_TO_RANCH: Record<number, RanchName> = {
 
 export const TRAIT_BY_RANCH: Record<RanchName, Trait> = {
   [RanchName.Ranch1]: Trait.Coat,
-  [RanchName.Ranch2]: Trait.Intelligence,
-  [RanchName.Ranch3]: Trait.Coolness,
+  [RanchName.Ranch2]: Trait.Coolness,
+  [RanchName.Ranch3]: Trait.Intelligence,
   [RanchName.Ranch4]: Trait.Speed,
   [RanchName.Ranch5]: Trait.Stamina,
   [RanchName.Ranch6]: Trait.Vigor,

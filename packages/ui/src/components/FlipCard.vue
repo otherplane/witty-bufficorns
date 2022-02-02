@@ -10,7 +10,7 @@
         <PolarChart v-if="normalizedData" :stats="normalizedData" />
       </div>
       <div class="face back" :class="{ horizontal }">
-        <BufficornImage :name="name" />
+        <BufficornImage :name="name" :flip="true" />
         <div class="attributes" :class="{ horizontal }">
           <BufficornAttributesList
             :attributes="attributes"

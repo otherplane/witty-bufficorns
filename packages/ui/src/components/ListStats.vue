@@ -22,7 +22,7 @@
     </div>
     <div v-if="gameEntity === 'players'" class="list">
       <PlayerGlobalData
-        v-for="(player, index) in sortedPlayersData"
+        v-for="(player, index) in player.playersGlobalStats.players"
         :class="{ even: index % 2 }"
         :index="index"
         :key="player.username"
@@ -38,7 +38,7 @@
     </div>
     <div v-if="gameEntity === 'ranches'" class="list">
       <RancheGlobalData
-        v-for="(ranch, index) in sortedRanchesData"
+        v-for="(ranch, index) in player.ranchesGlobalStats"
         :class="{ even: index % 2 }"
         :index="index"
         :key="ranch.name"
@@ -86,8 +86,14 @@ export default {
     // filter list by attribute
     function filterListByLabel ({ list, label }) {
       const filter = label === 'overall' ? 'score' : label
-      const result = list.sort((e1, e2) => {
-        return e2[filter] - e1[filter]
+      const result = list.sort((a, b) => {
+        if (b.creationIndex > a.creationIndex) {
+          return -1
+        }
+        if (a[filter] > b[filter]) {
+          return -1
+        }
+        return 0
       })
       return result
     }
@@ -97,22 +103,9 @@ export default {
         label: props.entityAttribute
       })
     )
-    const sortedPlayersData = computed(() =>
-      filterListByLabel({
-        list: player.playersGlobalStats.players || [],
-        label: props.entityAttribute
-      })
-    )
-    const sortedRanchesData = computed(() =>
-      filterListByLabel({
-        list: player.ranchesGlobalStats || [],
-        label: props.entityAttribute
-      })
-    )
     return {
       sortedBufficornsData,
-      sortedPlayersData,
-      sortedRanchesData,
+      player,
       updateCurrentPage,
       numberPages
     }

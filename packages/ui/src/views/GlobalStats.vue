@@ -11,7 +11,7 @@
           />
         </div>
       </div>
-      <div class="subtabs-container">
+      <div class="subtabs-container" v-if="tabs[primaryTab].showSubtabs">
         <div
           v-for="tab in Object.values(tabs[primaryTab].subTabs)"
           :key="tab.key"

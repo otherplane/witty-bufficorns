@@ -1,20 +1,19 @@
 <template>
   <div class="counter">
     <transition name="fade">
-      <div v-if="player.tradeOut" class="left">
+      <div v-if="player.tradeOut" class="info left">
         <p class="label">
           Sending
           <span class="highlight">{{
             player.tradeOut?.resource?.amount || 0
           }}</span>
-          points of
-          <span class="highlight">{{
-            player.tradeOut?.resource?.trait.toUpperCase() || ''
-          }}</span>
+          p of
+          <img
+            class="trait-icon"
+            :src="importSvg(ATTRIBUTES[player.tradeOut?.resource?.trait].key)"
+          />
           to
-          <span class="highlight">{{
-            player.tradeOut?.to.toUpperCase() || ''
-          }}</span>
+          <span class="highlight">{{ player.tradeOut?.to || '' }}</span>
         </p>
         <div class="time-container">
           <TimeLeft
@@ -27,20 +26,21 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="player.tradeIn" class="right">
+      <div v-if="player.tradeIn" class="info right">
         <p class="label">
           Receiving
           <span class="highlight">{{
             player.tradeIn?.resource?.amount || 'null'
           }}</span>
-          points of
-          <span class="highlight">{{
-            player.tradeIn?.resource?.trait.toUpperCase() || 'null'
-          }}</span>
+          p of
+          <img
+            class="trait-icon"
+            :src="
+              importSvg(ATTRIBUTES[player.tradeIn?.resource?.trait].key || '')
+            "
+          />
           from
-          <span class="highlight">{{
-            player.tradeIn?.to.toUpperCase() || 'null'
-          }}</span>
+          <span class="highlight">{{ player.tradeIn?.to || 'null' }}</span>
         </p>
         <div class="time-container">
           <TimeLeft
@@ -57,14 +57,18 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from '@/stores/player'
+import { ATTRIBUTES } from '@/constants.js'
+import { importSvg } from '@/composables/importSvg.js'
 export default {
   setup (props) {
     const player = useStore()
     const show = ref(false)
-
-    return { player, show }
+    onMounted(() => {
+      player.getInfo()
+    })
+    return { player, show, ATTRIBUTES, importSvg }
   }
 }
 </script>
@@ -97,12 +101,28 @@ export default {
     padding: 0px 8px;
     border-radius: 4px;
     text-align: left;
+    display: flex;
+  }
+  .trait-icon {
+    display: inline-block;
+    width: 14px;
+  }
+  .info {
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    align-items: center;
   }
   .left {
     grid-column: 1;
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    align-items: center;
   }
   .right {
     grid-column: 2;
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    align-items: center;
   }
   .label {
     text-align: left;

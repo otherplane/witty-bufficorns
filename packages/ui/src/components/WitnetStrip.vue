@@ -1,6 +1,8 @@
 <template>
   <div class="witnet-logo">
-    <svgImage class="logo" :svg="wittyLogo" />
+    <a href="https://witnet.io/es/" target="_blank">
+      <svgImage class="logo" :svg="wittyLogo" />
+    </a>
     <p class="witnet-subtitle">THE MULTICHAIN DECENTRALIZED ORACLE</p>
   </div>
 </template>

@@ -11,9 +11,13 @@
           <p class="subtitle">
             <span class="subtitle label">ID: </span>{{ player.id }}
           </p>
-          <p class="subtitle">
-            <span class="subtitle label">RANCH RESOURCE:</span>
-            {{ player.ranch.trait }}
+          <p class="subtitle ranch-resource">
+            <span class="subtitle label">RESOURCE: </span>
+            {{ ATTRIBUTES[player.ranch.trait].resource }}
+            (<img
+              class="trait-icon"
+              :src="importSvg(ATTRIBUTES[player.ranch.trait].key)"
+            />)
           </p>
           <p class="subtitle">
             <span class="subtitle label">GAME ENDS IN:</span>
@@ -77,7 +81,12 @@ import { useStore } from '@/stores/player'
 import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
-import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL, RANCHES } from '../constants'
+import {
+  ETHERSCAN_BASE_URL,
+  OPENSEA_BASE_URL,
+  RANCHES,
+  ATTRIBUTES
+} from '../constants'
 import { importSvg } from '@/composables/importSvg.js'
 
 export default {
@@ -165,7 +174,8 @@ export default {
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
       getData: web3WittyBufficorns.getData,
       importSvg,
-      RANCHES
+      RANCHES,
+      ATTRIBUTES
     }
   }
 }
@@ -202,6 +212,10 @@ export default {
   .points-bold {
     font-weight: bold;
     font-size: 18px;
+  }
+  .trait-icon {
+    width: 16px;
+    display: inline-block;
   }
 }
 .sticky-btn {

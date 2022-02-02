@@ -108,9 +108,9 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .status(409)
           .send(
             new Error(
-              `Target Player needs ${printRemainingMillis(
+              `${toPlayer.username} player needs ${printRemainingMillis(
                 remainingCooldown
-              )} to cooldown before trade again`
+              )} to cooldown before trading with you again`
             )
           )
       }

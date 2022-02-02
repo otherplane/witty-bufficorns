@@ -103,6 +103,7 @@ export default {
       font-weight: bold;
     }
     .pointer {
+      width: 25px;
       cursor: pointer;
     }
   }

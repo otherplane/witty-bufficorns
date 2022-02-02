@@ -8,7 +8,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/b75c34545e8cb4d2')"
+        @click="onDecode('/21234f47b1c46620')"
       >
         The Ol' Algoranch
       </Button>
@@ -17,7 +17,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/a17b86baba0cb804')"
+        @click="onDecode('/bf70268a8f1e2d67')"
       >
         Vega Slopes Range
       </Button>
@@ -26,7 +26,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/21234f47b1c46620')"
+        @click="onDecode('/b5425e1b1ed66dcb')"
       >
         Balancer Peak State'
       </Button>
@@ -35,7 +35,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/bf70268a8f1e2d67')"
+        @click="onDecode('/ef12efbd765f9ad3')"
       >
         Gold Reef Co.'
       </Button>
@@ -44,7 +44,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/895aa6083cc2dfaf')"
+        @click="onDecode('/e9d8e88334820666')"
       >
         Infinite Harmony Farm'
       </Button>
@@ -53,7 +53,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/ef12efbd765f9ad3')"
+        @click="onDecode('/895aa6083cc2dfaf')"
       >
         Opolis Reservation
       </Button>

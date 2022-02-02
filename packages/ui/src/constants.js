@@ -30,27 +30,33 @@ export const RANCHES = {
 export const ATTRIBUTES = {
   coat: {
     key: 'coat',
-    color: '#cc1919'
+    color: '#cc1919',
+    resource: 'Warm Hay'
   },
   coolness: {
     key: 'coolness',
-    color: '#217821'
+    color: '#217821',
+    resource: 'Fresh Grass'
   },
   intelligence: {
     key: 'intelligence',
-    color: '#1a1a1a'
+    color: '#1a1a1a',
+    resource: 'Smart Sedge'
   },
   speed: {
     key: 'speed',
-    color: '#ffad00'
+    color: '#ffad00',
+    resource: 'Mighty Acorn'
   },
   stamina: {
     key: 'stamina',
-    color: '#124ca1'
+    color: '#124ca1',
+    resource: 'Tireless Water'
   },
   vigor: {
     key: 'vigor',
-    color: '#512791'
+    color: '#512791',
+    resource: 'Hearty Berry'
   }
 }
 export const STATS_FILTERS = {
@@ -58,6 +64,7 @@ export const STATS_FILTERS = {
     key: 'players',
     active: false,
     default: 'overall',
+    showSubtabs: false,
     subTabs: {
       overall: {
         key: 'overall',
@@ -69,6 +76,7 @@ export const STATS_FILTERS = {
     key: 'bufficorns',
     active: false,
     default: 'overall',
+    showSubtabs: true,
     subTabs: {
       overall: {
         key: 'overall',
@@ -104,6 +112,7 @@ export const STATS_FILTERS = {
     key: 'ranches',
     active: false,
     default: 'overall',
+    showSubtabs: false,
     subTabs: {
       overall: {
         key: 'overall',

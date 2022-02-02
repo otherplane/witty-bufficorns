@@ -54,6 +54,7 @@ export default {
   }
   .angle {
     margin-right: 8px;
+    width: 10px;
   }
   .ranch-img {
     width: 138px;

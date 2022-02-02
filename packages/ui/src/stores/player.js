@@ -182,12 +182,10 @@ export const useStore = defineStore('player', {
         ) {
           await this.trade({ key: router.currentRoute.value.params.id })
         }
-
         const request = await this.api.getInfo({
           token: tokenInfo && tokenInfo.token,
           id: tokenInfo && tokenInfo.key
         })
-        console.log('request', request)
         if (request.error) {
           router.push({ name: 'init-game' })
           this.setError('info', request.error)
