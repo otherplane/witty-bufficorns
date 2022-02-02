@@ -24,13 +24,13 @@ export default {
 <style scoped lang="scss">
 .bufficorn-image-container {
   display: grid;
-  grid-template-rows: max-content 1fr;
+  grid-template-rows: max-content;
   justify-items: center;
   align-items: center;
+  align-content: center;
   height: 100%;
 }
 .item {
-  padding: 8px;
   text-align: center;
 }
 .bufficorn-image {

@@ -5,17 +5,11 @@
       @click="showStats = !showStats"
       :class="{ flipped: showStats }"
     >
-      <div
-        class="face front"
-        :class="{ horizontal, background: backgroundFront, selected }"
-      >
+      <div class="face front" :class="{ horizontal, selected }">
         <BufficornImage :class="{ selected }" :name="name" />
         <PolarChart v-if="normalizedData" :stats="normalizedData" />
       </div>
-      <div
-        class="face back"
-        :class="{ horizontal, background: backgroundBack }"
-      >
+      <div class="face back" :class="{ horizontal }">
         <BufficornImage :name="name" />
         <div class="attributes" :class="{ horizontal }">
           <BufficornAttributesList
@@ -106,14 +100,18 @@ export default {
   backface-visibility: hidden;
   display: grid;
   justify-content: center;
-  row-gap: 16px;
-  grid-template-rows: repeat(2, max-content);
+  row-gap: 8px;
+  grid-template-rows: 100px 150px;
+  align-items: center;
   justify-items: center;
   align-content: center;
   color: var(--primary-color);
   background-color: $white;
   &.selected {
     border: 2px solid var(--primary-color);
+  }
+  &.hidden {
+    visibility: hidden;
   }
   &.horizontal {
     display: grid;
@@ -124,7 +122,7 @@ export default {
   }
 }
 
-.background {
+.front {
   background-color: var(--primary-color-opacity-2);
   border-radius: 4px;
 }

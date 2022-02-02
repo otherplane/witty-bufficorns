@@ -42,7 +42,7 @@ export default {
       return {
         backgroundImage: `linear-gradient(90deg, ${
           ATTRIBUTES[resource.key].color
-        } 0%, transparent ${resourcePercentage}%)`
+        }75 0%, transparent ${resourcePercentage}%)`
       }
     }
     return { player, stats, createResourceGradient, importSvg }

@@ -30,27 +30,27 @@ export const RANCHES = {
 export const ATTRIBUTES = {
   coat: {
     key: 'coat',
-    color: '#cc191975'
+    color: '#cc1919'
   },
   coolness: {
     key: 'coolness',
-    color: '#21782175'
+    color: '#217821'
   },
   intelligence: {
     key: 'intelligence',
-    color: '#1a1a1a75'
+    color: '#1a1a1a'
   },
   speed: {
     key: 'speed',
-    color: '#ffad0075'
+    color: '#ffad00'
   },
   stamina: {
     key: 'stamina',
-    color: '#124ca175'
+    color: '#124ca1'
   },
   vigor: {
     key: 'vigor',
-    color: '#51279175'
+    color: '#512791'
   }
 }
 export const STATS_FILTERS = {

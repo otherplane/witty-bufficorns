@@ -63,6 +63,7 @@ export default {
   setup (props) {
     const player = useStore()
     const show = ref(false)
+
     return { player, show }
   }
 }
