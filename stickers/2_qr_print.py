@@ -56,13 +56,12 @@ def main(config):
     images = load_images(config.input_dir, resolution)
 
     colored_images = {
-        'green': [],
-        'black': [],
-        'red': [],
-        'purple': [],
-        'negative': [],
-        'yellow': [],
-        'blue': []
+        'Ranch1': [],
+        'Ranch2': [],
+        'Ranch3': [],
+        'Ranch4': [],
+        'Ranch5': [],
+        'Ranch6': [],
     }
 
     for [color, image] in images:

@@ -8,7 +8,7 @@ import qrcode
 from typing import List
 from qrcode.image.pure import PymagingImage
 
-colors = ['green', 'black', 'red', 'purple', 'negative', 'yellow', 'blue']
+colors = ['Ranch1', 'Ranch2', 'Ranch3', 'Ranch4', 'Ranch5', 'Ranch6']
 
 class Egg:
     def __init__(self, index, key):
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     parser.add_argument('--eggs', help='how many eggs to generate', default=10)
     parser.add_argument('--salt', help='a string to use as salt for deterministic egg key derivation', default='')
     parser.add_argument('--key_len', help='the byte length of egg keys', default=8)
-    parser.add_argument('--base_url', help='base URL for QR codes', default='https://wittycreatures.com/#/egg/')
+    parser.add_argument('--base_url', help='base URL for QR codes', default='https://bufficorns.com/#/')
     parser.add_argument('--output_dir', help='path for QR image output', default='./qr_codes/')
     args = parser.parse_args()
     main(args)
