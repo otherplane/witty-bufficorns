@@ -6,6 +6,9 @@ import { radar } from 'svg-radar-chart'
 import { stringify } from 'virtual-dom-stringify'
 
 export default defineConfig({
+  build: {
+    emptyOutDir: true
+  },
   plugins: [vue(), Components(), radar, stringify],
   css: {
     preprocessorOptions: {
