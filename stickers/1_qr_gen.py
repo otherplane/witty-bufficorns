@@ -7,6 +7,7 @@ import qrcode
 
 from typing import List
 from qrcode.image.pure import PymagingImage
+from tqdm import tqdm
 
 colors = ['Ranch1', 'Ranch2', 'Ranch3', 'Ranch4', 'Ranch5', 'Ranch6']
 
@@ -47,7 +48,7 @@ def generate_qr_codes(eggs: List[Egg], base_url: str, output_dir: str):
     if not os.path.exists(output_dir_fd):
         os.makedirs(output_dir_fd)
 
-    return [generate_qr_code(egg, base_url, output_dir) for egg in eggs]
+    return [generate_qr_code(egg, base_url, output_dir) for egg in tqdm(eggs)]
 
 
 def main(config):
