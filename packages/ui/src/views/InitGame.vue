@@ -1,7 +1,11 @@
 <template>
   <MainLayout :isBackground="true" :isBufficorn="true">
     <div class="init-container">
-      <img :src="importPng('main-title')" alt="Witty Bufficorns" />
+      <img
+        class="main-title"
+        :src="importPng('main-title')"
+        alt="Witty Bufficorns"
+      />
       <router-link to="/disclaimer" class="link">
         <Button class="btn" type="dark">
           PLAY NOW
@@ -27,7 +31,9 @@ export default {
   margin-top: 4vh;
   align-items: center;
   row-gap: 16px;
-  .main-title,
+  .main-title {
+    margin-bottom: 8px;
+  }
   .main-subtile {
     font-family: Road Store;
     font-size: 74px;
