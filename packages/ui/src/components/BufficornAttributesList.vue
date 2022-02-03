@@ -12,7 +12,7 @@
 import { useStore } from '@/stores/player'
 import { getStatsFromAttributes } from '@/utils.js'
 import { importSvg } from '@/composables/importSvg.js'
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { ATTRIBUTES } from '@/constants.js'
 
 export default {
@@ -36,7 +36,7 @@ export default {
   },
   setup (props) {
     const player = useStore()
-    const stats = ref(getStatsFromAttributes(props.attributes))
+    const stats = computed(() => getStatsFromAttributes(props.attributes))
     function createResourceGradient (resource) {
       const resourcePercentage = props.data[resource.key] * 100
       return {

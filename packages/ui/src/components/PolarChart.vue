@@ -6,6 +6,7 @@
 import radar from 'svg-radar-chart'
 import { generateSvgChart } from '@/composables/generateSvgChart.js'
 import smoothing from 'svg-radar-chart/smoothing'
+import { computed } from 'vue'
 
 export default {
   props: {
@@ -42,8 +43,11 @@ export default {
         })
       }
     )
-
-    return { svgChart: generateSvgChart(chart) }
+    return {
+      svgChart: computed(() => {
+        return generateSvgChart(chart)
+      })
+    }
   }
 }
 </script>

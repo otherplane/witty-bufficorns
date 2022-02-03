@@ -145,7 +145,7 @@ export default {
 .content {
   color: $white;
   width: 100vw;
-  top: 18vh;
+  top: 10vh;
   left: 0px;
   position: fixed;
   text-align: center;
