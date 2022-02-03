@@ -65,9 +65,6 @@ export default {
   setup (props) {
     const player = useStore()
     const show = ref(false)
-    onMounted(() => {
-      player.getPlayerInfo()
-    })
     return { player, show, ATTRIBUTES, importSvg }
   }
 }

@@ -90,6 +90,7 @@ export const useStore = defineStore('player', {
     },
     clearTokenInfo () {
       localStorage.removeItem('tokenInfo')
+      localStorage.removeItem('theme')
     },
     clearError (error) {
       this.errors[error] = null

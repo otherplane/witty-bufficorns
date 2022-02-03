@@ -103,7 +103,6 @@ export default {
       gameOver: false
     })
     const gameOver = player.gameOver
-    let timeout
 
     onBeforeMount(async () => {
       const token = await player.getToken()
@@ -125,17 +124,7 @@ export default {
           const data = await web3WittyBufficorns.getData()
           player.setData(data)
         }
-
-        if (!player.gameOver) {
-          timeout = setTimeout(() => {
-            player.timeToBirth -= 1
-          }, player.timeToBirth - Date.now())
-        }
       }
-    })
-
-    onBeforeUnmount(() => {
-      clearTimeout(timeout)
     })
 
     const type = computed(() =>

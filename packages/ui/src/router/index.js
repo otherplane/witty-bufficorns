@@ -49,8 +49,11 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const store = useStore()
       const loginInfo = store.getToken()
+      const claimedPlayerError =
+        store.errors.info &&
+        store.errors.info.includes('Player has not been claimed yet')
       const error = store.errors.info
-      if (loginInfo && error) {
+      if (loginInfo && claimedPlayerError) {
         store.clearTokenInfo()
       }
       if (loginInfo && loginInfo.token && !error) {
