@@ -650,7 +650,8 @@ describe('Route /trade', () => {
   })
 
   describe('GET', () => {
-    it('should return correct values when not trade exists', async () => {
+    jest.setTimeout(15000)
+    it('should return correct values when no trade exists', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
       await serverInject(
@@ -663,7 +664,8 @@ describe('Route /trade', () => {
         },
         (err, response) => {
           expect(response.statusCode).toBe(200)
-          expect(response.json().trades.length).toBe(0)
+          expect(response.json().trades.trades.length).toBe(0)
+          expect(response.json().trades.total).toBe(0)
         }
       )
     })
@@ -684,7 +686,8 @@ describe('Route /trade', () => {
         },
         (err, response) => {
           expect(response.statusCode).toBe(200)
-          expect(response.json().trades.length).toBe(3)
+          expect(response.json().trades.trades.length).toBe(3)
+          expect(response.json().trades.total).toBe(3)
         }
       )
     })
@@ -705,7 +708,8 @@ describe('Route /trade', () => {
         },
         (err, response) => {
           expect(response.statusCode).toBe(200)
-          expect(response.json().trades.length).toBe(4)
+          expect(response.json().trades.trades.length).toBe(4)
+          expect(response.json().trades.total).toBe(5)
         }
       )
     })
@@ -726,10 +730,11 @@ describe('Route /trade', () => {
         },
         (err, response) => {
           expect(response.statusCode).toBe(200)
-          expect(response.json().trades.length).toBe(4)
+          expect(response.json().trades.trades.length).toBe(4)
+          expect(response.json().trades.total).toBe(5)
           const areTradesSortedByDate = response
             .json()
-            .trades.reduce((previousTrade, trade) => {
+            .trades.trades.reduce((previousTrade, trade) => {
               if (!previousTrade) return false
 
               if (previousTrade.timestamp > trade.timestamp) {

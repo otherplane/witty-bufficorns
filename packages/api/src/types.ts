@@ -225,8 +225,12 @@ export const TradeHistoryParams = Type.Object({
 export type TradeHistoryParams = Static<typeof TradeHistoryParams>
 
 export const TradeHistoryResponse = Type.Object({
-  trades: Type.Array(DbTradeVTO),
+  trades: Type.Object({
+    trades: Type.Array(DbTradeVTO),
+    total: Type.Integer(),
+  }),
 })
+
 export type TradeHistoryResponse = Static<typeof TradeHistoryResponse>
 export const PlayerVTO = Type.Object({
   key: Type.String(),

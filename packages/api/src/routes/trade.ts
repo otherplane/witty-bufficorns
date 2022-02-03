@@ -196,10 +196,13 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       return reply.status(200).send({
-        trades: await tradeModel.getManyByUsername(player.username, {
-          limit: request.query.limit || 10,
-          offset: request.query.offset || 0,
-        }),
+        trades: {
+          trades: await tradeModel.getManyByUsername(player.username, {
+            limit: request.query.limit || 10,
+            offset: request.query.offset || 0,
+          }),
+          total: await tradeModel.count(player.username),
+        },
       })
     },
   })

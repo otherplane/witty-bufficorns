@@ -37,4 +37,10 @@ export class TradeModel {
       paginationParams
     )
   }
+
+  public async count(username: string): Promise<number> {
+    return this.repository.count({
+      $or: [{ from: username }, { to: username }],
+    })
+  }
 }
