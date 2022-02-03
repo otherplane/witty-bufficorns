@@ -92,7 +92,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (lastTradeTo && lastTradeTo.ends > currentTimestamp) {
         return reply
           .status(409)
-          .send(new Error(`Target Player is already trading`))
+          .send(new Error(`${toPlayer.username} player is already trading`))
       }
 
       // Check 8: cooldown period from Player to target Player has elapsed

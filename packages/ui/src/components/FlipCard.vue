@@ -24,7 +24,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { ref, computed, onBeforeMount } from 'vue'
+import { ref, computed } from 'vue'
 import { normalizedChartData } from '../utils'
 
 export default {
@@ -83,6 +83,8 @@ export default {
   height: 100%;
   transition: transform 1s;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transition: transform 1s;
   cursor: pointer;
   position: relative;
 }

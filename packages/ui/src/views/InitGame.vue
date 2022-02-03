@@ -1,7 +1,7 @@
 <template>
   <MainLayout :isBackground="true" :isBufficorn="true">
     <div class="init-container">
-      <svgImage :svg="title" />
+      <img :src="importPng('main-title')" alt="Witty Bufficorns" />
       <router-link to="/disclaimer" class="link">
         <Button class="btn" type="dark">
           PLAY NOW
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import title from '@/assets/mainTitle.svg?raw'
+import { importPng } from '@/composables/importPng.js'
 export default {
   setup () {
-    return { title }
+    return { importPng }
   }
 }
 </script>

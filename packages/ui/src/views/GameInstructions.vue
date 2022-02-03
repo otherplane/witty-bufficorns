@@ -69,15 +69,15 @@
         <tbody>
           <tr class="row" :style="{ color: ATTRIBUTES.coat.color }">
             <td>
-              <img class="col icon" :src="importSvg('coat')" alt="icon" />
+              <img class="icon" :src="importSvg('coat')" alt="icon" />
             </td>
-            <td class="col">Coat</td>
+            <td class="col trait">Coat</td>
             <td class="col">Warm Hay</td>
             <td class="col">The Ol’ Algoranch</td>
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.coolness.color }">
             <td>
-              <img class="col icon" :src="importSvg('coolness')" alt="icon" />
+              <img class="icon" :src="importSvg('coolness')" alt="icon" />
             </td>
             <td class="col trait">Coolness</td>
             <td class="col">Fresh Grass</td>
@@ -85,37 +85,33 @@
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.intelligence.color }">
             <td>
-              <img
-                class="col icon"
-                :src="importSvg('intelligence')"
-                alt="icon"
-              />
+              <img class="icon" :src="importSvg('intelligence')" alt="icon" />
             </td>
-            <td class="col">Intelligence</td>
+            <td class="col trait">Intelligence</td>
             <td class="col">Smart Sedge</td>
             <td class="col">Balancer Peak Estate</td>
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.speed.color }">
             <td>
-              <img class="col icon" :src="importSvg('speed')" alt="icon" />
+              <img class="icon" :src="importSvg('speed')" alt="icon" />
             </td>
-            <td class="col">Speed</td>
+            <td class="col trait">Speed</td>
             <td class="col">Mighty Acorn</td>
             <td class="col">Gold Reef Company</td>
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.stamina.color }">
             <td>
-              <img class="col icon" :src="importSvg('stamina')" alt="icon" />
+              <img class="icon" :src="importSvg('stamina')" alt="icon" />
             </td>
-            <td class="col">Stamina</td>
+            <td class="col trait">Stamina</td>
             <td class="col">Tireless Water</td>
             <td class="col">Vega Slopes Range</td>
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.vigor.color }">
             <td>
-              <img class="col icon" :src="importSvg('vigor')" alt="icon" />
+              <img class="icon" :src="importSvg('vigor')" alt="icon" />
             </td>
-            <td class="col">Vigor</td>
+            <td class="col trait">Vigor</td>
             <td class="col">Hearty Berry</td>
             <td class="col">Opolis Reservation</td>
           </tr>
@@ -256,7 +252,7 @@
         trying to scan them from within the WittyBufficorns web app? Maybe you
         get a bonus or something… 🤔
       </p>
-      <h2>Tips and tricks</h2>
+      <h2 class="title">Tips and tricks</h2>
       <ul class="list-container">
         <li class="text list">
           To quickly find players that can provide the resource that improves a
@@ -326,7 +322,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  text-align: justify;
+  text-align: left;
   .title {
     font-size: 24px;
   }
@@ -365,8 +361,11 @@ export default {
   .table {
     text-align: left;
     .col {
-      padding-right: 8px;
+      padding-right: 16px;
       font-weight: 600;
+    }
+    .trait {
+      padding-left: 8px;
     }
     .row {
       border-radius: 4px;
@@ -389,11 +388,8 @@ export default {
 @media (max-width: 600px) {
   .container {
     .ranch-logos {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      justify-items: center;
       .ranch {
-        height: 140px;
+        height: 50px;
       }
     }
   }

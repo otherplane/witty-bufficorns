@@ -1,6 +1,4 @@
 import stringify from 'virtual-dom-stringify'
-import agilityRaw from '@/assets/agility.svg?raw'
-import { ATTRIBUTES } from '../constants'
 import vigor from '@/assets/vigor.svg?raw'
 import stamina from '@/assets/stamina.svg?raw'
 import speed from '@/assets/speed.svg?raw'

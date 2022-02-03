@@ -24,19 +24,17 @@ export default {
   top: 0px;
   padding: 8px 16px;
   display: grid;
-  grid-template-columns: 100px max-content;
+  grid-template-columns: 100px 150px;
   justify-content: space-between;
   .logo {
     position: relative;
     top: 8px;
   }
   .witnet-subtitle {
-    max-width: 130px;
     font-size: 10px;
     position: relative;
     font-family: Roboto, sans-serif;
     font-weight: 600;
-    top: 0px;
   }
   &::before {
     content: '';

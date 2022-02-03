@@ -86,16 +86,9 @@ export default {
     // filter list by attribute
     function filterListByLabel ({ list, label }) {
       const filter = label === 'overall' ? 'score' : label
-      const result = list.sort((a, b) => {
-        if (b.creationIndex > a.creationIndex) {
-          return -1
-        }
-        if (a[filter] > b[filter]) {
-          return -1
-        }
-        return 0
+      return list.sort((a, b) => {
+        return b[filter] - a[filter] || a.creationIndex - b.creationIndex
       })
-      return result
     }
     const sortedBufficornsData = computed(() =>
       filterListByLabel({

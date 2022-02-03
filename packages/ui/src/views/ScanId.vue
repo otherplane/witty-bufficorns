@@ -1,5 +1,5 @@
 <template>
-  <MainLayout>
+  <MainLayout :padding="false">
     <QrStream class="qr-code pl-4 pr-4 pb-4" @decode="onDecode"></QrStream>
     <div class="content">
       <p class="small-title import-label">Scan a QR code</p>
@@ -144,8 +144,10 @@ export default {
 }
 .content {
   color: $white;
-  width: 100%;
-  position: relative;
+  width: 100vw;
+  top: 18vh;
+  left: 0px;
+  position: fixed;
   text-align: center;
   z-index: 9;
 }

@@ -3,7 +3,7 @@
     <WitnetStrip class="witnet-logo-strip" />
     <div v-if="isBackground" class="main-background" />
     <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="wittyCorn" />
-    <div class="layout">
+    <div class="layout" :class="{ padding }">
       <slot />
     </div>
   </div>
@@ -24,6 +24,10 @@ export default defineComponent({
     isBufficorn: {
       type: Boolean,
       default: false
+    },
+    padding: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props, ctx) {
@@ -73,7 +77,7 @@ export default defineComponent({
   z-index: 4;
   background-position: bottom center;
   background-size: cover;
-  background-image: url('../assets/background.svg');
+  background-image: url('../assets/background.png');
 }
 .layout {
   position: relative;
@@ -85,12 +89,15 @@ export default defineComponent({
   margin: 0 auto;
   display: grid;
   align-items: flex-start;
-  padding: 16px;
+
+  &.padding {
+    padding: 16px;
+  }
 }
 @media (max-width: 600px) {
   .bufficorn-img {
     height: 50vh;
-    right: -10vw;
+    right: -30px;
     position: fixed;
     bottom: 0;
   }

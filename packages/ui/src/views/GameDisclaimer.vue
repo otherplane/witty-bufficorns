@@ -1,13 +1,13 @@
 <template>
   <MainLayout :isBackground="true">
     <div class="container">
-      <svgImage :svg="mainTitle" />
+      <img :src="importPng('main-title')" alt="WittyBufficorns" />
       <p class="text">
         <span class="bold">DISCLAIMER:</span> Once you register your farmer, it
         will be forever linked to your web browser and the QR code will not work
         in a different browser. You are highly encouraged to create a backup
         from the main screen of the game, or in case that you need to move your
-        egg into a different browser.
+        profile into a different browser.
       </p>
       <router-link to="/scan" class="link">
         <Button class="btn" type="dark">
@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import mainTitle from '@/assets/mainTitle.svg?raw'
+import { importPng } from '@/composables/importPng.js'
 export default {
   setup () {
-    return { mainTitle }
+    return { importPng }
   }
 }
 </script>
