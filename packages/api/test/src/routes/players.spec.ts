@@ -185,7 +185,7 @@ describe('player.ts', () => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe(
-            "Bufficorn with creationIndex 24 doesn't belong to ranch Opolis Reservation"
+            "Bufficorn with creationIndex 24 doesn't belong to ranch Gold Reef Co."
           )
         }
       )
@@ -206,7 +206,7 @@ describe('player.ts', () => {
           expect(err).toBeFalsy()
           expect(response.statusCode).toBe(404)
           expect(response.json().message).toBe(
-            "Bufficorn with creationIndex -1 doesn't belong to ranch Opolis Reservation"
+            "Bufficorn with creationIndex -1 doesn't belong to ranch Gold Reef Co."
           )
         }
       )

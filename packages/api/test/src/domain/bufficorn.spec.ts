@@ -1,33 +1,7 @@
 import { Bufficorn } from '../../../src/domain/bufficorn'
-import { Trait, BufficornLeaderboardInfo } from '../../../src/types'
-function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
-  const b = new Bufficorn(undefined, index)
-  b.stats = {
-    coat: stats[0],
-    coolness: stats[1],
-    intelligence: stats[2],
-    speed: stats[3],
-    stamina: stats[4],
-    vigor: stats[5],
-  }
+import { Trait } from '../../../src/types'
+import { auxBufficorn, auxBufficornInfo } from '../../utils'
 
-  return b
-}
-
-function auxBufficornInfo(
-  b: Bufficorn,
-  position: number,
-  score: number
-): BufficornLeaderboardInfo {
-  return {
-    name: b.name,
-    ranch: b.ranch,
-    ...b.stats,
-    position,
-    score,
-    creationIndex: b.creationIndex,
-  }
-}
 describe('bufficorn.ts', () => {
   it('calculateScore', async () => {
     const bufficorn = new Bufficorn(undefined, 0)
@@ -70,7 +44,7 @@ describe('bufficorn.ts', () => {
     ])
     const sortedBufficornsByStamina = Bufficorn.getLeaderboard(
       [bufficorn_0, bufficorn_1, bufficorn_2],
-      Trait.Stamina
+      Trait.Vigor
     )
 
     // GetLeaderboard without a specified trait
@@ -80,14 +54,14 @@ describe('bufficorn.ts', () => {
     expect(sortedBufficorns).toStrictEqual([expected_2, expected_1, expected_0])
 
     // GetLeaderboard using Stamina trait
-    const expectedByStamina_0 = auxBufficornInfo(bufficorn_0, 0, 60)
-    const expectedByStamina_1 = auxBufficornInfo(bufficorn_1, 2, 11)
-    const expectedByStamina_2 = auxBufficornInfo(bufficorn_2, 1, 22)
+    const expectedByVigor_0 = auxBufficornInfo(bufficorn_0, 0, 60)
+    const expectedByVigor_1 = auxBufficornInfo(bufficorn_1, 2, 11)
+    const expectedByVigor_2 = auxBufficornInfo(bufficorn_2, 1, 22)
 
     expect(sortedBufficornsByStamina).toStrictEqual([
-      expectedByStamina_0,
-      expectedByStamina_2,
-      expectedByStamina_1,
+      expectedByVigor_0,
+      expectedByVigor_2,
+      expectedByVigor_1,
     ])
   })
 })

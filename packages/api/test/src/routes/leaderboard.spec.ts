@@ -1,9 +1,4 @@
-import {
-  TRADE_COOLDOWN_MILLIS,
-  TRADE_DURATION_MILLIS,
-  TRADE_POINTS,
-  TRADE_POINTS_DIVISOR,
-} from '../../../src/constants'
+import { TRADE_POINTS } from '../../../src/constants'
 import { authenticatePlayer, initialPlayers, serverInject } from '../../setup'
 
 describe('Route /leaderboard', () => {
@@ -165,7 +160,7 @@ describe('Route /leaderboard', () => {
             (b) => Number(b.creationIndex) === selectedBufficorn
           )
           // Traded ranch gives vigor
-          expect(fedBufficorn.vigor).toBe(TRADE_POINTS)
+          expect(fedBufficorn.coat).toBe(TRADE_POINTS)
         }
       )
     })
@@ -303,14 +298,14 @@ describe('Route /leaderboard', () => {
     await serverInject(
       {
         method: 'GET',
-        url: '/leaderboard?resource=vigor',
+        url: '/leaderboard?resource=coat',
         headers: {
           Authorization: token1,
         },
       },
       (err, response) => {
         expect(response.statusCode).toBe(200)
-        expect(response.json().bufficorns[0].vigor).toBe(TRADE_POINTS)
+        expect(response.json().bufficorns[0].coat).toBe(TRADE_POINTS)
       }
     )
   })

@@ -1,22 +1,8 @@
-import { Bufficorn } from '../../../src/domain/bufficorn'
 import { Ranch } from '../../../src/domain/ranch'
 import { RanchLeaderboardInfo } from '../../../src/types'
+import { auxBufficorn } from '../../utils'
 
 describe('ranch.ts', () => {
-  function auxBufficorn(index: number, stats: Array<number>): Bufficorn {
-    const b = new Bufficorn(undefined, index)
-    b.stats = {
-      coat: stats[0],
-      coolness: stats[1],
-      intelligence: stats[2],
-      speed: stats[3],
-      stamina: stats[4],
-      vigor: stats[5],
-    }
-
-    return b
-  }
-
   it('calculateScore', async () => {
     const bufficorn_0 = auxBufficorn(0, [10, 20, 30, 40, 50, 60])
     const bufficorn_1 = auxBufficorn(6, [21, 31, 41, 51, 61, 11])
