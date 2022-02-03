@@ -29,32 +29,32 @@ export const RANCHES = {
 }
 export const ATTRIBUTES = {
   coat: {
-    key: 'coat',
+    label: 'coat',
     color: '#cc1919',
     resource: 'Warm Hay'
   },
   coolness: {
-    key: 'coolness',
+    label: 'coolness',
     color: '#217821',
     resource: 'Fresh Grass'
   },
   intelligence: {
-    key: 'intelligence',
+    label: 'brain',
     color: '#1a1a1a',
     resource: 'Smart Sedge'
   },
   speed: {
-    key: 'speed',
+    label: 'speed',
     color: '#ffad00',
     resource: 'Mighty Acorn'
   },
   stamina: {
-    key: 'stamina',
+    label: 'stamina',
     color: '#124ca1',
     resource: 'Tireless Water'
   },
   vigor: {
-    key: 'vigor',
+    label: 'vigor',
     color: '#512791',
     resource: 'Hearty Berry'
   }

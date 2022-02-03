@@ -1,5 +1,7 @@
+import { ATTRIBUTES } from '@/constants.js'
 export function getStatsFromAttributes (bufficornAttributes) {
   return Object.entries(bufficornAttributes).map(bufficorn => ({
+    ...ATTRIBUTES[bufficorn[0]],
     key: bufficorn[0],
     score: bufficorn[1]
   }))

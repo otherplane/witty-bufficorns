@@ -19,7 +19,7 @@
             {{ ATTRIBUTES[player.ranch.trait].resource }}
             (<img
               class="trait-icon"
-              :src="importSvg(ATTRIBUTES[player.ranch.trait].key)"
+              :src="importSvg(ATTRIBUTES[player.ranch.trait].label)"
             />)
           </p>
           <p class="subtitle">

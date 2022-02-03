@@ -1,8 +1,8 @@
 <template>
   <div class="stat-container" v-for="resource in stats" :key="resource.key">
-    <img class="icon" :src="importSvg(resource.key)" alt="icon" />
+    <img class="icon" :src="importSvg(resource.label)" alt="icon" />
     <div class="stat" :style="createResourceGradient(resource)">
-      <p class="key">{{ resource.key.toUpperCase() }}</p>
+      <p class="key">{{ resource.label.toUpperCase() }}</p>
       <p class="score">{{ formatNumber(resource.score) }}</p>
     </div>
   </div>
