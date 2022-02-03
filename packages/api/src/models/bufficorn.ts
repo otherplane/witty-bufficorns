@@ -12,6 +12,10 @@ export class BufficornModel {
   constructor(db: Db) {
     this.collection = db.collection('bufficorns')
     this.repository = new Repository(this.collection, 'name')
+
+    this.collection.createIndex({ name: 1 })
+    this.collection.createIndex({ creationIndex: 1 })
+    this.collection.createIndex({ ranch: 1, creationIndex: 1 })
   }
 
   /**

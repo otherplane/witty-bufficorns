@@ -11,6 +11,8 @@ export class MintModel {
     this.collection = db.collection('mints')
     // FIXME: allow nested objects: data.index
     this.repository = new Repository(this.collection, 'data')
+
+    this.collection.createIndex({ to: 1 })
   }
 
   public async create(

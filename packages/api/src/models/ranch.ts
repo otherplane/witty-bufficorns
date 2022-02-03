@@ -14,6 +14,8 @@ export class RanchModel {
   constructor(db: Db) {
     this.collection = db.collection('ranches')
     this.repository = new Repository(this.collection, 'name')
+
+    this.collection.createIndex({ name: 1 })
   }
 
   /**

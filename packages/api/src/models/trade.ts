@@ -11,6 +11,10 @@ export class TradeModel {
   constructor(db: Db) {
     this.collection = db.collection('trades')
     this.repository = new Repository(this.collection, 'timestamp')
+
+    this.collection.createIndex({ name: 1 })
+    this.collection.createIndex({ to: 1, timestamp: -1 })
+    this.collection.createIndex({ from: 1, timestamp: -1 })
   }
 
   public async create(vto: DbTradeVTO): Promise<Trade> {

@@ -23,6 +23,10 @@ export class PlayerModel {
   constructor(db: Db) {
     this.collection = db.collection('players')
     this.repository = new Repository(this.collection, 'username')
+
+    this.collection.createIndex({ username: 1 })
+    this.collection.createIndex({ key: 1 })
+    this.collection.createIndex({ token: 1, points: -1 })
   }
 
   public createPlayer(
