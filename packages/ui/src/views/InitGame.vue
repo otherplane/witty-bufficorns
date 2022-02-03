@@ -23,6 +23,7 @@ export default {
 <style lang="scss" scoped>
 .init-container {
   display: grid;
+  max-height: 100vh;
   margin-top: 4vh;
   align-items: center;
   row-gap: 16px;

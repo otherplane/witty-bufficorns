@@ -23,24 +23,50 @@
           <span class="highlight">{{ trade.to }}</span>
         </p>
       </div>
+      <CustomPagination
+        v-if="numberPages > 1"
+        :limit="numberPages"
+        @update-page="updateCurrentPage"
+      />
     </div>
   </MainLayout>
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref, watch } from 'vue'
 import { format } from 'date-fns'
 import { utcToZonedTime } from 'date-fns-tz'
 
 export default {
   setup () {
     const player = useStore()
+    const timeZone = 'America/Denver'
     onMounted(() => {
       player.getTradeHistory()
     })
-    const timeZone = 'America/Denver'
-    return { player, utcToZonedTime, timeZone, format }
+    const currentPage = ref(0)
+    const limit = ref(25)
+    const numberPages = computed(() => {
+      return (player.tradeHistory?.total || 0) / limit.value
+    })
+    const offset = computed(() => {
+      return limit.value * currentPage.value
+    })
+    watch(currentPage, async () => {
+      await player.getGlobalStats(offset.value, limit.value)
+    })
+    function updateCurrentPage (page) {
+      currentPage.value = page
+    }
+    return {
+      player,
+      utcToZonedTime,
+      timeZone,
+      format,
+      numberPages,
+      updateCurrentPage
+    }
   }
 }
 </script>

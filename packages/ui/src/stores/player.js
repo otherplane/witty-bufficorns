@@ -163,12 +163,14 @@ export const useStore = defineStore('player', {
         this.ranchesGlobalStats = request.ranches
       }
     },
-    async getTradeHistory () {
+    async getTradeHistory (offset = 0, limit = 25) {
       await this.getTheme()
       const tokenInfo = this.getToken()
       const request = await this.api.getTradeHistory({
         token: tokenInfo && tokenInfo.token,
-        id: tokenInfo && tokenInfo.key
+        id: tokenInfo && tokenInfo.key,
+        offset,
+        limit
       })
       if (request.error) {
         router.push('/init-game')

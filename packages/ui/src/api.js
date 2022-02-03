@@ -48,7 +48,10 @@ export class ApiService {
   getTradeHistory (params) {
     return this._get({
       url: `${this.baseUrl}/trades`,
-      config: { headers: { authorization: params.token } }
+      config: {
+        headers: { authorization: params.token },
+        params: { offset: params.offset, limit: params.limit }
+      }
     })
   }
 
