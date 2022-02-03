@@ -40,7 +40,7 @@
             "
           />
           from
-          <span class="highlight">{{ player.tradeIn?.to || 'null' }}</span>
+          <span class="highlight">{{ player.tradeIn?.from || 'null' }}</span>
         </p>
         <div class="time-container">
           <TimeLeft
@@ -66,7 +66,7 @@ export default {
     const player = useStore()
     const show = ref(false)
     onMounted(() => {
-      player.getInfo()
+      player.getPlayerInfo()
     })
     return { player, show, ATTRIBUTES, importSvg }
   }

@@ -88,11 +88,13 @@ import {
   ATTRIBUTES
 } from '../constants'
 import { importSvg } from '@/composables/importSvg.js'
+import { useRouter } from 'vue-router'
 
 export default {
   setup () {
     const modal = useModal()
     const player = useStore()
+    const router = useRouter()
     const web3WittyBufficorns = useWeb3()
     const modals = reactive({
       mint: false,
@@ -104,18 +106,31 @@ export default {
     let timeout
 
     onBeforeMount(async () => {
-      await player.getGlobalStats()
-      await player.getMintInfo()
-      await player.getPreview()
-      if (player.gameOver) {
-        const data = await web3WittyBufficorns.getData()
-        player.setData(data)
-      }
+      const token = await player.getToken()
+      if (!token) {
+        await player.authorize({ key: router.currentRoute.value.params.id })
+      } else {
+        if (
+          player.id &&
+          router.currentRoute.value.params.id &&
+          player.id !== router.currentRoute.value.params.id
+        ) {
+          await player.trade({ key: router.currentRoute.value.params.id })
+        }
+        await player.getPlayerInfo()
+        await player.getGlobalStats()
+        await player.getMintInfo()
+        await player.getPreview()
+        if (player.gameOver) {
+          const data = await web3WittyBufficorns.getData()
+          player.setData(data)
+        }
 
-      if (!player.gameOver) {
-        timeout = setTimeout(() => {
-          player.timeToBirth -= 1
-        }, player.timeToBirth - Date.now())
+        if (!player.gameOver) {
+          timeout = setTimeout(() => {
+            player.timeToBirth -= 1
+          }, player.timeToBirth - Date.now())
+        }
       }
     })
 
@@ -191,6 +206,8 @@ export default {
 .header {
   display: grid;
   grid-template-columns: max-content 1fr;
+  justify-content: space-between;
+  grid-gap: 16px;
   justify-items: flex-end;
   align-items: flex-end;
   margin-bottom: 8px;
@@ -205,6 +222,7 @@ export default {
   }
   .player-id {
     font-family: Road Store;
+    width: max-content;
     font-size: 18px;
     color: var(--primary-color);
     font-weight: bold;

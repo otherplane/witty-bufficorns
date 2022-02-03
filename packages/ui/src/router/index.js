@@ -49,7 +49,11 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const store = useStore()
       const loginInfo = store.getToken()
-      if (loginInfo && loginInfo.token) {
+      const error = store.errors.info
+      if (loginInfo && error) {
+        store.clearTokenInfo()
+      }
+      if (loginInfo && loginInfo.token && !error) {
         next({ name: 'main', params: { id: loginInfo.key } })
       } else {
         next()

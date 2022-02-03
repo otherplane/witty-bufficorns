@@ -88,6 +88,9 @@ export const useStore = defineStore('player', {
     getToken () {
       return JSON.parse(localStorage.getItem('tokenInfo'))
     },
+    clearTokenInfo () {
+      localStorage.removeItem('tokenInfo')
+    },
     clearError (error) {
       this.errors[error] = null
     },
@@ -103,7 +106,8 @@ export const useStore = defineStore('player', {
       } else if (request.token) {
         await this.saveClaimInfo(request)
         this.clearError('auth')
-        await this.getInfo()
+        await this.getPlayerInfo()
+        await this.getGlobalStats()
       }
     },
     breed ({ bufficorns }) {
@@ -122,6 +126,7 @@ export const useStore = defineStore('player', {
         this.clearError('trade')
         this.tradeInfo = request
         router.push('/init-game')
+        this.getPlayerInfo()
       }
     },
     async updateSelectedBufficorn (index) {
@@ -137,13 +142,13 @@ export const useStore = defineStore('player', {
         } else {
           this.clearError('updateSelectedBufficorn')
           this.selectedBufficorn = request
-          await this.getInfo()
+          await this.getPlayerInfo()
         }
       }
     },
     async getGlobalStats (offset = 0, limit = 25) {
       await this.getTheme()
-      await this.getInfo()
+      await this.getPlayerInfo()
       const request = await this.api.getLeaderboardInfo({
         offset,
         limit
@@ -172,50 +177,36 @@ export const useStore = defineStore('player', {
         this.tradeHistory = request.trades
       }
     },
-    async getInfo () {
+    async getPlayerInfo () {
       const tokenInfo = this.getToken()
-      if (tokenInfo) {
-        if (
-          this.id &&
-          router.currentRoute.value.params.id &&
-          this.id !== router.currentRoute.value.params.id
-        ) {
-          await this.trade({ key: router.currentRoute.value.params.id })
-        }
-        const request = await this.api.getInfo({
-          token: tokenInfo && tokenInfo.token,
-          id: tokenInfo && tokenInfo.key
-        })
-        if (request.error) {
-          router.push({ name: 'init-game' })
-          this.setError('info', request.error)
-        } else {
-          this.clearError('info')
-          const {
-            key,
-            username,
-            ranch,
-            selectedBufficorn,
-            points
-          } = request.player
-          this.id = key
-          this.username = username
-          this.ranch = ranch
-          this.playerPoints = points
-          this.selectedBufficorn = selectedBufficorn
-          this.saveTheme(ranch.name)
-          if (request.lastTradeIn) {
-            this.tradeIn = request.lastTradeIn
-          }
-          if (request.lastTradeOut) {
-            this.tradeOut = request.lastTradeOut
-          }
-          if (!this.selectedBufficorn) {
-            this.selectedBufficorn = 0
-          }
-        }
+      const request = await this.api.getInfo({
+        token: tokenInfo && tokenInfo.token,
+        id: tokenInfo && tokenInfo.key
+      })
+      if (request.error) {
+        router.push({ name: 'init-game' })
+        this.setError('info', request.error)
       } else {
-        this.authorize({ key: router.currentRoute.value.params.id })
+        this.clearError('info')
+        const {
+          key,
+          username,
+          ranch,
+          selectedBufficorn,
+          points
+        } = request.player
+        this.id = key
+        this.username = username
+        this.ranch = ranch
+        this.playerPoints = points
+        this.selectedBufficorn = selectedBufficorn
+        this.saveTheme(ranch.name)
+        if (request.lastTradeIn) {
+          this.tradeIn = request.lastTradeIn
+        }
+        if (request.lastTradeOut) {
+          this.tradeOut = request.lastTradeOut
+        }
       }
     },
     async getContractArgs (address) {
