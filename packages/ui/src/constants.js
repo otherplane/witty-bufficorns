@@ -39,7 +39,7 @@ export const ATTRIBUTES = {
     resource: 'Fresh Grass'
   },
   intelligence: {
-    label: 'brain',
+    label: 'intellect',
     color: '#1a1a1a',
     resource: 'Smart Sedge'
   },

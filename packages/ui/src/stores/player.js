@@ -127,7 +127,7 @@ export const useStore = defineStore('player', {
         this.clearError('trade')
         this.tradeInfo = request
         router.push('/init-game')
-        this.getPlayerInfo()
+        await this.getPlayerInfo()
       }
     },
     async updateSelectedBufficorn (index) {

@@ -81,7 +81,14 @@
 
 <script>
 import { useStore } from '@/stores/player'
-import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  onBeforeUnmount,
+  reactive,
+  ref
+} from 'vue'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { formatNumber } from '../utils'
@@ -107,6 +114,7 @@ export default {
       gameOver: false
     })
     const gameOver = player.gameOver
+    let playerInfoPoller = null
 
     onBeforeMount(async () => {
       const token = await player.getToken()
@@ -129,6 +137,15 @@ export default {
           player.setData(data)
         }
       }
+    })
+
+    onMounted(() => {
+      playerInfoPoller = setInterval(async () => {
+        await player.getPlayerInfo()
+      }, 5000)
+    })
+    onBeforeUnmount(() => {
+      clearInterval(playerInfoPoller)
     })
 
     const type = computed(() =>
