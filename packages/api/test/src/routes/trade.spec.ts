@@ -651,6 +651,7 @@ describe('Route /trade', () => {
 
   describe('GET', () => {
     jest.setTimeout(15000)
+    
     it('should return correct values when no trade exists', async () => {
       const token = await authenticatePlayer(initialPlayers[0].key)
 
@@ -778,4 +779,5 @@ async function tradeTimes({
 
     await sleep(TRADE_COOLDOWN_MILLIS)
   }
+  return
 }

@@ -65,6 +65,7 @@ describe('Route /leaderboard', () => {
     })
 
     it('players', async () => {
+      jest.setTimeout(15000)
       const token = await authenticatePlayer(initialPlayers[0].key)
       await authenticatePlayer(initialPlayers[1].key)
       await authenticatePlayer(initialPlayers[2].key)
@@ -221,6 +222,7 @@ describe('Route /leaderboard', () => {
     })
 
     it('players', async () => {
+      jest.setTimeout(15000)
       const token0 = await authenticatePlayer(initialPlayers[0].key)
       await authenticatePlayer(initialPlayers[1].key)
       await authenticatePlayer(initialPlayers[2].key)
@@ -275,6 +277,7 @@ describe('Route /leaderboard', () => {
   })
 
   it('should return sorted bufficorns when RESOURCE param is given', async () => {
+    jest.setTimeout(10000)
     const token0 = await authenticatePlayer(initialPlayers[0].key)
     const token1 = await authenticatePlayer(initialPlayers[1].key)
 
@@ -311,6 +314,7 @@ describe('Route /leaderboard', () => {
   })
 
   it('should return correct values when PAGINATION params are given', async () => {
+    jest.setTimeout(15000)
     const token = await authenticatePlayer(initialPlayers[0].key)
     await authenticatePlayer(initialPlayers[1].key)
     await authenticatePlayer(initialPlayers[2].key)

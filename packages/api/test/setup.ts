@@ -8,8 +8,6 @@ let server: FastifyInstance
 let client = new MongoClient(process.env.MONGO_URI)
 let db: Db
 
-jest.setTimeout(15000)
-
 beforeAll(async () => {
   client = await client.connect()
   db = await client.db(process.env.MONGO_INITDB_DATABASE)
