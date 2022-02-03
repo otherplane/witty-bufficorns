@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-container">
+  <div class="nav-container" v-click-away="isMenuVisible ? onClickAway : null">
     <nav class="navbar" :class="{ open: isMenuVisible }">
       <label class="responsive-menu" @click="toggleMenu">
         <a class="target-burger" :class="{ visible: isMenuVisible }">
@@ -11,26 +11,18 @@
       </label>
       <div class="dropdown">
         <ul class="tab-container" :class="{ visible: isMenuVisible }">
-          <li class="close-box" @click="closeMenu">
-            <router-link class="tab" to="/stats">
-              Leaderboard
-            </router-link>
-          </li>
-          <li class="close-box" @click="closeMenu">
-            <router-link class="tab" to="/trades">
-              Trade history
-            </router-link>
-          </li>
-          <li class="close-box" @click="closeMenu">
-            <router-link class="tab" to="/instructions">
-              Instructions
-            </router-link>
-          </li>
-          <li class="close-box" @click="closeMenu">
-            <div class="tab" @click="openExportModal()" type="dark">
-              Get backup
-            </div>
-          </li>
+          <router-link class="tab" to="/stats">
+            Leaderboard
+          </router-link>
+          <router-link class="tab" to="/trades">
+            Trade history
+          </router-link>
+          <router-link class="tab" to="/instructions">
+            Instructions
+          </router-link>
+          <div class="tab" @click="openExportModal()" type="dark">
+            Get backup
+          </div>
         </ul>
       </div>
     </nav>
@@ -38,6 +30,8 @@
 </template>
 
 <script>
+import { directive } from 'vue3-click-away'
+
 export default {
   data () {
     return {
@@ -45,6 +39,9 @@ export default {
       displayBox: false,
       isMenuVisible: false
     }
+  },
+  directives: {
+    ClickAway: directive
   },
   methods: {
     openExportModal () {
@@ -61,6 +58,9 @@ export default {
     },
     onClose () {
       this.active = false
+    },
+    onClickAway () {
+      this.closeMenu()
     }
   }
 }
@@ -103,7 +103,7 @@ export default {
     display: block;
     position: absolute;
     z-index: 50px;
-    top: 0px;
+    top: 24px;
     width: 32px;
     left: 16px;
   }
@@ -140,7 +140,7 @@ export default {
       transition: all 0.3s;
     }
   }
-  .close-box {
+  .list-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -174,7 +174,6 @@ export default {
 .target-burger {
   display: block;
   transition: 0.5s;
-  margin-top: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
