@@ -3,7 +3,7 @@ import vigor from '@/assets/vigor.svg?raw'
 import stamina from '@/assets/stamina.svg?raw'
 import speed from '@/assets/speed.svg?raw'
 import coat from '@/assets/coat.svg?raw'
-import intelligence from '@/assets/intellect.svg?raw'
+import intelligence from '@/assets/intelligence.svg?raw'
 import coolness from '@/assets/coolness.svg?raw'
 
 export function extractPath (svg) {

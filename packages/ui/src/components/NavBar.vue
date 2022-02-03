@@ -1,5 +1,6 @@
 <template>
-  <div class="nav-container" v-click-away="isMenuVisible ? onClickAway : null">
+  <!-- <div class="nav-container" v-click-away="isMenuVisible ? onClickAway : null"> -->
+  <div class="nav-container" ref="target">
     <nav class="navbar" :class="{ open: isMenuVisible }">
       <label class="responsive-menu" @click="toggleMenu">
         <a class="target-burger" :class="{ visible: isMenuVisible }">
@@ -30,37 +31,42 @@
 </template>
 
 <script>
-import { directive } from 'vue3-click-away'
+import { onClickOutside } from '@vueuse/core'
+import { ref } from 'vue'
 
 export default {
-  data () {
-    return {
-      hover: false,
-      displayBox: false,
-      isMenuVisible: false
+  setup (props, { emit }) {
+    const target = ref(null)
+    const displayBox = ref(false)
+    const isMenuVisible = ref(false)
+
+    function openExportModal () {
+      emit('openExportModal')
     }
-  },
-  directives: {
-    ClickAway: directive
-  },
-  methods: {
-    openExportModal () {
-      this.$emit('openExportModal')
-    },
-    closeMenu () {
-      this.isMenuVisible = false
-    },
-    toggleMenu () {
-      this.isMenuVisible = !this.isMenuVisible
-    },
-    displayDropDown () {
-      this.displayBox = !this.displayBox
-    },
-    onClose () {
-      this.active = false
-    },
-    onClickAway () {
-      this.closeMenu()
+    function closeMenu () {
+      isMenuVisible.value = false
+    }
+    function toggleMenu () {
+      isMenuVisible.value = !isMenuVisible.value
+    }
+    function displayDropDown () {
+      displayBox.value = !displayBox.value
+    }
+    onClickOutside(target, event => {
+      if (isMenuVisible.value) {
+        closeMenu()
+      }
+    })
+
+    return {
+      target,
+      ref,
+      displayDropDown,
+      toggleMenu,
+      closeMenu,
+      openExportModal,
+      isMenuVisible,
+      displayBox
     }
   }
 }

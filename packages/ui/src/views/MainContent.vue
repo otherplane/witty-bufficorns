@@ -19,7 +19,7 @@
             {{ ATTRIBUTES[player.ranch.trait].resource }}
             (<img
               class="trait-icon"
-              :src="importSvg(ATTRIBUTES[player.ranch.trait].label)"
+              :src="importSvg(ATTRIBUTES[player.ranch.trait].key)"
             />)
           </p>
           <p class="subtitle">
@@ -120,6 +120,7 @@ export default {
       const token = await player.getToken()
       if (!token) {
         await player.authorize({ key: router.currentRoute.value.params.id })
+        openModal('export')
       } else {
         if (
           player.id &&
@@ -210,7 +211,6 @@ export default {
 <style lang="scss" scoped>
 .main-content {
   margin-top: 16px;
-  max-height: 90vh;
 }
 .time-left {
   margin-left: 4px;

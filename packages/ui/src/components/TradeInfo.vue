@@ -10,7 +10,7 @@
           p of
           <img
             class="trait-icon"
-            :src="importSvg(ATTRIBUTES[player.tradeOut?.resource?.trait].label)"
+            :src="importSvg(ATTRIBUTES[player.tradeOut?.resource?.trait].key)"
           />
           to
           <span class="highlight">{{ player.tradeOut?.to || '' }}</span>
@@ -36,7 +36,7 @@
           <img
             class="trait-icon"
             :src="
-              importSvg(ATTRIBUTES[player.tradeIn?.resource?.trait].label || '')
+              importSvg(ATTRIBUTES[player.tradeIn?.resource?.trait].key || '')
             "
           />
           from

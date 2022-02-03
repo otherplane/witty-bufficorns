@@ -85,7 +85,7 @@
           </tr>
           <tr class="row" :style="{ color: ATTRIBUTES.intelligence.color }">
             <td>
-              <img class="icon" :src="importSvg('intellect')" alt="icon" />
+              <img class="icon" :src="importSvg('intelligence')" alt="icon" />
             </td>
             <td class="col trait">Intelligence</td>
             <td class="col">Smart Sedge</td>
