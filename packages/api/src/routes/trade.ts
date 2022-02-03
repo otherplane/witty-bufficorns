@@ -46,6 +46,27 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return reply.status(403).send(new Error(`Forbidden: invalid token`))
       }
 
+      // Check 6: from can trade (is free)
+      if (!fastify.sendResourceCooldowns.isValid(fromKey)) {
+        return reply
+          .status(409)
+          .send(new Error(`Players can only trade 1 player at a time`))
+      }
+
+      const toKey = request.body.to
+
+      // Check 7: target player can trade (is free)
+      if (!fastify.receiveResourceCooldowns.isValid(toKey)) {
+        return reply
+          .status(409)
+          .send(new Error(`${toKey} player is already trading`))
+      }
+
+      // Add from player to the cooldown list in spite of the trade is not already completed
+      // to avoid multiple requests. If the trade fails, this cooldown is reset below
+      fastify.sendResourceCooldowns.add(fromKey)
+      fastify.receiveResourceCooldowns.add(toKey)
+
       // Check 2 (unreachable): valid server issued token refers to non-existent player
       const fromPlayer = await playerModel.get(fromKey)
       if (!fromPlayer) {
@@ -62,8 +83,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       // Check 4: target player exist
-      const toPlayer = await playerModel.get(request.body.to)
+      const toPlayer = await playerModel.get(toKey)
       if (!toPlayer) {
+        fastify.sendResourceCooldowns.delete(fromKey)
+        fastify.receiveResourceCooldowns.delete(toKey)
+
         return reply
           .status(404)
           .send(new Error(`Wrong target player with key ${request.body.to}`))
@@ -71,31 +95,15 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       // Check 5: target Player is claimed
       if (!toPlayer.token) {
+        fastify.sendResourceCooldowns.delete(fromKey)
+        fastify.receiveResourceCooldowns.delete(toKey)
+
         return reply
           .status(409)
           .send(new Error(`Target player has not been claimed yet`))
       }
 
       const currentTimestamp = Date.now()
-
-      // Check 6: from can trade (is free)
-      const lastTradeFrom = await tradeModel.getLast({
-        from: fromPlayer.username,
-      })
-
-      if (lastTradeFrom && lastTradeFrom.ends > currentTimestamp) {
-        return reply
-          .status(409)
-          .send(new Error(`Players can only trade 1 player at a time`))
-      }
-
-      // Check 7: target player can trade (is free)
-      const lastTradeTo = await tradeModel.getLast({ to: toPlayer.username })
-      if (lastTradeTo && lastTradeTo.ends > currentTimestamp) {
-        return reply
-          .status(409)
-          .send(new Error(`${toPlayer.username} player is already trading`))
-      }
 
       // Check 8: cooldown period from Player to target Player has elapsed
       const lastTrade = await tradeModel.getLast({
@@ -106,6 +114,9 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         ? calculateRemainingCooldown(lastTrade.ends)
         : 0
       if (remainingCooldown) {
+        fastify.sendResourceCooldowns.delete(fromKey)
+        fastify.receiveResourceCooldowns.delete(toKey)
+
         return reply
           .status(409)
           .send(
@@ -131,6 +142,9 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           toPlayer.ranch
         )
       } catch (error) {
+        fastify.sendResourceCooldowns.delete(fromKey)
+        fastify.receiveResourceCooldowns.delete(toKey)
+
         return reply.status(403).send(error as Error)
       }
 

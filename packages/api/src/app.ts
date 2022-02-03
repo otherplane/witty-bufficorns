@@ -6,13 +6,19 @@ import { fastifyMongodb } from 'fastify-mongodb'
 import fp from 'fastify-plugin'
 import { join } from 'path'
 
-import { PLAYERS_COUNT, JWT_SECRET, MONGO_URI } from './constants'
+import {
+  PLAYERS_COUNT,
+  JWT_SECRET,
+  MONGO_URI,
+  TRADE_DURATION_MILLIS,
+} from './constants'
 import { PlayerModel } from './models/player'
 import { BufficornModel } from './models/bufficorn'
 import { RanchModel } from './models/ranch'
 import { TradeModel } from './models/trade'
 import { Bufficorn } from './domain/bufficorn'
 import { MintModel } from './models/mint'
+import { BlockList } from './blockList'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -21,6 +27,9 @@ declare module 'fastify' {
     bufficornModel: BufficornModel
     tradeModel: TradeModel
     mintModel: MintModel
+
+    sendResourceCooldowns: BlockList
+    receiveResourceCooldowns: BlockList
   }
 }
 
@@ -82,7 +91,23 @@ const app: FastifyPluginAsync<AppOptions> = async (
     next()
   }
 
+  // InitializeModels and callback
+  const initializeTradeCooldowns: FastifyPluginCallback = async (
+    fastify,
+    options,
+    next
+  ) => {
+    const sendResourceCooldowns = new BlockList(TRADE_DURATION_MILLIS)
+    const receiveResourceCooldowns = new BlockList(TRADE_DURATION_MILLIS)
+
+    fastify.decorate('sendResourceCooldowns', sendResourceCooldowns)
+    fastify.decorate('receiveResourceCooldowns', receiveResourceCooldowns)
+
+    next()
+  }
+
   fastify.register(fp(initializeModels))
+  fastify.register(fp(initializeTradeCooldowns))
 
   // Initialize game repositories
   fastify.register(async (fastify, options, next) => {
