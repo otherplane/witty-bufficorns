@@ -3,14 +3,14 @@
     <img class="icon" :src="importSvg(resource.key)" alt="icon" />
     <div class="stat" :style="createResourceGradient(resource)">
       <p class="key">{{ resource.key.toUpperCase() }}</p>
-      <p class="score">{{ resource.score }}</p>
+      <p class="score">{{ formatNumber(resource.score) }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import { useStore } from '@/stores/player'
-import { getStatsFromAttributes } from '@/utils.js'
+import { getStatsFromAttributes, formatNumber } from '@/utils.js'
 import { importSvg } from '@/composables/importSvg.js'
 import { computed } from 'vue'
 import { ATTRIBUTES } from '@/constants.js'
@@ -45,7 +45,7 @@ export default {
         }75 0%, transparent ${resourcePercentage}%)`
       }
     }
-    return { player, stats, createResourceGradient, importSvg }
+    return { player, stats, createResourceGradient, importSvg, formatNumber }
   }
 }
 </script>

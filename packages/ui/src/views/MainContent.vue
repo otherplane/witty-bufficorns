@@ -6,7 +6,10 @@
           <NavBar class="navbar" @openExportModal="openModal('export')" />
           <p class="subtitle player-id">{{ player.username.toUpperCase() }}</p>
           <p class="subtitle">
-            <span class="points-bold">{{ player.playerPoints }}</span> points
+            <span class="points-bold">{{
+              formatNumber(player.playerPoints)
+            }}</span>
+            points
           </p>
           <p class="subtitle">
             <span class="subtitle label">ID: </span>{{ player.id }}
@@ -81,6 +84,7 @@ import { useStore } from '@/stores/player'
 import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
+import { formatNumber } from '../utils'
 import {
   ETHERSCAN_BASE_URL,
   OPENSEA_BASE_URL,
@@ -179,7 +183,8 @@ export default {
       getData: web3WittyBufficorns.getData,
       importSvg,
       RANCHES,
-      ATTRIBUTES
+      ATTRIBUTES,
+      formatNumber
     }
   }
 }
@@ -188,6 +193,7 @@ export default {
 <style lang="scss" scoped>
 .main-content {
   margin-top: 16px;
+  max-height: 90vh;
 }
 .time-left {
   margin-left: 4px;
