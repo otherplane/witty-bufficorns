@@ -328,39 +328,9 @@ contract WittyBufficornsToken
     function updateRanchWeather(uint256 _ranchId)
         external payable
         virtual override
-        returns (uint256 _usedFunds)
+        returns (uint256)
     {
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
-        if (address(__ranch.witnet.request) != address(0)) {
-            uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
-            uint _latestQueryId = __ranch.witnet.latestQueryId;            
-            // Check whether there's no previous request pending to be solved:
-            Witnet.QueryStatus _latestQueryStatus = witnet.getQueryStatus(_latestQueryId);
-            if (_latestQueryId == 0 || _latestQueryStatus != Witnet.QueryStatus.Posted) {
-                if (_latestQueryId > 0 && _latestQueryStatus == Witnet.QueryStatus.Reported) {
-                    Witnet.Result memory _latestResult  = witnet.readResponseResult(_latestQueryId);
-                    if (_latestResult.success) {
-                        // If latest request was solved with no errors...
-                        if (_lastValidQueryId > 0) {
-                            // ... delete last valid response, if any
-                            witnet.deleteQuery(_lastValidQueryId);
-                        }
-                        // ... and set latest request id as last valid request id.
-                        __ranch.witnet.lastValidQueryId = _latestQueryId;
-                    }
-                }
-                // Estimate request fee, in native currency:
-                _usedFunds = witnet.estimateReward(tx.gasprice);
-                
-                // Post weather update request to the WitnetRequestBoard contract:
-                __ranch.witnet.latestQueryId = witnet.postRequest{value: _usedFunds}(__ranch.witnet.request);
-                
-                if (_usedFunds < msg.value) {
-                    // Transfer back unused funds, if any:
-                    payable(msg.sender).transfer(msg.value - _usedFunds);
-                }
-            }
-        }
+        return __storage.updateRanchWeather(witnet, _ranchId);
     }
 
 
