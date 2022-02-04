@@ -3,7 +3,7 @@
     <WitnetStrip class="witnet-logo-strip" />
     <div v-if="isBackground" class="main-background" />
     <svgImage v-if="isBufficorn" class="bufficorn-img" :svg="wittyCorn" />
-    <div class="layout" :class="{ padding }">
+    <div class="layout" :class="{ padding, 'max-height': maxHeight }">
       <slot />
     </div>
   </div>
@@ -22,6 +22,10 @@ export default defineComponent({
       default: false
     },
     isBufficorn: {
+      type: Boolean,
+      default: false
+    },
+    maxHeight: {
       type: Boolean,
       default: false
     },
@@ -84,7 +88,7 @@ export default defineComponent({
   z-index: 7;
   width: 100%;
   max-width: 700px;
-  min-height: 90vh;
+  min-height: 98vh;
   margin-top: 32px;
   margin: 0 auto;
   display: grid;
@@ -92,6 +96,9 @@ export default defineComponent({
 
   &.padding {
     padding: 16px;
+  }
+  &.max-height {
+    min-height: 80vh;
   }
 }
 @media (max-width: 600px) {

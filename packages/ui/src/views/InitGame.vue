@@ -1,5 +1,5 @@
 <template>
-  <MainLayout :isBackground="true" :isBufficorn="true">
+  <MainLayout :isBackground="true" :isBufficorn="true" :maxHeight="true">
     <div class="init-container">
       <img
         class="main-title"

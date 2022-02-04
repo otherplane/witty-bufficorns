@@ -48,7 +48,7 @@ export default {
     const currentPage = ref(0)
     const limit = ref(25)
     const numberPages = computed(() => {
-      return (player.tradeHistory?.total || 0) / limit.value
+      return Math.ceil((player.tradeHistory?.total || 0) / limit.value)
     })
     const offset = computed(() => {
       return limit.value * currentPage.value

@@ -1,5 +1,5 @@
 <template>
-  <MainLayout :isBackground="true">
+  <MainLayout :isBackground="true" :maxHeight="true">
     <div class="container">
       <img :src="importPng('main-title')" alt="WittyBufficorns" />
       <p class="text">
