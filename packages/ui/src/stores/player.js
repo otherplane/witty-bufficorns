@@ -96,7 +96,7 @@ export const useStore = defineStore('player', {
       this.errors[error] = null
     },
     setError (name, error) {
-      this.errors[name] = error.response.data.message
+      this.errors[name] = error.response?.data?.message || error.toString()
       this.notify({ message: this.errors[name] })
     },
     async authorize ({ key }) {

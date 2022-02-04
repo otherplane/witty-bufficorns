@@ -122,6 +122,8 @@ export default {
         await player.authorize({ key: router.currentRoute.value.params.id })
         openModal('export')
       } else {
+        await player.getPlayerInfo()
+        await player.getGlobalStats()
         if (
           player.id &&
           router.currentRoute.value.params.id &&
@@ -129,8 +131,6 @@ export default {
         ) {
           await player.trade({ key: router.currentRoute.value.params.id })
         }
-        await player.getPlayerInfo()
-        await player.getGlobalStats()
         await player.getMintInfo()
         await player.getPreview()
         if (player.gameOver) {

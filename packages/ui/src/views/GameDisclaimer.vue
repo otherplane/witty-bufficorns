@@ -30,9 +30,12 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin-top: 3vh;
-}
-.btn {
-  width: max-content;
+  .link {
+    .btn {
+      background-color: $brown;
+      width: max-content;
+    }
+  }
 }
 .text {
   font-family: Zilla Slab, sans-serif;

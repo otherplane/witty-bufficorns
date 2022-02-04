@@ -47,6 +47,9 @@ export default {
   .link {
     width: max-content;
     justify-self: center;
+    .btn {
+      background-color: $brown;
+    }
   }
 }
 @media (max-width: 600px) {
