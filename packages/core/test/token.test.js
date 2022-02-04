@@ -10,7 +10,7 @@ contract("WittyBufficornsToken", accounts => {
   const stranger = accounts[1]
   const signator = accounts[4]
   const farmer0 = "0x184cc5908e1a3d29b4d31df67d99622c4baa7b71"
-  //   const farmer1 = accounts[2]
+  const farmer1 = accounts[2]
   //   const farmer2 = accounts[3]
 
   before(async () => {
@@ -56,7 +56,7 @@ contract("WittyBufficornsToken", accounts => {
               "inexistent"
             )
             await truffleAssert.reverts(
-              tender.getTokenInfo.call(1),
+              tender.getTokenInfo.call(2),
               "inexistent"
             )
           })
@@ -126,13 +126,14 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
         })
-        describe("setRanchScore(..)", async () => {
+        describe("setRanch(..)", async () => {
           it("stranger cannot set ranch score", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "Ranch.0",
                 12345,
+                "Ranch.0",
+                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -140,10 +141,11 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("owner cannot set ranch score", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "Ranch.0",
                 12345,
+                "Ranch.0",
+                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -151,20 +153,22 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("ranch must be set with a name", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "",
                 12345,
+                "",
+                web3.utils.asciiToHex("KDEN"),
                 { from: signator }
               ),
               "no name"
             )
           })
           it("signator can create new ranch", async () => {
-            await tender.setRanchScore(
+            await tender.setRanch(
               0,
-              "Ranch.0",
               12345,
+              "Ranch.0",
+              web3.utils.asciiToHex("KDEN"),
               { from: signator }
             )
             assert.equal(
@@ -173,10 +177,11 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
           it("signator can reset score of existent ranch", async () => {
-            await tender.setRanchScore(
+            await tender.setRanch(
               0,
-              "Ranch.0",
               10,
+              "Ranch.0",
+              web3.utils.asciiToHex("KDEN"),
               { from: signator }
             )
             assert.equal(
@@ -190,10 +195,10 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
         })
-        describe("setBufficornScores(..)", async () => {
+        describe("setBufficorn(..)", async () => {
           it("stranger cannot set bufficorn traits", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -205,7 +210,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("owner cannot set bufficorn traits", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -217,7 +222,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("bufficorn must be set to an existent ranch", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 1,
                 "Bufficorn.0",
@@ -229,7 +234,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("bufficorn must be set with a name", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "",
@@ -241,7 +246,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("bufficorn score cannot be lower than ranch'es", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -252,7 +257,7 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
           it("signator can create new valid bufficorn", async () => {
-            await tender.setBufficornScores(
+            await tender.setBufficorn(
               0,
               0,
               "Bufficorn.0",
@@ -265,7 +270,7 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
           it("signator can reset data of existent bufficorn", async () => {
-            await tender.setBufficornScores(
+            await tender.setBufficorn(
               0,
               0,
               "Buficornio Sánchez",
@@ -338,19 +343,19 @@ contract("WittyBufficornsToken", accounts => {
               "ranches mismatch"
             )
           })
-          it("stopping breeding of tender with no randomizer, turns to 'Awarding' status", async () => {
-            const tender2 = await WittyBufficornsToken.new(
-              "Witty Bufficorns Test",
-              "TEST",
-              "0x0000000000000000000000000000000000000000",
-              WittyBufficornsDecorator.address
-            )
-            await tender2.setRanchScore(0, "Ranch.0", 10)
-            await tender2.setBufficornScores(0, 0, "Bufficorn.0", [10, 20, 30, 40, 50, 60])
-            await tender2.stopBreeding(1, 1)
-            const status = await tender2.getStatus.call()
-            assert.equal(status.toString(), "2")
-          })
+          // it("stopping breeding of tender with no randomizer, turns to 'Awarding' status", async () => {
+          //   const tender2 = await WittyBufficornsToken.new(
+          //     "Witty Bufficorns Test",
+          //     "TEST",
+          //     "0x0000000000000000000000000000000000000000",
+          //     WittyBufficornsDecorator.address
+          //   )
+          //   await tender2.setRanch(0, 10, "Ranch.0", web3.utils.asciiToHex("KDEN"))
+          //   await tender2.setBufficorn(0, 0, "Bufficorn.0", [10, 20, 30, 40, 50, 60])
+          //   await tender2.stopBreeding(1, 1)
+          //   const status = await tender2.getStatus.call()
+          //   assert.equal(status.toString(), "2")
+          // })
           it("signator can exit breeding status", async () => {
             await tender.stopBreeding(
               1,
@@ -378,13 +383,13 @@ contract("WittyBufficornsToken", accounts => {
           it("awards cannot be minted", async () => {
             await truffleAssert.reverts(
               tender.mintFarmerAwards(
-                farmer0,
+                farmer1,
                 0,
-                1,
+                5,
                 800,
-                "farmer0",
+                "farmer5",
                 [
-                  [0, 1, 0],
+                  [0, 2, 0],
                 ],
                 // eslint-disable-next-line max-len
                 "0xbd8846c16175582d498d6bbf26513cb5dd932f980c5a3033a660be7dd2f5d05072fbd26b22ce700e3b09c8c11f6af2e8977cc21790535847d79166898cd6f5c61b"
@@ -402,7 +407,7 @@ contract("WittyBufficornsToken", accounts => {
               "inexistent"
             )
             await truffleAssert.reverts(
-              tender.getTokenInfo.call(1),
+              tender.getTokenInfo.call(27),
               "inexistent"
             )
           })
@@ -468,13 +473,14 @@ contract("WittyBufficornsToken", accounts => {
             )
           })
         })
-        describe("setRanchScore(..)", async () => {
+        describe("setRanch(..)", async () => {
           it("stranger cannot set ranch score", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "Ranch.0",
                 12345,
+                "Ranch.0",
+                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -482,10 +488,11 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("owner cannot set ranch score", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "Ranch.0",
                 12345,
+                "Ranch.0",
+                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -493,20 +500,21 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("signator cannot add/edit ranches if not in 'Breeding' status", async () => {
             await truffleAssert.reverts(
-              tender.setRanchScore(
+              tender.setRanch(
                 0,
-                "Ranch.0",
                 10,
+                "Ranch.0",
+                web3.utils.asciiToHex("KDEN"),
                 { from: signator }
               ),
               "bad mood"
             )
           })
         })
-        describe("setBufficornScores(..)", async () => {
+        describe("setBufficorn(..)", async () => {
           it("stranger cannot set bufficorn traits", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -518,7 +526,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("owner cannot set bufficorn traits", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -530,7 +538,7 @@ contract("WittyBufficornsToken", accounts => {
           })
           it("signator cannot add/edit bufficorns if not in 'Breeding' status", async () => {
             await truffleAssert.reverts(
-              tender.setBufficornScores(
+              tender.setBufficorn(
                 0,
                 0,
                 "Bufficorn.0",
@@ -552,21 +560,21 @@ contract("WittyBufficornsToken", accounts => {
               "bad mood"
             )
           })
-          it("fails it trying to stop twice a tender with no randomizer", async () => {
-            const tender2 = await WittyBufficornsToken.new(
-              "Witty Bufficorns Test",
-              "TEST",
-              "0x0000000000000000000000000000000000000000",
-              WittyBufficornsDecorator.address
-            )
-            await tender2.setRanchScore(0, "Ranch.0", 10)
-            await tender2.setBufficornScores(0, 0, "Bufficorn.0", [10, 20, 30, 40, 50, 60])
-            await tender2.stopBreeding(1, 1)
-            await truffleAssert.reverts(
-              tender2.stopBreeding(1, 1),
-              "bad mood"
-            )
-          })
+          // it("fails it trying to stop twice a tender with no randomizer", async () => {
+          //   const tender2 = await WittyBufficornsToken.new(
+          //     "Witty Bufficorns Test",
+          //     "TEST",
+          //     "0x0000000000000000000000000000000000000000",
+          //     WittyBufficornsDecorator.address
+          //   )
+          //   await tender2.setRanch(0, 10, "Ranch.0", web3.utils.asciiToHex("KDEN"))
+          //   await tender2.setBufficorn(0, 0, "Bufficorn.0", [10, 20, 30, 40, 50, 60])
+          //   await tender2.stopBreeding(1, 1)
+          //   await truffleAssert.reverts(
+          //     tender2.stopBreeding(1, 1),
+          //     "bad mood"
+          //   )
+          // })
         })
         describe("startAwarding()", async () => {
           it("stranger cannot start awarding", async () => {

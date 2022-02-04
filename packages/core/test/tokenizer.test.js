@@ -1,9 +1,9 @@
 const { assert } = require("chai")
 
 // Contracts
-const Tokenizer = artifacts.require("TokenizerMock")
+const Tokenizer = artifacts.require("Tokenizer")
 
-contract("TokenizerMock", accounts => {
+contract("Tokenizer", accounts => {
   describe("mintFarmerAward(..): ", () => {
     let tokenizer
     before(async () => {
