@@ -98,6 +98,7 @@ import {
   RANCHES,
   ATTRIBUTES
 } from '../constants'
+import { POLLER_MILLISECONDS } from '@/constants.js'
 import { importSvg } from '@/composables/importSvg.js'
 import { useRouter } from 'vue-router'
 
@@ -143,7 +144,7 @@ export default {
     onMounted(() => {
       playerInfoPoller = setInterval(async () => {
         await player.getPlayerInfo()
-      }, 5000)
+      }, POLLER_MILLISECONDS)
     })
     onBeforeUnmount(() => {
       clearInterval(playerInfoPoller)

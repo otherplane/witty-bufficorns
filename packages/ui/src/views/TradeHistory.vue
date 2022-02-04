@@ -3,7 +3,7 @@
     <div class="container">
       <SectionHeader title="TRADE HISTORY" />
       <div
-        v-for="(trade, index) in player.tradeHistory"
+        v-for="(trade, index) in player.tradeHistory?.trades"
         :key="trade.timestamp"
         class="trade-container"
         :class="{ even: index % 2 }"
@@ -54,7 +54,7 @@ export default {
       return limit.value * currentPage.value
     })
     watch(currentPage, async () => {
-      await player.getGlobalStats(offset.value, limit.value)
+      await player.getTradeHistory(offset.value, limit.value)
     })
     function updateCurrentPage (page) {
       currentPage.value = page

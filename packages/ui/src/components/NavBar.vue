@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="nav-container" v-click-away="isMenuVisible ? onClickAway : null"> -->
   <div class="nav-container" ref="target">
     <nav class="navbar" :class="{ open: isMenuVisible }">
       <label class="responsive-menu" @click="toggleMenu">

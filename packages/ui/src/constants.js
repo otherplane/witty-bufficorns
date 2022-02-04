@@ -19,6 +19,9 @@ export const API_BASE_URL =
 export const BASE_URL =
   import.meta.env.VITE_BASE_URL || 'https://bufficorns.com'
 
+export const POLLER_MILLISECONDS =
+  import.meta.env.VITE_POLLER_MILLISECONDS || 5000
+
 export const RANCHES = {
   ['Opolis Reservation']: 'opolis',
   [`The Ol' Algoranch`]: 'algorand',

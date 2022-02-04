@@ -49,7 +49,6 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const store = useStore()
       const loginInfo = store.getToken()
-      console.log(store.errors.info)
       const claimedPlayerError =
         store.errors.info &&
         store.errors.info.includes('Player has not been claimed yet')
