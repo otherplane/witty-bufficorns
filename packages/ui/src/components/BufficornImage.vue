@@ -38,8 +38,12 @@ export default {
   text-align: center;
 }
 .bufficorn-image {
+  object-fit: contain; 
+  width: auto; 
+  height: auto; 
+  max-width: 100%; 
+  max-height: 100%;
   grid-column: 1;
-  image-rendering: pixelated;
   &.flip {
     -moz-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
