@@ -6,7 +6,7 @@
     <img
       class="bufficorn-image"
       :class="{ flip }"
-      :src="importPng('Bufficorn-2')"
+      :src="importPng('Bufficorn-0')"
       alt="icon"
     />
   </div>
@@ -38,10 +38,10 @@ export default {
   text-align: center;
 }
 .bufficorn-image {
-  object-fit: contain; 
-  width: auto; 
-  height: auto; 
-  max-width: 100%; 
+  object-fit: contain;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 100%;
   grid-column: 1;
   &.flip {
