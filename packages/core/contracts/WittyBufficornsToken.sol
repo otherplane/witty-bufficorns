@@ -386,6 +386,11 @@ contract WittyBufficornsToken
         // Loop: Mint one token per received award:
         for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
             _tokenInfo.award = _farmerAwards[_ix];
+            require(
+                uint8(_tokenInfo.award.category) < uint8(WittyBufficornsLib.Awards.BestBufficorn)
+                    || _tokenInfo.award.ranking > 3,
+                "WittyBufficornsToken: bufficorn bad ranking"
+            );
             __doSafeMint(_tokenOwner, _tokenInfo);
         }
 
