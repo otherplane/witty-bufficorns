@@ -6,8 +6,9 @@
     <img
       class="bufficorn-image"
       :class="{ flip }"
-      :src="importPng('Bufficorn-0')"
+      :src="importPng('Bufficorn-2')"
       alt="icon"
+      width="120"
     />
   </div>
 </template>
@@ -39,7 +40,7 @@ export default {
 }
 .bufficorn-image {
   grid-column: 1;
-  height: auto;
+  image-rendering: pixelated;
   &.flip {
     -moz-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);

@@ -2,7 +2,10 @@
   <div class="bufficorn-list-container" :class="{ horizontal }">
     <div v-if="selectable" class="name-container">
       <p class="name">{{ name }}</p>
-      <div class="pointer" @click="player.updateSelectedBufficorn(index)">
+      <div
+        class="pointer"
+        @click="player.updateSelectedBufficorn(creationIndex)"
+      >
         <svg
           width="26"
           height="25"
@@ -11,7 +14,7 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            :class="{ fill: player.selectedBufficorn === index }"
+            :class="{ fill: player.selectedBufficorn === creationIndex }"
             d="M23 10L25.9187 18.6373H35.3637L27.7225 23.9754L30.6412 32.6127L23 27.2746L15.3588 32.6127L18.2775 23.9754L10.6363 18.6373H20.0813L23 10Z"
             fill="transparent"
           />
@@ -25,12 +28,12 @@
     </div>
     <p v-else class="position">{{ index + 1 }}</p>
     <FlipCard
-      :index="index"
+      :index="creationIndex"
       :key="name"
       :name="!selectable ? name : null"
       :background-front="backgroundFront"
       :background-back="backgroundBack"
-      :selected="player.selectedBufficorn === index"
+      :selected="player.selectedBufficorn === creationIndex"
       :attributes="{
         coat: attributes.coat,
         coolness: attributes.coolness,
@@ -59,6 +62,7 @@ export default {
       vigor: Number
     },
     name: String,
+    creationIndex: Number,
     horizontal: {
       type: Boolean,
       default: false
