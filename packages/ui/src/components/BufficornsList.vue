@@ -1,9 +1,10 @@
 <template>
   <div class="bufficorns-container">
     <BufficornData
-      v-for="bufficorn in bufficornsData"
+      v-for="(bufficorn, index) in bufficornsData"
       :bufficorn-list="player.bufficornsGlobalStats"
-      :index="bufficorn.creationIndex"
+      :index="index"
+      :creationIndex="bufficorn.creationIndex"
       :key="bufficorn.name"
       :name="bufficorn.name"
       :background-front="true"
