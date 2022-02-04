@@ -42,6 +42,7 @@
         :class="{ even: index % 2 }"
         :index="index"
         :key="ranch.name"
+        :position="ranch.position + 1"
         :score="ranch.score"
         :name="ranch.name"
       />

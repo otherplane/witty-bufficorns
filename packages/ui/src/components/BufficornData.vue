@@ -1,5 +1,5 @@
 <template>
-  <div class="bufficorn-list-container">
+  <div class="bufficorn-list-container" :class="{ horizontal }">
     <div v-if="selectable" class="name-container">
       <p class="name">{{ name }}</p>
       <div class="pointer" @click="player.updateSelectedBufficorn(index)">
@@ -23,6 +23,7 @@
         </svg>
       </div>
     </div>
+    <p v-else class="position">{{ index + 1 }}</p>
     <FlipCard
       :index="index"
       :key="name"
@@ -90,6 +91,17 @@ export default {
   justify-items: center;
   grid-template-columns: 1fr;
   align-items: center;
+  &.horizontal {
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    align-items: center;
+    column-gap: 16px;
+    .position {
+      color: var(--primary-color);
+      font-weight: bold;
+      justify-self: flex-start;
+    }
+  }
   .name-container {
     display: grid;
     width: 100%;

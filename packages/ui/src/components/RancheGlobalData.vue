@@ -1,13 +1,12 @@
 <template>
   <div class="stats-container">
-    <div class="stats">
-      <p class="score">{{ score }}</p>
-    </div>
+    <p class="position">{{ position }}</p>
     <img
       class="bufficorn-image"
       :src="importSvg(RANCHES[name])"
       alt="Bufficorn"
     />
+    <p class="score">{{ score }}</p>
   </div>
 </template>
 
@@ -18,7 +17,8 @@ export default {
   props: {
     index: Number,
     name: String,
-    score: Number
+    score: Number,
+    position: Number
   },
   setup () {
     return { importSvg, RANCHES }
@@ -28,72 +28,23 @@ export default {
 
 <style scoped lang="scss">
 .stats-container {
-  padding: 16px;
   display: grid;
-  column-gap: 16px;
-  grid-template-columns: max-content 1fr;
-  justify-items: center;
-  grid-template-rows: max-content 1fr;
+  grid-template-columns: max-content max-content 1fr;
+  grid-gap: 16px;
+  padding: 16px;
+  justify-content: center;
   align-items: center;
-  .bufficorn-name {
-    justify-self: center;
-    color: var(--primary-color);
-  }
-  .item {
-    padding: 8px;
-    text-align: center;
-  }
-  .stat-container {
-    justify-self: flex-end;
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    justify-content: center;
-    .icon {
-      width: 30px;
-      margin-right: 8px;
-      max-height: 30px;
-    }
-  }
-  .stats {
-    justify-self: flex-end;
-    display: grid;
-    grid-row: 1 / span 2;
-    padding: 4px;
-    grid-column: 2;
-    row-gap: 8px;
-    grid-template-rows: repeat(3, auto);
-    grid-template-columns: 1fr;
-    .stat {
-      height: max-content;
-      align-items: center;
-      padding: 0 4px;
-      display: grid;
-      grid-gap: 8px;
-      width: 120px;
-      background: linear-gradient(
-        90deg,
-        var(--primary-color-opacity-1) 0%,
-        $transparent 60%
-      );
-      grid-template-columns: max-content 1fr;
-      border-radius: 4px;
-      font-size: 12px;
-      border: 0.5px solid $black;
-      .score {
-        justify-self: flex-end;
-      }
-    }
-  }
-  .select {
-    grid-row: 1 / span 2;
-    grid-column: 3;
-  }
   .bufficorn-image {
-    justify-self: flex-start;
-    grid-column: 1;
-    height: auto;
     width: 100px;
-    height: 100px;
+    max-height: 100px;
+  }
+  .position {
+    color: var(--primary-color);
+    font-weight: bold;
+    justify-self: flex-start;
+  }
+  .score {
+    justify-self: end;
   }
 }
 </style>
