@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "witnet-solidity-bridge/contracts/UsingWitnet.sol";
 import "witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol";
+import "witnet-solidity-bridge/contracts/requests/WitnetRequest.sol";
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -239,11 +240,11 @@ contract WittyBufficornsToken
              *    .setFees(10 ** 6, 10 ** 6) // set Witnet economic incentives
              *    .setCollateral(5 * 10 ** 9) // set 5 wits as collateral
              */
-            __ranch.witnet.request = new WitnetRequest(abi.encode(
-                hex"0a6d12630801123968747470733a2f2f6170692e776561746865722e676f762f73746174696f6e732f",
+            __ranch.witnet.request = new WitnetRequest(abi.encodePacked(
+                bytes(hex"0a6d12630801123968747470733a2f2f6170692e776561746865722e676f762f73746174696f6e732f"),
                 _weatherStationAscii,
-                hex"2f6f62736572766174696f6e732f6c61746573741a248318778218666a70726f706572746965738218676f746578744465736372697074696f6e1a02",
-                hex"10022202100210c0843d180a20c0843d28333080e497d012"
+                bytes(hex"2f6f62736572766174696f6e732f6c61746573741a248318778218666a70726f706572746965738218676f746578744465736372697074696f6e1a02"),
+                bytes(hex"10022202100210c0843d180a20c0843d28333080e497d012")
             ));
         }
         __ranch.name = _name;
