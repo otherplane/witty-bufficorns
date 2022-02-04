@@ -8,7 +8,6 @@
       :class="{ flip }"
       :src="importPng('Bufficorn-0')"
       alt="icon"
-      width="90"
     />
   </div>
 </template>
