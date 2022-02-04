@@ -1,14 +1,12 @@
 {
     "polygon.goerli": {
-        "WittyBufficornsToken": "",
-        "WittyBufficornsDecorator": ""
+        "WittyBufficornsToken": "0xf9ce07c40885FD47905d5972377801a5db5652B3",
+        "WittyBufficornsDecorator": "0x8b91C655C301de7c55D016b833836E4DAbe62535",
+        "WittyBufficornsLib": "0x2F8ae36c3Cee44B095703FE9330d210454e7370e"
     },
     "polygon.mainnet": {
         "WittyBufficornsToken": "",
-        "WittyBufficornsDecorator": ""
-    },
-    "develop": {
         "WittyBufficornsDecorator": "",
-        "WittyBufficornsToken": ""
+        "WittyBufficornsLib": ""
     }
 }
