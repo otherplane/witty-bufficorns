@@ -358,7 +358,7 @@ contract WittyBufficornsToken
         WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
         require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
 
-        WittyBufficorns.Farmer storage __farmer = __storage.farmers[_farmerId];
+        WittyBufficornsLib.Farmer storage __farmer = __storage.farmers[_farmerId];
         require(bytes(__farmer.name).length == 0, "WittyBufficornsToken: already minted");
         
         _verifySignatorSignature(
@@ -410,6 +410,7 @@ contract WittyBufficornsToken
         external view
         virtual override
         inStatus(WittyBufficornsLib.Status.Awarding)
+        returns (string[] memory _metadatas)
     {
         require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
         require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
@@ -433,21 +434,18 @@ contract WittyBufficornsToken
         _token.farmer.score = _farmerScore;
         _token.tokenInfo.farmerId = _farmerId;
 
-        WittyBufficorns.TokenInfo memory _tokenInfo;
-        _tokenInfo.farmerId = _farmerId;
-
-        _svgs = new string[](_farmerAwards.length);
+        _metadatas = new string[](_farmerAwards.length);
         for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
-            _tokenInfo.award = _farmerAwards[_ix];
-            _svgs[_ix] = IWittyBufficornsDecorator(__storage.decorator).toSVG(
-                _tokenInfo,
-                _farmer,
-                _ranch,
-                __storage.bufficorns[
-                    uint8(_tokenInfo.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
-                        ? _tokenInfo.award.bufficornId
-                        : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-                ]
+            _token.tokenInfo.award = _farmerAwards[_ix];
+            _token.bufficorn = __storage.bufficorns[
+                uint8(_token.tokenInfo.award.category) >= uint8(WittyBufficornsLib.Awards.BestBufficorn)
+                    ? _token.tokenInfo.award.bufficornId
+                    : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            ];
+            _metadatas[_ix] = IWittyBufficornsDecorator(__storage.decorator).toJSON(
+                0,
+                __storage.stopBreedingRandomness,
+                _token
             );
         }
     }
@@ -557,34 +555,9 @@ contract WittyBufficornsToken
             _metadata.bufficorn = __storage.bufficorns[_metadata.tokenInfo.award.bufficornId];
         }
         return IWittyBufficornsDecorator(__storage.decorator).toJSON(
-            _token,
-            _farmer,
-            _ranch,
-            _bufficorn
-        );
-    }
-
-    function toSVG(uint256 _tokenId)
-        public view
-        override
-        tokenExists(_tokenId)
-        returns (string memory)
-    {
-        WittyBufficorns.TokenInfo memory _token = __storage.awards[_tokenId];
-        WittyBufficorns.Farmer memory _farmer = __storage.farmers[_token.farmerId];
-        WittyBufficorns.Ranch memory _ranch = __storage.ranches[_farmer.ranchId];
-        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_farmer.ranchId);
-        WittyBufficorns.Bufficorn memory _bufficorn;
-        if (
-            uint8(_token.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
-        ) {
-            _bufficorn = __storage.bufficorns[_token.award.bufficornId];
-        }
-        return IWittyBufficornsDecorator(__storage.decorator).toSVG(
-            _token,
-            _farmer,
-            _ranch,
-            _bufficorn
+            _tokenId,
+            __storage.stopBreedingRandomness,
+            _metadata
         );
     }
     

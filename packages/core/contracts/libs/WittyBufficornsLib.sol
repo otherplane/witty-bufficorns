@@ -174,8 +174,77 @@ library WittyBufficornsLib {
         }
     }
 
+
+    // ========================================================================
+    // --- Public: 'Awards' selectors ------------------------------------------
+
+    function toString(Awards self)
+        public pure
+        returns (string memory)
+    {
+        if (self == Awards.BestBufficorn) {
+            return "Best Overall Bufficorn";
+        } else if (self == Awards.WarmestBufficorn) {
+            return "Warmest Bufficorn";
+        } else if (self == Awards.CoolestBufficorn) {
+            return "Coolest Bufficorn";
+        } else if (self == Awards.SmartestBufficorn) {
+            return "Smartest Bufficorn";
+        } else if (self == Awards.FastestBufficorn) {
+            return "Fastest Bufficorn";
+        } else if (self == Awards.MostEnduringBufficorn) {
+            return "Most Enduring Bufficorn";
+        } else if (self == Awards.MostVigorousBufficorn) {
+            return "Most Vigorous Bufficorn";
+        } else {
+            return "Best Breeder";
+        }
+    }
+
+
+    // ========================================================================
+    // --- Public: 'Traits' selectors -----------------------------------------
+
+    function toString(Traits self)
+        public pure
+        returns (string memory)
+    {
+        if (self == Traits.Coat) {
+            return "Coat";
+        } else if (self == Traits.Coolness) {
+            return "Coolness";
+        } else if (self == Traits.Intelligence) {
+            return "Intelligence";
+        } else if (self == Traits.Speed) {
+            return "Speed";
+        } else if (self == Traits.Stamina) {
+            return "Stamina";
+        } else {
+            return "Strength";
+        }
+    }
+    
+
     // ========================================================================
     // --- Internal/public helper functions -----------------------------------
+
+    /// Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using 
+    /// the given `_nonce` value and the given `_seed` as a source of entropy.
+    /// @param _range Range within which the uniformly-distributed random number will be generated.
+    /// @param _nonce Nonce value enabling multiple random numbers from the same randomness value.
+    /// @param _seed Seed value used as entropy source.
+    function random(uint32 _range, uint256 _nonce, bytes32 _seed)
+        public pure
+        returns (uint32)
+    {
+        uint8 _flagBits = uint8(255 - _msbDeBruijn32(_range));
+        uint256 _number = uint256(
+                keccak256(
+                    abi.encode(_seed, _nonce)
+                )
+            ) & uint256(2 ** _flagBits - 1);
+        return uint32((_number * _range) >> _flagBits);
+    }
 
     /// Recovers address from hash and signature.
     function recoverAddr(bytes32 _hash, bytes memory _signature)
@@ -200,5 +269,30 @@ library WittyBufficornsLib {
             return address(0);
         }
         return ecrecover(_hash, v, r, s);
+    }
+
+
+    // ========================================================================
+    // --- PRIVATE FUNCTIONS --------------------------------------------------
+
+    /// @dev Returns index of the Most Significant Bit of the given number, applying De Bruijn O(1) algorithm.
+    function _msbDeBruijn32(uint32 _v)
+        private pure
+        returns (uint8)
+    {
+        uint8[32] memory _bitPosition = [
+                0, 9, 1, 10, 13, 21, 2, 29,
+                11, 14, 16, 18, 22, 25, 3, 30,
+                8, 12, 20, 28, 15, 17, 24, 7,
+                19, 27, 23, 6, 26, 5, 4, 31
+            ];
+        _v |= _v >> 1;
+        _v |= _v >> 2;
+        _v |= _v >> 4;
+        _v |= _v >> 8;
+        _v |= _v >> 16;
+        return _bitPosition[
+            uint32(_v * uint256(0x07c4acdd)) >> 27
+        ];
     }
 }

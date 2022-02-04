@@ -17,7 +17,6 @@ interface IWittyBufficornsView {
     function stopBreedingRandomness() external view returns (bytes32);
 
     function toJSON(uint256 _tokenId) external view returns (string memory);
-    function toSVG(uint256 _tokenId) external view returns (string memory);
 
     function totalBufficorns() external view returns (uint256);
     function totalFarmers() external view returns (uint256);

@@ -7,18 +7,11 @@ import "../libs/WittyBufficornsLib.sol";
 /// @author Otherplane Labs, 2022.
 interface IWittyBufficornsDecorator {
     function baseURI() external view returns (string memory);
+    function lookupMedalString(uint256 _ranking) external pure returns (string memory);
+    function lookupRanchResource(uint256 _ranchId) external pure returns (string memory);
     function toJSON(
-            WittyBufficorns.TokenInfo calldata _award,
-            WittyBufficorns.Farmer calldata _farmer,
-            WittyBufficorns.Ranch calldata _ranch,
-            WittyBufficorns.Bufficorn calldata _bufficorn
-        ) external view returns (string memory)
-    ;
-    function toSVG(
-            WittyBufficorns.TokenInfo calldata _award,
-            WittyBufficorns.Farmer calldata _farmer,
-            WittyBufficorns.Ranch calldata _ranch,
-            WittyBufficorns.Bufficorn calldata _bufficorn
-        ) external view returns (string memory)
-    ;
+            uint256 _tokenId,
+            bytes32 _randomness,
+            WittyBufficornsLib.TokenMetadata memory _metadata
+        ) external view returns (string memory);
 }
