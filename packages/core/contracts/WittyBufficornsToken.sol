@@ -501,11 +501,13 @@ contract WittyBufficornsToken
                 );
             }
         }
-        // If not solved, or solved with errors, read weather from last valid request:
-        _response = witnet.readResponse(_lastValidQueryId);
-        _result = witnet.resultFromCborBytes(_response.cborBytes);
-        _lastTimestamp = _response.timestamp;
-        _lastDescription = witnet.asString(_result);
+        if (_lastValidQueryId > 0) {
+            // If not solved, or solved with errors, read weather from last valid request, if any:
+            _response = witnet.readResponse(_lastValidQueryId);
+            _result = witnet.resultFromCborBytes(_response.cborBytes);
+            _lastTimestamp = _response.timestamp;
+            _lastDescription = witnet.asString(_result);
+        }
     }
 
     function getTokenInfo(uint256 _tokenId)
