@@ -39,7 +39,7 @@
 
 <script>
 import { defineComponent, getCurrentInstance } from 'vue'
-import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import bufficornMain from '@/assets/wittyCorn.svg?raw'
 
 export default defineComponent({
   emits: ['claim'],

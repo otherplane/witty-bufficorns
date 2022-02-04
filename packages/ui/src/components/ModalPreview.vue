@@ -49,7 +49,7 @@
 import { defineComponent, getCurrentInstance } from 'vue'
 import { useWeb3 } from '../composables/useWeb3'
 import { useStore } from '@/stores/player'
-import bufficornMain from '@/assets/bufficorn-main.svg?raw'
+import bufficornMain from '@/assets/wittyCorn.svg?raw'
 import { RANCHES } from '@/constants.js'
 
 export default defineComponent({

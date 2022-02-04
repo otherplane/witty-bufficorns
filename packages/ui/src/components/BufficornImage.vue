@@ -3,21 +3,24 @@
     <div v-if="name" class="small-title item">
       <p class="bufficorn-name">{{ name }}</p>
     </div>
-    <svgImage class="bufficorn-image" :class="{ flip }" :svg="bufficornMain" />
+    <img
+      class="bufficorn-image"
+      :class="{ flip }"
+      :src="importPng('Bufficorn-0')"
+      alt="icon"
+    />
   </div>
 </template>
 
 <script>
-import bufficornMain from '@/assets/bufficorn-main.svg?raw'
-import SvgImage from './SvgImage.vue'
+import { importPng } from '@/composables/importPng.js'
 export default {
-  components: { SvgImage },
   props: {
     name: String,
     flip: Boolean
   },
   setup () {
-    return { bufficornMain }
+    return { importPng }
   }
 }
 </script>
@@ -37,7 +40,6 @@ export default {
 .bufficorn-image {
   grid-column: 1;
   height: auto;
-  width: 80px;
   &.flip {
     -moz-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
