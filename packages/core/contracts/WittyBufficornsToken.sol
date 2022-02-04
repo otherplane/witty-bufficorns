@@ -487,30 +487,7 @@ contract WittyBufficornsToken
             string memory _lastDescription
         )
     {
-        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
-        uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
-        uint _latestQueryId = __ranch.witnet.latestQueryId;
-        Witnet.QueryStatus _latestQueryStatus = witnet.getQueryStatus(_latestQueryId);
-        Witnet.Response memory _response;
-        Witnet.Result memory _result;
-        // First try to read weather from latest request, in case it was succesfully solved:
-        if (_latestQueryId > 0 && _latestQueryStatus == Witnet.QueryStatus.Reported) {
-            _response = witnet.readResponse(_latestQueryId);
-            _result = witnet.resultFromCborBytes(_response.cborBytes);
-            if (_result.success) {
-                return (
-                    _response.timestamp,
-                    witnet.asString(_result)
-                );
-            }
-        }
-        if (_lastValidQueryId > 0) {
-            // If not solved, or solved with errors, read weather from last valid request, if any:
-            _response = witnet.readResponse(_lastValidQueryId);
-            _result = witnet.resultFromCborBytes(_response.cborBytes);
-            _lastTimestamp = _response.timestamp;
-            _lastDescription = witnet.asString(_result);
-        }
+        return __storage.getRanchWeather(witnet, _ranchId);
     }
 
     function getTokenInfo(uint256 _tokenId)

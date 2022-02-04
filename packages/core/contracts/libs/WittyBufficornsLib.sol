@@ -58,7 +58,7 @@ library WittyBufficornsLib {
         /* 5 => */ Strength
     }
     
-    
+
     // ========================================================================
     // --- Structs ------------------------------------------------------------
 
@@ -130,6 +130,43 @@ library WittyBufficornsLib {
             return Status.Randomizing;
         } else {
             return Status.Breeding;
+        }
+    }
+
+    function getRanchWeather(
+            Storage storage self,
+            WitnetRequestBoard _wrb,
+            uint256 _ranchId
+        )
+        public view
+        returns (
+            uint256 _lastTimestamp,
+            string memory _lastDescription
+        )
+    {
+        Ranch storage __ranch = self.ranches[_ranchId];
+        uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
+        uint _latestQueryId = __ranch.witnet.latestQueryId;
+        Witnet.QueryStatus _latestQueryStatus = _wrb.getQueryStatus(_latestQueryId);
+        Witnet.Response memory _response;
+        Witnet.Result memory _result;
+        // First try to read weather from latest request, in case it was succesfully solved:
+        if (_latestQueryId > 0 && _latestQueryStatus == Witnet.QueryStatus.Reported) {
+            _response = _wrb.readResponse(_latestQueryId);
+            _result = _wrb.resultFromCborBytes(_response.cborBytes);
+            if (_result.success) {
+                return (
+                    _response.timestamp,
+                    _wrb.asString(_result)
+                );
+            }
+        }
+        if (_lastValidQueryId > 0) {
+            // If not solved, or solved with errors, read weather from last valid request, if any:
+            _response = _wrb.readResponse(_lastValidQueryId);
+            _result = _wrb.resultFromCborBytes(_response.cborBytes);
+            _lastTimestamp = _response.timestamp;
+            _lastDescription = _wrb.asString(_result);
         }
     }
 
