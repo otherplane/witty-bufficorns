@@ -1,9 +1,14 @@
 const fs = require("fs")
+
 const addresses = require("./addresses.json")
 const witnetAddresses = require("witnet-solidity-bridge/migrations/witnet.addresses")
-const WittyBufficornsToken = artifacts.require("WittyBufficornsToken");
-const WittyBufficornsDecorator = artifacts.require("WittyBufficornsDecorator");
+
+const WittyBufficornsToken = artifacts.require("WittyBufficornsToken")
+const WittyBufficornsLib = artifacts.require("WittyBufficornsLib")
+const WittyBufficornsDecorator = artifacts.require("WittyBufficornsDecorator")
+
 const WitnetRandomness = artifacts.require("IWitnetRandomness")
+
 module.exports = async function (deployer, network, accounts) {  
   network = network.split("-")[0]
   if (network !== "test" && network !== "develop") {
@@ -27,6 +32,7 @@ module.exports = async function (deployer, network, accounts) {
     network === "test"
       || addresses[network].WittyBufficornsToken === ""
   ) {
+    await deployer.link(WittyBufficornsLib, WittyBufficornsToken)
     await deployer.deploy(
       WittyBufficornsToken,
       /* ERC-721 Token Name   */ "Witty Bufficorns - ETHDenver 2022", 
@@ -42,9 +48,9 @@ module.exports = async function (deployer, network, accounts) {
         { flag: 'w+' }
       )
     }
-    console.info("   >> Deployed at", WittyBufficornsToken.address)
+    console.info("   > WittyBufficornsToken: just deployed as", WittyBufficornsToken.address)
   } else {
     WittyBufficornsToken.address = addresses[network].WittyBufficornsToken
-    console.info("   > Skipped: presumably deployed at", WittyBufficornsToken.address)
+    console.info("   > WittyBufficornsToken: presumably deployed at", WittyBufficornsToken.address)
   }  
 };

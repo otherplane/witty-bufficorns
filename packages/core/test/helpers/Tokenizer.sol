@@ -2,15 +2,15 @@
 pragma solidity ^0.8.0;
 
 import "../../contracts/interfaces/IWittyBufficornsEvents.sol";
-import "../../contracts/libs/WittyBufficorns.sol";
+import "../../contracts/libs/WittyBufficornsLib.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract TokenizerMock is IWittyBufficornsEvents {
+contract Tokenizer is IWittyBufficornsEvents {
 
-    using WittyBufficorns for WittyBufficorns.Storage;
+    using WittyBufficornsLib for WittyBufficornsLib.Storage;
 
-    WittyBufficorns.Storage internal __storage;
+    WittyBufficornsLib.Storage internal __storage;
 
     constructor(
             address _signator // backend's EOA
@@ -25,7 +25,7 @@ contract TokenizerMock is IWittyBufficornsEvents {
             uint256 _farmerId,
             uint256 _farmerScore,
             string memory _farmerName,
-            WittyBufficorns.Award[] calldata _farmerAwards,
+            WittyBufficornsLib.Award[] calldata _farmerAwards,
             bytes memory _signature
         )
         external
@@ -41,7 +41,7 @@ contract TokenizerMock is IWittyBufficornsEvents {
         ));
         // Verify signator
         require(
-            WittyBufficorns.recoverAddr(_hash, _signature) == __storage.signator,
+            WittyBufficornsLib.recoverAddr(_hash, _signature) == __storage.signator,
             "WittyBufficornsToken: bad signature"
         );
         // Emit tokenization event
