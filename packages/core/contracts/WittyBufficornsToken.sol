@@ -29,12 +29,12 @@ contract WittyBufficornsToken
         IWittyBufficornsView
 {
     using Strings for uint256;
-    using WittyBufficorns for WittyBufficorns.Storage;
+    using WittyBufficornsLib for WittyBufficornsLib.Storage;
 
     IWitnetRandomness public immutable randomizer;
     WitnetRequestBoard public immutable witnet;
 
-    modifier inStatus(WittyBufficorns.Status status) {
+    modifier inStatus(WittyBufficornsLib.Status status) {
         require(
             __storage.status() == status,
             "WittyBufficornsToken: bad mood"
@@ -58,7 +58,7 @@ contract WittyBufficornsToken
         _;
     }
 
-    WittyBufficorns.Storage internal __storage;
+    WittyBufficornsLib.Storage internal __storage;
 
     constructor(
             string memory _name,
@@ -132,7 +132,7 @@ contract WittyBufficornsToken
     /// Returns tender's current status
     function getStatus()
         external view
-        returns (WittyBufficorns.Status)
+        returns (WittyBufficornsLib.Status)
     {
         return __storage.status();
     }
@@ -148,9 +148,9 @@ contract WittyBufficornsToken
         )
         external
         onlySignator
-        inStatus(WittyBufficorns.Status.Breeding)
+        inStatus(WittyBufficornsLib.Status.Breeding)
     {
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
         require(
             bytes(__ranch.name).length > 0,
             "WittyBufficornsToken: inexistent ranch"
@@ -159,7 +159,7 @@ contract WittyBufficornsToken
             bytes(_name).length > 0,
             "WittyBufficornsToken: no name"
         );
-        WittyBufficorns.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
+        WittyBufficornsLib.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__bufficorn.name).length == 0) {
                 __storage.stats.totalBufficorns ++;
@@ -209,13 +209,13 @@ contract WittyBufficornsToken
         )
         external
         onlySignator
-        inStatus(WittyBufficorns.Status.Breeding)
+        inStatus(WittyBufficornsLib.Status.Breeding)
     {
         require(
             bytes(_name).length > 0,
             "WittyBufficornsToken: no name"
         );
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_id];
+        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__ranch.name).length == 0) {
                 // Increase ranches count if first time set
@@ -259,7 +259,7 @@ contract WittyBufficornsToken
         public
         virtual override
         onlyOwner
-        inStatus(WittyBufficorns.Status.Breeding)
+        inStatus(WittyBufficornsLib.Status.Breeding)
     {
         require(
             _signator != address(0),
@@ -282,7 +282,7 @@ contract WittyBufficornsToken
         external payable
         virtual override
         onlySignator
-        inStatus(WittyBufficorns.Status.Breeding)
+        inStatus(WittyBufficornsLib.Status.Breeding)
     {
         require(
             __storage.stats.totalRanches == _totalRanches,
@@ -314,7 +314,7 @@ contract WittyBufficornsToken
         external
         virtual override
         onlySignator
-        inStatus(WittyBufficorns.Status.Randomizing)
+        inStatus(WittyBufficornsLib.Status.Randomizing)
     {
         __storage.stopBreedingRandomness = randomizer.getRandomnessAfter(__storage.stopBreedingBlock);
         emit AwardingBegins(
@@ -373,7 +373,7 @@ contract WittyBufficornsToken
             uint256 _farmerId,
             uint256 _farmerScore,
             string memory _farmerName,
-            WittyBufficorns.Award[] calldata _farmerAwards,
+            WittyBufficornsLib.Award[] calldata _farmerAwards,
             bytes memory _signature
         )
         public
@@ -405,12 +405,12 @@ contract WittyBufficornsToken
         __farmer.score = _farmerScore;
         __farmer.ranchId = _ranchId;
 
-        WittyBufficorns.TokenInfo memory _tokenInfo;
+        WittyBufficornsLib.TokenInfo memory _tokenInfo;
 
         // Set common parameters to all tokens minted within this call:
         _tokenInfo.farmerId = _farmerId;
         // solhint-disable-next-line not-rely-on-time
-        _tokenInfo.inceptionTimestamp = block.timestamp;
+        _tokenInfo.expeditionTs = block.timestamp;
 
         // Loop: Mint one token per received award:
         for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
@@ -428,20 +428,20 @@ contract WittyBufficornsToken
             uint256 _farmerId,
             uint256 _farmerScore,
             string calldata _farmerName,
-            WittyBufficorns.Award[] calldata _farmerAwards,
+            WittyBufficornsLib.Award[] calldata _farmerAwards,
             bytes calldata _signature
         )
         external view
         virtual override
-        inStatus(WittyBufficorns.Status.Awarding)
-        returns (string[] memory _svgs)
+        inStatus(WittyBufficornsLib.Status.Awarding)
     {
         require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
         require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
 
-        WittyBufficorns.Ranch memory _ranch = __storage.ranches[_ranchId];
-        require(_ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
-        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_ranchId);
+        WittyBufficornsLib.TokenMetadata memory _token;
+        _token.ranch = __storage.ranches[_ranchId];
+        require(_token.ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
+        (_token.ranch.weatherTimestamp, _token.ranch.weatherDescription) = getRanchWeather(_ranchId);
         
         _verifySignatorSignature(
             _tokenOwner,
@@ -453,9 +453,9 @@ contract WittyBufficornsToken
             _signature
         );
 
-        WittyBufficorns.Farmer memory _farmer;
-        _farmer.name = _farmerName;
-        _farmer.score = _farmerScore;
+        _token.farmer.name = _farmerName;
+        _token.farmer.score = _farmerScore;
+        _token.tokenInfo.farmerId = _farmerId;
 
         WittyBufficorns.TokenInfo memory _tokenInfo;
         _tokenInfo.farmerId = _farmerId;
@@ -483,7 +483,7 @@ contract WittyBufficornsToken
     function getBufficorn(uint256 _bufficornId)
         external view
         override
-        returns (WittyBufficorns.Bufficorn memory)
+        returns (WittyBufficornsLib.Bufficorn memory)
     {
         return __storage.bufficorns[_bufficornId];
     }
@@ -491,7 +491,7 @@ contract WittyBufficornsToken
     function getFarmer(uint256 _farmerId)
         external view
         override
-        returns (WittyBufficorns.Farmer memory)
+        returns (WittyBufficornsLib.Farmer memory)
     {
         return __storage.farmers[_farmerId];
     }
@@ -499,7 +499,7 @@ contract WittyBufficornsToken
     function getRanch(uint256 _ranchId)
         external view
         override
-        returns (WittyBufficorns.Ranch memory _ranch)
+        returns (WittyBufficornsLib.Ranch memory _ranch)
     {
         _ranch = __storage.ranches[_ranchId];
         (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_ranchId);
@@ -513,7 +513,7 @@ contract WittyBufficornsToken
             string memory _lastDescription
         )
     {
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
+        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
         uint _lastValidQueryId = __ranch.witnet.lastValidQueryId;
         uint _latestQueryId = __ranch.witnet.latestQueryId;
         Witnet.QueryStatus _latestQueryStatus = witnet.getQueryStatus(_latestQueryId);
@@ -541,7 +541,7 @@ contract WittyBufficornsToken
         external view 
         override
         tokenExists(_tokenId)
-        returns (WittyBufficorns.TokenInfo memory)
+        returns (WittyBufficornsLib.TokenInfo memory)
     {
         return __storage.awards[_tokenId];
     }
@@ -568,15 +568,15 @@ contract WittyBufficornsToken
         tokenExists(_tokenId)
         returns (string memory)
     {
-        WittyBufficorns.TokenInfo memory _token = __storage.awards[_tokenId];
-        WittyBufficorns.Farmer memory _farmer = __storage.farmers[_token.farmerId];
-        WittyBufficorns.Ranch memory _ranch = __storage.ranches[_farmer.ranchId];
-        (_ranch.weatherTimestamp, _ranch.weatherDescription) = getRanchWeather(_farmer.ranchId);
-        WittyBufficorns.Bufficorn memory _bufficorn;
+        WittyBufficornsLib.TokenMetadata memory _metadata;
+        _metadata.tokenInfo = __storage.awards[_tokenId];
+        _metadata.farmer = __storage.farmers[_metadata.tokenInfo.farmerId];
+        _metadata.ranch = __storage.ranches[_metadata.farmer.ranchId];
+        (_metadata.ranch.weatherTimestamp, _metadata.ranch.weatherDescription) = getRanchWeather(_metadata.farmer.ranchId);
         if (
-            uint8(_token.award.category) >= uint8(WittyBufficorns.Awards.BestBufficorn)
+            uint8(_metadata.tokenInfo.award.category) >= uint8(WittyBufficornsLib.Awards.BestBufficorn)
         ) {
-            _bufficorn = __storage.bufficorns[_token.award.bufficornId];
+            _metadata.bufficorn = __storage.bufficorns[_metadata.tokenInfo.award.bufficornId];
         }
         return IWittyBufficornsDecorator(__storage.decorator).toJSON(
             _token,
@@ -633,7 +633,7 @@ contract WittyBufficornsToken
 
     function __doSafeMint(
             address _tokenOwner,
-            WittyBufficorns.TokenInfo memory _tokenInfo
+            WittyBufficornsLib.TokenInfo memory _tokenInfo
         )
         internal
         returns (uint256 _tokenId)
@@ -649,7 +649,7 @@ contract WittyBufficornsToken
             uint256 _farmerId,
             uint256 _farmerScore,
             string memory _farmerName,
-            WittyBufficorns.Award[] memory _farmerAwards,
+            WittyBufficornsLib.Award[] memory _farmerAwards,
             bytes memory _signature
         )
         internal view

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol";
+import "witnet-solidity-bridge/contracts/WitnetRequestBoard.sol";
 
-/// @title WittyBufficorns Library: data model and helper functions
+/// @title WittyBufficornsLib Library: data model and helper functions
 /// @author Otherplane Labs, 2022.
-library WittyBufficorns {
+library WittyBufficornsLib {
 
     // ========================================================================
     // --- Storage layout -----------------------------------------------------
@@ -46,9 +46,7 @@ library WittyBufficorns {
     enum Status {
         /* 0 => */ Breeding,
         /* 1 => */ Randomizing,
-        /* 2 => */ Awarding,
-        /* 3 => */ Prizing,
-        /* 4 => */ Finalized
+        /* 2 => */ Awarding
     }
 
     enum Traits {
@@ -101,7 +99,7 @@ library WittyBufficorns {
     struct TokenInfo {
         Award   award;
         uint256 farmerId;  
-        uint256 inceptionTimestamp;
+        uint256 expeditionTs;
     }
 
     struct WitnetInfo {
@@ -110,11 +108,21 @@ library WittyBufficorns {
         IWitnetRequest request;
     }
 
+    struct TokenMetadata {
+        TokenInfo tokenInfo;
+        Farmer farmer;
+        Ranch ranch;
+        Bufficorn bufficorn;
+    }
+
 
     // ========================================================================
-    // --- Internal: 'Storage' selectors --------------------------------------
+    // --- Public: 'Storage' selectors ----------------------------------------
 
-    function status(Storage storage self) internal view returns (Status) {
+    function status(Storage storage self)
+        public view
+        returns (Status)
+    {
         if (self.stopBreedingRandomness != bytes32(0)) {
             return Status.Awarding;
         } else if (self.stopBreedingBlock > 0) {
@@ -123,10 +131,10 @@ library WittyBufficorns {
             return Status.Breeding;
         }
     }
-    
+
 
     // ========================================================================
-    // --- Internal: helper functions -----------------------------------------
+    // --- Internal/public helper functions -----------------------------------
 
     /// Recovers address from hash and signature.
     function recoverAddr(bytes32 _hash, bytes memory _signature)
@@ -151,5 +159,5 @@ library WittyBufficorns {
             return address(0);
         }
         return ecrecover(_hash, v, r, s);
-    }    
+    }
 }

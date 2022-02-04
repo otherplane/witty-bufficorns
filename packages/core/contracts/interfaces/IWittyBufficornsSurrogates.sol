@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../libs/WittyBufficorns.sol";
+import "../libs/WittyBufficornsLib.sol";
 
 /// @title Witty Bufficorns Token's surrogating interface.
 /// @author Otherplane Labs, 2022.

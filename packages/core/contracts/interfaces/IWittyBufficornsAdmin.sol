@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../libs/WittyBufficorns.sol";
+import "../libs/WittyBufficornsLib.sol";
 
 /// @title  Witty Bufficorns Token's admin interface
 /// @dev    Only callable be either the owner, or the signator.
@@ -14,7 +14,7 @@ interface IWittyBufficornsAdmin {
     function getSignator() external view returns (address);
 
     /// Returns tender's current status
-    function getStatus() external view returns (WittyBufficorns.Status);
+    function getStatus() external view returns (WittyBufficornsLib.Status);
 
     /// Sets name, ranch and final traits for the given bufficorn.
     function setBufficorn(
