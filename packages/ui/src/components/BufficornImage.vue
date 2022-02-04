@@ -6,9 +6,9 @@
     <img
       class="bufficorn-image"
       :class="{ flip }"
-      :src="importPng('Bufficorn-2')"
+      :src="importPng('Bufficorn-0')"
       alt="icon"
-      width="120"
+      width="90"
     />
   </div>
 </template>
