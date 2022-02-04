@@ -36,4 +36,9 @@ module.exports = async function (deployer, network) {
       "https://api-ethdenver2022.bufficorns.com/"
     );
   }
+  let decorator = await WittyBufficornsDecorator.at(WittyBufficornsDecorator.address)
+  let forged = await decorator.forged.call()
+  if (!forged && network === "test") {
+    await decorator.forge();
+  }
 };

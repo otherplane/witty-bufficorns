@@ -11,7 +11,7 @@ contract WitnetRequestBoardMock {
     uint32 constant internal _UINT32_MAX = type(uint32).max;
     uint64 constant internal _UINT64_MAX = type(uint64).max;
 
-    uint256 queryId;
+    uint256 public queryId;
 
     function estimateReward(uint256)
         public pure

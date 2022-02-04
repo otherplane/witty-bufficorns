@@ -144,7 +144,7 @@ contract WittyBufficornsDecorator
         string memory _description = string(abi.encodePacked(
             "\"description\": \"EthDenver 2022: Ranked as #", _rankingStr, " ", _categoryStr, "\","
         ));        
-        string memory _external_url = string(abi.encodePacked(
+        string memory _externalUrl = string(abi.encodePacked(
             "\"external_url\": \"", _baseURI, "metadata/", _tokenIdStr, "\","
         ));
         string memory _image = string(abi.encodePacked(
@@ -156,7 +156,7 @@ contract WittyBufficornsDecorator
             "]"
         ));
         return string(abi.encodePacked(
-            "{", _name, _description, _external_url, _image, _attributes, "}"
+            "{", _name, _description, _externalUrl, _image, _attributes, "}"
         ));
     }
 
