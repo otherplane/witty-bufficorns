@@ -120,20 +120,19 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         },
       ]
        */
-      /*
-      enum Awards {
-          BestBreeder,
-          BestRanch,
+      //enum Awards {
+      //* 0 => */ BestBreeder,
+      //* 1 => */ BestRanch,
 
-          BestBufficorn,
-          CoolestBufficorn,
-          FastestBufficorn,
-          MostVigorousBufficorn,
-          MostEnduringBufficorn,
-          MostAgileBufficorn,
-          WarmestBufficorn
-      }
-       */
+      //* 2 => */ BestBufficorn,
+
+      //* 3 => */ WarmestBufficorn,
+      //* 4 => */ CoolestBufficorn,
+      //* 5 => */ SmartestBufficorn,
+      //* 6 => */ FastestBufficorn,
+      //* 7 => */ MostEnduringBufficorn,
+      //* 8 => */ MostVigorousBufficorn
+      //}
       const ranchId = RANCH_TO_INDEX[player.ranch]
       const farmerId = player.creationIndex
       const farmerScore = player.points
@@ -179,13 +178,12 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       for (const [categoryIndex, category] of [
         // undefined will get the leaderboard sorted according to how balanced are the bufficorns
         undefined,
-        Trait.Coolness,
-        Trait.Speed,
-        Trait.Vigor,
-        Trait.Stamina,
-        // TODO: check medal order after intelligence rename
-        Trait.Intelligence,
         Trait.Coat,
+        Trait.Coolness,
+        Trait.Intelligence,
+        Trait.Speed,
+        Trait.Stamina,
+        Trait.Vigor,
       ].entries()) {
         const sortedBufficorns = Bufficorn.getLeaderboard(bufficorns, category)
         const top3SortedBufficorns = sortedBufficorns.splice(0, 3)

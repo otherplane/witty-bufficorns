@@ -9,7 +9,7 @@ const VALID_ETH_ADDRESS = '0x184cc5908e1a3d29b4d31df67d99622c4baa7b71'
 // Keccak256 digest for mint with VALID_ETH_ADDRESS and
 
 const MESSAGE_DIGEST =
-  '486410a23e98f9068996b5fb236d850256dd935f97cab6754566ce5ea1dcb064'
+  'df4eea1da897bfd3d163b324a1a14c5b0a54e0467e9e503e87c746e0e7941863'
 
 const INVALID_ETH_ADDRESS_1 = '0x00'
 const INVALID_ETH_ADDRESS_2 = 'foo'
@@ -319,17 +319,17 @@ describe('mint.ts', () => {
   })
 
   it('should mint CoolestBufficorn medal', async () => {
-    const token3 = await authenticatePlayer(initialPlayers[3].key)
+    const token1 = await authenticatePlayer(initialPlayers[1].key)
 
-    // Give points to player 3
-    await trade(token3, initialPlayers[3].key)
+    // Give points to player 1
+    await trade(token1, initialPlayers[1].key)
 
     await serverInject(
       {
         method: 'POST',
         url: `/mint`,
         headers: {
-          Authorization: `${token3}`,
+          Authorization: `${token1}`,
         },
         payload: { address: VALID_ETH_ADDRESS },
       },
@@ -349,8 +349,8 @@ describe('mint.ts', () => {
           ranking: 1,
         })
         expect(responseJson.data.farmerAwards).toContainEqual({
-          bufficornId: 3,
-          category: 3, // Coolness
+          bufficornId: 1,
+          category: 4, // Coolness
           ranking: 1,
         })
       }
