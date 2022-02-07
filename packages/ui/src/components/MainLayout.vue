@@ -104,7 +104,7 @@ export default defineComponent({
 @media (max-width: 600px) {
   .bufficorn-img {
     height: 50vh;
-    right: -30px;
+    right: -50px;
     position: fixed;
     bottom: 0;
   }

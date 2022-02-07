@@ -40,8 +40,7 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      // return this.gameOverTimeMilli < Date.now()
-      return true
+      return this.gameOverTimeMilli < Date.now()
     }
   },
   actions: {

@@ -26,7 +26,7 @@ export default {
 .btn {
   width: 100%;
   color: $white;
-  padding: 16px 16px;
+  padding: 10px 16px;
   border-radius: 4px;
   font-family: Road Store, sans-serif;
   font-weight: bold;
