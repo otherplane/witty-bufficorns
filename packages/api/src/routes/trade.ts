@@ -52,7 +52,10 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       // Check 6: from can trade (is free)
-      if (!fastify.sendResourceCooldowns.isValid(fromKey)) {
+      if (
+        request.body.cooldown !== 0 &&
+        !fastify.sendResourceCooldowns.isValid(fromKey)
+      ) {
         return reply
           .status(409)
           .send(new Error(`Players can only trade 1 player at a time`))
@@ -61,7 +64,10 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const toKey = request.body.to
 
       // Check 7: target player can trade (is free)
-      if (!fastify.receiveResourceCooldowns.isValid(toKey)) {
+      if (
+        request.body.cooldown !== 0 &&
+        !fastify.receiveResourceCooldowns.isValid(toKey)
+      ) {
         return reply
           .status(409)
           .send(new Error(`${toKey} player is already trading`))
