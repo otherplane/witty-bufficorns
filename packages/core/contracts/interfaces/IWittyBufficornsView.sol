@@ -13,6 +13,14 @@ interface IWittyBufficornsView {
     function getRanchWeather(uint256 _ranchId) external view returns (uint256, string memory);
     function getTokenInfo(uint256 _tokenId) external view returns (WittyBufficornsLib.TokenInfo memory);
 
+    function previewFarmerAwards(
+            uint256 _ranchId,
+            uint256 _farmerId,
+            uint256 _farmerScore,
+            string calldata _farmerName,
+            WittyBufficornsLib.Award[] calldata _farmerAwards
+        ) external view returns (string[] memory _metadata);
+
     function stopBreedingBlock() external view returns (uint256);
     function stopBreedingRandomness() external view returns (bytes32);
 

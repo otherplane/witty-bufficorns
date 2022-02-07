@@ -394,58 +394,6 @@ contract WittyBufficornsToken
         __storage.stats.totalFarmers ++;
     }
 
-    function previewFarmerAwards(
-            address _tokenOwner,
-            uint256 _ranchId,
-            uint256 _farmerId,
-            uint256 _farmerScore,
-            string calldata _farmerName,
-            WittyBufficornsLib.Award[] calldata _farmerAwards,
-            bytes calldata _signature
-        )
-        external view
-        virtual override
-        inStatus(WittyBufficornsLib.Status.Awarding)
-        returns (string[] memory _metadatas)
-    {
-        require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
-        require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
-
-        WittyBufficornsLib.TokenMetadata memory _token;
-        _token.ranch = __storage.ranches[_ranchId];
-        require(_token.ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
-        (_token.ranch.weatherTimestamp, _token.ranch.weatherDescription) = getRanchWeather(_ranchId);
-        
-        _verifySignatorSignature(
-            _tokenOwner,
-            _ranchId,
-            _farmerId,
-            _farmerScore,
-            _farmerName,
-            _farmerAwards,
-            _signature
-        );
-
-        _token.farmer.name = _farmerName;
-        _token.farmer.score = _farmerScore;
-        _token.tokenInfo.farmerId = _farmerId;
-
-        _metadatas = new string[](_farmerAwards.length);
-        for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
-            _token.tokenInfo.award = _farmerAwards[_ix];
-            _token.bufficorn = __storage.bufficorns[
-                uint8(_token.tokenInfo.award.category) >= uint8(WittyBufficornsLib.Awards.BestBufficorn)
-                    ? _token.tokenInfo.award.bufficornId
-                    : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-            ];
-            _metadatas[_ix] = IWittyBufficornsDecorator(__storage.decorator).toJSON(
-                0,
-                __storage.stopBreedingRandomness,
-                _token
-            );
-        }
-    }
-
 
     // ========================================================================
     // --- Implementation of 'IWittyBufficornsView' ---------------------------
@@ -508,6 +456,44 @@ contract WittyBufficornsToken
         returns (WittyBufficornsLib.TokenInfo memory)
     {
         return __storage.awards[_tokenId];
+    }
+
+    function previewFarmerAwards(
+            uint256 _ranchId,
+            uint256 _farmerId,
+            uint256 _farmerScore,
+            string calldata _farmerName,
+            WittyBufficornsLib.Award[] calldata _farmerAwards
+        )
+        external view
+        virtual override
+        inStatus(WittyBufficornsLib.Status.Awarding)
+        returns (string[] memory _metadatas)
+    {
+        require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
+
+        WittyBufficornsLib.TokenMetadata memory _token;
+        _token.ranch = __storage.ranches[_ranchId];
+        (_token.ranch.weatherTimestamp, _token.ranch.weatherDescription) = getRanchWeather(_ranchId);
+        
+        _token.farmer.name = _farmerName;
+        _token.farmer.score = _farmerScore;
+        _token.tokenInfo.farmerId = _farmerId;
+
+        _metadatas = new string[](_farmerAwards.length);
+        for (uint _ix = 0; _ix < _farmerAwards.length; _ix ++) {
+            _token.tokenInfo.award = _farmerAwards[_ix];
+            _token.bufficorn = __storage.bufficorns[
+                uint8(_token.tokenInfo.award.category) >= uint8(WittyBufficornsLib.Awards.BestBufficorn)
+                    ? _token.tokenInfo.award.bufficornId
+                    : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            ];
+            _metadatas[_ix] = IWittyBufficornsDecorator(__storage.decorator).toJSON(
+                0,
+                __storage.stopBreedingRandomness,
+                _token
+            );
+        }
     }
 
     function stopBreedingBlock()
