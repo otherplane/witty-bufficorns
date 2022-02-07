@@ -369,6 +369,8 @@ contract WittyBufficornsToken
         __farmer.name = _farmerName;
         __farmer.score = _farmerScore;
         __farmer.ranchId = _ranchId;
+        __farmer.firstTokenId = __storage.stats.totalSupply + 1;
+        __farmer.totalAwards = _farmerAwards.length;
 
         WittyBufficornsLib.TokenInfo memory _tokenInfo;
 
@@ -462,6 +464,21 @@ contract WittyBufficornsToken
         returns (WittyBufficornsLib.Farmer memory)
     {
         return __storage.farmers[_farmerId];
+    }
+
+    function getFarmerTokens(uint256 _farmerId)
+        external view
+        virtual override
+        returns (uint256[] memory _tokenIds)
+    {
+        WittyBufficornsLib.Farmer storage __farmer = __storage.farmers[_farmerId];
+        if (__farmer.totalAwards > 0) {
+            uint _tokenId = __farmer.firstTokenId;
+            _tokenIds = new uint256[](__farmer.totalAwards);            
+            for (uint _i = 0; _i < _tokenIds.length; _i ++) {
+                _tokenIds[_i] = _tokenId ++;
+            }
+        }
     }
 
     function getRanch(uint256 _ranchId)

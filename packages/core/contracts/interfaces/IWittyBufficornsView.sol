@@ -8,9 +8,9 @@ import "../libs/WittyBufficornsLib.sol";
 interface IWittyBufficornsView {
     function getBufficorn(uint256 _bufficornId) external view returns (WittyBufficornsLib.Bufficorn memory);
     function getFarmer(uint256 _farmerId) external view returns (WittyBufficornsLib.Farmer memory);
+    function getFarmerTokens(uint256 _farmerId) external view returns (uint256[] memory);
     function getRanch(uint256 _ranchId) external view returns (WittyBufficornsLib.Ranch memory);
     function getRanchWeather(uint256 _ranchId) external view returns (uint256, string memory);
-    
     function getTokenInfo(uint256 _tokenId) external view returns (WittyBufficornsLib.TokenInfo memory);
 
     function stopBreedingBlock() external view returns (uint256);
