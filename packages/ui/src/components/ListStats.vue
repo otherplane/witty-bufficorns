@@ -7,6 +7,7 @@
         :index="index"
         :creationIndex="bufficorn.creationIndex"
         :key="bufficorn.name"
+        :ranch-name="bufficorn.ranch"
         :name="bufficorn.name"
         :background-front="!!(index % 2)"
         :background-back="!(index % 2)"

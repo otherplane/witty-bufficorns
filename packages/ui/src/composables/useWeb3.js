@@ -101,11 +101,9 @@ export function useWeb3 () {
   })
 
   async function getData () {
-    console.log('getData---', await web3.eth.net.getId())
     if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
-      console.log('getData---try', CONTRACT_ADDRESS)
       try {
         const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
         const from = (await requestAccounts(web3))[0]
@@ -118,11 +116,9 @@ export function useWeb3 () {
   }
 
   async function mint () {
-    console.log('mint---')
     if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
-      console.log('mint---try')
       const contract = new web3.eth.Contract(
         jsonInterface.abi,
         CONTRACT_ADDRESS

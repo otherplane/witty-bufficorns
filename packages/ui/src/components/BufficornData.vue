@@ -30,7 +30,8 @@
     <FlipCard
       :index="creationIndex"
       :key="name"
-      :name="!selectable ? name : null"
+      :name="name"
+      :ranch-name="ranchName"
       :background-front="backgroundFront"
       :background-back="backgroundBack"
       :selected="player.selectedBufficorn === creationIndex"
@@ -62,6 +63,7 @@ export default {
       vigor: Number
     },
     name: String,
+    ranchName: String,
     creationIndex: Number,
     horizontal: {
       type: Boolean,

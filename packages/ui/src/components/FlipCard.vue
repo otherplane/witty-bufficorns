@@ -6,11 +6,21 @@
       :class="{ flipped: showStats }"
     >
       <div class="face front" :class="{ horizontal, selected }">
-        <BufficornImage :class="{ selected }" :name="name" />
+        <BufficornImage
+          :class="{ selected }"
+          :horizontal="horizontal"
+          :name="name"
+          :ranch-name="ranchName"
+        />
         <PolarChart v-if="normalizedData" :stats="normalizedData" />
       </div>
       <div class="face back" :class="{ horizontal }">
-        <BufficornImage :name="name" :flip="true" />
+        <BufficornImage
+          :name="name"
+          :horizontal="horizontal"
+          :flip="true"
+          :ranch-name="ranchName"
+        />
         <div class="attributes" :class="{ horizontal }">
           <BufficornAttributesList
             :attributes="attributes"
@@ -42,6 +52,7 @@ export default {
       type: Boolean,
       default: false
     },
+    ranchName: String,
     name: String,
     horizontal: {
       type: Boolean,

@@ -65,7 +65,7 @@
           class="add-polygon"
         >
           <svgImage class="metamask" :svg="metamaskIcon" />
-          Polygon Network
+          Switch to Polygon Network
         </a>
         <Button
           v-else-if="player.preview"
@@ -271,6 +271,7 @@ export default {
   .add-polygon {
     width: max-content;
     color: $white;
+    cursor: pointer;
     font-weight: 600;
     padding: 4px 8px;
     border-radius: 4px;
