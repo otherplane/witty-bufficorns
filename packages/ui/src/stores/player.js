@@ -32,14 +32,16 @@ export const useStore = defineStore('player', {
         trade: null,
         info: null,
         tradeHistory: null,
-        getLeaderboardInfo: null
+        getLeaderboardInfo: null,
+        network: null
       }
     }
   },
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      return this.gameOverTimeMilli < Date.now()
+      // return this.gameOverTimeMilli < Date.now()
+      return true
     }
   },
   actions: {

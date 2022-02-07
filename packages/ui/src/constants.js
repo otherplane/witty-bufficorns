@@ -1,6 +1,6 @@
 export const CONTRACT_ADDRESS =
   import.meta.env.CONTRACT_ADDRESS ||
-  '0x855BCa56D00F3f550D0c610BBF562FEBF6540bc6'
+  '0xf9ce07c40885FD47905d5972377801a5db5652B3'
 
 export const OPENSEA_BASE_URL =
   import.meta.env.OPENSEA_BASE_URL ||
@@ -9,7 +9,7 @@ export const OPENSEA_BASE_URL =
 export const ETHERSCAN_BASE_URL =
   import.meta.env.ETHERSCAN_BASE_URL || 'https://etherscan.io/tx'
 
-export const NETWORK = import.meta.env.NETWORK || 'main'
+export const NETWORK = import.meta.env.NETWORK || 80001
 
 export const VITE_TEST = import.meta.env.VITE_TEST || false
 

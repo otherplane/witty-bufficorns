@@ -59,6 +59,14 @@
         >
           PREVIEW NFT
         </Button>
+        <a
+          v-if="player.errors.network"
+          @click="addPolygonNetwork()"
+          class="add-polygon"
+        >
+          <svgImage class="metamask" :svg="metamaskIcon" />
+          Polygon Network
+        </a>
         <Button
           v-else-if="player.preview"
           @click="mint"
@@ -89,6 +97,7 @@ import {
   reactive,
   ref
 } from 'vue'
+import metamaskIcon from '@/assets/metamask.svg?raw'
 import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { formatNumber } from '../utils'
@@ -197,11 +206,13 @@ export default {
       modals,
       mintStatus,
       enableProvider: web3WittyBufficorns.enableProvider,
+      addPolygonNetwork: web3WittyBufficorns.addPolygonNetwork,
       previews: web3WittyBufficorns.preview,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
       getData: web3WittyBufficorns.getData,
       importSvg,
       RANCHES,
+      metamaskIcon,
       ATTRIBUTES,
       formatNumber
     }
@@ -251,8 +262,25 @@ export default {
 }
 .sticky-btn {
   position: sticky;
-  bottom: 24px;
+  bottom: 16px;
   text-align: center;
+  display: grid;
+  grid-template-rows: max-content max-content;
+  grid-gap: 8px;
+  justify-items: center;
+  .add-polygon {
+    width: max-content;
+    color: $white;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    display: flex;
+    .metamask {
+      margin-right: 4px;
+      width: 16px;
+    }
+  }
 }
 .buttons {
   display: grid;

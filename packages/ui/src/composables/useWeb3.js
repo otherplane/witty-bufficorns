@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
 
 import { useStore } from '@/stores/player'
-import jsonInterface from '../WitmonERC721.json'
+import jsonInterface from '../IWittyBufficornsSurrogates.json'
 import { CONTRACT_ADDRESS, NETWORK } from '../constants'
 
 async function requestAccounts (web3) {
@@ -19,7 +19,18 @@ function createErrorMessage (message) {
   }
 }
 
-const errorNetworkMessage = `Your web3 provider should be connected to the ${NETWORK} network`
+function networkById (id) {
+  switch (id) {
+    case 137:
+      return 'Polygon Mainnet'
+    case 80001:
+      return 'Polygon Mumbai'
+  }
+}
+
+const errorNetworkMessage = `Your web3 provider should be connected to the ${networkById(
+  NETWORK
+)} network`
 const errorDataMessage = `There was an error getting the NFT data`
 const errorMintMessage = `There was an error minting your NFT.`
 const errorPreviewMessage = `There was an error showing the preview of your NFT.`
@@ -38,8 +49,26 @@ export function useWeb3 () {
     }
   }
 
+  async function addPolygonNetwork () {
+    await window.ethereum
+      .request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: '0x89',
+            chainName: 'Polygon Mainnet',
+            rpcUrls: ['https://polygon-rpc.com/'],
+            blockExplorerUrls: ['https://polygonscan.com']
+          }
+        ]
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   async function open () {
-    if ((await web3.eth.net.getNetworkType()) !== NETWORK) {
+    if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
       try {
@@ -72,14 +101,13 @@ export function useWeb3 () {
   })
 
   async function getData () {
-    if ((await web3.eth.net.getNetworkType()) !== NETWORK) {
+    console.log('getData---', await web3.eth.net.getId())
+    if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
+      console.log('getData---try', CONTRACT_ADDRESS)
       try {
-        const contract = new web3.eth.Contract(
-          jsonInterface.abi,
-          CONTRACT_ADDRESS
-        )
+        const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
         const from = (await requestAccounts(web3))[0]
         return await contract.methods.getData(player.index).call()
       } catch (err) {
@@ -90,9 +118,11 @@ export function useWeb3 () {
   }
 
   async function mint () {
-    if ((await web3.eth.net.getNetworkType()) !== NETWORK) {
+    console.log('mint---')
+    if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
+      console.log('mint---try')
       const contract = new web3.eth.Contract(
         jsonInterface.abi,
         CONTRACT_ADDRESS
@@ -129,6 +159,7 @@ export function useWeb3 () {
     isProviderConnected,
     preview,
     enableProvider,
+    addPolygonNetwork,
     open,
     getData
   }
