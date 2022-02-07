@@ -262,7 +262,8 @@ contract WittyBufficornsDecorator
         returns (string memory _json)
     {
         _json = string(abi.encodePacked(
-            "{", 
+            "{",
+                "\"display_type\": \"number\",",
                 "\"trait_type\": \"Farmer Ranking\",",
                 "\"value\": ", _ranking.toString(),
             "},"
@@ -327,6 +328,7 @@ contract WittyBufficornsDecorator
         ));
         string memory _ranchRanking =string(abi.encodePacked(
             "{",
+                "\"display_type\": \"number\",",
                 "\"trait_type\": \"Ranch Ranking\",",
                 "\"value\": ", _ranking.toString(),
             "},"
@@ -367,6 +369,7 @@ contract WittyBufficornsDecorator
         ));
         string memory _bufficornRankingTrait = string(abi.encodePacked(
             "{",
+                "\"display_type\": \"number\",",
                 "\"trait_type\": \"Bufficorn Ranking\",",
                 "\"value\": \"", _ranking.toString(), "\""
             "},"
