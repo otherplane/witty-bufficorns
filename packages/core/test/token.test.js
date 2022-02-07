@@ -132,8 +132,6 @@ contract("WittyBufficornsToken", accounts => {
               tender.setRanch(
                 0,
                 12345,
-                "Ranch.0",
-                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -144,31 +142,25 @@ contract("WittyBufficornsToken", accounts => {
               tender.setRanch(
                 0,
                 12345,
-                "Ranch.0",
-                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
             )
           })
-          it("ranch must be set with a name", async () => {
-            await truffleAssert.reverts(
-              tender.setRanch(
-                0,
-                12345,
-                "",
-                web3.utils.asciiToHex("KDEN"),
-                { from: signator }
-              ),
-              "no name"
-            )
-          })
+          // it("ranch must be set with a name", async () => {
+          //   await truffleAssert.reverts(
+          //     tender.setRanch(
+          //       0,
+          //       12345,
+          //       { from: signator }
+          //     ),
+          //     "no name"
+          //   )
+          // })
           it("signator can create new ranch", async () => {
             await tender.setRanch(
               0,
               12345,
-              "Ranch.0",
-              web3.utils.asciiToHex("KDEN"),
               { from: signator }
             )
             assert.equal(
@@ -180,8 +172,6 @@ contract("WittyBufficornsToken", accounts => {
             await tender.setRanch(
               0,
               10,
-              "Ranch.0",
-              web3.utils.asciiToHex("KDEN"),
               { from: signator }
             )
             assert.equal(
@@ -220,18 +210,18 @@ contract("WittyBufficornsToken", accounts => {
               "only signator"
             )
           })
-          it("bufficorn must be set to an existent ranch", async () => {
-            await truffleAssert.reverts(
-              tender.setBufficorn(
-                0,
-                1,
-                "Bufficorn.0",
-                [1, 2, 3, 4, 5, 6],
-                { from: signator }
-              ),
-              "inexistent ranch"
-            )
-          })
+          // it("bufficorn must be set to an existent ranch", async () => {
+          //   await truffleAssert.reverts(
+          //     tender.setBufficorn(
+          //       0,
+          //       1,
+          //       "Bufficorn.0",
+          //       [1, 2, 3, 4, 5, 6],
+          //       { from: signator }
+          //     ),
+          //     "inexistent ranch"
+          //   )
+          // })
           it("bufficorn must be set with a name", async () => {
             await truffleAssert.reverts(
               tender.setBufficorn(
@@ -479,8 +469,6 @@ contract("WittyBufficornsToken", accounts => {
               tender.setRanch(
                 0,
                 12345,
-                "Ranch.0",
-                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -491,8 +479,6 @@ contract("WittyBufficornsToken", accounts => {
               tender.setRanch(
                 0,
                 12345,
-                "Ranch.0",
-                web3.utils.asciiToHex("KDEN"),
                 { from: stranger }
               ),
               "only signator"
@@ -503,8 +489,6 @@ contract("WittyBufficornsToken", accounts => {
               tender.setRanch(
                 0,
                 10,
-                "Ranch.0",
-                web3.utils.asciiToHex("KDEN"),
                 { from: signator }
               ),
               "bad mood"
