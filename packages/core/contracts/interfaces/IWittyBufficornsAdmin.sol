@@ -31,9 +31,7 @@ interface IWittyBufficornsAdmin {
     /// Sets a ranch's data, final score and weather station.
     function setRanch(
         uint256 _id,
-        uint256 _score,
-        string calldata _name,
-        bytes4 _weatherStationAscii
+        uint256 _score
     ) external;
         
     /// Sets externally owned account that is authorized to sign farmer awards.

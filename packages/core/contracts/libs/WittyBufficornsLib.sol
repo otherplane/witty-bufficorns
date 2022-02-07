@@ -82,10 +82,9 @@ library WittyBufficornsLib {
     }
 
     struct Ranch {
-        string  name;
         uint256 score;
         string  weatherDescription;
-        bytes4  weatherStationAscii;
+        bytes4  weatherStation;
         uint256 weatherTimestamp;
         WitnetInfo witnet;
     }

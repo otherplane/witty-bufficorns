@@ -48,7 +48,7 @@ contract WittyBufficornsDecorator
         );
         baseURI = _baseURI;
         boosters.odds = [ 225, 16, 8, 4, 2, 1 ];
-        boosters.values = [0, 10, 20, 30, 40, 50 ];
+        boosters.values = [ 0, 10, 20, 30, 40, 50 ];
         boosters.range = 256;
     }    
 
@@ -80,7 +80,7 @@ contract WittyBufficornsDecorator
 
     string public override baseURI;
 
-    function lookupMedalString(uint256 _ranking)
+    function lookupMedalCaption(uint256 _ranking)
         public pure
         virtual override
         returns (string memory)
@@ -93,6 +93,28 @@ contract WittyBufficornsDecorator
             return "Bronze";
         } else {
             return "Diploma";
+        }
+    }
+
+    function lookupRanchName(uint256 _ranchId)
+        public pure
+        virtual override
+        returns (string memory)
+    {
+        if (_ranchId == 0) {
+            return "Gold Reef Co.";
+        } else if (_ranchId == 1) {
+            return "Infinite Harmony Farm";
+        } else if (_ranchId == 2) {
+            return "Balancer Peak State";
+        } else if (_ranchId == 3) {
+            return "The Ol' Algoranch";
+        } else if (_ranchId == 4) {
+            return "Vega Slopes Range";
+        } else if (_ranchId == 5) {
+            return "Opolis Reservation";
+        } else {
+            return "Mystery Ranch";
         }
     }
 
@@ -114,7 +136,33 @@ contract WittyBufficornsDecorator
         } else if (_ranchId == 5) {
             return "Hearty Berry";
         } else {
-            return "";
+            return "Mystery Resource";
+        }
+    }
+
+    function lookupRanchWeatherStation(uint256 _ranchId)
+        public pure 
+        virtual override
+        returns (bytes4)
+    {
+        if (_ranchId == 0) {
+            // Gold Reef Co. => Trinidad => KVTP
+            return bytes4("KVTP");
+        } else if (_ranchId == 2) {
+            // Balancer Peak State => Silverton => KCPW
+            return bytes4("KCPW");
+        } else if (_ranchId == 3) {
+            // The Ol' Algoranch => Colorado Springs => KMNH
+            return bytes4("KMNH");
+        } else if (_ranchId == 4) {
+            // Vega Slopes Range => Breckenridge => KBJC
+            return bytes4("KBJC");
+        } else if (_ranchId == 5) {
+            // Opolis Reservation => Pueblo => KLHX
+            return bytes4("KLHX");
+        } else {
+            // Otherwise => Denver => KDEN
+            return bytes4("KDEN");
         }
     }
 
@@ -129,7 +177,7 @@ contract WittyBufficornsDecorator
         returns (string memory)
     {
         if (_randomness != bytes32(0)) {
-            // convolute game global randomness with unique farmer name
+            // convolute game global randomness and unique farmer name
             _randomness = keccak256(abi.encode(_randomness, _metadata.farmer.name));
         }
         string memory _tokenIdStr = _tokenId.toString();
@@ -202,6 +250,7 @@ contract WittyBufficornsDecorator
                 _json,
                 _loadAttributesRanch(
                     _metadata.tokenInfo.award.ranking,
+                    _metadata.farmer.ranchId,
                     _metadata.ranch
                 )
             ));
@@ -236,7 +285,7 @@ contract WittyBufficornsDecorator
         string memory _medalTrait = string(abi.encodePacked(
             "{",
                 "\"trait_type\": \"Medal\",",
-                "\"value\": \"", lookupMedalString(_metadata.tokenInfo.award.ranking), "\"",
+                "\"value\": \"", lookupMedalCaption(_metadata.tokenInfo.award.ranking), "\"",
             "},"
         ));
         string memory _farmerNameTrait = string(abi.encodePacked(
@@ -308,6 +357,7 @@ contract WittyBufficornsDecorator
 
     function _loadAttributesRanch(
             uint256 _ranking,
+            uint256 _ranchId,
             WittyBufficornsLib.Ranch memory _ranch
         )
         internal pure
@@ -323,7 +373,7 @@ contract WittyBufficornsDecorator
         string memory _ranchNameTrait = string(abi.encodePacked(
             "{", 
                 "\"trait_type\": \"Ranch Name\",",
-                "\"value\": \"", _ranch.name, "\""
+                "\"value\": \"", lookupRanchName(_ranchId), "\""
             "},"
         ));
         string memory _ranchRanking =string(abi.encodePacked(

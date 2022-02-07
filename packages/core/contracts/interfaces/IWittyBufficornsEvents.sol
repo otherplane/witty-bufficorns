@@ -10,6 +10,6 @@ interface IWittyBufficornsEvents {
     event BufficornSet(uint id, string name, uint score, uint[6] traits);
     event DecoratorSet(address decorator);
     event FarmerAward(uint indexed tokenId, uint indexed farmerId, WittyBufficornsLib.Awards indexed category, uint ranking);
-    event RanchSet(uint id, string name, uint score, bytes4 weatherStation);
+    event RanchSet(uint id, uint score, string name, bytes4 weatherStation);
     event SignatorSet(address signator);
 }

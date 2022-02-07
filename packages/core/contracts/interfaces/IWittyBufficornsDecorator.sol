@@ -7,8 +7,10 @@ import "../libs/WittyBufficornsLib.sol";
 /// @author Otherplane Labs, 2022.
 interface IWittyBufficornsDecorator {
     function baseURI() external view returns (string memory);
-    function lookupMedalString(uint256 _ranking) external pure returns (string memory);
+    function lookupMedalCaption(uint256 _ranking) external pure returns (string memory);
+    function lookupRanchName(uint256 _ranchId) external pure returns (string memory);
     function lookupRanchResource(uint256 _ranchId) external pure returns (string memory);
+    function lookupRanchWeatherStation(uint256 _ranchId) external pure returns (bytes4);
     function toJSON(
             uint256 _tokenId,
             bytes32 _randomness,

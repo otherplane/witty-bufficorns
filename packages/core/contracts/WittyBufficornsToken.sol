@@ -153,10 +153,6 @@ contract WittyBufficornsToken
     {
         WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
         require(
-            bytes(__ranch.name).length > 0,
-            "WittyBufficornsToken: inexistent ranch"
-        );
-        require(
             bytes(_name).length > 0,
             "WittyBufficornsToken: no name"
         );
@@ -204,30 +200,25 @@ contract WittyBufficornsToken
     /// @dev Fails if not in Breeding status. 
     function setRanch(
             uint256 _id,
-            uint256 _score,
-            string calldata _name,
-            bytes4 _weatherStationAscii
+            uint256 _score
         )
         external
         onlySignator
         inStatus(WittyBufficornsLib.Status.Breeding)
     {
-        require(
-            bytes(_name).length > 0,
-            "WittyBufficornsToken: no name"
-        );
-        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_id];
-        if (bytes(_name).length > 0) {
-            if (bytes(__ranch.name).length == 0) {
-                // Increase ranches count if first time set
-                __storage.stats.totalRanches ++;
-            }
+        WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_id];        
+        if (_score == 0 && __ranch.score > 0) {
+            __storage.stats.totalRanches --;
+        } else if (_score > 0 && __ranch.score == 0) {
+            __storage.stats.totalRanches ++;
         }
-        if (_weatherStationAscii != __ranch.weatherStationAscii) {
+        bytes4 _weatherStation = IWittyBufficornsDecorator(__storage.decorator).lookupRanchWeatherStation(_id);
+        if (__ranch.weatherStation == bytes4(0)) {
+            __ranch.weatherStation = _weatherStation;
             /** Javascript DSL:
              *
              *  import * as Witnet from "witnet-requests"
-             *  const weather = new Witnet.Source("https://api.weather.gov/stations/<code>/observations/latest")
+             *  const weather = new Witnet.Source("https://api.weather.gov/stations/<ascii_code>/observations/latest")
              *    .parseJSONMap()
              *    .getMap("properties")
              *    .getString("textDescription")
@@ -242,15 +233,18 @@ contract WittyBufficornsToken
              */
             __ranch.witnet.request = new WitnetRequest(abi.encodePacked(
                 bytes(hex"0a6d12630801123968747470733a2f2f6170692e776561746865722e676f762f73746174696f6e732f"),
-                _weatherStationAscii,
+                _weatherStation,
                 bytes(hex"2f6f62736572766174696f6e732f6c61746573741a248318778218666a70726f706572746965738218676f746578744465736372697074696f6e1a02"),
                 bytes(hex"10022202100210c0843d180a20c0843d28333080e497d012")
             ));
         }
-        __ranch.name = _name;
         __ranch.score = _score;
-        __ranch.weatherStationAscii = _weatherStationAscii;
-        emit RanchSet(_id, _name, _score, _weatherStationAscii);
+        emit RanchSet(
+            _id,
+            _score,
+            IWittyBufficornsDecorator(__storage.decorator).lookupRanchName(_id),
+            _weatherStation
+        );
     }
 
     /// Sets externally owned account that is authorized to sign farmer awards.
