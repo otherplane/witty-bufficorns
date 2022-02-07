@@ -114,7 +114,7 @@ export default {
   display: grid;
   justify-content: center;
   row-gap: 8px;
-  grid-template-rows: 100px 150px;
+  grid-template-rows: 120px 150px;
   align-items: center;
   justify-items: center;
   align-content: center;

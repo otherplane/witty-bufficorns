@@ -5,17 +5,18 @@
     </div>
     <img
       v-if="ranchName"
+      loading="lazy"
       :class="{ flip }"
       class="ranch-icon"
       :src="importSvg(RANCHES[ranchName])"
       alt="Bufficorn"
     />
-    <img
-      class="bufficorn-image"
-      :class="{ flip, horizontal }"
-      :src="importPng(name)"
-      alt="icon"
-    />
+    <picture>
+      <source media="(max-width: 799px)" :srcset="importPng(`${name}480w`)">
+      <source media="(min-width: 800px)" :srcset="importPng(`${name}800w`)">
+      <source media="(max-width: 380px)" :srcset="importPng(`${name}100w`)">
+      <img class="bufficorn-image" :class="{ flip, horizontal }" :src="importPng(name)">
+    </picture>
   </div>
 </template>
 
@@ -47,7 +48,7 @@ export default {
   height: 100%;
   margin-bottom: 24px;
   &.horizontal {
-    grid-template-rows: max-content 110px;
+    grid-template-rows: max-content 120px;
     margin-bottom: 0px;
   }
 }
@@ -69,9 +70,10 @@ export default {
   height: auto;
   max-width: 100%;
   max-height: 100%;
+  border-radius: 0px;
   grid-column: 1;
   &.horizontal {
-    margin-bottom: 25px;
+    margin-bottom: 32px;
   }
   &.flip {
     -moz-transform: scaleX(-1);
