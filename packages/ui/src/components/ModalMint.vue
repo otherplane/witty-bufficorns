@@ -19,7 +19,7 @@
         <div class="mt-2">
           <p class="text-sm text-gray-900">
             A NFT is about to appear in the Metaverse. The minting process will
-            occur in the Ethereum mainnet and it is powered by the Witnet Random
+            occur in the Polygon mainnet and it is powered by the Witnet Random
             Number Generator (RNG) functionality.
           </p>
         </div>

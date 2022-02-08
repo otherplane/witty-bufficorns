@@ -9,7 +9,7 @@ export const OPENSEA_BASE_URL =
 export const ETHERSCAN_BASE_URL =
   import.meta.env.ETHERSCAN_BASE_URL || 'https://etherscan.io/tx'
 
-export const NETWORK = import.meta.env.NETWORK || 137
+export const NETWORK = import.meta.env.NETWORK || 80001
 
 export const VITE_TEST = import.meta.env.VITE_TEST || false
 

@@ -12,10 +12,14 @@
       alt="Bufficorn"
     />
     <picture>
-      <source media="(max-width: 799px)" :srcset="importPng(`${name}480w`)">
-      <source media="(min-width: 800px)" :srcset="importPng(`${name}800w`)">
-      <source media="(max-width: 380px)" :srcset="importPng(`${name}100w`)">
-      <img class="bufficorn-image" :class="{ flip, horizontal }" :src="importPng(name)">
+      <source media="(max-width: 799px)" :srcset="importPng(`${name}480w`)" />
+      <source media="(min-width: 800px)" :srcset="importPng(`${name}800w`)" />
+      <source media="(max-width: 380px)" :srcset="importPng(`${name}100w`)" />
+      <img
+        class="bufficorn-image"
+        :class="{ flip, horizontal }"
+        :src="importPng(name)"
+      />
     </picture>
   </div>
 </template>

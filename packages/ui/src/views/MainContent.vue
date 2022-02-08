@@ -52,12 +52,20 @@
       </router-link>
       <div class="sticky-btn" v-if="player.gameOver">
         <Button
-          v-if="!player.preview"
+          v-if="player.preview"
           @click="openModal('preview')"
           type="dark"
           :slim="true"
         >
           PREVIEW NFT
+        </Button>
+        <Button
+          v-else-if="!player.preview"
+          @click="mint"
+          type="dark"
+          :slim="true"
+        >
+          MINT NFT
         </Button>
         <a
           v-if="player.errors.network"
@@ -67,14 +75,6 @@
           <svgImage class="metamask" :svg="metamaskIcon" />
           Switch to Polygon Network
         </a>
-        <Button
-          v-else-if="player.preview"
-          @click="mint"
-          type="dark"
-          :slim="true"
-        >
-          MINT NFT
-        </Button>
       </div>
     </div>
   </MainLayout>

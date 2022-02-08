@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
 
 import { useStore } from '@/stores/player'
-import jsonInterface from '../IWittyBufficornsSurrogates.json'
+import jsonInterface from '../WittyBufficornsUI.json'
 import { CONTRACT_ADDRESS, NETWORK } from '../constants'
 
 async function requestAccounts (web3) {
@@ -119,10 +119,7 @@ export function useWeb3 () {
     if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
-      const contract = new web3.eth.Contract(
-        jsonInterface.abi,
-        CONTRACT_ADDRESS
-      )
+      const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
       const from = (await requestAccounts(web3))[0]
       const mintArgs = await player.getContractArgs(from)
       contract.methods
