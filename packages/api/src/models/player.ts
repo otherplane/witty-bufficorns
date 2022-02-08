@@ -50,6 +50,8 @@ export class PlayerModel {
     const ranch = getRanchFromIndex(index)
     const points: number = 0
     const testnetPoints: number = 0
+    const scannedBonuses: Array<string> = []
+    const bonusEndsAt: number = 0
 
     const bufficornIndex = Math.floor(index / RANCHES_COUNT) % 4
 
@@ -65,6 +67,8 @@ export class PlayerModel {
       testnetPoints,
       selectedBufficorn,
       creationIndex: index,
+      bonusEndsAt,
+      scannedBonuses,
     })
   }
 

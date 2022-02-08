@@ -22,6 +22,8 @@ export class Player {
   id?: ObjectId
   selectedBufficorn: number
   creationIndex: number
+  bonusEndsAt: number
+  scannedBonuses: Array<string> = []
 
   constructor(vto: DbPlayerVTO) {
     this.key = vto.key
@@ -34,6 +36,8 @@ export class Player {
     this.id = new ObjectId(vto.id)
     this.selectedBufficorn = vto.selectedBufficorn
     this.creationIndex = vto.creationIndex
+    this.bonusEndsAt = vto.bonusEndsAt
+    this.scannedBonuses = vto.scannedBonuses
   }
 
   toDbVTO(shoWToken: boolean = false): DbPlayerVTO {
@@ -48,6 +52,8 @@ export class Player {
       id: this.id?.toString(),
       selectedBufficorn: this.selectedBufficorn,
       creationIndex: this.creationIndex,
+      bonusEndsAt: this.bonusEndsAt,
+      scannedBonuses: this.scannedBonuses,
     }
 
     return shoWToken ? { ...vto, token: this.token } : vto

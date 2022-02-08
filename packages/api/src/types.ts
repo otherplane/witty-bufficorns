@@ -243,6 +243,8 @@ export const PlayerVTO = Type.Object({
   medals: Type.Array(Type.Optional(Type.String())),
   selectedBufficorn: Type.Integer(),
   creationIndex: Type.Integer(),
+  bonusEndsAt: Type.Integer(),
+  scannedBonuses: Type.Array(Type.String()),
 })
 export type PlayerVTO = Static<typeof PlayerVTO>
 
@@ -260,6 +262,8 @@ export const DbPlayerVTO = Type.Object({
   id: Type.Optional(Type.String()),
   selectedBufficorn: Type.Integer(),
   creationIndex: Type.Integer(),
+  bonusEndsAt: Type.Integer(),
+  scannedBonuses: Type.Array(Type.String()),
 })
 
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
