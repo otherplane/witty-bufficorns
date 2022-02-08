@@ -7,6 +7,7 @@ from brother_ql.conversion import convert
 from brother_ql.devicedependent import label_sizes, label_type_specs, models
 from brother_ql.raster import BrotherQLRaster
 import glob
+import time
 from PIL import Image, ImageFont
 from PIL import ImageDraw
 from typing import List, Tuple
@@ -43,11 +44,30 @@ def image_with_text(text: str):
     return image
 
 
-def ql_bulk_print(images: List[str], label: str, backend: str, model: str, printer: str, **kwargs):
+def ql_print(image: str, label: str, backend: str, model: str, printer: str, **kwargs):
     qlr = BrotherQLRaster(model)
     qlr.exception_on_warning = True
-    instructions = convert(qlr, images, label, hq=True, **kwargs)
-    send(instructions, printer_identifier=printer, backend_identifier=backend, blocking=True)
+    instructions = convert(qlr, [image], label, hq=True, **kwargs)
+    return send(instructions, printer_identifier=printer, backend_identifier=backend, blocking=True)
+
+
+def ql_bulk_print(images: List[str], label: str, backend: str, model: str, printer: str, offset: int = 0, **kwargs):
+    for (i, image) in enumerate(images):
+        success = False
+        while not success:
+            try:
+                print(f'- Trying to print image {i} out of {len(images)}')
+                status = ql_print(image, label, backend, model, printer, **kwargs)
+            except Exception as e:
+                print('\tException', e)
+                status = {'ready_for_next_job': False, 'printer_is_connected': False}
+
+            if status['ready_for_next_job']:
+                print(f'\tSuccessfully printed image {i} out of {len(images)}')
+                success = True
+            else:
+                print(f'\tPrinting error (status is "{status}"), retrying in a little while...')
+                time.sleep(5)
 
 
 def ql_resolution(label: str):
@@ -68,6 +88,7 @@ def main(config):
         'reef': dict(),
         'vega': dict(),
         'opolis': dict(),
+        'witnet': dict(),
     }
     how_many_colors = len(batches)
 
@@ -82,7 +103,7 @@ def main(config):
                 printed += 1
             else:
                 print(
-                    f'Skipping badge #{index} because more than {printed - 1} stickers have been printed (check the --limit argument)')
+                    f'Skipping badge #{index} because more than {printed} stickers have been printed (check the --limit argument)')
         else:
             print(f'Skipping badge #{index} because its index is LOWER than the --skip argument')
 
