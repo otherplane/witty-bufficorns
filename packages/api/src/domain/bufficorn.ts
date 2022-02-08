@@ -84,4 +84,16 @@ export class Bufficorn {
 
     return BUFFICORN_INDEX[index]
   }
+
+  getWorstTrait(): Trait {
+    const entries: Array<[Trait, number]> = Object.entries(this.stats) as Array<
+      [Trait, number]
+    >
+
+    const [worstTrait, _] = entries.reduce((worstEntry, entry) =>
+      worstEntry[1] > entry[1] ? entry : worstEntry
+    )
+
+    return worstTrait
+  }
 }

@@ -19,6 +19,9 @@ export enum RanchName {
 
 export const RanchNameEnum = Type.Enum(RanchName)
 
+export const BonusRanchName = Type.Literal('WITNET_RANCH')
+export type BonusRanchName = Static<typeof BonusRanchName>
+
 export enum Trait {
   Coat = 'coat',
   Coolness = 'coolness',
@@ -66,8 +69,16 @@ export const RanchVTO = Type.Object({
   trait: TraitEnum,
   creationIndex: Type.Integer(),
 })
-
 export type RanchVTO = Static<typeof RanchVTO>
+
+export const BonusRanchVTO = Type.Object({
+  name: BonusRanchName,
+  bufficorns: Type.Tuple([]),
+  medals: Type.Tuple([]),
+  trait: Type.Null(),
+  creationIndex: Type.Null(),
+})
+export type BonusRanchVTO = Static<typeof BonusRanchVTO>
 
 export const DbRanchVTO = Type.Object({
   name: RanchNameEnum,
@@ -237,7 +248,7 @@ export const PlayerVTO = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
-  ranch: RanchVTO,
+  ranch: Type.Union([RanchVTO, BonusRanchVTO]),
   points: Type.Integer(),
   testnetPoints: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
@@ -255,7 +266,7 @@ export const DbPlayerVTO = Type.Object({
   key: Type.String(),
   token: Type.Optional(Type.String()),
   username: Type.String(),
-  ranch: RanchNameEnum,
+  ranch: Type.Union([RanchNameEnum, BonusRanchName]),
   points: Type.Integer(),
   testnetPoints: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
@@ -268,14 +279,7 @@ export const DbPlayerVTO = Type.Object({
 
 export type DbPlayerVTO = Static<typeof DbPlayerVTO>
 
-export type Stats = {
-  coat: number
-  coolness: number
-  intelligence: number
-  speed: number
-  stamina: number
-  vigor: number
-}
+export type Stats = Record<Trait, number>
 
 export const ExtendedPlayerVTO = Type.Object({
   player: ProtectedPlayerVTO,

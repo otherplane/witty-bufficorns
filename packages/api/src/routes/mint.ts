@@ -66,6 +66,11 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player has no id (key: ${key})`))
       }
 
+      if (player.ranch === 'WITNET_RANCH') {
+        return reply
+          .status(403)
+          .send(new Error(`Bonus player cannot be minted`))
+      }
       // TODO: get extendedPlayer using route /players/:key?
       // Instead of two separate calls to playerModel.get and ranchModel.get
       //GET RANCH Info

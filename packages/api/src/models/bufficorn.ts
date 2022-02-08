@@ -75,6 +75,18 @@ export class BufficornModel {
     return (await this.repository.get({})).map((vto) => new Bufficorn(vto))
   }
 
+  async getSelectedBufficorn(
+    ranch: RanchName,
+    creationIndex: number
+  ): Promise<Bufficorn | null> {
+    const vto = await this.repository.getOne({
+      ranch,
+      creationIndex,
+    })
+
+    return vto ? new Bufficorn(vto) : null
+  }
+
   public async getOne(name: string): Promise<Bufficorn | null> {
     const vto = await this.repository.getOne({ name })
 

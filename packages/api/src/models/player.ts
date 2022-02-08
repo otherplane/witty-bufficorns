@@ -13,11 +13,18 @@ import {
   BONUS_MULTIPLIER,
 } from '../constants'
 import {
-  getRanchFromIndex,
   generateUsernameList,
+  getRanchFromIndex,
   isMainnetTime,
 } from '../utils'
-import { DbPlayerVTO, DbTradeVTO, Resource } from '../types'
+import {
+  DbPlayerVTO,
+  DbTradeVTO,
+  RanchName,
+  Resource 
+ } from '../types'
+import {  } from '../utils'
+import { } from '../types'
 import { Repository } from '../repository'
 import { Player } from '../domain/player'
 
@@ -38,6 +45,7 @@ export class PlayerModel {
     index: number,
     getUsername: (index: number) => string
   ): Player {
+    const isBonusPlayer = index >= 9000
     // Generate the player data.
     // First we derive a deterministic 32-bytes sequence of bytes from a fixed salt plus the player nonce.
     const seed = crypto
@@ -48,7 +56,7 @@ export class PlayerModel {
     const key: string = seed.slice(0, PLAYER_KEY_LENGTH_BYTES).toString('hex')
     const username = getUsername(index)
     const medals: Array<string> = []
-    const ranch = getRanchFromIndex(index)
+    const ranch = isBonusPlayer ? 'WITNET_RANCH' : getRanchFromIndex(index)
     const points: number = 0
     const testnetPoints: number = 0
     const scannedBonuses: Array<string> = []
@@ -56,8 +64,9 @@ export class PlayerModel {
 
     const bufficornIndex = Math.floor(index / RANCHES_COUNT) % 4
 
-    const selectedBufficorn =
-      BUFFICORNS_INDEX_GROUP_BY_RANCH[ranch][bufficornIndex]
+    const selectedBufficorn = isBonusPlayer
+      ? -1
+      : BUFFICORNS_INDEX_GROUP_BY_RANCH[ranch as RanchName][bufficornIndex]
 
     return new Player({
       key,
@@ -111,7 +120,7 @@ export class PlayerModel {
     player: DbPlayerVTO,
     lastTrade: DbTradeVTO | null,
     targetPlayerBonusEndsAt: number
-  ): Resource {
+  ): Resource | Omit<Resource, 'trait'> {
     // Compute points
     let amount
     if (!lastTrade) {
@@ -130,11 +139,12 @@ export class PlayerModel {
 
     // Get trait
     const ranchName = player.ranch
-    const trait = TRAIT_BY_RANCH[ranchName]
 
     return {
       amount,
-      trait,
+      trait: Player.isBonusPlayer(ranchName)
+        ? undefined
+        : TRAIT_BY_RANCH[ranchName as RanchName],
     }
   }
 
@@ -157,6 +167,7 @@ export class PlayerModel {
     const vtos = await this.repository.getSortedBy(
       {
         token: { $exists: true, $ne: undefined },
+        ranch: { $ne: 'WITNET_RANCH' },
       },
       sortBy,
       paginationParams

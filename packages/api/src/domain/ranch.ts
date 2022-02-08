@@ -9,6 +9,7 @@ import {
   DbRanchVTO,
   RanchVTO,
   RanchLeaderboardInfo,
+  BonusRanchVTO,
 } from '../types'
 import { Bufficorn } from './bufficorn'
 
@@ -67,6 +68,16 @@ export class Ranch {
       medals: this.medals,
       trait: this.trait,
       creationIndex: this.creationIndex,
+    }
+  }
+
+  static getBonusRanchVTO(): BonusRanchVTO {
+    return {
+      bufficorns: [],
+      creationIndex: null,
+      medals: [],
+      name: 'WITNET_RANCH',
+      trait: null,
     }
   }
 

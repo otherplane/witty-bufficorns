@@ -5,6 +5,7 @@ import {
   PlayerLeaderboardInfo,
   ObjectId,
   ExtendedPlayerVTO,
+  BonusRanchName,
 } from '../types'
 import { Ranch } from './ranch'
 import { Trade } from './trade'
@@ -16,7 +17,7 @@ export class Player {
   lastTradeOut?: Trade
   key: string
   username: string
-  ranch: RanchName
+  ranch: RanchName | BonusRanchName
   points: number
   testnetPoints: number
   medals: Array<string> = []
@@ -77,7 +78,7 @@ export class Player {
   }
 
   toExtendedPlayerVTO(
-    ranch: Ranch,
+    ranch: Ranch | null,
     {
       lastTradeOut,
       lastTradeIn,
@@ -85,18 +86,38 @@ export class Player {
   ): ExtendedPlayerVTO {
     // Get all Player attributes except token
     const { token, ...protectedplayerVTO } = this.toDbVTO()
-    return {
-      player: {
-        ...protectedplayerVTO,
-        ranch: ranch.toVTO(),
-      },
-      lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
-      lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
+
+    if (ranch) {
+      return {
+        player: {
+          ...protectedplayerVTO,
+          ranch: ranch.toVTO(),
+        },
+        lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
+        lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
+      }
+    } else {
+      // is bonus player
+      return {
+        player: {
+          ...protectedplayerVTO,
+          ranch: Ranch.getBonusRanchVTO(),
+        },
+        lastTradeIn: null,
+        lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
+      }
     }
   }
 
   addBonusTime(currentTimestamp: number) {
     this.bonusEndsAt =
       Math.max(currentTimestamp, this.bonusEndsAt) + POAP_BONUS_TIME
+  }
+      isBonusPlayer(): boolean {
+    return Player.isBonusPlayer(this.ranch)
+  }
+
+  static isBonusPlayer(ranch: string): boolean {
+    return ranch === 'WITNET_RANCH'
   }
 }

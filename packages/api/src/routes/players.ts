@@ -9,6 +9,7 @@ import {
   ExtendedPlayerVTO,
   GetByStringKeyParams,
   JwtVerifyPayload,
+  RanchName,
   SelectBufficornParams,
   SelectBufficornReply,
 } from '../types'
@@ -62,8 +63,26 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player has not been claimed yet (key: ${key})`))
       }
 
+      if (player.isBonusPlayer()) {
+        return reply.status(200).send(
+          await player.toExtendedPlayerVTO(null, {
+            // get last incoming trade
+            lastTradeIn: await fastify.tradeModel.getLast({
+              to: player.username,
+              mainnetFlag: isMainnetTime(),
+            }),
+            // get last outgoing trade
+            lastTradeOut: await fastify.tradeModel.getLast({
+              from: player.username,
+              mainnetFlag: isMainnetTime()
+            }),
+          })
+        )
+      }
       //GET RANCH Info
-      const ranch: Ranch = (await ranchModel.getByName(player.ranch)) as Ranch
+      const ranch: Ranch = (await ranchModel.getByName(
+        player.ranch as RanchName
+      )) as Ranch
 
       const ranchBufficorns: Array<Bufficorn> =
         (await bufficornModel.getBufficornsByRanch(
@@ -123,11 +142,22 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .status(404)
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
+
+      if (player.isBonusPlayer()) {
+        return reply
+          .status(403)
+          .send(new Error(`Bonus player is not allowed to receive funds`))
+      }
+
       const creationIndex = request.params.creationIndex
 
       // Check 3: bufficorn belong to player's ranch
       try {
-        Ranch.checkIfBufficornsBelongToRanch([creationIndex], player.ranch)
+        // is player.ranch is not RanchName error is returned above
+        Ranch.checkIfBufficornsBelongToRanch(
+          [creationIndex],
+          player.ranch as RanchName
+        )
       } catch (err) {
         return reply.status(404).send(err as Error)
       }
