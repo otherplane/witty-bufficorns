@@ -52,7 +52,7 @@ export const MINT_PRIVATE_KEY = process.env.MINT_PRIVATE_KEY || '0x00'
 // Tell how many players to generate
 export const PLAYERS_COUNT: number = process.env.PLAYERS_COUNT
   ? parseInt(process.env.PLAYERS_COUNT)
-  : 10
+  : 9049 
 
 // Tell how many bufficorns to generate for each ranch
 export const BUFFICORNS_PER_RANCH: number = process.env.BUFFICORNS_PER_RANCH
@@ -89,7 +89,7 @@ export const MONGO_URI: string =
   'MONGO_URI=mongodb://your_username:your_password@localhost:27017/database'
 
 export const PLUGIN_TIMEOUT: number = parseInt(
-  process.env.PLUGIN_TIMEOUT || '30000'
+  process.env.PLUGIN_TIMEOUT || '120000'
 )
 
 export const BUFFICORN_INDEX: Record<number, BufficornName> = {

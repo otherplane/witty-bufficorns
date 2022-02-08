@@ -113,12 +113,24 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
     // Initialize game repositories and bootstrap
-    await fastify.playerModel.bootstrap(PLAYERS_COUNT)
+    const players = await fastify.playerModel.bootstrap(PLAYERS_COUNT)
+    if (players?.length !== PLAYERS_COUNT) {
+      throw new Error(`There are only ${players?.length} of ${PLAYERS_COUNT} players`)
+    }
+
     const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
     // Get bufficorns if they are already bootstrapped
     const bufficorns =
       bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
-    await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)
+      if (bufficorns?.length !== 24) {
+      throw new Error(`There are only ${bufficorns?.length} of 24 bufficorns`)
+    }
+
+    const ranches = await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)
+    if (ranches?.length !== 6) {
+      throw new Error(`There are only ${ranches?.length} of 6 ranches`)
+    }
+    
     next()
   })
 
