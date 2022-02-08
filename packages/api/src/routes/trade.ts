@@ -132,7 +132,8 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const resource: Resource = playerModel.generateResource(
         fromPlayer.toDbVTO(),
-        lastTrade
+        lastTrade,
+        toPlayer.bonusEndsAt
       )
 
       let bufficorn: Bufficorn

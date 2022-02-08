@@ -10,6 +10,7 @@ import {
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
   TRAIT_BY_RANCH,
+  BONUS_MULTIPLIER,
 } from '../constants'
 import {
   getRanchFromIndex,
@@ -108,7 +109,8 @@ export class PlayerModel {
 
   public generateResource(
     player: DbPlayerVTO,
-    lastTrade: DbTradeVTO | null
+    lastTrade: DbTradeVTO | null,
+    targetPlayerBonusEndsAt: number
   ): Resource {
     // Compute points
     let amount
@@ -119,6 +121,11 @@ export class PlayerModel {
         Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR),
         TRADE_POINTS_MIN
       )
+    }
+
+    const currentTimestamp = Date.now()
+    if (currentTimestamp < targetPlayerBonusEndsAt) {
+      amount = amount * BONUS_MULTIPLIER
     }
 
     // Get trait

@@ -103,6 +103,11 @@ export const POAP_BONUS_TIME: number = parseInt(
   process.env.POAP_BONUS_TIME || '1800000'
 )
 
+// When a bonus is active, the player will have their points multiplied by this factor
+export const BONUS_MULTIPLIER: number = parseFloat(
+  process.env.BONUS_MULTIPLIER || '2'
+)
+
 export const TOTAL_BUFFICORNS = 24
 
 export const BUFFICORN_INDEX: Record<number, BufficornName> = {
@@ -179,9 +184,7 @@ export default {
   INDEX_TO_RANCH,
   BUFFICORNS_INDEX_GROUP_BY_RANCH,
   PLUGIN_TIMEOUT,
-<<<<<<< HEAD
   TOTAL_BUFFICORNS,
-=======
   POAP_BONUS_TIME,
->>>>>>> 33c4a09 (feat(api): implement POST /players/bonus)
+  BONUS_MULTIPLIER,
 }
