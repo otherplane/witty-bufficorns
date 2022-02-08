@@ -306,6 +306,91 @@ describe('player.ts', () => {
     })
   })
 
+  describe('POST /player/bonus', () => {
+    it('should NOT add bonus for invalid POAP', async () => {
+      const token = await authenticatePlayer(initialPlayers[0].key)
+
+      await serverInject(
+        {
+          method: 'POST',
+          payload: {
+            url: 'aaaaaaa',
+          },
+          url: `/players/bonus`,
+          headers: {
+            authorization: token,
+          },
+        },
+        (err, response) => {
+          expect(err).toBeFalsy()
+          expect(response.statusCode).toBe(403)
+          expect(response.json().message).toBe('Invalid POAP')
+        }
+      )
+    })
+
+    it('should add bonus for valid POAP', async () => {
+      const token = await authenticatePlayer(initialPlayers[0].key)
+
+      await serverInject(
+        {
+          method: 'POST',
+          payload: {
+            url: 'realpoap',
+          },
+          url: `/players/bonus`,
+          headers: {
+            authorization: token,
+          },
+        },
+        (err, response) => {
+          expect(err).toBeFalsy()
+          expect(response.statusCode).toBe(200)
+          expect(typeof response.json().bonusEndsAt).toBe('number')
+        }
+      )
+    })
+
+    it('should NOT add bonus for valid POAP the second time', async () => {
+      const token = await authenticatePlayer(initialPlayers[0].key)
+
+      await serverInject(
+        {
+          method: 'POST',
+          payload: {
+            url: 'realpoap',
+          },
+          url: `/players/bonus`,
+          headers: {
+            authorization: token,
+          },
+        },
+        (err, response) => {
+          expect(err).toBeFalsy()
+          expect(response.statusCode).toBe(200)
+        }
+      )
+
+      await serverInject(
+        {
+          method: 'POST',
+          payload: {
+            url: 'realpoap',
+          },
+          url: `/players/bonus`,
+          headers: {
+            authorization: token,
+          },
+        },
+        (err, response) => {
+          expect(err).toBeFalsy()
+          expect(response.statusCode).toBe(403)
+          expect(response.json().message).toBe('POAP already claimed')
+        }
+      )
+    })
+  })
+
   // test('should get EGG #1 - get after incubation', async (t) => {
   //   const token = await authenticatePlayer(initialPlayers[0].key)
 

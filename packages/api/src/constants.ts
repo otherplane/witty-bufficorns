@@ -98,6 +98,11 @@ export const PLUGIN_TIMEOUT: number = parseInt(
   process.env.PLUGIN_TIMEOUT || '120000'
 )
 
+// Default bonus time: 30 minutes
+export const POAP_BONUS_TIME: number = parseInt(
+  process.env.POAP_BONUS_TIME || '1800000'
+)
+
 export const TOTAL_BUFFICORNS = 24
 
 export const BUFFICORN_INDEX: Record<number, BufficornName> = {
@@ -174,5 +179,9 @@ export default {
   INDEX_TO_RANCH,
   BUFFICORNS_INDEX_GROUP_BY_RANCH,
   PLUGIN_TIMEOUT,
+<<<<<<< HEAD
   TOTAL_BUFFICORNS,
+=======
+  POAP_BONUS_TIME,
+>>>>>>> 33c4a09 (feat(api): implement POST /players/bonus)
 }

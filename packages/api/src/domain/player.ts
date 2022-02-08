@@ -1,3 +1,4 @@
+import { POAP_BONUS_TIME } from '../constants'
 import {
   RanchName,
   DbPlayerVTO,
@@ -92,5 +93,10 @@ export class Player {
       lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
       lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
     }
+  }
+
+  addBonusTime(currentTimestamp: number) {
+    this.bonusEndsAt =
+      Math.max(currentTimestamp, this.bonusEndsAt) + POAP_BONUS_TIME
   }
 }

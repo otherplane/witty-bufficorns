@@ -298,6 +298,16 @@ export const SelectBufficornReply = Type.Object({
 
 export type SelectBufficornReply = Static<typeof SelectBufficornReply>
 
+export const BonusParams = Type.Object({
+  url: Type.String(),
+})
+export type BonusParams = Static<typeof BonusParams>
+
+export const BonusReply = Type.Object({
+  bonusEndsAt: Type.Number(),
+})
+export type BonusReply = Static<typeof BonusReply>
+
 export enum BufficornName {
   Bufficorn0 = 'Bufficorn-0',
   Bufficorn1 = 'Bufficorn-1',

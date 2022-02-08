@@ -176,6 +176,19 @@ export class PlayerModel {
     return vto ? new Player(vto) : null
   }
 
+  public async updateBonuses(
+    username: string,
+    scannedBonuses: Array<string>,
+    bonusEndsAt: number
+  ): Promise<Player | null> {
+    const vto = await this.repository.updateOne(
+      { username },
+      { bonusEndsAt, scannedBonuses }
+    )
+
+    return vto ? new Player(vto) : null
+  }
+
   public async countActive() {
     return this.repository.count({ token: { $exists: true, $ne: undefined } })
   }
