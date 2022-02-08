@@ -46,6 +46,10 @@ $harmony: #217821;
 $harmony-secondary: #7ec07e;
 $harmony-opacity-1: #21782175;
 $harmony-opacity-2: #21782110;
+$witnet: #a1a1a1;
+$witnet-secondary: #acacac;
+$witnet-opacity-1: #acacac75;
+$witnet-opacity-2: #acacac10;
 
 html,
 body {
@@ -88,6 +92,12 @@ body {
   --secondary-color: #{$balancer-secondary};
   --primary-color-opacity-1: #{$balancer-opacity-1};
   --primary-color-opacity-2: #{$balancer-opacity-2};
+}
+.witnet {
+  --primary-color: #{$witnet};
+  --secondary-color: #{$witnet-secondary};
+  --primary-color-opacity-1: #{$witnet-opacity-1};
+  --primary-color-opacity-2: #{$witnet-opacity-2};
 }
 
 .bg-white {

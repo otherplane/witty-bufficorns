@@ -14,11 +14,19 @@
     <picture>
       <source media="(max-width: 799px)" :srcset="importPng(`${name}480w`)" />
       <source media="(min-width: 800px)" :srcset="importPng(`${name}800w`)" />
-      <source media="(max-width: 380px)" :srcset="importPng(`${name}100w`)" />
+      <source media="(min-width: 369px)" :srcset="importPng(`${name}`)" />
+      <source media="(max-width: 368px)" :srcset="importPng(`${name}100w`)" />
       <img
         class="bufficorn-image"
         :class="{ flip, horizontal }"
         :src="importPng(name)"
+        :srcset="
+          `${importPng(`${name}100w`)} 100w, ${importPng(
+            `${name}`
+          )} 120w, ${importPng(`${name}480w`)} 480w, ${importPng(
+            `${name}800w`
+          )} 800w`
+        "
       />
     </picture>
   </div>
@@ -74,7 +82,6 @@ export default {
   height: auto;
   max-width: 100%;
   max-height: 100%;
-  border-radius: 0px;
   grid-column: 1;
   &.horizontal {
     margin-bottom: 32px;

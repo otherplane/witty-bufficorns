@@ -30,7 +30,7 @@
       </p>
       <div class="ranch-logos">
         <img
-          v-for="ranch in Object.values(RANCHES)"
+          v-for="ranch in ranches"
           :key="ranch"
           class="ranch"
           :src="importSvg(ranch)"
@@ -315,7 +315,9 @@ export default {
     onMounted(() => {
       player.getTheme()
     })
-    return { player, importSvg, ATTRIBUTES, RANCHES }
+    const ranches = Object.values(RANCHES)
+    ranches.pop()
+    return { player, importSvg, ATTRIBUTES, ranches }
   }
 }
 </script>

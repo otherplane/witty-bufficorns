@@ -28,7 +28,8 @@ export const RANCHES = {
   [`Vega Slopes Range`]: 'vega',
   [`Balancer Peak State`]: 'balancer',
   [`Gold Reef Co.`]: 'reef',
-  [`Infinite Harmony Farm`]: 'harmony'
+  [`Infinite Harmony Farm`]: 'harmony',
+  ['Witnet']: 'witnet'
 }
 export const ATTRIBUTES = {
   coat: {
