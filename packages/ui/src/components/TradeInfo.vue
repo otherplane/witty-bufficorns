@@ -138,33 +138,4 @@ export default {
     font-size: 18px;
   }
 }
-.carousel {
-  border-radius: 4px;
-  border: 1px solid var(--primary-color);
-  .label {
-    font-weight: bold;
-  }
-}
-.carousel-open:checked + .carousel-item {
-  position: static;
-  opacity: 100;
-}
-
-.carousel-item {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto auto;
-  align-items: center;
-  text-align: center;
-  padding: 8px;
-  justify-content: center;
-}
-
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

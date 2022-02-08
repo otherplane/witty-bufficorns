@@ -13,6 +13,7 @@ export const useStore = defineStore('player', {
       username: '',
       ranch: {},
       selectedBufficorn: null,
+      bonnus: null,
       tradeInfo: null,
       tradeIn: null,
       tradeOut: null,
@@ -40,8 +41,7 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      // return this.gameOverTimeMilli < Date.now()
-      return true
+      return this.gameOverTimeMilli < Date.now()
     }
   },
   actions: {

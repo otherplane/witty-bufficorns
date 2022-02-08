@@ -1,6 +1,6 @@
 <template>
   <div class="medals-container">
-    <p class="medals-title">MEDALS</p>
+    <p class="medals-title">AWARDS</p>
     <div class="nft-container">
       <div
         v-for="preview in previews"

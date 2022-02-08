@@ -123,7 +123,7 @@ export function useWeb3 () {
       const from = (await requestAccounts(web3))[0]
       const mintArgs = await player.getContractArgs(from)
       contract.methods
-        .mint(...mintArgs.values())
+        .mintFarmerAwards(...mintArgs.values())
         .send({ from })
         .on('error', error => {
           player.setError('mint', createErrorMessage(errorMintMessage))

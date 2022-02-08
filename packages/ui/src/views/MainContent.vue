@@ -37,6 +37,7 @@
           alt="Witty Bufficorns ranch logo"
         />
       </div>
+      <BonnusBanner />
       <TradeInfo />
       <NFTPreview v-if="previews.length" :previews="previews" />
       <MintInformation />
@@ -65,7 +66,7 @@
           type="dark"
           :slim="true"
         >
-          MINT NFT
+          CLAIM NFT AWARDS
         </Button>
         <a
           v-if="player.errors.network"
