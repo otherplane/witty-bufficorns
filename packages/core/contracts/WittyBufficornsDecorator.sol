@@ -124,16 +124,22 @@ contract WittyBufficornsDecorator
         returns (string memory)
     {
         if (_ranchId == 0) {
+            // Gold Reef Co. => Warm Hay
             return "Warm Hay";
         } else if (_ranchId == 1) {
+            // Infinite Harmony Farm => Fresh Grass
             return "Fresh Grass";
         } else if (_ranchId == 2) {
+            // Balancer Peak State => Fresh Grass
             return "Smart Sedge";
         } else if (_ranchId == 3) {
+            // The Ol' Algoranch => Mighty Acorn
             return "Mighty Acorn";
         } else if (_ranchId == 4) {
+            // Vega Slopes Range => Tireless Water
             return "Tireless Water";
         } else if (_ranchId == 5) {
+            // Opolis Reservation => Hearty Berry
             return "Hearty Berry";
         } else {
             return "Mystery Resource";
@@ -177,7 +183,7 @@ contract WittyBufficornsDecorator
         returns (string memory)
     {
         if (_randomness != bytes32(0)) {
-            // convolute game global randomness and unique farmer name
+            // convolute given randomness and unique farmer name
             _randomness = keccak256(abi.encode(_randomness, _metadata.farmer.name));
         }
         string memory _tokenIdStr = _tokenId.toString();

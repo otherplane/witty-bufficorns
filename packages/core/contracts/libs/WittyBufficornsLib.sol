@@ -234,6 +234,8 @@ library WittyBufficornsLib {
             return "Most Enduring Bufficorn";
         } else if (self == Awards.MostVigorousBufficorn) {
             return "Most Vigorous Bufficorn";
+        } else if (self == Awards.BestRanch) {
+            return "Best Ranch";
         } else {
             return "Best Breeder";
         }
