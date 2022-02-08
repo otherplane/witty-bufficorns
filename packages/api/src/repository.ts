@@ -121,12 +121,14 @@ export class Repository<T> {
 
       if (!success.acknowledged)
         throw new Error(
-          `Element could not be updated (name: ${element[this.keyName]})`
+          `Element could not be updated: ${JSON.stringify(filter)}`
         )
 
       return (await this.getOne(filter)) as WithId<T>
     } catch (error) {
-      throw new Error(`Element does not exist (name: ${element[this.keyName]})`)
+      throw new Error(
+        `${error}. Tried to update key: ${JSON.stringify(filter)}`
+      )
     }
   }
 
