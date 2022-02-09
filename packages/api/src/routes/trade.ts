@@ -1,5 +1,5 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
-import { PLAYER_MINT_TIMESTAMP, TRADE_DURATION_MILLIS } from '../constants'
+import { GAME_END_TIMESTAMP, TRADE_DURATION_MILLIS } from '../constants'
 
 import {
   AuthorizationHeader,
@@ -12,7 +12,7 @@ import {
 } from '../types'
 import {
   calculateRemainingCooldown,
-  isTimeToMint,
+  gameOver,
   printRemainingMillis,
 } from '../utils'
 import { Bufficorn } from '../domain/bufficorn'
@@ -32,7 +32,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     },
     handler: async (request: FastifyRequest<{ Body: TradeParams }>, reply) => {
       // Check 0: trade period
-      if (PLAYER_MINT_TIMESTAMP && isTimeToMint())
+      if (GAME_END_TIMESTAMP && gameOver())
         return reply.status(403).send(new Error(`Trade period is over.`))
 
       // Check 1: token is valid

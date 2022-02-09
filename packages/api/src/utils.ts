@@ -1,6 +1,7 @@
 import {
   INDEX_TO_RANCH,
   PLAYER_MINT_TIMESTAMP,
+  GAME_END_TIMESTAMP,
   RANCHES_COUNT,
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,
@@ -38,6 +39,10 @@ export function getRanchFromIndex(index: number): RanchName {
 
 export function fromHexToUint8Array(hex: string) {
   return Uint8Array.from(Buffer.from(hex.substring(2).padStart(64, '0'), 'hex'))
+}
+
+export function gameOver() {
+  return Date.now() >= GAME_END_TIMESTAMP * 1000
 }
 
 export function isTimeToMint() {

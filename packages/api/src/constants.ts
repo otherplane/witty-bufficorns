@@ -68,6 +68,11 @@ export const RANCHES_COUNT = process.env.RANCHES_COUNT
 // If `PLAYER_MINT_TIMESTAMP=0`, checks are ignored (for testing purposes)
 export const PLAYER_MINT_TIMESTAMP = process.env.PLAYER_MINT_TIMESTAMP
   ? parseInt(process.env.PLAYER_MINT_TIMESTAMP)
+  : 1645353000 // Sunday, February 20, 2022 18:30:00 PM (UTC)
+
+// If `GAME_END_TIMESTAMP=0`, checks are ignored (for testing purposes)
+export const GAME_END_TIMESTAMP = process.env.GAME_END_TIMESTAMP
+  ? parseInt(process.env.GAME_END_TIMESTAMP)
   : 1645351200 // Sunday, February 20, 2022 18:00:00 PM (UTC)
 
 // Web3 provider URL
@@ -148,6 +153,7 @@ export default {
   RANCHES_COUNT,
   PLAYER_KEY_LENGTH_BYTES,
   PLAYER_MINT_TIMESTAMP,
+  GAME_END_TIMESTAMP,
   PLAYERS_COUNT,
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,

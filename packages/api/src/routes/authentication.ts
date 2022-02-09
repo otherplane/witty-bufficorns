@@ -1,8 +1,8 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 
-import { PLAYER_MINT_TIMESTAMP } from '../constants'
+import { GAME_END_TIMESTAMP } from '../constants'
 import { ClaimPlayerParams, DbPlayerVTO } from '../types'
-import { isTimeToMint } from '../utils'
+import { gameOver } from '../utils'
 
 const authentication: FastifyPluginAsync = async (
   fastify,
@@ -26,7 +26,7 @@ const authentication: FastifyPluginAsync = async (
         reply
       ) => {
         // Check 0: check if game is over
-        if (PLAYER_MINT_TIMESTAMP && isTimeToMint())
+        if (GAME_END_TIMESTAMP && gameOver())
           return reply
             .status(403)
             .send(
