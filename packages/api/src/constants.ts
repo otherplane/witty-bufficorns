@@ -75,6 +75,12 @@ export const GAME_END_TIMESTAMP = process.env.GAME_END_TIMESTAMP
   ? parseInt(process.env.GAME_END_TIMESTAMP)
   : 1645351200 // Sunday, February 20, 2022 18:00:00 PM (UTC)
 
+// Mainnet date in millis
+// If `PLAYER_MAINNET_TIMESTAMP=0`, checks are ignored (for testing purposes)
+export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
+  ? parseInt(process.env.PLAYER_MAINNET_TIMESTAMP)
+  : 1645131600 // Thursday, February 17, 2022 09:00:00 PM (UTC)
+
 // Web3 provider URL
 export const WEB3_PROVIDER =
   process.env.WEB3_PROVIDER || 'https://mainnet.infura.io/v3/YOUR_PROJECT_ID'

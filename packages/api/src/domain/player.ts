@@ -7,6 +7,7 @@ import {
 } from '../types'
 import { Ranch } from './ranch'
 import { Trade } from './trade'
+import { isMainnetTime } from '../utils'
 
 export class Player {
   token?: string
@@ -16,6 +17,7 @@ export class Player {
   username: string
   ranch: RanchName
   points: number
+  testnetPoints: number
   medals: Array<string> = []
   id?: ObjectId
   selectedBufficorn: number
@@ -26,6 +28,7 @@ export class Player {
     this.username = vto.username
     this.ranch = vto.ranch
     this.points = vto.points
+    this.testnetPoints = vto.testnetPoints
     this.medals = vto.medals
     this.token = vto.token
     this.id = new ObjectId(vto.id)
@@ -39,6 +42,7 @@ export class Player {
       username: this.username,
       ranch: this.ranch,
       points: this.points,
+      testnetPoints: this.testnetPoints,
       medals: this.medals,
       token: this.token,
       id: this.id?.toString(),
@@ -56,7 +60,9 @@ export class Player {
   ): { players: Array<PlayerLeaderboardInfo>; total: number } {
     return {
       players: players.map((p, index) => ({
-        ...p,
+        username: p.username,
+        creationIndex: p.creationIndex,
+        points: isMainnetTime() ? p.points : p.testnetPoints,
         position: paginationOffset + index,
       })),
       total: totalPlayers,

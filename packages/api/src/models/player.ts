@@ -11,7 +11,11 @@ import {
   TRADE_POINTS_MIN,
   TRAIT_BY_RANCH,
 } from '../constants'
-import { getRanchFromIndex, generateUsernameList } from '../utils'
+import {
+  getRanchFromIndex,
+  generateUsernameList,
+  isMainnetTime,
+} from '../utils'
 import { DbPlayerVTO, DbTradeVTO, Resource } from '../types'
 import { Repository } from '../repository'
 import { Player } from '../domain/player'
@@ -45,6 +49,7 @@ export class PlayerModel {
     const medals: Array<string> = []
     const ranch = getRanchFromIndex(index)
     const points: number = 0
+    const testnetPoints: number = 0
 
     const bufficornIndex = Math.floor(index / RANCHES_COUNT) % 4
 
@@ -57,6 +62,7 @@ export class PlayerModel {
       ranch,
       medals,
       points,
+      testnetPoints,
       selectedBufficorn,
       creationIndex: index,
     })
@@ -103,7 +109,7 @@ export class PlayerModel {
     // Compute points
     let amount
     if (!lastTrade) {
-      amount = TRADE_POINTS
+      amount = isMainnetTime() ? TRADE_POINTS : TRADE_POINTS / 10
     } else {
       amount = Math.max(
         Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR),
@@ -125,14 +131,23 @@ export class PlayerModel {
     limit: number
     offset: number
   }): Promise<Array<Player>> {
+    let sortBy = {}
+    if (isMainnetTime()) {
+      sortBy = {
+        points: -1,
+      }
+    } else {
+      sortBy = {
+        testnetPoints: -1,
+      }
+    }
+
     // TODO: Remove mongoDB $exists from model
     const vtos = await this.repository.getSortedBy(
       {
         token: { $exists: true, $ne: undefined },
       },
-      {
-        points: -1,
-      },
+      sortBy,
       paginationParams
     )
 

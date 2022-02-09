@@ -24,6 +24,7 @@ export class TradeModel {
   public async getLast(search: {
     from?: string
     to?: string
+    mainnetFlag: boolean
   }): Promise<Trade | null> {
     const vto = await this.repository.getLast(search)
     return vto ? new Trade(vto) : null

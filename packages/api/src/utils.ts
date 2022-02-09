@@ -2,6 +2,7 @@ import {
   INDEX_TO_RANCH,
   PLAYER_MINT_TIMESTAMP,
   GAME_END_TIMESTAMP,
+  PLAYER_MAINNET_TIMESTAMP,
   RANCHES_COUNT,
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,
@@ -47,6 +48,10 @@ export function gameOver() {
 
 export function isTimeToMint() {
   return Date.now() >= PLAYER_MINT_TIMESTAMP * 1000
+}
+
+export function isMainnetTime() {
+  return Date.now() >= PLAYER_MAINNET_TIMESTAMP * 1000
 }
 
 export function printRemainingMillis(millis: number) {

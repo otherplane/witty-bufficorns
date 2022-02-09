@@ -13,6 +13,7 @@ import {
 import {
   calculateRemainingCooldown,
   gameOver,
+  isMainnetTime,
   printRemainingMillis,
 } from '../utils'
 import { Bufficorn } from '../domain/bufficorn'
@@ -109,6 +110,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const lastTrade = await tradeModel.getLast({
         from: fromPlayer.username,
         to: toPlayer.username,
+        mainnetFlag: isMainnetTime(),
       })
       const remainingCooldown: number = lastTrade
         ? calculateRemainingCooldown(lastTrade.ends)
@@ -161,6 +163,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         resource,
         timestamp: currentTimestamp,
         bufficorn: bufficorn.name,
+        mainnetFlag: isMainnetTime(),
       })
 
       return reply.status(200).send(trade)

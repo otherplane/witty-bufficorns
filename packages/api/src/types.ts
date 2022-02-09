@@ -215,6 +215,7 @@ export const DbTradeVTO = Type.Object({
   }),
   timestamp: Type.Number(),
   ends: Type.Number(),
+  mainnetFlag: Type.Boolean(),
 })
 export type DbTradeVTO = Static<typeof DbTradeVTO>
 
@@ -238,6 +239,7 @@ export const PlayerVTO = Type.Object({
   username: Type.String(),
   ranch: RanchVTO,
   points: Type.Integer(),
+  testnetPoints: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
   selectedBufficorn: Type.Integer(),
   creationIndex: Type.Integer(),
@@ -253,6 +255,7 @@ export const DbPlayerVTO = Type.Object({
   username: Type.String(),
   ranch: RanchNameEnum,
   points: Type.Integer(),
+  testnetPoints: Type.Integer(),
   medals: Type.Array(Type.Optional(Type.String())),
   id: Type.Optional(Type.String()),
   selectedBufficorn: Type.Integer(),

@@ -10,6 +10,7 @@ import {
   SelectBufficornParams,
   SelectBufficornReply,
 } from '../types'
+import { isMainnetTime } from '../utils'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
@@ -75,10 +76,12 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           // get last incoming trade
           lastTradeIn: await fastify.tradeModel.getLast({
             to: player.username,
+            mainnetFlag: isMainnetTime(),
           }),
           // get last outgoing trade
           lastTradeOut: await fastify.tradeModel.getLast({
             from: player.username,
+            mainnetFlag: isMainnetTime(),
           }),
         })
       )
