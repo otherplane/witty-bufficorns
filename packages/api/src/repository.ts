@@ -139,4 +139,8 @@ export class Repository<T> {
   public async count(filter: Filter<T>) {
     return this.collection.countDocuments(filter)
   }
+
+  public async drop() {
+    return this.collection.drop()
+  }
 }

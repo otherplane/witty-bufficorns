@@ -5,6 +5,7 @@ import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify'
 import { fastifyMongodb } from 'fastify-mongodb'
 import fp from 'fastify-plugin'
 import { join } from 'path'
+import * as fs from 'fs'
 
 import {
   PLAYERS_COUNT,
@@ -119,6 +120,29 @@ const app: FastifyPluginAsync<AppOptions> = async (
     const bufficorns =
       bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
     await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)
+    if (process.env.IMPORT_BUFFICORN_SCORES) {
+      // TODO: error handling: file does not exist, file is not json, json is not valid, bufficorn name does not exist
+      console.log(
+        'Importing bufficorns from file',
+        process.env.IMPORT_BUFFICORN_SCORES
+      )
+      let rawdata = fs.readFileSync(
+        process.env.IMPORT_BUFFICORN_SCORES,
+        'utf-8'
+      )
+      let bufficorns = JSON.parse(rawdata)
+      for (let bufficorn of bufficorns) {
+        fastify.bufficornModel.update(bufficorn)
+      }
+      // Reset player scores to zero
+      console.log(
+        'Resetting player scores and trades',
+        process.env.IMPORT_BUFFICORN_SCORES
+      )
+      fastify.playerModel.resetScores()
+      // Delete trade history
+      fastify.tradeModel.reset()
+    }
     next()
   })
 

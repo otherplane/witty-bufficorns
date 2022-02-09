@@ -43,4 +43,10 @@ export class TradeModel {
       $or: [{ from: username }, { to: username }],
     })
   }
+
+  public async reset() {
+    // TODO: trying to drop a repository that does not exist yet results in an UnhandledPromiseRejectionWarning: MongoServerError: ns not found
+    // But it works anyway
+    this.repository.drop()
+  }
 }

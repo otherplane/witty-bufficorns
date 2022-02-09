@@ -156,4 +156,12 @@ export class PlayerModel {
   public async countActive() {
     return this.repository.count({ token: { $exists: true, $ne: undefined } })
   }
+
+  public async resetScores() {
+    const allPlayers = await this.getMany({ limit: 10000000, offset: 0 })
+    for (let player of allPlayers) {
+      player.points = 0
+      this.update(player.toDbVTO())
+    }
+  }
 }
