@@ -11,6 +11,8 @@ import {
   JWT_SECRET,
   MONGO_URI,
   TRADE_DURATION_MILLIS,
+  TOTAL_BUFFICORNS,
+  RANCHES_COUNT,
 } from './constants'
 import { PlayerModel } from './models/player'
 import { BufficornModel } from './models/bufficorn'
@@ -115,22 +117,30 @@ const app: FastifyPluginAsync<AppOptions> = async (
     // Initialize game repositories and bootstrap
     const players = await fastify.playerModel.bootstrap(PLAYERS_COUNT)
     if (players?.length !== PLAYERS_COUNT) {
-      throw new Error(`There are only ${players?.length} of ${PLAYERS_COUNT} players`)
+      throw new Error(
+        `There are only ${players?.length} of ${PLAYERS_COUNT} players`
+      )
     }
 
     const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
     // Get bufficorns if they are already bootstrapped
     const bufficorns =
       bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
-      if (bufficorns?.length !== 24) {
-      throw new Error(`There are only ${bufficorns?.length} of 24 bufficorns`)
+    if (bufficorns?.length !== TOTAL_BUFFICORNS) {
+      throw new Error(
+        `There are only ${bufficorns?.length} of ${TOTAL_BUFFICORNS} bufficorns`
+      )
     }
 
-    const ranches = await fastify.ranchModel.bootstrap(bufficorns as Array<Bufficorn>)
-    if (ranches?.length !== 6) {
-      throw new Error(`There are only ${ranches?.length} of 6 ranches`)
+    const ranches = await fastify.ranchModel.bootstrap(
+      bufficorns as Array<Bufficorn>
+    )
+    if (ranches?.length !== RANCHES_COUNT) {
+      throw new Error(
+        `There are only ${ranches?.length} of ${RANCHES_COUNT} ranches`
+      )
     }
-    
+
     next()
   })
 
