@@ -26,7 +26,7 @@ import {
 
 const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
-  const { bufficornModel, playerModel, ranchModel, mintModel } = fastify
+  const { bufficornModel, playerModel, ranchModel } = fastify
 
   fastify.post<{ Body: MintParams; Reply: MintOutput | Error }>('/mint', {
     schema: {
@@ -74,12 +74,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return reply
           .status(405)
           .send(new Error(`Player has no id (key: ${key})`))
-      }
-
-      // If previously minted, reply with same mint output
-      const prevMint = await mintModel.get(player.id)
-      if (prevMint) {
-        return reply.status(200).send(prevMint)
       }
 
       const web3 = new Web3()
@@ -249,9 +243,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           farmerAwards,
         },
       }
-
-      // Save mint output for future requests
-      await mintModel.create(response, player.id)
 
       return reply.status(200).send(response)
     },
