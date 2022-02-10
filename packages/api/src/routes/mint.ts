@@ -7,6 +7,8 @@ import {
   PLAYER_MINT_TIMESTAMP,
   MINT_PRIVATE_KEY,
   RANCH_TO_INDEX,
+  WEB3_PROVIDER,
+  WITMON_ERC721_ADDRESS,
 } from '../constants'
 import { Bufficorn } from '../domain/bufficorn'
 import { Ranch } from '../domain/ranch'
@@ -23,6 +25,8 @@ import {
   isTimeToMint,
   groupBufficornsByRanch,
 } from '../utils'
+
+const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
 
 const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
@@ -92,13 +96,41 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return reply.status(200).send(prevMint)
       }
 
-      const web3 = new Web3()
+      const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
       // Check address is valid
       if (!web3.utils.isAddress(request.body.address)) {
         return reply
           .status(409)
           .send(new Error(`Mint address should be a valid Ethereum addresss`))
       }
+
+      // Fetch metadata from contract using Web3
+      const abi = WITTY_BUFFICORNS_ERC721_ABI
+
+      const contract = new web3.eth.Contract(abi, WITMON_ERC721_ADDRESS)
+      // TODO: ranch id goes from 0 to 5, ensure compatibility with solidity
+      const ranchId = RANCH_TO_INDEX[player.ranch]
+
+      let callResult
+      try {
+        callResult = await contract.methods.getRanchWeather(ranchId).call()
+      } catch (err) {
+        console.error(err)
+        return reply
+          .status(404)
+          .send(new Error(`Error calling getRanchWeather method from contract`))
+      }
+
+      /* Returns: (
+            uint256 _lastTimestamp,
+            string memory _lastDescription
+        )
+        */
+      const ranchWeather = callResult[1]
+      console.log('ranch weather', ranchWeather)
+      // TODO: we should cache the result to avoid useless calls to web3.
+      // But, the weather can change, so we cannot simply cache it.
+      // Possible solution: cache for 24 hours only, or manually delete the cache every time the weather changes
 
       // Build message to sign
       // Fake values for testing
@@ -133,7 +165,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       //* 7 => */ MostEnduringBufficorn,
       //* 8 => */ MostVigorousBufficorn
       //}
-      const ranchId = RANCH_TO_INDEX[player.ranch]
       const farmerId = player.creationIndex
       const farmerScore = player.points
       const farmerName = player.username
