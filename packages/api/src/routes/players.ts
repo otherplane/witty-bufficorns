@@ -181,7 +181,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const poapUrl = request.body.url
 
       // TODO: real validate poap url
-      if (!(poapUrl === 'realpoap')) {
+      if (!fastify.poapValidator.isValid(poapUrl)) {
         return reply.status(403).send(new Error(`Invalid POAP`))
       }
       if (player.scannedBonuses.includes(poapUrl)) {

@@ -5,6 +5,8 @@ import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify'
 import { fastifyMongodb } from 'fastify-mongodb'
 import fp from 'fastify-plugin'
 import { join } from 'path'
+import path from 'path'
+import fs from 'fs'
 
 import {
   PLAYERS_COUNT,
@@ -21,6 +23,7 @@ import { TradeModel } from './models/trade'
 import { Bufficorn } from './domain/bufficorn'
 import { MintModel } from './models/mint'
 import { BlockList } from './blockList'
+import { PoapValidator } from './poapValidator'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -32,6 +35,7 @@ declare module 'fastify' {
 
     sendResourceCooldowns: BlockList
     receiveResourceCooldowns: BlockList
+    poapValidator: PoapValidator
   }
 }
 
@@ -108,8 +112,27 @@ const app: FastifyPluginAsync<AppOptions> = async (
     next()
   }
 
+  // Load POAP List
+  const initializePoapValidator: FastifyPluginCallback = async (
+    fastify,
+    options,
+    next
+  ) => {
+    const poaps: Array<string> = JSON.parse(
+      await fs.readFileSync(path.join(__dirname, 'test_poaps.json'), {
+        encoding: 'utf-8',
+      })
+    )
+
+    const poapValidator = new PoapValidator(poaps)
+
+    fastify.decorate('poapValidator', poapValidator)
+
+    next()
+  }
   fastify.register(fp(initializeModels))
   fastify.register(fp(initializeTradeCooldowns))
+  fastify.register(fp(initializePoapValidator))
 
   // Initialize game repositories
   fastify.register(async (fastify, options, next) => {
@@ -122,7 +145,9 @@ const app: FastifyPluginAsync<AppOptions> = async (
     if (!players && isDevelopment) {
       console.warn(`No players bootstrapped`)
     } else if (players?.length !== PLAYERS_COUNT) {
-      throw new Error(`There are only ${players?.length} of ${PLAYERS_COUNT} players`)
+      throw new Error(
+        `There are only ${players?.length} of ${PLAYERS_COUNT} players`
+      )
     }
 
     const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()

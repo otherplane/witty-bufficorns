@@ -110,6 +110,8 @@ export const BONUS_MULTIPLIER: number = parseFloat(
 
 export const TOTAL_BUFFICORNS = 24
 
+export const POAP_LIST_PATH = process.env.POAP_LIST_PATH || '/test_poaps.json'
+
 export const BUFFICORN_INDEX: Record<number, BufficornName> = {
   0: BufficornName.Bufficorn0,
   1: BufficornName.Bufficorn1,
