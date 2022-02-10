@@ -344,13 +344,13 @@ contract WittyBufficornsToken
         public
         virtual override
         nonReentrant
-        inStatus(WittyBufficorns.Status.Awarding)
+        inStatus(WittyBufficornsLib.Status.Awarding)
     {
         require(_tokenOwner != address(0), "WittyBufficornsToken: no token owner");
         require(_farmerAwards.length > 0, "WittyBufficornsToken: no awards");
 
-        WittyBufficorns.Ranch storage __ranch = __storage.ranches[_ranchId];
-        require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
+        // UNCOMMENT?: WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
+        // UNCOMMENT?: require(__ranch.score > 0, "WittyBufficornsToken: inexistent ranch");
 
         WittyBufficornsLib.Farmer storage __farmer = __storage.farmers[_farmerId];
         require(bytes(__farmer.name).length == 0, "WittyBufficornsToken: already minted");
@@ -590,7 +590,7 @@ contract WittyBufficornsToken
             _farmerAwards
         ));
         require(
-            WittyBufficorns.recoverAddr(_hash, _signature) == __storage.signator,
+            WittyBufficornsLib.recoverAddr(_hash, _signature) == __storage.signator,
             "WittyBufficornsToken: bad signature"
         );
     }
