@@ -45,6 +45,11 @@ export const TRADE_POINTS_DIVISOR = process.env.TRADE_POINTS_DIVISOR
   ? parseInt(process.env.TRADE_POINTS_DIVISOR)
   : 2
 
+// Points are divided by this factor when in testnet
+export const TESTNET_POINTS_DIVISOR = process.env.TESTNET_POINTS_DIVISOR
+  ? parseInt(process.env.TESTNET_POINTS_DIVISOR)
+  : 10
+
 // Secp256k1 private key used for signing in the `mint` endpoint
 export const MINT_PRIVATE_KEY = process.env.MINT_PRIVATE_KEY || '0x00'
 // '0xb5b1870957d373ef0eeffecc6e4812c0fd08f554b37b233526acc331bf1544f7'
@@ -198,4 +203,5 @@ export default {
   TOTAL_BUFFICORNS,
   POAP_BONUS_TIME,
   BONUS_MULTIPLIER,
+  TESTNET_POINTS_DIVISOR,
 }
