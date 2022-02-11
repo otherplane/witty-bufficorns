@@ -11,13 +11,14 @@ import {
   TRADE_POINTS_MIN,
   TRAIT_BY_RANCH,
   BONUS_MULTIPLIER,
+  TESTNET_POINTS_DIVISOR,
 } from '../constants'
 import {
   generateUsernameList,
   getRanchFromIndex,
   isMainnetTime,
 } from '../utils'
-import { DbPlayerVTO, DbTradeVTO, RanchName, Resource } from '../types'
+import { DbPlayerVTO, DbTradeVTO, RanchName } from '../types'
 import {} from '../utils'
 import {} from '../types'
 import { Repository } from '../repository'
@@ -115,22 +116,37 @@ export class PlayerModel {
     player: DbPlayerVTO,
     lastTrade: DbTradeVTO | null,
     targetPlayerBonusEndsAt: number
-  ): Resource | Omit<Resource, 'trait'> {
+  ) {
     // Compute points
     let amount
     if (!lastTrade) {
-      amount = isMainnetTime() ? TRADE_POINTS : TRADE_POINTS / 10
+      amount = isMainnetTime()
+        ? TRADE_POINTS
+        : TRADE_POINTS / TESTNET_POINTS_DIVISOR
     } else {
-      amount = Math.max(
-        Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR),
-        TRADE_POINTS_MIN
-      )
+      amount = lastTrade.resource.amount
+      // If the last trade had a bonus, remove the bonus to get the real amount
+      if (lastTrade.bonusFlag) {
+        amount = Math.round(amount / BONUS_MULTIPLIER)
+      }
+      // Apply division to make consecutive trades give exponentially less points over time
+      amount = Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR)
     }
 
+    // If this trade has a bonus, add bonus amount and set bonusFlag
     const currentTimestamp = Date.now()
-    if (currentTimestamp < targetPlayerBonusEndsAt) {
+    const bonusFlag = currentTimestamp < targetPlayerBonusEndsAt
+    if (bonusFlag) {
       amount = amount * BONUS_MULTIPLIER
     }
+
+    // A trade must give at least TRADE_POINTS_MIN
+    amount = Math.max(
+      amount,
+      isMainnetTime()
+        ? TRADE_POINTS_MIN
+        : TRADE_POINTS_MIN / TESTNET_POINTS_DIVISOR
+    )
 
     // Get trait
     const ranchName = player.ranch
@@ -140,6 +156,7 @@ export class PlayerModel {
       trait: Player.isBonusPlayer(ranchName)
         ? undefined
         : TRAIT_BY_RANCH[ranchName as RanchName],
+      bonusFlag,
     }
   }
 

@@ -142,12 +142,12 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           )
       }
 
-      const generatedResource: Resource | Omit<Resource, 'trait'> =
-        playerModel.generateResource(
-          fromPlayer.toDbVTO(),
-          lastTrade,
-          toPlayer.bonusEndsAt
-        )
+      const generatedResource = playerModel.generateResource(
+        fromPlayer.toDbVTO(),
+        lastTrade,
+        toPlayer.bonusEndsAt
+      )
+      const bonusFlag = generatedResource.bonusFlag
 
       if (toPlayer.isBonusPlayer()) {
         const resource: Resource = {
@@ -175,6 +175,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           timestamp: currentTimestamp,
           bufficorn: '',
           mainnetFlag: isMainnetTime(),
+          bonusFlag,
         })
 
         return reply.status(200).send(trade)
@@ -229,6 +230,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           timestamp: currentTimestamp,
           bufficorn: bufficorn.name,
           mainnetFlag: isMainnetTime(),
+          bonusFlag,
         })
 
         return reply.status(200).send(trade)
