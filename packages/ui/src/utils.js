@@ -1,4 +1,4 @@
-import { ATTRIBUTES } from '@/constants.js'
+import { ATTRIBUTES, PLAYER_MAINNET_TIMESTAMP } from '@/constants.js'
 export function getStatsFromAttributes (bufficornAttributes) {
   return Object.entries(bufficornAttributes).map(bufficorn => ({
     ...ATTRIBUTES[bufficorn[0]],
@@ -42,4 +42,8 @@ export function formatNumber (num) {
   const rgx = /(\d)(?=(\d{3})+(?!\d))/g
   const unit = splitedNumber[0].replace(rgx, '$1,')
   return unit + decimals
+}
+
+export function isMainnetTime () {
+  return Date.now() >= PLAYER_MAINNET_TIMESTAMP * 1000
 }

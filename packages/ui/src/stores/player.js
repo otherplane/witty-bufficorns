@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ApiService } from '@/api'
 import router from '../router'
-import { isThisSecond } from 'date-fns'
+import { isMainnetTime } from '../utils'
 
 export const useStore = defineStore('player', {
   state: () => {
@@ -220,8 +220,7 @@ export const useStore = defineStore('player', {
         this.id = key
         this.username = username
         this.ranch = ranch
-        // TODO: use points or testnetPoints according to current game phase
-        this.playerPoints = points
+        this.playerPoints = isMainnetTime() ? points : testnetPoints
         this.selectedBufficorn = selectedBufficorn
 
         this.saveTheme(ranch.name)

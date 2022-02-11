@@ -22,6 +22,10 @@ export const BASE_URL =
 export const POLLER_MILLISECONDS =
   import.meta.env.VITE_POLLER_MILLISECONDS || 5000
 
+export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
+  ? parseInt(process.env.PLAYER_MAINNET_TIMESTAMP)
+  : 1645131600 // Thursday, February 17, 2022 09:00:00 PM (UTC)
+
 export const RANCHES = {
   ['Opolis Reservation']: 'opolis',
   [`The Ol' Algoranch`]: 'algorand',
