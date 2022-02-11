@@ -1,7 +1,11 @@
 import { Collection, Db } from 'mongodb'
 
 import { BufficornVTO, RanchName, Resource } from '../types'
-import { BUFFICORNS_PER_RANCH, RANCHES_COUNT } from '../constants'
+import {
+  BONUS_MULTIPLIER,
+  BUFFICORNS_PER_RANCH,
+  RANCHES_COUNT,
+} from '../constants'
 import { Repository } from '../repository'
 import { Bufficorn } from '../domain/bufficorn'
 
@@ -96,7 +100,8 @@ export class BufficornModel {
   public async feed(
     creationIndex: number,
     resource: Resource,
-    ranch: RanchName
+    ranch: RanchName,
+    bonusFlag: boolean
   ): Promise<Bufficorn> {
     const bufficorn = await this.repository.getOne({ creationIndex })
 
@@ -111,12 +116,15 @@ export class BufficornModel {
         `Bufficorn with creationIndex ${creationIndex} and ranch ${ranch} doesn't belong to your ranch`
       )
     }
+    const amount = bonusFlag
+      ? resource.amount * BONUS_MULTIPLIER
+      : resource.amount
 
     return new Bufficorn(
       await this.repository.updateOne(
         { creationIndex, ranch },
         {
-          [resource.trait]: resource.amount + bufficorn[resource.trait],
+          [resource.trait]: amount + bufficorn[resource.trait],
         }
       )
     )

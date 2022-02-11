@@ -236,6 +236,7 @@ export const DbTradeVTO = Type.Object({
   timestamp: Type.Number(),
   ends: Type.Number(),
   mainnetFlag: Type.Boolean(),
+  bonusFlag: Type.Boolean(),
 })
 export type DbTradeVTO = Static<typeof DbTradeVTO>
 

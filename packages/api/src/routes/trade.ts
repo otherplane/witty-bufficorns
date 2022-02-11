@@ -1,5 +1,9 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
-import { GAME_END_TIMESTAMP, TRADE_DURATION_MILLIS } from '../constants'
+import {
+  BONUS_MULTIPLIER,
+  GAME_END_TIMESTAMP,
+  TRADE_DURATION_MILLIS,
+} from '../constants'
 
 import {
   AuthorizationHeader,
@@ -118,6 +122,10 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       const currentTimestamp = Date.now()
+      let bonusFlag = false
+      if (currentTimestamp < toPlayer.bonusEndsAt) {
+        bonusFlag = true
+      }
 
       // Check 8: cooldown period from Player to target Player has elapsed
       const lastTrade = await tradeModel.getLast({
@@ -143,11 +151,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       const generatedResource: Resource | Omit<Resource, 'trait'> =
-        playerModel.generateResource(
-          fromPlayer.toDbVTO(),
-          lastTrade,
-          toPlayer.bonusEndsAt
-        )
+        playerModel.generateResource(fromPlayer.toDbVTO(), lastTrade)
 
       if (toPlayer.isBonusPlayer()) {
         const resource: Resource = {
@@ -157,7 +161,10 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
         // Update player score
         let updatedToPlayer = toPlayer
-        updatedToPlayer.points += resource.amount
+        const amount = bonusFlag
+          ? resource.amount * BONUS_MULTIPLIER
+          : resource.amount
+        updatedToPlayer.points += amount
         playerModel.update(updatedToPlayer.toDbVTO())
 
         let tradeDuration
@@ -175,6 +182,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           timestamp: currentTimestamp,
           bufficorn: '',
           mainnetFlag: isMainnetTime(),
+          bonusFlag,
         })
 
         return reply.status(200).send(trade)
@@ -200,7 +208,8 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           bufficorn = await bufficornModel.feed(
             toPlayer.selectedBufficorn,
             resource,
-            toPlayer.ranch as RanchName
+            toPlayer.ranch as RanchName,
+            bonusFlag
           )
         } catch (error) {
           fastify.sendResourceCooldowns.delete(fromKey)
@@ -211,7 +220,10 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
         // Update player score
         let updatedToPlayer = toPlayer
-        updatedToPlayer.points += resource.amount
+        const amount = bonusFlag
+          ? resource.amount * BONUS_MULTIPLIER
+          : resource.amount
+        updatedToPlayer.points += amount
         playerModel.update(updatedToPlayer.toDbVTO())
 
         let tradeDuration
@@ -229,6 +241,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           timestamp: currentTimestamp,
           bufficorn: bufficorn.name,
           mainnetFlag: isMainnetTime(),
+          bonusFlag,
         })
 
         return reply.status(200).send(trade)

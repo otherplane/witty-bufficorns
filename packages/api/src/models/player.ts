@@ -10,7 +10,6 @@ import {
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
   TRAIT_BY_RANCH,
-  BONUS_MULTIPLIER,
 } from '../constants'
 import {
   generateUsernameList,
@@ -113,8 +112,7 @@ export class PlayerModel {
 
   public generateResource(
     player: DbPlayerVTO,
-    lastTrade: DbTradeVTO | null,
-    targetPlayerBonusEndsAt: number
+    lastTrade: DbTradeVTO | null
   ): Resource | Omit<Resource, 'trait'> {
     // Compute points
     let amount
@@ -125,11 +123,6 @@ export class PlayerModel {
         Math.ceil(lastTrade.resource.amount / TRADE_POINTS_DIVISOR),
         TRADE_POINTS_MIN
       )
-    }
-
-    const currentTimestamp = Date.now()
-    if (currentTimestamp < targetPlayerBonusEndsAt) {
-      amount = amount * BONUS_MULTIPLIER
     }
 
     // Get trait
