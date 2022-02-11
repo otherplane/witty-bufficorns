@@ -268,7 +268,7 @@ contract WittyBufficornsToken
     /// and (b), randomness will be requested to the Witnet's oracle. 
     /// @param _totalRanches Total of ranches that must have been previously set.
     /// @param _totalBufficorns Total of bufficorns that must have been previoustly set.
-    /// @dev Must be called from the Signator's address. Fails if not in Breeding status. 
+    /// @dev Must be called from the Owner's address. Fails if not in Breeding status. 
     /// @dev If no WitnetRandomness address was provided in construction, contract status will directly change to Awarding.
     function stopBreeding(
             uint256 _totalRanches,
@@ -276,7 +276,7 @@ contract WittyBufficornsToken
         )
         external payable
         virtual override
-        onlySignator
+        onlyOwner
         inStatus(WittyBufficornsLib.Status.Breeding)
     {
         require(
@@ -304,11 +304,11 @@ contract WittyBufficornsToken
     }
 
     /// Starts the Awarding phase, in which players will be able to mint their tokens.
-    /// @dev Must be called from the Signator's address. Fails if not in Randomizing status. 
+    /// @dev Must be called from the Owner's address. Fails if not in Randomizing status. 
     function startAwarding()
         external
         virtual override
-        onlySignator
+        onlyOwner
         inStatus(WittyBufficornsLib.Status.Randomizing)
     {
         __storage.stopBreedingRandomness = randomizer.getRandomnessAfter(__storage.stopBreedingBlock);
