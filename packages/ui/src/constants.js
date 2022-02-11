@@ -29,7 +29,7 @@ export const RANCHES = {
   [`Balancer Peak State`]: 'balancer',
   [`Gold Reef Co.`]: 'reef',
   [`Infinite Harmony Farm`]: 'harmony',
-  ['Witnet']: 'witnet'
+  ['WITNET_RANCH']: 'witnet'
 }
 export const ATTRIBUTES = {
   coat: {

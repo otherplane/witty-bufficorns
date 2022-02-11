@@ -14,7 +14,7 @@
           <p class="subtitle">
             <span class="subtitle label">ID: </span>{{ player.id }}
           </p>
-          <p class="subtitle ranch-resource">
+          <p v-if="player.ranch.trait" class="subtitle ranch-resource">
             <span class="subtitle label">RESOURCE: </span>
             {{ ATTRIBUTES[player.ranch.trait].resource }}
             (<img
@@ -42,6 +42,12 @@
       <NFTPreview v-if="previews.length" :previews="previews" />
       <MintInformation />
       <BufficornsList v-if="player.bufficornsGlobalStats" :selectable="true" />
+      <img
+        v-if="player.theme === 'WITNET_RANCH'"
+        class="placeholder"
+        :src="importSvg(RANCHES[player.theme])"
+        alt="Witty Bufficorns ranch logo"
+      />
       <router-link
         v-if="!player.gameOver"
         class="sticky-btn"
@@ -260,6 +266,9 @@ export default {
     width: 16px;
     display: inline-block;
   }
+}
+.placeholder {
+  opacity: 0.3;
 }
 .sticky-btn {
   position: sticky;

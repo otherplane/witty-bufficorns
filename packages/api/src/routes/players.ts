@@ -90,22 +90,21 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         )) as Array<Bufficorn>
 
       ranch.addBufficorns(ranchBufficorns)
-
+      const p = await player.toExtendedPlayerVTO(ranch, {
+        // get last incoming trade
+        lastTradeIn: await fastify.tradeModel.getLast({
+          to: player.username,
+          mainnetFlag: isMainnetTime(),
+        }),
+        // get last outgoing trade
+        lastTradeOut: await fastify.tradeModel.getLast({
+          from: player.username,
+          mainnetFlag: isMainnetTime(),
+        }),
+      })
+      console.log('player', p)
       // return extended player
-      return reply.status(200).send(
-        await player.toExtendedPlayerVTO(ranch, {
-          // get last incoming trade
-          lastTradeIn: await fastify.tradeModel.getLast({
-            to: player.username,
-            mainnetFlag: isMainnetTime(),
-          }),
-          // get last outgoing trade
-          lastTradeOut: await fastify.tradeModel.getLast({
-            from: player.username,
-            mainnetFlag: isMainnetTime(),
-          }),
-        })
-      )
+      return reply.status(200).send(p)
     },
   })
 

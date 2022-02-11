@@ -17,6 +17,15 @@
         class="btn"
         type="primary"
         :slim="true"
+        @click="onDecode('https://bufficorns.com/#/36fea506ac21e347')"
+      >
+        WITNET
+      </Button>
+      <Button
+        v-if="VITE_TEST"
+        class="btn"
+        type="primary"
+        :slim="true"
         @click="onDecode('realpoap')"
       >
         REAL POAP
