@@ -17,7 +17,8 @@ export const useStore = defineStore('player', {
       tradeInfo: null,
       tradeIn: null,
       tradeOut: null,
-      gameOverTimeMilli: 1645380000000,
+      gameOverTimeMilli: 1645351200000,
+      demoOverTimeMilli: 1645131600000,
       preview: null,
       tradeHistory: null,
       mintInfo: null,
@@ -42,6 +43,13 @@ export const useStore = defineStore('player', {
     gameOver () {
       //FIXME: make it reactive
       return this.gameOverTimeMilli < Date.now()
+    },
+    demoOver () {
+      //FIXME: make it reactive
+      return this.demoOverTimeMilli < Date.now()
+    },
+    isMainnetTime () {
+      return isMainnetTime()
     }
   },
   actions: {

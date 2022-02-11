@@ -22,13 +22,24 @@
               :src="importSvg(ATTRIBUTES[player.ranch.trait].key)"
             />)
           </p>
-          <p class="subtitle">
+          <p v-if="!player.demoOver" class="subtitle">
+            <span class="subtitle label">DEMO ENDS IN:</span>
+            <TimeLeft
+              class="time-left"
+              :timestamp="player.demoOverTimeMilli"
+              :seconds="true"
+            />
+          </p>
+          <p v-else-if="!player.gameOver" class="subtitle">
             <span class="subtitle label">GAME ENDS IN:</span>
             <TimeLeft
               class="time-left"
-              :timestamp="1645376400000"
+              :timestamp="player.gameOverTimeMilli"
               :seconds="true"
             />
+          </p>
+          <p v-else class="subtitle">
+            <span class="subtitle label">GAME OVER</span>
           </p>
         </div>
         <img
