@@ -149,38 +149,16 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           toPlayer.bonusEndsAt
         )
 
-      if (toPlayer.isBonusPlayer()) {
-        const resource: Resource = {
-          amount: generatedResource.amount,
-          trait: Trait.Coat,
-        }
+      let bufficornName = ''
+      let resource: Resource = {
+        amount: generatedResource.amount,
+        trait: fromPlayer.isBonusPlayer()
+          ? Trait.Coat
+          : (generatedResource as Resource)?.trait,
+      }
 
-        // Update player score
-        let updatedToPlayer = toPlayer
-        updatedToPlayer.points += resource.amount
-        playerModel.update(updatedToPlayer.toDbVTO())
-
-        let tradeDuration
-        if (request.body.cooldown === 0) {
-          tradeDuration = 0
-        } else {
-          tradeDuration = Date.now() + TRADE_DURATION_MILLIS
-        }
-        // Create and return `trade` object
-        const trade = await tradeModel.create({
-          ends: tradeDuration,
-          from: fromPlayer.username,
-          to: toPlayer.username,
-          resource,
-          timestamp: currentTimestamp,
-          bufficorn: '',
-          mainnetFlag: isMainnetTime(),
-        })
-
-        return reply.status(200).send(trade)
-      } else {
+      if (!toPlayer.isBonusPlayer()) {
         let bufficorn: Bufficorn
-        let resource: Resource
         try {
           const selectedBufficorn = await bufficornModel.getSelectedBufficorn(
             toPlayer.ranch as RanchName,
@@ -196,43 +174,46 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
               ? selectedBufficorn.getWorstTrait()
               : (generatedResource as Resource)?.trait,
           }
+
           // Feed bufficorn
           bufficorn = await bufficornModel.feed(
             toPlayer.selectedBufficorn,
             resource,
             toPlayer.ranch as RanchName
           )
+
+          bufficornName = bufficorn.name
         } catch (error) {
           fastify.sendResourceCooldowns.delete(fromKey)
           fastify.receiveResourceCooldowns.delete(toKey)
 
           return reply.status(403).send(error as Error)
         }
-
-        // Update player score
-        let updatedToPlayer = toPlayer
-        updatedToPlayer.points += resource.amount
-        playerModel.update(updatedToPlayer.toDbVTO())
-
-        let tradeDuration
-        if (request.body.cooldown === 0) {
-          tradeDuration = 0
-        } else {
-          tradeDuration = Date.now() + TRADE_DURATION_MILLIS
-        }
-        // Create and return `trade` object
-        const trade = await tradeModel.create({
-          ends: tradeDuration,
-          from: fromPlayer.username,
-          to: toPlayer.username,
-          resource,
-          timestamp: currentTimestamp,
-          bufficorn: bufficorn.name,
-          mainnetFlag: isMainnetTime(),
-        })
-
-        return reply.status(200).send(trade)
       }
+
+      // Update player score
+      let updatedToPlayer = toPlayer
+      updatedToPlayer.points += resource.amount
+      playerModel.update(updatedToPlayer.toDbVTO())
+
+      let tradeDuration
+      if (request.body.cooldown === 0) {
+        tradeDuration = 0
+      } else {
+        tradeDuration = Date.now() + TRADE_DURATION_MILLIS
+      }
+      // Create and return `trade` object
+      const trade = await tradeModel.create({
+        ends: tradeDuration,
+        from: fromPlayer.username,
+        to: toPlayer.username,
+        resource,
+        timestamp: currentTimestamp,
+        bufficorn: bufficornName,
+        mainnetFlag: isMainnetTime(),
+      })
+
+      return reply.status(200).send(trade)
     },
   })
 
