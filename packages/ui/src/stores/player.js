@@ -213,12 +213,14 @@ export const useStore = defineStore('player', {
           ranch,
           selectedBufficorn,
           points,
+          testnetPoints,
           bonusEndsAt
         } = request.player
         this.bonus = bonusEndsAt
         this.id = key
         this.username = username
         this.ranch = ranch
+        // TODO: use points or testnetPoints according to current game phase
         this.playerPoints = points
         this.selectedBufficorn = selectedBufficorn
 

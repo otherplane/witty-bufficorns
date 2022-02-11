@@ -193,7 +193,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       // Update player score
       let updatedToPlayer = toPlayer
-      updatedToPlayer.points += resource.amount
+      if (isMainnetTime()) {
+        updatedToPlayer.points += resource.amount
+      } else {
+        updatedToPlayer.testnetPoints += resource.amount
+      }
       playerModel.update(updatedToPlayer.toDbVTO())
 
       let tradeDuration
