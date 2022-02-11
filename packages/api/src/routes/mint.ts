@@ -85,10 +85,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .status(403)
           .send(new Error(`Bonus player cannot be minted`))
       }
-      // TODO: get extendedPlayer using route /players/:key?
-      // Instead of two separate calls to playerModel.get and ranchModel.get
-      //GET RANCH Info
-      const ranch: Ranch = (await ranchModel.getByName(player.ranch)) as Ranch
 
       // If previously minted, reply with same mint output
       const prevMint = await mintModel.get(player.id)
@@ -108,29 +104,46 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const abi = WITTY_BUFFICORNS_ERC721_ABI
 
       const contract = new web3.eth.Contract(abi, WITMON_ERC721_ADDRESS)
-      // TODO: ranch id goes from 0 to 5, ensure compatibility with solidity
+
+      const contractStatus = await contract.methods
+        .getStatus()
+        .call()
+
+      if (contractStatus !== 2) {
+        return reply
+          .status(403)
+          .send(new Error(`Forbidden: contract is not ready yet`))
+      }
+
+
       const ranchId = RANCH_TO_INDEX[player.ranch]
 
-      let callResult
-      try {
-        callResult = await contract.methods.getRanchWeather(ranchId).call()
-      } catch (err) {
-        console.error(err)
-        return reply
-          .status(404)
-          .send(new Error(`Error calling getRanchWeather method from contract`))
-      }
+      
+      // TOOD: move commet below to preview implementation
+      // let ranchWeather = fastify.cache.getWeather(ranchId)
+      // if (!ranchWeather) {
+      //   try {
+      //     const callResult = await contract.methods
+      //       .getRanchWeather(ranchId)
+      //       .call()
+      //     ranchWeather = callResult[1]
+      //   } catch (err) {
+      //     console.error('Error calling getRanchWeather method in contract', err)
+      //     return reply
+      //       .status(404)
+      //       .send(
+      //         new Error(`Error calling getRanchWeather method from contract`)
+      //       )
+      //   }
+      // }
+
+      // console.log('ranch weather', ranchWeather)
 
       /* Returns: (
             uint256 _lastTimestamp,
             string memory _lastDescription
         )
         */
-      const ranchWeather = callResult[1]
-      console.log('ranch weather', ranchWeather)
-      // TODO: we should cache the result to avoid useless calls to web3.
-      // But, the weather can change, so we cannot simply cache it.
-      // Possible solution: cache for 24 hours only, or manually delete the cache every time the weather changes
 
       // Build message to sign
       // Fake values for testing
@@ -170,11 +183,15 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const farmerName = player.username
       let farmerAwards = []
 
-      const players: Array<Player> = await playerModel.getAllRegistered()
-      const sortedPlayers = Player.getLeaderboard(
-        players,
-        players.length
-      ).players
+      const cachedSortedPlayers = fastify.cache.getAllSortedPlayers()
+      let sortedPlayers = cachedSortedPlayers
+      if (!sortedPlayers) {
+        const players: Array<Player> = await playerModel.getAllRegistered()
+        sortedPlayers = Player.getLeaderboard(players, players.length).players
+
+        fastify.cache.setAllSortedPlayer(sortedPlayers)
+      }
+
       for (let topPlayer of sortedPlayers) {
         if (topPlayer.username === player.username) {
           farmerAwards.push({
@@ -186,14 +203,20 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
       }
 
-      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
-      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
-        r.addBufficorns(bufficornsByRanch[r.name])
-        return r
-      })
-      const sortedRanches = Ranch.getLeaderboard(ranches)
-      const top3SortedRanches = sortedRanches.splice(0, 3)
+      let top3SortedRanches = fastify.cache.getTop3SortedRanches()
+      if (!top3SortedRanches) {
+        const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+        const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+        const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+          r.addBufficorns(bufficornsByRanch[r.name])
+          return r
+        })
+        const sortedRanches = Ranch.getLeaderboard(ranches)
+        top3SortedRanches = sortedRanches.splice(0, 3)
+
+        fastify.cache.setTop3SortedRanches(top3SortedRanches)
+      }
+
       for (let topRanch of top3SortedRanches) {
         if (topRanch.name === player.ranch) {
           farmerAwards.push({
@@ -216,16 +239,24 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         Trait.Stamina,
         Trait.Vigor,
       ].entries()) {
-        const sortedBufficorns = Bufficorn.getLeaderboard(bufficorns, category)
-        const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
-        for (let topBufficorn of top3SortedBufficorns) {
-          if (topBufficorn.ranch === player.ranch) {
-            farmerAwards.push({
-              category: 2 + categoryIndex,
-              ranking: topBufficorn.position + 1,
-              bufficornId: topBufficorn.creationIndex,
-            })
+        let top3SortedBufficorns = fastify.cache.getTop3SortedBufficorns()
+        if (!top3SortedBufficorns) {
+          const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+          const sortedBufficorns = Bufficorn.getLeaderboard(
+            bufficorns,
+            category
+          )
+          const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
+          for (let topBufficorn of top3SortedBufficorns) {
+            if (topBufficorn.ranch === player.ranch) {
+              farmerAwards.push({
+                category: 2 + categoryIndex,
+                ranking: topBufficorn.position + 1,
+                bufficornId: topBufficorn.creationIndex,
+              })
+            }
           }
+          fastify.cache.setTop3SortedBufficorns(top3SortedBufficorns)
         }
       }
 

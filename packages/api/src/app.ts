@@ -24,6 +24,7 @@ import { Bufficorn } from './domain/bufficorn'
 import { MintModel } from './models/mint'
 import { BlockList } from './blockList'
 import { PoapValidator } from './poapValidator'
+import { Cache } from './cache'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -36,6 +37,7 @@ declare module 'fastify' {
     sendResourceCooldowns: BlockList
     receiveResourceCooldowns: BlockList
     poapValidator: PoapValidator
+    cache: Cache
   }
 }
 
@@ -130,9 +132,23 @@ const app: FastifyPluginAsync<AppOptions> = async (
 
     next()
   }
+
+  const initializeCache: FastifyPluginCallback = async (
+    fastify,
+    options,
+    next
+  ) => {
+    const cache = new Cache()
+
+    fastify.decorate('cache', cache)
+
+    next()
+  }
+
   fastify.register(fp(initializeModels))
   fastify.register(fp(initializeTradeCooldowns))
   fastify.register(fp(initializePoapValidator))
+  fastify.register(fp(initializeCache))
 
   // Initialize game repositories
   fastify.register(async (fastify, options, next) => {
