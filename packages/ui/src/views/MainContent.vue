@@ -56,7 +56,7 @@
       <img
         v-if="player.theme === 'WITNET_RANCH'"
         class="placeholder"
-        :src="importSvg(RANCHES[player.theme])"
+        :src="importSvg('witnet-ranch-bufficorn')"
         alt="Witty Bufficorns ranch logo"
       />
       <router-link
@@ -279,7 +279,8 @@ export default {
   }
 }
 .placeholder {
-  opacity: 0.3;
+  margin: 0 auto;
+  height: 48vh;
 }
 .sticky-btn {
   position: sticky;
