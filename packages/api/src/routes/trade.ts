@@ -143,7 +143,11 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
 
       const generatedResource: Resource | Omit<Resource, 'trait'> =
-        playerModel.generateResource(fromPlayer.toDbVTO(), lastTrade, toPlayer.bonusEndsAt)
+        playerModel.generateResource(
+          fromPlayer.toDbVTO(),
+          lastTrade,
+          toPlayer.bonusEndsAt
+        )
 
       if (toPlayer.isBonusPlayer()) {
         const resource: Resource = {
@@ -155,7 +159,6 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         let updatedToPlayer = toPlayer
         updatedToPlayer.points += resource.amount
         playerModel.update(updatedToPlayer.toDbVTO())
-
 
         let tradeDuration
         if (request.body.cooldown === 0) {
@@ -219,7 +222,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         }
         // Create and return `trade` object
         const trade = await tradeModel.create({
-          ends: tradeDuration, 
+          ends: tradeDuration,
           from: fromPlayer.username,
           to: toPlayer.username,
           resource,

@@ -8,7 +8,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/21234f47b1c46620')"
+        @click="onDecode('https://bufficorns.com/#/21234f47b1c46620')"
       >
         The Ol' Algoranch
       </Button>
@@ -17,7 +17,16 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/bf70268a8f1e2d67')"
+        @click="onDecode('realpoap')"
+      >
+        REAL POAP
+      </Button>
+      <Button
+        v-if="VITE_TEST"
+        class="btn"
+        type="primary"
+        :slim="true"
+        @click="onDecode('https://bufficorns.com/#/bf70268a8f1e2d67')"
       >
         Vega Slopes Range
       </Button>
@@ -26,7 +35,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/b5425e1b1ed66dcb')"
+        @click="onDecode('https://bufficorns.com/#/b5425e1b1ed66dcb')"
       >
         Balancer Peak State'
       </Button>
@@ -35,7 +44,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/ef12efbd765f9ad3')"
+        @click="onDecode('https://bufficorns.com/#/ef12efbd765f9ad3')"
       >
         Gold Reef Co.'
       </Button>
@@ -44,7 +53,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/e9d8e88334820666')"
+        @click="onDecode('https://bufficorns.com/#/e9d8e88334820666')"
       >
         Infinite Harmony Farm'
       </Button>
@@ -53,7 +62,7 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('/895aa6083cc2dfaf')"
+        @click="onDecode('https://bufficorns.com/#/895aa6083cc2dfaf')"
       >
         Opolis Reservation
       </Button>
@@ -70,7 +79,7 @@ import { useStore } from '@/stores/player'
 import { QrStream } from 'vue3-qr-reader'
 import { useRouter } from 'vue-router'
 import { useModal } from '../composables/useModal'
-import { VITE_TEST } from '../constants'
+import { BASE_URL, VITE_TEST } from '../constants'
 
 export default {
   components: {
@@ -89,13 +98,18 @@ export default {
       router.push({ name: 'main', params: { id: playerKey.value } })
     }
 
-    function onDecode (value) {
+    async function onDecode (value) {
       if (value) {
-        decodedString.value = value
-        if (!player.getToken()) {
-          modal.showModal()
+        if (!value.includes(BASE_URL)) {
+          await player.getBonus(value)
+          router.push('/')
         } else {
-          register()
+          decodedString.value = value
+          if (!player.getToken()) {
+            modal.showModal()
+          } else {
+            register()
+          }
         }
       }
     }

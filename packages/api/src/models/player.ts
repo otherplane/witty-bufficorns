@@ -17,14 +17,9 @@ import {
   getRanchFromIndex,
   isMainnetTime,
 } from '../utils'
-import {
-  DbPlayerVTO,
-  DbTradeVTO,
-  RanchName,
-  Resource 
- } from '../types'
-import {  } from '../utils'
-import { } from '../types'
+import { DbPlayerVTO, DbTradeVTO, RanchName, Resource } from '../types'
+import {} from '../utils'
+import {} from '../types'
 import { Repository } from '../repository'
 import { Player } from '../domain/player'
 

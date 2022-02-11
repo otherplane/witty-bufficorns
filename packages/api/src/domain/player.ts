@@ -113,7 +113,7 @@ export class Player {
     this.bonusEndsAt =
       Math.max(currentTimestamp, this.bonusEndsAt) + POAP_BONUS_TIME
   }
-      isBonusPlayer(): boolean {
+  isBonusPlayer(): boolean {
     return Player.isBonusPlayer(this.ranch)
   }
 

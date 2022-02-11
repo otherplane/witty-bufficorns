@@ -74,7 +74,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             // get last outgoing trade
             lastTradeOut: await fastify.tradeModel.getLast({
               from: player.username,
-              mainnetFlag: isMainnetTime()
+              mainnetFlag: isMainnetTime(),
             }),
           })
         )

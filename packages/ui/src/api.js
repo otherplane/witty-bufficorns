@@ -77,6 +77,14 @@ export class ApiService {
     })
   }
 
+  getBonus ({ url, token }) {
+    return this._post({
+      url: `${this.baseUrl}/players/bonus`,
+      data: { url },
+      params: { headers: { authorization: token } }
+    })
+  }
+
   getContractArgs ({ address, token }) {
     return this._post({
       url: `${this.baseUrl}/mint`,

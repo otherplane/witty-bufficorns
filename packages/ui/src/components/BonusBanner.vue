@@ -1,15 +1,18 @@
 <template>
   <transition name="fade">
-    <div v-if="player.bonnus" class="info">
+    <div
+      v-if="player.bonus && player.bonus > new Date().getTime()"
+      class="info"
+    >
       <div class="time-container">
-        <p class="bonnus-title">
-          X2 Bonnus:
+        <p class="bonus-title">
+          X2 Bonus:
         </p>
         <TimeLeft
           class="time-left"
-          :timestamp="1644324338000"
+          :timestamp="player.bonus"
           :seconds="true"
-          @clear-timestamp="player.bonnus = null"
+          @clear-timestamp="player.bonus = null"
         />
       </div>
     </div>
@@ -51,7 +54,7 @@ export default {
   align-items: center;
   margin-bottom: 16px;
 }
-.bonnus-title {
+.bonus-title {
   text-align: left;
   font-size: 16px;
   color: var(--primary-color);

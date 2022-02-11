@@ -13,7 +13,7 @@ export const useStore = defineStore('player', {
       username: '',
       ranch: {},
       selectedBufficorn: null,
-      bonnus: null,
+      bonus: null,
       tradeInfo: null,
       tradeIn: null,
       tradeOut: null,
@@ -149,6 +149,20 @@ export const useStore = defineStore('player', {
         }
       }
     },
+    async getBonus (url) {
+      const tokenInfo = this.getToken()
+      const request = await this.api.getBonus({
+        token: tokenInfo.token,
+        url
+      })
+      if (request.error) {
+        this.setError('bonus', request.error)
+        router.push('/init-game')
+      } else {
+        this.clearError('bonus')
+        await this.getPlayerInfo()
+      }
+    },
     async getGlobalStats (offset = 0, limit = 25) {
       await this.getTheme()
       await this.getPlayerInfo()
@@ -198,13 +212,16 @@ export const useStore = defineStore('player', {
           username,
           ranch,
           selectedBufficorn,
-          points
+          points,
+          bonusEndsAt
         } = request.player
+        this.bonus = bonusEndsAt
         this.id = key
         this.username = username
         this.ranch = ranch
         this.playerPoints = points
         this.selectedBufficorn = selectedBufficorn
+
         this.saveTheme(ranch.name)
         if (request.lastTradeIn) {
           this.tradeIn = request.lastTradeIn

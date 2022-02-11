@@ -37,7 +37,7 @@
           alt="Witty Bufficorns ranch logo"
         />
       </div>
-      <BonnusBanner />
+      <BonusBanner />
       <TradeInfo />
       <NFTPreview v-if="previews.length" :previews="previews" />
       <MintInformation />
@@ -108,7 +108,7 @@ import {
   RANCHES,
   ATTRIBUTES
 } from '../constants'
-import { POLLER_MILLISECONDS } from '@/constants.js'
+import { POLLER_MILLISECONDS, BASE_URL } from '@/constants.js'
 import { importSvg } from '@/composables/importSvg.js'
 import { useRouter } from 'vue-router'
 

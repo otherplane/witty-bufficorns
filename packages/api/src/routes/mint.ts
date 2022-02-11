@@ -105,9 +105,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const contract = new web3.eth.Contract(abi, WITMON_ERC721_ADDRESS)
 
-      const contractStatus = await contract.methods
-        .getStatus()
-        .call()
+      const contractStatus = await contract.methods.getStatus().call()
 
       if (contractStatus !== 2) {
         return reply
@@ -115,10 +113,8 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Forbidden: contract is not ready yet`))
       }
 
-
       const ranchId = RANCH_TO_INDEX[player.ranch]
 
-      
       // TOOD: move commet below to preview implementation
       // let ranchWeather = fastify.cache.getWeather(ranchId)
       // if (!ranchWeather) {
