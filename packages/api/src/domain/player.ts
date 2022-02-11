@@ -86,26 +86,13 @@ export class Player {
   ): ExtendedPlayerVTO {
     // Get all Player attributes except token
     const { token, ...protectedplayerVTO } = this.toDbVTO()
-
-    if (ranch) {
-      return {
-        player: {
-          ...protectedplayerVTO,
-          ranch: ranch.toVTO(),
-        },
-        lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
-        lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
-      }
-    } else {
-      // is bonus player
-      return {
-        player: {
-          ...protectedplayerVTO,
-          ranch: Ranch.getBonusRanchVTO(),
-        },
-        lastTradeIn: null,
-        lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
-      }
+    return {
+      player: {
+        ...protectedplayerVTO,
+        ranch: ranch ? ranch.toVTO() : Ranch.getBonusRanchVTO(),
+      },
+      lastTradeIn: lastTradeIn?.isActive() ? lastTradeIn.toVTO() : null,
+      lastTradeOut: lastTradeOut?.isActive() ? lastTradeOut.toVTO() : null,
     }
   }
 

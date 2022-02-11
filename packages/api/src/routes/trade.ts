@@ -164,7 +164,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         if (request.body.cooldown === 0) {
           tradeDuration = 0
         } else {
-          tradeDuration = TRADE_DURATION_MILLIS
+          tradeDuration = Date.now() + TRADE_DURATION_MILLIS
         }
         // Create and return `trade` object
         const trade = await tradeModel.create({
@@ -218,7 +218,7 @@ const trades: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         if (request.body.cooldown === 0) {
           tradeDuration = 0
         } else {
-          tradeDuration = TRADE_DURATION_MILLIS
+          tradeDuration = Date.now() + TRADE_DURATION_MILLIS
         }
         // Create and return `trade` object
         const trade = await tradeModel.create({
