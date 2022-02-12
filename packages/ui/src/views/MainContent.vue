@@ -50,7 +50,7 @@
       </div>
       <BonusBanner />
       <TradeInfo />
-      <NFTPreview v-if="previews.length" :previews="previews" />
+      <NFTPreview />
       <MintInformation />
       <BufficornsList v-if="player.bufficornsGlobalStats" :selectable="true" />
       <img
@@ -70,15 +70,15 @@
       </router-link>
       <div class="sticky-btn" v-if="player.gameOver">
         <Button
-          v-if="player.preview"
+          v-if="player.previews"
           @click="openModal('preview')"
           type="dark"
           :slim="true"
         >
-          PREVIEW NFT
+          PREVIEW NFT AWARDS
         </Button>
         <Button
-          v-else-if="!player.preview"
+          v-else-if="!player.previews"
           @click="mint"
           type="dark"
           :slim="true"
@@ -120,7 +120,7 @@ import { useModal } from '@/composables/useModal'
 import { useWeb3 } from '../composables/useWeb3'
 import { formatNumber } from '../utils'
 import {
-  ETHERSCAN_BASE_URL,
+  EXPLORER_BASE_URL,
   OPENSEA_BASE_URL,
   RANCHES,
   ATTRIBUTES
@@ -159,11 +159,16 @@ export default {
         ) {
           await player.trade({ key: router.currentRoute.value.params.id })
         }
-        await player.getMintInfo()
-        await player.getPreview()
         if (player.gameOver) {
-          const data = await web3WittyBufficorns.getData()
-          player.setData(data)
+          await player.getMintInfo()
+          // TODO: uncomment when api implements preview method
+          // if (player.mintInfo?.blockHash) {
+          //   await player.getMintedAwardsImages()
+          // } else {
+          //   await player.getPreviews()
+          // }
+          const tokenIds = await web3WittyBufficorns.getTokenIds()
+          player.setTokenIds(tokenIds)
         }
       }
     })
@@ -212,7 +217,7 @@ export default {
     }
 
     return {
-      etherscanBaseUrl: ETHERSCAN_BASE_URL,
+      etherscanBaseUrl: EXPLORER_BASE_URL,
       openseaBaseUrl: OPENSEA_BASE_URL,
       mint,
       gameOver,
@@ -225,9 +230,8 @@ export default {
       mintStatus,
       enableProvider: web3WittyBufficorns.enableProvider,
       addPolygonNetwork: web3WittyBufficorns.addPolygonNetwork,
-      previews: web3WittyBufficorns.preview,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
-      getData: web3WittyBufficorns.getData,
+      getTokenIds: web3WittyBufficorns.getTokenIds,
       importSvg,
       RANCHES,
       metamaskIcon,
