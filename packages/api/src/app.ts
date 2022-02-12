@@ -154,38 +154,36 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify.register(async (fastify, options, next) => {
     if (!fastify.mongo.db) throw Error('mongo db not found')
 
-    const isDevelopment = process.env.DEVELOPMENT
+    if (process.env.BOOTSTRAP_DB) {
+      // Initialize game repositories and bootstrap
+      const players = await fastify.playerModel.bootstrap(PLAYERS_COUNT)
+      if (players?.length !== PLAYERS_COUNT) {
+        throw new Error(
+          `There are only ${players?.length} of ${PLAYERS_COUNT} players`
+        )
+      }
 
-    // Initialize game repositories and bootstrap
-    const players = await fastify.playerModel.bootstrap(PLAYERS_COUNT)
-    if (!players && isDevelopment) {
-      console.warn(`No players bootstrapped`)
-    } else if (players?.length !== PLAYERS_COUNT) {
-      throw new Error(
-        `There are only ${players?.length} of ${PLAYERS_COUNT} players`
+      const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
+      // Get bufficorns if they are already bootstrapped
+      const bufficorns =
+        bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
+
+      if (bufficorns?.length !== TOTAL_BUFFICORNS) {
+        throw new Error(
+          `There are only ${bufficorns?.length} of ${TOTAL_BUFFICORNS} bufficorns`
+        )
+      }
+
+      const bootstrappedRanches = await fastify.ranchModel.bootstrap(
+        bufficorns as Array<Bufficorn>
       )
-    }
+      const ranches = bootstrappedRanches || (await fastify.ranchModel.getAll())
 
-    const bootstrappedBufficorns = await fastify.bufficornModel.bootstrap()
-    // Get bufficorns if they are already bootstrapped
-    const bufficorns =
-      bootstrappedBufficorns || (await fastify.bufficornModel.getAll())
-
-    if (bufficorns?.length !== TOTAL_BUFFICORNS) {
-      throw new Error(
-        `There are only ${bufficorns?.length} of ${TOTAL_BUFFICORNS} bufficorns`
-      )
-    }
-
-    const bootstrappedRanches = await fastify.ranchModel.bootstrap(
-      bufficorns as Array<Bufficorn>
-    )
-    const ranches = bootstrappedRanches || (await fastify.ranchModel.getAll())
-
-    if (ranches?.length !== RANCHES_COUNT) {
-      throw new Error(
-        `There are only ${ranches?.length} of ${RANCHES_COUNT} ranches`
-      )
+      if (ranches?.length !== RANCHES_COUNT) {
+        throw new Error(
+          `There are only ${ranches?.length} of ${RANCHES_COUNT} ranches`
+        )
+      }
     }
 
     next()
