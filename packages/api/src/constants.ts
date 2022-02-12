@@ -88,12 +88,12 @@ export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
 
 // Web3 provider URL
 export const WEB3_PROVIDER =
-  process.env.WEB3_PROVIDER || 'https://mainnet.infura.io/v3/YOUR_PROJECT_ID'
+  process.env.WEB3_PROVIDER || 'https://rpc-mainnet.maticvigil.com'
 
 // WitmonERC721 contract address
 export const WITMON_ERC721_ADDRESS =
   process.env.WITMON_ERC721_ADDRESS ||
-  '0xa3BA1433d9f5362b8cA802aa16b94a2DFf2fAF2B'
+  '0x7eebCF30c85b3ad66ad6E66E802616673627e878'
 
 export const MONGO_URI: string =
   process.env.MONGO_URI ||

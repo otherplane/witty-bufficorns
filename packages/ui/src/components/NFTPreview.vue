@@ -1,22 +1,44 @@
 <template>
-  <div class="medals-container">
-    <p class="medals-title">AWARDS</p>
-    <div class="nft-container">
-      <div
-        v-for="preview in previews"
+  <div class="medals-container" v-if="player.previews.length > 1">
+    <p class="medals-title">{{ title }}</p>
+    <div v-if="player.mintedAwards" class="nft-container">
+      <a
+        v-for="mintedAward in player.mintedAwards"
+        :href="`${OPENSEA_BASE_URL}/${mintedAward.tokenId}`"
+        :key="mintedAward"
+        target="_blank"
+      >
+        <img
+          class="preview-nft minted"
+          :src="importSvg(mintedAward.image)"
+          alt="icon"
+        />
+      </a>
+    </div>
+    <div v-else class="nft-container">
+      <img
+        v-for="preview in player.previews"
         :key="preview"
-        v-html="preview"
-        ref="creature"
         class="preview-nft"
-      ></div>
+        :src="importSvg(preview)"
+        alt="icon"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { importSvg } from '@/composables/importSvg.js'
+import { computed } from 'vue'
+import { useStore } from '@/stores/player'
+import { OPENSEA_BASE_URL } from '../constants'
 export default {
-  props: {
-    previews: Array
+  setup () {
+    const player = useStore()
+    const title = computed(() => {
+      return player.mintedAwards ? 'NFT AWARDS' : 'NFT AWARDS (PREVIEW)'
+    })
+    return { importSvg, title, player, OPENSEA_BASE_URL }
   }
 }
 </script>
@@ -33,6 +55,9 @@ export default {
     padding: 8px;
     border-radius: 4px;
     background: var(--primary-color-opacity-2);
+    &.minted {
+      border: 2px solid var(--primary-color);
+    }
   }
 }
 .medals-title {

@@ -62,6 +62,20 @@ export class ApiService {
     })
   }
 
+  getMintedAwardsImages (params) {
+    return this._get({
+      url: `${this.baseUrl}/players/images`,
+      config: { params: { tokenIds: params.tokenIds } }
+    })
+  }
+
+  getPreviews (params) {
+    return this._get({
+      url: `${this.baseUrl}/players/previews`,
+      config: { params: { key: params.key } }
+    })
+  }
+
   selectBufficorn ({ token, bufficorn }) {
     return this._post({
       url: `${this.baseUrl}/players/selected-bufficorn/${bufficorn}`,

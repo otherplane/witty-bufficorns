@@ -91,7 +91,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (prevMint) {
         return reply.status(200).send(prevMint)
       }
-
+      console.log('before web3 init')
       const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
       // Check address is valid
       if (!web3.utils.isAddress(request.body.address)) {
@@ -107,7 +107,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const contractStatus = await contract.methods.getStatus().call()
 
-      if (contractStatus !== 2) {
+      if (contractStatus.toString() !== '2') {
         return reply
           .status(403)
           .send(new Error(`Forbidden: contract is not ready yet`))
