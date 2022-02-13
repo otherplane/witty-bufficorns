@@ -22,6 +22,15 @@ export const BASE_URL =
 export const POLLER_MILLISECONDS =
   import.meta.env.VITE_POLLER_MILLISECONDS || 5000
 
+export const TIME_TO_MINT_MILLISECONDS =
+  import.meta.env.TIME_TO_MINT_MILLISECONDS || 60000
+
+export const DEMO_ENDS_TIMESTAMP =
+  import.meta.env.DEMO_ENDS_TIMESTAMP || 1645131600000
+
+export const GAME_ENDS_TIMESTAMP =
+  import.meta.env.GAME_ENDS_TIMESTAMP || 1645351200000
+
 export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
   ? parseInt(process.env.PLAYER_MAINNET_TIMESTAMP)
   : 1645131600 // Thursday, February 17, 2022 09:00:00 PM (UTC)

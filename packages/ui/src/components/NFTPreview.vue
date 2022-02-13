@@ -1,7 +1,7 @@
 <template>
   <div class="medals-container" v-if="player.previews.length > 1">
     <p class="medals-title">{{ title }}</p>
-    <div v-if="player.mintedAwards" class="nft-container">
+    <div v-if="player.mintedAwards.length" class="nft-container">
       <a
         v-for="mintedAward in player.mintedAwards"
         :href="`${OPENSEA_BASE_URL}/${mintedAward.tokenId}`"
