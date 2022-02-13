@@ -49,6 +49,9 @@
         />
       </div>
       <BonusBanner />
+      <CountdownToAllowMint
+        v-if="!player.mintingAllow && player.previews.length"
+      />
       <TradeInfo />
       <NFTPreview />
       <MintInformation />
@@ -70,7 +73,7 @@
       </router-link>
       <div class="sticky-btn" v-if="player.gameOver">
         <Button
-          v-if="player.previews"
+          v-if="!player.previews.length"
           @click="openModal('preview')"
           type="dark"
           :slim="true"
@@ -78,7 +81,7 @@
           PREVIEW NFT AWARDS
         </Button>
         <Button
-          v-else-if="!player.previews"
+          v-else-if="player.mintingAllow && player.previews.length"
           @click="mint"
           type="dark"
           :slim="true"

@@ -2,6 +2,11 @@ import { defineStore } from 'pinia'
 import { ApiService } from '@/api'
 import router from '../router'
 import { isMainnetTime } from '../utils'
+import {
+  TIME_TO_MINT_MILLISECONDS,
+  DEMO_ENDS_TIMESTAMP,
+  GAME_ENDS_TIMESTAMP
+} from '../constants'
 
 export const useStore = defineStore('player', {
   state: () => {
@@ -18,13 +23,16 @@ export const useStore = defineStore('player', {
       farmerId: null,
       tradeIn: null,
       tradeOut: null,
-      gameOverTimeMilli: 1645351200000,
-      demoOverTimeMilli: 1645131600000,
-      previews: ['metamask', 'metamask'],
-      mintedAwards: [
-        { tokenId: 'blable', image: 'metamask' },
-        { tokenId: 'blable', image: 'metamask' }
-      ],
+      gameOverTimeMilli: GAME_ENDS_TIMESTAMP,
+      demoOverTimeMilli: DEMO_ENDS_TIMESTAMP,
+      timeToMintInMilli: GAME_ENDS_TIMESTAMP + TIME_TO_MINT_MILLISECONDS,
+      // previews: ['imageName', 'imageName'],
+      previews: [],
+      // mintedAwards: [
+      //   { tokenId: '1', image: 'imageName' },
+      //   { tokenId: '2', image: 'imageName' }
+      // ],
+      mintedAwards: [],
       tradeHistory: null,
       mintInfo: null,
       mintParams: null,
@@ -50,13 +58,15 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      // return this.gameOverTimeMilli < Date.now()
-      return true
+      return this.gameOverTimeMilli < Date.now()
+    },
+    mintingAllow () {
+      //FIXME: make it reactive
+      return this.timeToMintInMilli < Date.now()
     },
     demoOver () {
       //FIXME: make it reactive
-      // return this.demoOverTimeMilli < Date.now()
-      return true
+      return this.demoOverTimeMilli < Date.now()
     },
     isMainnetTime () {
       return isMainnetTime()
