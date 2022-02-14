@@ -27,6 +27,7 @@ import {
   groupBufficornsByRanch,
   updateBestFarmerAward,
   updateBestRanchAward,
+  updateBestBufficornAwards,
 } from '../utils'
 
 const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
@@ -206,8 +207,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
       updateBestRanchAward(farmerAwards, player.ranch, top3SortedRanches)
 
-      // Iterate over all the traits and get corresponding medals
-      for (const [categoryIndex, category] of [
+      const bufficornTraits = [
         // undefined will get the leaderboard sorted according to how balanced are the bufficorns
         undefined,
         Trait.Coat,
@@ -216,26 +216,25 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         Trait.Speed,
         Trait.Stamina,
         Trait.Vigor,
-      ].entries()) {
-        let top3SortedBufficorns = fastify.cache.getTop3SortedBufficorns()
-        if (!top3SortedBufficorns) {
-          const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-          const sortedBufficorns = Bufficorn.getLeaderboard(
-            bufficorns,
-            category
-          )
-          const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
-          for (let topBufficorn of top3SortedBufficorns) {
-            if (topBufficorn.ranch === player.ranch) {
-              farmerAwards.push({
-                category: 2 + categoryIndex,
-                ranking: topBufficorn.position + 1,
-                bufficornId: topBufficorn.creationIndex,
-              })
-            }
-          }
-          fastify.cache.setTop3SortedBufficorns(top3SortedBufficorns)
+      ]
+
+      let top3SortedBufficorns = fastify.cache.getTop3SortedBufficorns()
+      if (!top3SortedBufficorns) {
+        const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+        for (let category of bufficornTraits) {
+          const auxTop3Bufficorns = Bufficorn.top3(bufficorns, category)
+          fastify.cache.setTop3SortedBufficorns(auxTop3Bufficorns, category)
         }
+      }
+      for (const [categoryIndex, category] of bufficornTraits.entries()) {
+        let top3SortedBufficorns =
+          fastify.cache.getTop3SortedBufficorns(category)
+        updateBestBufficornAwards(
+          farmerAwards,
+          player.ranch,
+          top3SortedBufficorns,
+          categoryIndex
+        )
       }
 
       const message = web3.eth.abi.encodeParameters(
