@@ -20,9 +20,9 @@ import {
 import {
   groupBufficornsByRanch,
   isMainnetTime,
-  updateBestBufficornAwards,
-  updateBestFarmerAward,
-  updateBestRanchAward,
+  getBestBufficornAwards,
+  getBestFarmerAward,
+  getBestRanchAward,
 } from '../utils'
 import { Player } from '../domain/player'
 
@@ -283,18 +283,18 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return r
       })
 
-      let farmerAwards: Array<FarmerAward> = []
+      const farmerAwards: Array<FarmerAward> = []
 
       // Get farmer award
       const sortedPlayers = Player.getLeaderboard(
         players,
         players.length
       ).players
-      updateBestFarmerAward(farmerAwards, player.username, sortedPlayers)
+      getBestFarmerAward(player.username, sortedPlayers).concat(farmerAwards)
 
       // Update best ranch award
       const top3Ranches = Ranch.top3(ranches)
-      updateBestRanchAward(farmerAwards, player.ranch, top3Ranches)
+      getBestRanchAward(player.ranch, top3Ranches).concat(farmerAwards)
 
       const bufficornTraits = [
         // undefined will get the leaderboard sorted according to how balanced are the bufficorns
@@ -310,12 +310,11 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // Iterate over all the traits and get corresponding medal
       for (const [categoryIndex, category] of bufficornTraits.entries()) {
         const top3Bufficorns = Bufficorn.top3(bufficorns, category)
-        updateBestBufficornAwards(
-          farmerAwards,
+        getBestBufficornAwards(
           player.ranch,
           top3Bufficorns,
           categoryIndex
-        )
+        ).concat(farmerAwards)
       }
 
       // return extended player

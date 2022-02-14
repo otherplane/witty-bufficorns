@@ -105,11 +105,11 @@ export function generateUsernameList(count: number): Array<string> {
   return Array.from(usernames)
 }
 
-export function updateBestFarmerAward(
-  farmerAwards: Array<FarmerAward>,
+export function getBestFarmerAward(
   playerName: string,
   topPlayers: Array<PlayerLeaderboardInfo>
-) {
+): Array<FarmerAward> {
+  const farmerAwards = []
   for (let topPlayer of topPlayers) {
     if (playerName === topPlayer.username) {
       farmerAwards.push({
@@ -120,13 +120,14 @@ export function updateBestFarmerAward(
       break
     }
   }
+  return farmerAwards
 }
 
-export function updateBestRanchAward(
-  farmerAwards: Array<FarmerAward>,
+export function getBestRanchAward(
   playerRanch: RanchName | BonusRanchName,
   topRanches: Array<RanchLeaderboardInfo>
-) {
+): Array<FarmerAward> {
+  const farmerAwards = []
   for (let topRanch of topRanches) {
     if (playerRanch === topRanch.name) {
       farmerAwards.push({
@@ -137,14 +138,15 @@ export function updateBestRanchAward(
       break
     }
   }
+  return farmerAwards
 }
 
-export function updateBestBufficornAwards(
-  farmerAwards: Array<FarmerAward>,
+export function getBestBufficornAwards(
   playerRanch: RanchName | BonusRanchName,
   topBufficorns: Array<BufficornLeaderboardInfo>,
   categoryIndex: number
-) {
+): Array<FarmerAward> {
+  const farmerAwards = []
   for (let topBufficorn of topBufficorns) {
     if (playerRanch === topBufficorn.ranch) {
       farmerAwards.push({
@@ -154,4 +156,5 @@ export function updateBestBufficornAwards(
       })
     }
   }
+  return farmerAwards
 }
