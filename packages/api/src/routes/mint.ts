@@ -15,7 +15,6 @@ import { Ranch } from '../domain/ranch'
 import { Player } from '../domain/player'
 import {
   AuthorizationHeader,
-  FarmerAward,
   JwtVerifyPayload,
   MintOutput,
   MintParams,
@@ -25,8 +24,6 @@ import {
   fromHexToUint8Array,
   isTimeToMint,
   groupBufficornsByRanch,
-  updateBestFarmerAward,
-  updateBestRanchAward,
 } from '../utils'
 
 const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
@@ -180,7 +177,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const farmerId = player.creationIndex
       const farmerScore = player.points
       const farmerName = player.username
-      let farmerAwards: Array<FarmerAward> = []
+      let farmerAwards = []
 
       const cachedSortedPlayers = fastify.cache.getAllSortedPlayers()
       let sortedPlayers = cachedSortedPlayers
@@ -190,7 +187,17 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
         fastify.cache.setAllSortedPlayer(sortedPlayers)
       }
-      updateBestFarmerAward(farmerAwards, player.username, sortedPlayers)
+
+      for (let topPlayer of sortedPlayers) {
+        if (topPlayer.username === player.username) {
+          farmerAwards.push({
+            category: 0,
+            ranking: topPlayer.position + 1,
+            bufficornId: 0,
+          })
+          break
+        }
+      }
 
       let top3SortedRanches = fastify.cache.getTop3SortedRanches()
       if (!top3SortedRanches) {
@@ -200,11 +207,22 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           r.addBufficorns(bufficornsByRanch[r.name])
           return r
         })
-        top3SortedRanches = Ranch.top3(ranches)
+        const sortedRanches = Ranch.getLeaderboard(ranches)
+        top3SortedRanches = sortedRanches.splice(0, 3)
 
         fastify.cache.setTop3SortedRanches(top3SortedRanches)
       }
-      updateBestRanchAward(farmerAwards, player.ranch, top3SortedRanches)
+
+      for (let topRanch of top3SortedRanches) {
+        if (topRanch.name === player.ranch) {
+          farmerAwards.push({
+            category: 1,
+            ranking: topRanch.position + 1,
+            bufficornId: 0,
+          })
+          break
+        }
+      }
 
       // Iterate over all the traits and get corresponding medals
       for (const [categoryIndex, category] of [

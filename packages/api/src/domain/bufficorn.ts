@@ -86,7 +86,7 @@ export class Bufficorn {
     bufficorns: Array<Bufficorn>,
     trait?: Trait
   ): Array<BufficornLeaderboardInfo> {
-    return Bufficorn.getLeaderboard(bufficorns, trait).splice(0, 3)
+    return Bufficorn.getLeaderboard(bufficorns, trait).slice(0, 3)
   }
 
   static getBufficornName(index: number): BufficornName {
