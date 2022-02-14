@@ -7,7 +7,14 @@ import {
   TRADE_COOLDOWN_MILLIS,
   TRADE_DURATION_MILLIS,
 } from './constants'
-import { RanchName } from './types'
+import {
+  BonusRanchName,
+  BufficornLeaderboardInfo,
+  FarmerAward,
+  PlayerLeaderboardInfo,
+  RanchLeaderboardInfo,
+  RanchName,
+} from './types'
 import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator'
 import { Bufficorn } from './domain/bufficorn'
 
@@ -96,4 +103,55 @@ export function generateUsernameList(count: number): Array<string> {
 
   // Convert set into array to allow indexing by index
   return Array.from(usernames)
+}
+
+export function updateBestFarmerAward(
+  farmerAwards: Array<FarmerAward>,
+  playerName: string,
+  topPlayers: Array<PlayerLeaderboardInfo>
+) {
+  for (let topPlayer of topPlayers) {
+    if (playerName === topPlayer.username) {
+      farmerAwards.push({
+        category: 0,
+        ranking: topPlayer.position + 1,
+        bufficornId: 0,
+      })
+      break
+    }
+  }
+}
+
+export function updateBestRanchAward(
+  farmerAwards: Array<FarmerAward>,
+  playerRanch: RanchName | BonusRanchName,
+  topRanches: Array<RanchLeaderboardInfo>
+) {
+  for (let topRanch of topRanches) {
+    if (playerRanch === topRanch.name) {
+      farmerAwards.push({
+        category: 1,
+        ranking: topRanch.position + 1,
+        bufficornId: 0,
+      })
+      break
+    }
+  }
+}
+
+export function updateBestBufficornAwards(
+  farmerAwards: Array<FarmerAward>,
+  playerRanch: RanchName | BonusRanchName,
+  topBufficorns: Array<BufficornLeaderboardInfo>,
+  categoryIndex: number
+) {
+  for (let topBufficorn of topBufficorns) {
+    if (playerRanch === topBufficorn.ranch) {
+      farmerAwards.push({
+        category: 2 + categoryIndex,
+        ranking: topBufficorn.position + 1,
+        bufficornId: topBufficorn.creationIndex,
+      })
+    }
+  }
 }

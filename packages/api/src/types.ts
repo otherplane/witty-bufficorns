@@ -159,6 +159,21 @@ export const JwtVerifyPayload = Type.Object({
 })
 export type JwtVerifyPayload = Static<typeof JwtVerifyPayload>
 
+export const FarmerAward = Type.Object({
+  category: Type.Number(),
+  ranking: Type.Number(),
+  bufficornId: Type.Number(),
+})
+export type FarmerAward = Static<typeof FarmerAward>
+
+export const PreviewParams = Type.Object({
+  key: Type.String(),
+})
+export type PreviewParams = Static<typeof PreviewParams>
+
+export const PreviewReply = Type.Array(FarmerAward)
+export type PreviewReply = Static<typeof PreviewReply>
+
 export const MintParams = Type.Object({
   address: Type.String(),
 })
@@ -176,13 +191,7 @@ export const MintOutput = Type.Object({
     farmerId: Type.Number(),
     farmerScore: Type.Number(),
     farmerName: Type.String(),
-    farmerAwards: Type.Array(
-      Type.Object({
-        category: Type.Number(),
-        ranking: Type.Number(),
-        bufficornId: Type.Number(),
-      })
-    ),
+    farmerAwards: Type.Array(FarmerAward),
   }),
 })
 export type MintOutput = Static<typeof MintOutput>

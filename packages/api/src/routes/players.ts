@@ -7,13 +7,24 @@ import {
   BonusParams,
   BonusReply,
   ExtendedPlayerVTO,
+  FarmerAward,
   GetByStringKeyParams,
   JwtVerifyPayload,
+  PreviewParams,
+  PreviewReply,
   RanchName,
   SelectBufficornParams,
   SelectBufficornReply,
+  Trait,
 } from '../types'
-import { isMainnetTime } from '../utils'
+import {
+  groupBufficornsByRanch,
+  isMainnetTime,
+  updateBestBufficornAwards,
+  updateBestFarmerAward,
+  updateBestRanchAward,
+} from '../utils'
+import { Player } from '../domain/player'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
@@ -229,6 +240,86 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       )
 
       return reply.status(200).send({ bonusEndsAt: player.bonusEndsAt })
+    },
+  })
+
+  fastify.get<{
+    Params: PreviewParams
+    Reply: PreviewReply | Error
+  }>('/players/preview', {
+    schema: {
+      params: PreviewParams,
+      headers: AuthorizationHeader,
+      response: {
+        200: PreviewReply,
+      },
+    },
+    handler: async (request, reply) => {
+      // Check 1: token is valid
+      let fromKey: string
+      try {
+        const decoded: JwtVerifyPayload = fastify.jwt.verify(
+          request.headers.authorization as string
+        )
+        fromKey = decoded.id
+      } catch (err) {
+        return reply.status(403).send(new Error(`Forbidden: invalid token`))
+      }
+
+      // Check 2 (unreachable): valid server issued token refers to non-existent player
+      const player = await playerModel.get(fromKey)
+      if (!player) {
+        return reply
+          .status(404)
+          .send(new Error(`Player does not exist (key: ${fromKey})`))
+      }
+
+      // Get raw info
+      const players: Array<Player> = await playerModel.getAllRegistered()
+      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+        r.addBufficorns(bufficornsByRanch[r.name])
+        return r
+      })
+
+      let farmerAwards: Array<FarmerAward> = []
+
+      // Get farmer award
+      const sortedPlayers = Player.getLeaderboard(
+        players,
+        players.length
+      ).players
+      updateBestFarmerAward(farmerAwards, player.username, sortedPlayers)
+
+      // Update best ranch award
+      const top3Ranches = Ranch.top3(ranches)
+      updateBestRanchAward(farmerAwards, player.ranch, top3Ranches)
+
+      const bufficornTraits = [
+        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
+        undefined,
+        Trait.Coat,
+        Trait.Coolness,
+        Trait.Intelligence,
+        Trait.Speed,
+        Trait.Stamina,
+        Trait.Vigor,
+      ]
+
+      // Iterate over all the traits and get corresponding medal
+      for (const [categoryIndex, category] of bufficornTraits.entries()) {
+        const top3Bufficorns = Bufficorn.top3(bufficorns, category)
+        updateBestBufficornAwards(
+          farmerAwards,
+          player.ranch,
+          top3Bufficorns,
+          categoryIndex
+        )
+      }
+
+      // return extended player
+      return reply.status(200).send(farmerAwards)
     },
   })
 }

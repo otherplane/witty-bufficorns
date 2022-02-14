@@ -100,10 +100,10 @@ export class Ranch {
   }
 
   static getLeaderboard(
-    bufficorns: Array<Ranch>,
+    ranches: Array<Ranch>,
     trait?: Trait
   ): Array<RanchLeaderboardInfo> {
-    return bufficorns
+    return ranches
       .sort(
         (a, b) =>
           // sort alphabetically if ranches are tied
@@ -116,6 +116,10 @@ export class Ranch {
         position: index,
         creationIndex: r.creationIndex,
       }))
+  }
+
+  static top3(ranches: Array<Ranch>): Array<RanchLeaderboardInfo> {
+    return Ranch.getLeaderboard(ranches).slice(0, 3)
   }
 
   // Throw an error if they don't belong to the current ranch

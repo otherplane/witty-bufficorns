@@ -82,6 +82,13 @@ export class Bufficorn {
       }))
   }
 
+  static top3(
+    bufficorns: Array<Bufficorn>,
+    trait?: Trait
+  ): Array<BufficornLeaderboardInfo> {
+    return Bufficorn.getLeaderboard(bufficorns, trait).slice(0, 3)
+  }
+
   static getBufficornName(index: number): BufficornName {
     if (index < 0 || index > 23) {
       throw new Error('Invalid index')
