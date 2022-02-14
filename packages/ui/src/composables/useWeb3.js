@@ -100,14 +100,20 @@ export function useWeb3 () {
     }
   })
 
-  async function getData () {
+  async function getTokenIds () {
     if ((await web3.eth.net.getId()) !== NETWORK) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
       try {
         const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
-        const from = (await requestAccounts(web3))[0]
-        return await contract.methods.getData(player.index).call()
+        const result = await contract.methods
+          .getFarmerTokens(player.farmerId)
+          .call()
+        // TODO: uncomment when get minted awards is implemented in api
+        // if (result) {
+        //   await player.getMintedAwardsImages()
+        // }
+        return result
       } catch (err) {
         console.error(err)
         player.setError('contractData', createErrorMessage(errorDataMessage))
@@ -122,8 +128,20 @@ export function useWeb3 () {
       const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
       const from = (await requestAccounts(web3))[0]
       const mintArgs = await player.getContractArgs(from)
+      const farmerAwards = mintArgs.data.farmerAwards.map(medal =>
+        Object.values(medal)
+      )
+
       contract.methods
-        .mintFarmerAwards(...mintArgs.values())
+        .mintFarmerAwards(
+          mintArgs.data.address,
+          mintArgs.data.ranchId,
+          mintArgs.data.farmerId,
+          mintArgs.data.farmerScore,
+          mintArgs.data.farmerName,
+          farmerAwards,
+          `0x${mintArgs.envelopedSignature.signature}`
+        )
         .send({ from })
         .on('error', error => {
           player.setError('mint', createErrorMessage(errorMintMessage))
@@ -154,6 +172,6 @@ export function useWeb3 () {
     enableProvider,
     addPolygonNetwork,
     open,
-    getData
+    getTokenIds
   }
 }

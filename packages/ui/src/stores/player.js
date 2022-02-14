@@ -2,6 +2,11 @@ import { defineStore } from 'pinia'
 import { ApiService } from '@/api'
 import router from '../router'
 import { isMainnetTime } from '../utils'
+import {
+  TIME_TO_MINT_MILLISECONDS,
+  DEMO_ENDS_TIMESTAMP,
+  GAME_ENDS_TIMESTAMP
+} from '../constants'
 
 export const useStore = defineStore('player', {
   state: () => {
@@ -15,27 +20,38 @@ export const useStore = defineStore('player', {
       selectedBufficorn: null,
       bonus: null,
       tradeInfo: null,
+      farmerId: null,
       tradeIn: null,
       tradeOut: null,
-      gameOverTimeMilli: 1645351200000,
-      demoOverTimeMilli: 1645131600000,
-      preview: null,
+      gameOverTimeMilli: GAME_ENDS_TIMESTAMP,
+      demoOverTimeMilli: DEMO_ENDS_TIMESTAMP,
+      timeToMintInMilli: GAME_ENDS_TIMESTAMP + TIME_TO_MINT_MILLISECONDS,
+      // previews: ['imageName', 'imageName'],
+      previews: [],
+      // mintedAwards: [
+      //   { tokenId: '1', image: 'imageName' },
+      //   { tokenId: '2', image: 'imageName' }
+      // ],
+      mintedAwards: [],
       tradeHistory: null,
       mintInfo: null,
       mintParams: null,
       color: null,
-      data: null,
+      tokenIds: null,
       playerPoints: null,
       bufficornsGlobalStats: null,
       playersGlobalStats: null,
       ranchesGlobalStats: null,
       errors: {
+        showMintedAwards: null,
+        preview: null,
         auth: null,
         trade: null,
         info: null,
         tradeHistory: null,
         getLeaderboardInfo: null,
-        network: null
+        network: null,
+        getContractArgs: null
       }
     }
   },
@@ -43,6 +59,10 @@ export const useStore = defineStore('player', {
     gameOver () {
       //FIXME: make it reactive
       return this.gameOverTimeMilli < Date.now()
+    },
+    mintingAllow () {
+      //FIXME: make it reactive
+      return this.timeToMintInMilli < Date.now()
     },
     demoOver () {
       //FIXME: make it reactive
@@ -62,8 +82,8 @@ export const useStore = defineStore('player', {
         JSON.stringify({ ...this.getToken(), ...info })
       )
     },
-    setData (data) {
-      this.data = data
+    setTokenIds (tokenIds) {
+      this.tokenIds = tokenIds
     },
     savePreview (preview) {
       localStorage.setItem('preview', preview)
@@ -116,6 +136,7 @@ export const useStore = defineStore('player', {
         this.setError('auth', request.error)
       } else if (request.token) {
         await this.saveClaimInfo(request)
+        // await this.saveMintInfo(request.)
         this.clearError('auth')
         await this.getPlayerInfo()
         await this.getGlobalStats()
@@ -155,6 +176,30 @@ export const useStore = defineStore('player', {
           this.selectedBufficorn = request
           await this.getPlayerInfo()
         }
+      }
+    },
+    async getMintedAwardsImages () {
+      const request = await this.api.getMintedAwardsImages({
+        tokeIds: this.tokenIds
+      })
+      if (request.error) {
+        this.setError('showMintedAwards', request.error)
+        router.push('/init-game')
+      } else {
+        this.clearError('showMintedAwards')
+        this.mintedAwards = request
+      }
+    },
+    async getPreviews () {
+      const request = await this.api.getPreviews({
+        key: this.id
+      })
+      if (request.error) {
+        this.setError('preview', request.error)
+        router.push('/init-game')
+      } else {
+        this.clearError('preview')
+        this.previews = request
       }
     },
     async getBonus (url) {
@@ -222,7 +267,8 @@ export const useStore = defineStore('player', {
           selectedBufficorn,
           points,
           testnetPoints,
-          bonusEndsAt
+          bonusEndsAt,
+          creationIndex
         } = request.player
         this.bonus = bonusEndsAt
         this.id = key
@@ -230,6 +276,7 @@ export const useStore = defineStore('player', {
         this.ranch = ranch
         this.playerPoints = isMainnetTime() ? points : testnetPoints
         this.selectedBufficorn = selectedBufficorn
+        this.farmerId = creationIndex
 
         this.saveTheme(ranch.name)
         if (request.lastTradeIn) {
@@ -246,8 +293,13 @@ export const useStore = defineStore('player', {
         address,
         token: tokenInfo.token
       })
-      this.mintParams = request
-      return this.mintParams
+      if (request.error) {
+        router.push({ name: 'init-game' })
+        this.setError('getContractArgs', request.error)
+      } else {
+        this.mintParams = request
+        return this.mintParams
+      }
     }
   }
 })

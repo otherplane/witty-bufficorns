@@ -37,7 +37,7 @@
       :class="RANCHES[player?.ranch?.name]"
       class="mt-3 w-full inline-flex justify-center rounded-md border-primary shadow-sm px-4 py-2 bg-transparent text-base font-bold text-brown hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
     >
-      CLOSE
+      PLAY
     </button>
   </div>
 </template>

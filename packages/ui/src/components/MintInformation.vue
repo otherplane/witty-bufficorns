@@ -1,21 +1,13 @@
 <template>
-  <div v-if="player.mintInfo" class="mint-content shadow-xl">
+  <div v-if="player.mintInfo" class="mint-content">
     <LabelMintStatus v-if="player.mintInfo" :status="mintStatus" />
     <p class="label">TRANSACTION HASH</p>
     <div class="mint-status" v-if="player?.mintInfo?.transactionHash">
       <div class="info address">
         <a
-          :href="`${etherscanBaseUrl}/${player.mintInfo.transactionHash}`"
+          :href="`${explorerBaseUrl}/${player.mintInfo.transactionHash}`"
           target="_blank"
           >{{ player.mintInfo.transactionHash }}
-        </a>
-        <svgImage class="external-link-icon" :svg="externalLink" />
-      </div>
-    </div>
-    <div class="mint-status" v-if="parseInt(player?.data?.tokenId) !== 0">
-      <div class="info opensea">
-        <a :href="`${openseaBaseUrl}/${player.data.tokenId}`" target="_blank"
-          >See on OpenSea
         </a>
         <svgImage class="external-link-icon" :svg="externalLink" />
       </div>
@@ -27,7 +19,7 @@
 import { useStore } from '@/stores/player'
 import { computed } from 'vue'
 import externalLink from '@/assets/external-black.svg?raw'
-import { ETHERSCAN_BASE_URL, OPENSEA_BASE_URL } from '../constants'
+import { EXPLORER_BASE_URL, OPENSEA_BASE_URL } from '../constants'
 
 export default {
   setup () {
@@ -37,7 +29,7 @@ export default {
     )
 
     return {
-      etherscanBaseUrl: ETHERSCAN_BASE_URL,
+      explorerBaseUrl: EXPLORER_BASE_URL,
       openseaBaseUrl: OPENSEA_BASE_URL,
       player,
       externalLink,
@@ -49,26 +41,35 @@ export default {
 
 <style lang="scss" scoped>
 .mint-content {
-  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color-opacity-2);
   justify-items: center;
   border-radius: 4px;
   display: grid;
   row-gap: 8px;
   padding: 16px;
-  margin-bottom: 16px;
-  .external-link-icon {
-    margin-left: 8px;
-    width: 10px;
-  }
+  margin-bottom: 32px;
   .label {
     font-weight: bold;
+  }
+  .opensea {
+    font-weight: bold;
+  }
+  .tokenIds {
+    text-align: center;
+    .token {
+      margin-right: 8px;
+    }
   }
   .info {
     font-size: 16px;
     color: $black;
     justify-content: center;
     text-decoration: underline;
-    display: flex;
+    line-break: anywhere;
+    .external-link-icon {
+      margin-left: 4px;
+      display: inline-block;
+    }
   }
 }
 </style>

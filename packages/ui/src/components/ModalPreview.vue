@@ -14,12 +14,12 @@
           class="text-lg leading-6 font-medium text-gray-900"
           id="modal-title"
         >
-          Mint yout medals
+          Preview your NFT medals
         </h3>
         <div class="mt-2">
           <p class="text-sm text-gray-900">
-            This is a preview of the NFT, click the 'Mint' button to receive
-            your medal.
+            This is a preview of the NFT medals, click 'Claim NFT' button to
+            mint your medal.
           </p>
         </div>
       </div>

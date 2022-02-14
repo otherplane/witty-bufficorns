@@ -1,6 +1,10 @@
 <template>
   <MainLayout :padding="false">
-    <QrStream class="qr-code pl-4 pr-4 pb-4" @decode="onDecode"></QrStream>
+    <StreamBarcodeReader
+      class="qr-code"
+      @decode="onDecode"
+      @loaded="onLoaded"
+    />
     <div class="content">
       <p class="small-title import-label">Scan a QR code</p>
       <Button
@@ -85,14 +89,14 @@
 <script>
 import { ref } from 'vue'
 import { useStore } from '@/stores/player'
-import { QrStream } from 'vue3-qr-reader'
 import { useRouter } from 'vue-router'
 import { useModal } from '../composables/useModal'
 import { BASE_URL, VITE_TEST } from '../constants'
+import { StreamBarcodeReader } from 'vue-barcode-reader'
 
 export default {
   components: {
-    QrStream
+    StreamBarcodeReader
   },
   setup (props, ctx) {
     const modal = useModal()
@@ -158,7 +162,21 @@ export default {
   top: 0;
   bottom: 0;
   left: 0;
+  height: 100vh;
+  width: 100vw;
   z-index: 8;
+  div {
+    height: 100vh;
+    video {
+      height: 100vh;
+    }
+    .overlay-element {
+      display: none;
+    }
+    .overlay-element {
+      height: 100vh;
+    }
+  }
 }
 .pl-4 {
   padding-bottom: 0;

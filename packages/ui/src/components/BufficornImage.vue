@@ -58,7 +58,7 @@ export default {
   align-content: center;
   width: 120px;
   height: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   &.horizontal {
     grid-template-rows: max-content 120px;
     margin-bottom: 0px;
@@ -71,7 +71,7 @@ export default {
   height: 24px;
   position: absolute;
   left: 100px;
-  bottom: 40px;
+  bottom: 30px;
   &.flip {
     left: 176px;
   }
@@ -84,7 +84,7 @@ export default {
   max-height: 100%;
   grid-column: 1;
   &.horizontal {
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
   &.flip {
     -moz-transform: scaleX(-1);

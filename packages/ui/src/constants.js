@@ -1,13 +1,13 @@
 export const CONTRACT_ADDRESS =
   import.meta.env.CONTRACT_ADDRESS ||
-  '0xf9ce07c40885FD47905d5972377801a5db5652B3'
+  '0x7eebCF30c85b3ad66ad6E66E802616673627e878'
 
 export const OPENSEA_BASE_URL =
   import.meta.env.OPENSEA_BASE_URL ||
   'https://opensea.io/assets/0x855BCa56D00F3f550D0c610BBF562FEBF6540bc6'
 
-export const ETHERSCAN_BASE_URL =
-  import.meta.env.ETHERSCAN_BASE_URL || 'https://etherscan.io/tx'
+export const EXPLORER_BASE_URL =
+  import.meta.env.EXPLORER_BASE_URL || 'https://mumbai.polygonscan.com/tx/'
 
 export const NETWORK = import.meta.env.NETWORK || 80001
 
@@ -21,6 +21,15 @@ export const BASE_URL =
 
 export const POLLER_MILLISECONDS =
   import.meta.env.VITE_POLLER_MILLISECONDS || 5000
+
+export const TIME_TO_MINT_MILLISECONDS =
+  import.meta.env.TIME_TO_MINT_MILLISECONDS || 60000
+
+export const DEMO_ENDS_TIMESTAMP =
+  import.meta.env.DEMO_ENDS_TIMESTAMP || 1645131600000
+
+export const GAME_ENDS_TIMESTAMP =
+  import.meta.env.GAME_ENDS_TIMESTAMP || 1645351200000
 
 export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
   ? parseInt(process.env.PLAYER_MAINNET_TIMESTAMP)

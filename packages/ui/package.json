@@ -18,8 +18,8 @@
     "svg-radar-chart": "^0.2.2",
     "virtual-dom-stringify": "^3.0.1",
     "vue": "3.2.26",
+    "vue-barcode-reader": "1.0.1",
     "vue-router": "4.0.12",
-    "vue3-qr-reader": "1.0.0",
     "web3": "1.6.1"
   },
   "devDependencies": {

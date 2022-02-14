@@ -121,6 +121,14 @@ body {
 .text-primary {
   color: var(--primary-color);
 }
+.overlay-element {
+  height: 100vh !important;
+}
+video {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
 
 .container {
   text-align: center;
