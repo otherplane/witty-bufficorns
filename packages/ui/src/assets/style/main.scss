@@ -55,6 +55,7 @@ html,
 body {
   font-family: 'Zilla Slab';
   --primary-color: #{$brown};
+  background-color: $white;
   touch-action: pan-x pan-y;
 }
 .opolis {

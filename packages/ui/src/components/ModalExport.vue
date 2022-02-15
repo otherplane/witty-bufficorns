@@ -67,6 +67,7 @@ export default defineComponent({
       async copyToClipboard () {
         await copyTextToClipboard(importLink)
         player.notify({ message: 'Copied', icon: 'none' })
+        instance.parent.emit('close')
       }
     }
   }
