@@ -70,9 +70,10 @@ export class ApiService {
   }
 
   getPreviews (params) {
+    console.log('key', params.key)
     return this._get({
-      url: `${this.baseUrl}/players/previews`,
-      config: { params: { key: params.key } }
+      url: `${this.baseUrl}/players/preview`,
+      config: { params: { key: params.key }, headers: { authorization: params.token } }
     })
   }
 

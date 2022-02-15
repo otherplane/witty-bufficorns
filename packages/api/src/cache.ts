@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache'
-import { Trait } from './types'
+import { Prize, RanchLeaderboardInfo, Trait } from './types'
 
 const WEATHER_KEY = 'weather'
 const WEATHER_CACHE_TTL = 3600 // 1 hour, library need to be in seconds
@@ -22,6 +22,22 @@ export class Cache {
 
   public get(key: string): any {
     return this.cache.has(key) ? this.cache.get(key) : null
+  }
+
+  setTokenIdToSVGName(tokenId: string, svgName: Prize, ranking: string) {
+    return this.cache.set(`token-id-${tokenId}`, { tokenId, svgName, ranking })
+  }
+
+  getTokenIdToSVGName(tokenId: string): {
+    tokenId: string
+    svgName: Prize
+    ranking: string
+  } {
+    return this.cache.get(`token-id-${tokenId}`) as {
+      tokenId: string
+      svgName: Prize
+      ranking: string
+    }
   }
 
   setWeather(ranchId: number, value: any) {
@@ -62,7 +78,7 @@ export class Cache {
         return this.get(CACHE_BUFFICORN_STAMINA_KEY)
       case Trait.Vigor:
         return this.get(CACHE_BUFFICORN_VIGOR_KEY)
-      case undefined:
+      default:
         return this.get(CACHE_BUFFICORN_KEY)
     }
   }
@@ -84,6 +100,14 @@ export class Cache {
       case undefined:
         return this.cache.set(CACHE_BUFFICORN_KEY, value)
     }
+  }
+
+  setLeaderboardRanches(ranches: Array<RanchLeaderboardInfo>) {
+    return this.cache.set('LEADERBOARD_RANCHES', ranches)
+  }
+
+  getLeaderboardRanches(): Array<RanchLeaderboardInfo> | undefined {
+    return this.cache.get('LEADERBOARD_RANCHES')
   }
 }
 

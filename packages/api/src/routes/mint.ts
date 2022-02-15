@@ -8,29 +8,26 @@ import {
   MINT_PRIVATE_KEY,
   RANCH_TO_INDEX,
   WEB3_PROVIDER,
-  WITMON_ERC721_ADDRESS,
+  WITTY_BUFFICORNS_ERC721_ADDRESS,
 } from '../constants'
-import { Bufficorn } from '../domain/bufficorn'
-import { Ranch } from '../domain/ranch'
-import { Player } from '../domain/player'
 import {
   AuthorizationHeader,
+  FarmerAward,
   JwtVerifyPayload,
   MintOutput,
   MintParams,
-  Trait,
 } from '../types'
 import {
   fromHexToUint8Array,
   isTimeToMint,
-  groupBufficornsByRanch,
+  calculateAllPlayerAwards,
 } from '../utils'
 
 const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
 
 const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
-  const { bufficornModel, mintModel, playerModel, ranchModel } = fastify
+  const { mintModel, playerModel } = fastify
 
   fastify.post<{ Body: MintParams; Reply: MintOutput | Error }>('/mint', {
     schema: {
@@ -102,7 +99,10 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // Fetch metadata from contract using Web3
       const abi = WITTY_BUFFICORNS_ERC721_ABI
 
-      const contract = new web3.eth.Contract(abi, WITMON_ERC721_ADDRESS)
+      const contract = new web3.eth.Contract(
+        abi,
+        WITTY_BUFFICORNS_ERC721_ADDRESS
+      )
 
       const contractStatus = await contract.methods.getStatus().call()
 
@@ -176,84 +176,96 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const farmerId = player.creationIndex
       const farmerScore = player.points
       const farmerName = player.username
-      let farmerAwards = []
 
-      const cachedSortedPlayers = fastify.cache.getAllSortedPlayers()
-      let sortedPlayers = cachedSortedPlayers
-      if (!sortedPlayers) {
-        const players: Array<Player> = await playerModel.getAllRegistered()
-        sortedPlayers = Player.getLeaderboard(players, players.length).players
+      let farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
+        player,
+        fastify
+      )
+      // const svgAwardsNames: Array<string> = farmerAwards.map(
+      //   (award: FarmerAward): string => {
+      //     return SvgService.getSvgName({
+      //       category: award.category,
+      //       ranking: award.ranking,
+      //     })
+      //   }
+      // )
 
-        fastify.cache.setAllSortedPlayer(sortedPlayers)
-      }
+      // const cachedSortedPlayers = fastify.cache.getAllSortedPlayers()
+      // let sortedPlayers = cachedSortedPlayers
+      // if (!sortedPlayers) {
+      //   const players: Array<Player> = await playerModel.getAllRegistered()
+      //   sortedPlayers = Player.getLeaderboard(players, players.length).players
 
-      for (let topPlayer of sortedPlayers) {
-        if (topPlayer.username === player.username) {
-          farmerAwards.push({
-            category: 0,
-            ranking: topPlayer.position + 1,
-            bufficornId: 0,
-          })
-          break
-        }
-      }
+      //   fastify.cache.setAllSortedPlayer(sortedPlayers)
+      // }
 
-      let top3SortedRanches = fastify.cache.getTop3SortedRanches()
-      if (!top3SortedRanches) {
-        const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-        const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
-        const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
-          r.addBufficorns(bufficornsByRanch[r.name])
-          return r
-        })
-        const sortedRanches = Ranch.getLeaderboard(ranches)
-        top3SortedRanches = sortedRanches.splice(0, 3)
+      // for (let topPlayer of sortedPlayers) {
+      //   if (topPlayer.username === player.username) {
+      //     farmerAwards.push({
+      //       category: 0,
+      //       ranking: topPlayer.position + 1,
+      //       bufficornId: 0,
+      //     })
+      //     break
+      //   }
+      // }
 
-        fastify.cache.setTop3SortedRanches(top3SortedRanches)
-      }
+      // let top3SortedRanches = fastify.cache.getTop3SortedRanches()
+      // if (!top3SortedRanches) {
+      //   const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+      //   const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+      //   const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+      //     r.addBufficorns(bufficornsByRanch[r.name])
+      //     return r
+      //   })
+      //   const sortedRanches = Ranch.getLeaderboard(ranches)
+      //   top3SortedRanches = sortedRanches.splice(0, 3)
 
-      for (let topRanch of top3SortedRanches) {
-        if (topRanch.name === player.ranch) {
-          farmerAwards.push({
-            category: 1,
-            ranking: topRanch.position + 1,
-            bufficornId: 0,
-          })
-          break
-        }
-      }
+      //   fastify.cache.setTop3SortedRanches(top3SortedRanches)
+      // }
 
-      // Iterate over all the traits and get corresponding medals
-      for (const [categoryIndex, category] of [
-        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
-        undefined,
-        Trait.Coat,
-        Trait.Coolness,
-        Trait.Intelligence,
-        Trait.Speed,
-        Trait.Stamina,
-        Trait.Vigor,
-      ].entries()) {
-        let top3SortedBufficorns = fastify.cache.getTop3SortedBufficorns()
-        if (!top3SortedBufficorns) {
-          const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-          const sortedBufficorns = Bufficorn.getLeaderboard(
-            bufficorns,
-            category
-          )
-          const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
-          for (let topBufficorn of top3SortedBufficorns) {
-            if (topBufficorn.ranch === player.ranch) {
-              farmerAwards.push({
-                category: 2 + categoryIndex,
-                ranking: topBufficorn.position + 1,
-                bufficornId: topBufficorn.creationIndex,
-              })
-            }
-          }
-          fastify.cache.setTop3SortedBufficorns(top3SortedBufficorns)
-        }
-      }
+      // for (let topRanch of top3SortedRanches) {
+      //   if (topRanch.name === player.ranch) {
+      //     farmerAwards.push({
+      //       category: 1,
+      //       ranking: topRanch.position + 1,
+      //       bufficornId: 0,
+      //     })
+      //     break
+      //   }
+      // }
+
+      // // Iterate over all the traits and get corresponding medals
+      // for (const [categoryIndex, category] of [
+      //   // undefined will get the leaderboard sorted according to how balanced are the bufficorns
+      //   undefined,
+      //   Trait.Coat,
+      //   Trait.Coolness,
+      //   Trait.Intelligence,
+      //   Trait.Speed,
+      //   Trait.Stamina,
+      //   Trait.Vigor,
+      // ].entries()) {
+      //   let top3SortedBufficorns = fastify.cache.getTop3SortedBufficorns()
+      //   if (!top3SortedBufficorns) {
+      //     const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+      //     const sortedBufficorns = Bufficorn.getLeaderboard(
+      //       bufficorns,
+      //       category
+      //     )
+      //     const top3SortedBufficorns = sortedBufficorns.splice(0, 3)
+      //     for (let topBufficorn of top3SortedBufficorns) {
+      //       if (topBufficorn.ranch === player.ranch) {
+      //         farmerAwards.push({
+      //           category: 2 + categoryIndex,
+      //           ranking: topBufficorn.position + 1,
+      //           bufficornId: topBufficorn.creationIndex,
+      //         })
+      //       }
+      //     }
+      //     fastify.cache.setTop3SortedBufficorns(top3SortedBufficorns)
+      //   }
+      // }
 
       const message = web3.eth.abi.encodeParameters(
         [

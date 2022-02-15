@@ -118,9 +118,9 @@ export class Ranch {
       }))
   }
 
-  static top3(ranches: Array<Ranch>): Array<RanchLeaderboardInfo> {
-    return Ranch.getLeaderboard(ranches).slice(0, 3)
-  }
+  // static top3(ranches: Array<Ranch>): Array<RanchLeaderboardInfo> {
+  //   return Ranch.getLeaderboard(ranches)
+  // }
 
   // Throw an error if they don't belong to the current ranch
   static checkIfBufficornsBelongToRanch(

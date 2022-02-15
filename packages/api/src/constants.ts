@@ -91,9 +91,9 @@ export const WEB3_PROVIDER =
   process.env.WEB3_PROVIDER || 'https://rpc-mainnet.maticvigil.com'
 
 // WitmonERC721 contract address
-export const WITMON_ERC721_ADDRESS =
-  process.env.WITMON_ERC721_ADDRESS ||
-  '0xDc7135D817Ab955ddF90D33f144c150a622e133E'
+export const WITTY_BUFFICORNS_ERC721_ADDRESS =
+  process.env.WITTY_BUFFICORNS_ERC721_ADDRESS ||
+  '0x82321F45D684900E4fd7fE3bB31f7eA88B8b9E98'
 
 export const MONGO_URI: string =
   process.env.MONGO_URI ||
@@ -183,6 +183,15 @@ export const TRAIT_BY_RANCH: Record<RanchName, Trait> = {
   [RanchName.Ranch6]: Trait.Vigor,
 }
 
+export const categoryToPrize: Record<number, Trait> = {
+  3: Trait.Coat,
+  4: Trait.Coolness,
+  5: Trait.Intelligence,
+  6: Trait.Speed,
+  7: Trait.Stamina,
+  8: Trait.Vigor,
+}
+
 export default {
   RANCHES_COUNT,
   PLAYER_KEY_LENGTH_BYTES,
@@ -195,7 +204,7 @@ export default {
   TRADE_POINTS_DIVISOR,
   TRADE_POINTS_MIN,
   MONGO_URI,
-  WITMON_ERC721_ADDRESS,
+  WITTY_BUFFICORNS_ERC721_ADDRESS,
   TRAIT_BY_RANCH,
   INDEX_TO_RANCH,
   BUFFICORNS_INDEX_GROUP_BY_RANCH,
