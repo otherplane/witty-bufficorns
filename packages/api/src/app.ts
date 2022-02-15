@@ -25,6 +25,7 @@ import { MintModel } from './models/mint'
 import { BlockList } from './blockList'
 import { PoapValidator } from './poapValidator'
 import { Cache } from './cache'
+import { MetadataModel } from './models/metadata'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -33,11 +34,11 @@ declare module 'fastify' {
     bufficornModel: BufficornModel
     tradeModel: TradeModel
     mintModel: MintModel
-
     sendResourceCooldowns: BlockList
     receiveResourceCooldowns: BlockList
     poapValidator: PoapValidator
     cache: Cache
+    metadataModel: MetadataModel
   }
 }
 
@@ -89,12 +90,14 @@ const app: FastifyPluginAsync<AppOptions> = async (
     const bufficornModel = new BufficornModel(fastify.mongo.db)
     const tradeModel = new TradeModel(fastify.mongo.db)
     const mintModel = new MintModel(fastify.mongo.db)
+    const metadataModel = new MetadataModel(fastify.mongo.db)
 
     fastify.decorate('playerModel', playerModel)
     fastify.decorate('ranchModel', ranchModel)
     fastify.decorate('bufficornModel', bufficornModel)
     fastify.decorate('tradeModel', tradeModel)
     fastify.decorate('mintModel', mintModel)
+    fastify.decorate('metadataModel', metadataModel)
 
     next()
   }
