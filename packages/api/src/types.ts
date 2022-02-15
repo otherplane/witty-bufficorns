@@ -357,3 +357,229 @@ export enum BufficornName {
   Bufficorn22 = 'Bufficorn-22',
   Bufficorn23 = 'Bufficorn-23',
 }
+
+export enum Prize {
+  Ranch = 'ranch',
+  RanchGold = 'ranch-gold',
+  RanchSilver = 'ranch-silver',
+  RanchBronze = 'ranch-bronze',
+  BufficornGold = 'bufficorn-gold',
+  BufficornSilver = 'bufficorn-silver',
+  BufficornBronze = 'bufficorn-bronze',
+  Breeder = 'breeder',
+  BreederGold = 'breeder-gold',
+  BreederSilver = 'breeder-silver',
+  BreederBronze = 'breeder-bronze',
+  CoatBufficorn = 'coat-bufficorn',
+  CoatBufficornGold = 'coat-bufficorn-gold',
+  CoatBufficornSilver = 'coat-bufficorn-silver',
+  CoatBufficornBronze = 'coat-bufficorn-bronze',
+  CoolnessBufficornGold = 'coolness-bufficorn-gold',
+  CoolnessBufficornSilver = 'coolness-bufficorn-silver',
+  CoolnessBufficornBronze = 'coolness-bufficorn-bronze',
+  IntelligenceBufficorn = 'intelligence-bufficorn',
+  IntelligenceBufficornGold = 'intelligence-bufficorn-gold',
+  IntelligenceBufficornSilver = 'intelligence-bufficorn-silver',
+  SpeedBufficornGold = 'speed-bufficorn-gold',
+  SpeedBufficornSilver = 'speed-bufficorn-silver',
+  SpeedBufficornBronze = 'speed-bufficorn-bronze',
+  StaminaBufficornGold = 'stamina-bufficorn-gold',
+  StaminaBufficornSilver = 'stamina-bufficorn-silver',
+  StaminaBufficornBronze = 'stamina-bufficorn-bronze',
+  VigorBufficornGold = 'vigor-bufficorn-gold',
+  VigorBufficornSilver = 'vigor-bufficorn-silver',
+  VigorBufficornBronze = 'vigor-bufficorn-bronze',
+}
+
+
+export enum ResourceFullName {
+  WarmHay = 'Warm Hay',
+  FreshGrass = 'Fresh Grass',
+  SmartSedge = 'Smart Sedge',
+  MigthyAcorn = 'Migthy Acorn',
+  TirelessWater = 'Tireless Water',
+  HeartyBerry = 'Hearty Berry',
+}
+export const ResourceFullNameEnum = Type.Enum(RanchName)
+
+export const enum MetalName {
+  Gold = 'Gold',
+  Silver = 'Silver',
+  Bronze = 'Bronze',
+}
+
+export const MetalNameEnum = Type.Enum(RanchName)
+
+// ##### Best Breeder
+export const BestBreederMedalMetadata = Type.Object({
+  name: Type.String(),
+  description: Type.String(),
+  external_url: Type.String(),
+  image: Type.String(),
+  attributes: Type.Array(
+    Type.Union([
+      Type.Object({
+        trait_type: Type.Literal('Award Category'),
+        value: Type.Literal('Best Breeder'),
+      }),
+      Type.Object({
+        display_type: Type.Literal('date'),
+        trait_type: Type.Literal('Expedition Date'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Medal'),
+        value: Type.Union([MetalNameEnum, Type.Literal('Diploma')]),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Farmer Name'),
+        value: Type.String(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('number'),
+        trait_type: Type.Literal('Farmer Ranking'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Farmer Score'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('boost_percentage'),
+        trait_type: ResourceFullNameEnum,
+        value: Type.Number(),
+      }),
+    ])
+  ),
+})
+export type BestBreederMedalMetadata = Static<typeof BestBreederMedalMetadata>
+
+// ##### Best Ranch
+export const BestRanchMedalMetadata = Type.Object({
+  name: Type.String(),
+  description: Type.String(),
+  external_url: Type.String(),
+  image: Type.String(),
+  attributes: Type.Array(
+    Type.Union([
+      Type.Object({
+        trait_type: Type.Literal('Award Category'),
+        value: Type.Literal('Best Ranch'),
+      }),
+      Type.Object({
+        display_type: Type.Literal('date'),
+        trait_type: Type.Literal('Expedition Date'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Medal'),
+        value: Type.Union([MetalNameEnum, Type.Literal('Diploma')]),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Farmer Name'),
+        value: Type.String(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('date'),
+        trait_type: Type.Literal('Ranch Date'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Ranch Name'),
+        value: Type.String(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('number'),
+        trait_type: Type.Literal('Ranch Ranking'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Ranch Score'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        'trait_type:': Type.Literal('Ranch Weather'),
+        value: Type.String(),
+      }),
+    ])
+  ),
+})
+export type BestRanchMedalMetadata = Static<typeof BestRanchMedalMetadata>
+
+// ##### Best <Whatever> Bufficorn
+export const BestBufficornMedalMetadata = Type.Object({
+  name: Type.String(),
+  description: Type.String(),
+  external_url: Type.String(),
+  image: Type.String(),
+  attributes: Type.Array(
+    Type.Union([
+      Type.Object({
+        trait_type: Type.Literal('Award Category'),
+        value: Type.String(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('date'),
+        trait_type: Type.Literal('Expedition Date'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Medal'),
+        value: MetalNameEnum,
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Farmer Name'),
+        value: Type.Literal('Realistic Ilise'),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Name'),
+        value: Type.String(),
+      }),
+      Type.Object({
+        display_type: Type.Literal('number'),
+        trait_type: Type.Literal('Bufficorn Ranking'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Score'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Coat'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Coolness'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Intelligence'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Speed'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Stamina'),
+        value: Type.Number(),
+      }),
+      Type.Object({
+        trait_type: Type.Literal('Bufficorn Vigor'),
+        value: Type.Number(),
+      }),
+    ])
+  ),
+})
+
+export type BestBufficornMedalMetadata = Static<
+  typeof BestBufficornMedalMetadata
+>
+
+export const MedalMetadata = Type.Union([
+  BestBreederMedalMetadata,
+  BestBufficornMedalMetadata,
+  BestRanchMedalMetadata,
+])
+
+export type MedalMetadata = Static<typeof MedalMetadata>
