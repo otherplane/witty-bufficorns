@@ -1,6 +1,7 @@
 <template>
   <div v-if="player.mintInfo" class="mint-content">
     <LabelMintStatus v-if="player.mintInfo" :status="mintStatus" />
+    <p v-if="player.mintInfo === 'error'">Try claiming NFTs again</p>
     <p class="label">TRANSACTION HASH</p>
     <div class="mint-status" v-if="player?.mintInfo?.transactionHash">
       <div class="info address">
@@ -24,9 +25,16 @@ import { EXPLORER_BASE_URL, OPENSEA_BASE_URL } from '../constants'
 export default {
   setup () {
     const player = useStore()
-    const mintStatus = computed(() =>
-      player.mintInfo.blockHash ? 'minted' : 'pending'
-    )
+    const mintStatus = computed(() => {
+      console.log(player.mintInfo)
+      if (player.mintInfo.blockHash && player.mintInfo.events[1]) {
+        return 'minted'
+      } else if (player.mintInfo.blockHash && !player.mintInfo.events[1]) {
+        return 'error'
+      } else {
+        return 'pending'
+      }
+    })
 
     return {
       explorerBaseUrl: EXPLORER_BASE_URL,

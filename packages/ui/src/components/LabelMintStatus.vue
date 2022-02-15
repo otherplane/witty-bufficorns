@@ -25,6 +25,11 @@ export default {
   background-color: var(--primary-color);
   color: $white;
 }
+.error {
+  border: 1px solid $reef;
+  background-color: $reef;
+  color: $white;
+}
 .pending {
   border: 1px solid $yellow;
   background-color: $yellow;

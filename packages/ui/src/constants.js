@@ -1,15 +1,15 @@
 export const CONTRACT_ADDRESS =
-  import.meta.env.CONTRACT_ADDRESS ||
-  '0x7eebCF30c85b3ad66ad6E66E802616673627e878'
+  import.meta.env.VITE_CONTRACT_ADDRESS ||
+  '0xDc7135D817Ab955ddF90D33f144c150a622e133E'
 
 export const OPENSEA_BASE_URL =
-  import.meta.env.OPENSEA_BASE_URL ||
+  import.meta.env.VITE_OPENSEA_BASE_URL ||
   'https://opensea.io/assets/0x855BCa56D00F3f550D0c610BBF562FEBF6540bc6'
 
 export const EXPLORER_BASE_URL =
-  import.meta.env.EXPLORER_BASE_URL || 'https://mumbai.polygonscan.com/tx/'
+  import.meta.env.VITE_EXPLORER_BASE_URL || 'https://polygonscan.com/tx/'
 
-export const NETWORK = import.meta.env.NETWORK || 80001
+export const NETWORK = import.meta.env.VITE_NETWORK || 80001
 
 export const VITE_TEST = import.meta.env.VITE_TEST || false
 
@@ -23,16 +23,16 @@ export const POLLER_MILLISECONDS =
   import.meta.env.VITE_POLLER_MILLISECONDS || 5000
 
 export const TIME_TO_MINT_MILLISECONDS =
-  import.meta.env.TIME_TO_MINT_MILLISECONDS || 60000
+  import.meta.env.VITE_TIME_TO_MINT_MILLISECONDS || 60000
 
 export const DEMO_ENDS_TIMESTAMP =
-  import.meta.env.DEMO_ENDS_TIMESTAMP || 1645131600000
+  import.meta.env.VITE_DEMO_ENDS_TIMESTAMP || 1645131600000
 
 export const GAME_ENDS_TIMESTAMP =
-  import.meta.env.GAME_ENDS_TIMESTAMP || 1645351200000
+  import.meta.env.VITE_GAME_ENDS_TIMESTAMP || 1645351200000
 
 export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
-  ? parseInt(process.env.PLAYER_MAINNET_TIMESTAMP)
+  ? parseInt(process.env.VITE_PLAYER_MAINNET_TIMESTAMP)
   : 1645131600 // Thursday, February 17, 2022 09:00:00 PM (UTC)
 
 export const RANCHES = {

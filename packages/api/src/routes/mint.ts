@@ -91,7 +91,6 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       if (prevMint) {
         return reply.status(200).send(prevMint)
       }
-      console.log('before web3 init')
       const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
       // Check address is valid
       if (!web3.utils.isAddress(request.body.address)) {
