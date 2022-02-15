@@ -63,7 +63,60 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       // Save metadata into DB
       await fastify.metadataModel.create(metadataFromContract)
+      // TODO: We have to return the svg image
+      return reply.status(200).send(metadataFromContract)
+    },
+  })
 
+  fastify.get<{
+    Params: GetByNumericKeyParams
+    Reply:
+      MedalMetadata | Error
+  }>('/image/:key', {
+    schema: {
+      params: GetByNumericKeyParams,
+      response: {
+        200: MedalMetadata
+      },
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: { key: number } }>,
+      reply
+    ) => {
+      const { key } = request.params
+
+      // // Check if metadata already exists in DB
+      const medalMetadataFromDB= await fastify.metadataModel.get(key)
+      if (medalMetadataFromDB) {
+        return reply.status(200).send(medalMetadataFromDB)
+      }
+
+      // Fetch metadata from contract using Web3
+      const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
+      const { abi } = CONTRACT_ERCC721
+      const contract = new web3.eth.Contract(abi, CONTRACT_ERCC721)
+
+      let callResult
+      try {
+        callResult = await contract.methods.metadata(key).call()
+      } catch (err) {
+        console.error('[Server] Metadata error:', err)
+        return reply
+          .status(404)
+          .send(
+            new Error(`Metadata for token id ${key} could not be fetched`)
+          )
+      }
+
+      // Parse contract call result
+      const metadataFromContract: MedalMetadata = {
+        ...JSON.parse(callResult),
+        token_id: key,
+      }
+
+      // Save metadata into DB
+      await fastify.metadataModel.create(metadataFromContract)
+      // TODO: We have to return the svg image
       return reply.status(200).send(metadataFromContract)
     },
   })

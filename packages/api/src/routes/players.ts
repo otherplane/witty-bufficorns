@@ -283,6 +283,91 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return r
       })
 
+
+      // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
+      const farmerAwards: Array<FarmerAward> = []
+
+      // Get farmer award
+      const sortedPlayers = Player.getLeaderboard(
+        players,
+        players.length
+      ).players
+      getBestFarmerAward(player.username, sortedPlayers).concat(farmerAwards)
+
+      // Update best ranch award
+      const top3Ranches = Ranch.top3(ranches)
+      getBestRanchAward(player.ranch, top3Ranches).concat(farmerAwards)
+
+      const bufficornTraits = [
+        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
+        undefined,
+        Trait.Coat,
+        Trait.Coolness,
+        Trait.Intelligence,
+        Trait.Speed,
+        Trait.Stamina,
+        Trait.Vigor,
+      ]
+
+      // Iterate over all the traits and get corresponding medal
+      for (const [categoryIndex, category] of bufficornTraits.entries()) {
+        const top3Bufficorns = Bufficorn.top3(bufficorns, category)
+        getBestBufficornAwards(
+          player.ranch,
+          top3Bufficorns,
+          categoryIndex
+        ).concat(farmerAwards)
+      }
+
+      // return extended player
+      return reply.status(200).send(farmerAwards)
+    },
+  })
+
+  fastify.get<{
+    Params: PreviewParams
+    Reply: PreviewReply | Error
+  }>('/players/images', {
+    schema: {
+      params: PreviewParams,
+      headers: AuthorizationHeader,
+      response: {
+        200: PreviewReply,
+      },
+    },
+    handler: async (request, reply) => {
+      // TODO: This endpoint receives an array of tokenIds and should return Array<{ tokenId: string, image: 'imageName' }>
+
+      // Check 1: token is valid
+      let fromKey: string
+      try {
+        const decoded: JwtVerifyPayload = fastify.jwt.verify(
+          request.headers.authorization as string
+        )
+        fromKey = decoded.id
+      } catch (err) {
+        return reply.status(403).send(new Error(`Forbidden: invalid token`))
+      }
+
+      // Check 2 (unreachable): valid server issued token refers to non-existent player
+      const player = await playerModel.get(fromKey)
+      if (!player) {
+        return reply
+          .status(404)
+          .send(new Error(`Player does not exist (key: ${fromKey})`))
+      }
+
+      // Get raw info
+      const players: Array<Player> = await playerModel.getAllRegistered()
+      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+        r.addBufficorns(bufficornsByRanch[r.name])
+        return r
+      })
+
+
+      // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
       const farmerAwards: Array<FarmerAward> = []
 
       // Get farmer award
