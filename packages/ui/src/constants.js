@@ -144,3 +144,37 @@ export const STATS_FILTERS = {
     }
   }
 }
+
+const BUFFICORN_NAME = {
+  // ranch1
+  'Bufficorn-0' : 'Bufficorn-0',
+  'Bufficorn-6' : 'Bufficorn-6',
+  'Bufficorn12' : 'Bufficorn-12',
+  'Bufficorn18' : 'Bufficorn-18',
+  // ranch2
+  'Bufficorn-1' : 'Bufficorn-1',
+  'Bufficorn-7' : 'Bufficorn-7',
+  'Bufficorn13' : 'Bufficorn-13',
+  'Bufficorn19' : 'Bufficorn-19',
+  // balancer
+  'Bufficorn-2' : 'Bufficorn BALler',
+  'Bufficorn-8' : 'AMMcorn',
+  'Bufficorn14' : 'Ferntalik',
+  'Bufficorn20' : 'BALlicorn',
+
+  // algorand 
+  'Bufficorn-3' : 'ZKcorn',
+  'Bufficorn-9' : 'Micalicorn',
+  'Bufficorn15' : 'Mr.Grantsalot',
+  'Bufficorn21' : 'Buffirand',
+  // ranch5
+  'Bufficorn-4' : 'Bufficorn-4',
+  'Bufficorn10' : 'Bufficorn-10',
+  'Bufficorn16' : 'Bufficorn-16',
+  'Bufficorn22' : 'Bufficorn-22',
+  // ranch6
+  'Bufficorn-5' : 'Bufficorn-5',
+  'Bufficorn11' : 'Bufficorn-11',
+  'Bufficorn17' : 'Bufficorn-17',
+  'Bufficorn23' : 'Bufficorn-23',
+}

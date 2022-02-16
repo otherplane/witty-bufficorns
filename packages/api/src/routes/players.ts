@@ -294,14 +294,14 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         players,
         players.length
       ).players
-      console.log('--sortedplayers---', sortedPlayers)
+      console.log('--sortedplayers--', sortedPlayers)
       farmerAwards = getBestFarmerAward(player.username, sortedPlayers).concat(
         farmerAwards
       )
 
       // Update best ranch award
-      const top3Ranches = Ranch.top3(ranches)
-      farmerAwards = getBestRanchAward(player.ranch, top3Ranches).concat(
+      const leaderboardRanches = Ranch.getLeaderboard(ranches)
+      farmerAwards = getBestRanchAward(player.ranch, leaderboardRanches).concat(
         farmerAwards
       )
 
@@ -333,6 +333,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           })
         }
       )
+
       return reply.status(200).send(svgAwardsNames)
     },
   })
