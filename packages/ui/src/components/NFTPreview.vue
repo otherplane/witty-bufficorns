@@ -16,13 +16,7 @@
       </a>
     </div>
     <div v-else class="nft-container">
-      <img
-        v-for="preview in player.previews"
-        :key="preview"
-        class="preview-nft"
-        :src="importSvg(preview)"
-        alt="icon"
-      />
+      <SvgImage v-for="preview in player.previews" :key="preview" class="preview-nft" :svg="preview" />
     </div>
   </div>
 </template>

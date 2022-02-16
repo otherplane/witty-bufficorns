@@ -8,7 +8,7 @@ import {
   MINT_PRIVATE_KEY,
   RANCH_TO_INDEX,
   WEB3_PROVIDER,
-  WITMON_ERC721_ADDRESS,
+  WITTY_BUFFICORNS_ERC721_ADDRESS,
 } from '../constants'
 import { Bufficorn } from '../domain/bufficorn'
 import { Ranch } from '../domain/ranch'
@@ -102,7 +102,10 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // Fetch metadata from contract using Web3
       const abi = WITTY_BUFFICORNS_ERC721_ABI
 
-      const contract = new web3.eth.Contract(abi, WITMON_ERC721_ADDRESS)
+      const contract = new web3.eth.Contract(
+        abi,
+        WITTY_BUFFICORNS_ERC721_ADDRESS
+      )
 
       const contractStatus = await contract.methods.getStatus().call()
 

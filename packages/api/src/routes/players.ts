@@ -1,6 +1,7 @@
 import { FastifyPluginAsync, FastifyRequest } from 'fastify'
 import { Bufficorn } from '../domain/bufficorn'
 import { Ranch } from '../domain/ranch'
+import { SvgService } from '../svgService'
 
 import {
   AuthorizationHeader,
@@ -16,6 +17,7 @@ import {
   SelectBufficornParams,
   SelectBufficornReply,
   Trait,
+  PreviewImageNameReply,
 } from '../types'
 import {
   groupBufficornsByRanch,
@@ -244,17 +246,18 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   })
 
   fastify.get<{
-    Params: PreviewParams
-    Reply: PreviewReply | Error
+    Querystring: PreviewParams
+    Reply: PreviewImageNameReply | Error
   }>('/players/preview', {
     schema: {
-      params: PreviewParams,
+      querystring: PreviewParams,
       headers: AuthorizationHeader,
       response: {
-        200: PreviewReply,
+        200: PreviewImageNameReply,
       },
     },
     handler: async (request, reply) => {
+      console.log('---PREVIEW---')
       // Check 1: token is valid
       let fromKey: string
       try {
@@ -283,19 +286,23 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return r
       })
 
-      // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
-      const farmerAwards: Array<FarmerAward> = []
+      let farmerAwards: Array<FarmerAward> = []
 
       // Get farmer award
       const sortedPlayers = Player.getLeaderboard(
         players,
         players.length
       ).players
-      getBestFarmerAward(player.username, sortedPlayers).concat(farmerAwards)
+      console.log('--sortedplayers---', sortedPlayers)
+      farmerAwards = getBestFarmerAward(player.username, sortedPlayers).concat(
+        farmerAwards
+      )
 
       // Update best ranch award
       const top3Ranches = Ranch.top3(ranches)
-      getBestRanchAward(player.ranch, top3Ranches).concat(farmerAwards)
+      farmerAwards = getBestRanchAward(player.ranch, top3Ranches).concat(
+        farmerAwards
+      )
 
       const bufficornTraits = [
         // undefined will get the leaderboard sorted according to how balanced are the bufficorns
@@ -311,15 +318,21 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // Iterate over all the traits and get corresponding medal
       for (const [categoryIndex, category] of bufficornTraits.entries()) {
         const top3Bufficorns = Bufficorn.top3(bufficorns, category)
-        getBestBufficornAwards(
+        farmerAwards = getBestBufficornAwards(
           player.ranch,
           top3Bufficorns,
           categoryIndex
         ).concat(farmerAwards)
       }
-
-      // return extended player
-      return reply.status(200).send(farmerAwards)
+      const svgAwardsNames: Array<string> = farmerAwards.map(
+        (award: FarmerAward): string => {
+          return SvgService.getSvgName({
+            category: award.category,
+            ranking: award.ranking,
+          })
+        }
+      )
+      return reply.status(200).send(svgAwardsNames)
     },
   })
 
@@ -335,8 +348,6 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       },
     },
     handler: async (request, reply) => {
-      // TODO: This endpoint receives an array of tokenIds and should return Array<{ tokenId: string, image: 'imageName' }>
-
       // Check 1: token is valid
       let fromKey: string
       try {
@@ -365,7 +376,6 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return r
       })
 
-      // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
       const farmerAwards: Array<FarmerAward> = []
 
       // Get farmer award
