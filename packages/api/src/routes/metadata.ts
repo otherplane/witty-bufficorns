@@ -7,7 +7,10 @@ import Web3 from 'web3'
 import {
   MedalMetadata,
   GetByNumericKeyParams,
+  GetTokenInfoReponse,
+  SvgImage,
 } from '../types'
+import { SvgService } from '../svgService'
 
 const CONTRACT_ERCC721 = require('../assets/wittyBufficornsERC721.json')
 
@@ -17,13 +20,12 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.get<{
     Params: GetByNumericKeyParams
-    Reply:
-      MedalMetadata | Error
+    Reply: MedalMetadata | Error
   }>('/metadata/:key', {
     schema: {
       params: GetByNumericKeyParams,
       response: {
-        200: MedalMetadata
+        200: MedalMetadata,
       },
     },
     handler: async (
@@ -33,7 +35,7 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const { key } = request.params
 
       // // Check if metadata already exists in DB
-      const medalMetadataFromDB= await fastify.metadataModel.get(key)
+      const medalMetadataFromDB = await fastify.metadataModel.get(key)
       if (medalMetadataFromDB) {
         return reply.status(200).send(medalMetadataFromDB)
       }
@@ -50,9 +52,7 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         console.error('[Server] Metadata error:', err)
         return reply
           .status(404)
-          .send(
-            new Error(`Metadata for token id ${key} could not be fetched`)
-          )
+          .send(new Error(`Metadata for token id ${key} could not be fetched`))
       }
 
       // Parse contract call result
@@ -70,13 +70,12 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.get<{
     Params: GetByNumericKeyParams
-    Reply:
-      MedalMetadata | Error
+    Reply: SvgImage | Error
   }>('/image/:key', {
     schema: {
       params: GetByNumericKeyParams,
       response: {
-        200: MedalMetadata
+        200: SvgImage,
       },
     },
     handler: async (
@@ -85,11 +84,12 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     ) => {
       const { key } = request.params
 
+      // TODO: save in db
       // // Check if metadata already exists in DB
-      const medalMetadataFromDB= await fastify.metadataModel.get(key)
-      if (medalMetadataFromDB) {
-        return reply.status(200).send(medalMetadataFromDB)
-      }
+      // const medalMetadataFromDB = await fastify.metadataModel.get(key)
+      // if (medalMetadataFromDB) {
+      //   return reply.status(200).send(medalMetadataFromDB)
+      // }
 
       // Fetch metadata from contract using Web3
       const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
@@ -97,27 +97,20 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const contract = new web3.eth.Contract(abi, CONTRACT_ERCC721)
 
       let callResult
+
       try {
-        callResult = await contract.methods.metadata(key).call()
+        callResult = await contract.methods.getTokenInfo(key).call()
       } catch (err) {
         console.error('[Server] Metadata error:', err)
         return reply
           .status(404)
-          .send(
-            new Error(`Metadata for token id ${key} could not be fetched`)
-          )
+          .send(new Error(`Metadata for token id ${key} could not be fetched`))
       }
+      const [category, ranking]: [number, number] = callResult
+      const svg = SvgService.getSvg({ category, ranking })
 
-      // Parse contract call result
-      const metadataFromContract: MedalMetadata = {
-        ...JSON.parse(callResult),
-        token_id: key,
-      }
-
-      // Save metadata into DB
-      await fastify.metadataModel.create(metadataFromContract)
       // TODO: We have to return the svg image
-      return reply.status(200).send(metadataFromContract)
+      return reply.status(200).send(svg)
     },
   })
 }

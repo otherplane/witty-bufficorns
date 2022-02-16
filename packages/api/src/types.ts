@@ -90,10 +90,6 @@ export const DbRanchVTO = Type.Object({
 
 export type DbRanchVTO = Static<typeof DbRanchVTO>
 
-//TODO: define Medal type
-export const Medal = Type.String()
-export type Medal = Static<typeof Medal>
-
 export const AuthorizationHeader = Type.Object({
   Authorization: Type.String(),
 })
@@ -195,23 +191,6 @@ export const MintOutput = Type.Object({
   }),
 })
 export type MintOutput = Static<typeof MintOutput>
-
-export const EggMetadata = Type.Object({
-  // TODO: verify that it does not break anything with OpenSea
-  token_id: Type.Number(),
-  name: Type.String(),
-  description: Type.String(),
-  image_data: Type.String(),
-  external_url: Type.String(),
-  attributes: Type.Array(
-    Type.Object({
-      trait_type: Type.String(),
-      value: Type.Union([Type.String(), Type.Number()]),
-    })
-  ),
-})
-
-export type EggMetadata = Static<typeof EggMetadata>
 
 export const GetByNumericKeyParams = Type.Object({
   key: Type.Number(),
@@ -358,6 +337,18 @@ export enum BufficornName {
   Bufficorn23 = 'Bufficorn-23',
 }
 
+export enum Medal {
+  Ranch = 'ranch',
+  Bufficorn = 'bufficorn',
+  Breeder = 'breeder',
+  Coat = 'coat',
+  Coolness = 'coolness',
+  Intelligence = 'intelligence',
+  Stamina = 'stamina',
+  Vigor = 'vigor',
+  Speed = 'speed',
+}
+
 export enum Prize {
   Ranch = 'ranch',
   RanchGold = 'ranch-gold',
@@ -391,7 +382,6 @@ export enum Prize {
   VigorBufficornBronze = 'vigor-bufficorn-bronze',
 }
 
-
 export enum ResourceFullName {
   WarmHay = 'Warm Hay',
   FreshGrass = 'Fresh Grass',
@@ -403,9 +393,9 @@ export enum ResourceFullName {
 export const ResourceFullNameEnum = Type.Enum(RanchName)
 
 export const enum MetalName {
-  Gold = 'Gold',
-  Silver = 'Silver',
-  Bronze = 'Bronze',
+  Gold = 'gold',
+  Silver = 'silver',
+  Bronze = 'bronze',
 }
 
 export const MetalNameEnum = Type.Enum(RanchName)
@@ -572,6 +562,11 @@ export const BestBufficornMedalMetadata = Type.Object({
   ),
 })
 
+export type GetTokenInfoReponse = {
+  category: number
+  ranking: number
+}
+
 export type BestBufficornMedalMetadata = Static<
   typeof BestBufficornMedalMetadata
 >
@@ -583,3 +578,6 @@ export const MedalMetadata = Type.Union([
 ])
 
 export type MedalMetadata = Static<typeof MedalMetadata>
+
+export const SvgImage = Type.String()
+export type SvgImage = Static<typeof SvgImage>

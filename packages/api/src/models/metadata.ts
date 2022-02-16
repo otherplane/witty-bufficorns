@@ -16,8 +16,7 @@ export class MetadataModel {
   public async create(metadataOutput: MedalMetadata): Promise<MedalMetadata> {
     const success = this.repository.create(metadataOutput)
 
-    if (!success)
-      throw new Error(`Metadata object could not be created`)
+    if (!success) throw new Error(`Metadata object could not be created`)
 
     return metadataOutput
   }

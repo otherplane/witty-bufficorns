@@ -283,7 +283,6 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return r
       })
 
-
       // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
       const farmerAwards: Array<FarmerAward> = []
 
@@ -365,7 +364,6 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         r.addBufficorns(bufficornsByRanch[r.name])
         return r
       })
-
 
       // TODO: Instead of return a FarmerAward we should return the filenames which are in prize enum
       const farmerAwards: Array<FarmerAward> = []
