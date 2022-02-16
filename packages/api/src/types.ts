@@ -163,12 +163,16 @@ export const FarmerAward = Type.Object({
 export type FarmerAward = Static<typeof FarmerAward>
 
 export const PreviewParams = Type.Object({
-  key: Type.String(),
+  token_ids: Type.Array(Type.String()),
 })
 export type PreviewParams = Static<typeof PreviewParams>
 
 export const PreviewReply = Type.Array(FarmerAward)
+
 export type PreviewReply = Static<typeof PreviewReply>
+
+export const PreviewImageNameReply = Type.Array(Type.String())
+export type PreviewImageNameReply = Static<typeof PreviewImageNameReply>
 
 export const MintParams = Type.Object({
   address: Type.String(),
@@ -350,36 +354,35 @@ export enum Medal {
 }
 
 export enum Prize {
-  Ranch = 'ranch',
+  RanchStone = 'ranch-stone',
   RanchGold = 'ranch-gold',
   RanchSilver = 'ranch-silver',
   RanchBronze = 'ranch-bronze',
   BufficornGold = 'bufficorn-gold',
   BufficornSilver = 'bufficorn-silver',
   BufficornBronze = 'bufficorn-bronze',
-  Breeder = 'breeder',
+  Breeder = 'breeder-stone',
   BreederGold = 'breeder-gold',
   BreederSilver = 'breeder-silver',
   BreederBronze = 'breeder-bronze',
-  CoatBufficorn = 'coat-bufficorn',
-  CoatBufficornGold = 'coat-bufficorn-gold',
-  CoatBufficornSilver = 'coat-bufficorn-silver',
-  CoatBufficornBronze = 'coat-bufficorn-bronze',
-  CoolnessBufficornGold = 'coolness-bufficorn-gold',
-  CoolnessBufficornSilver = 'coolness-bufficorn-silver',
-  CoolnessBufficornBronze = 'coolness-bufficorn-bronze',
-  IntelligenceBufficorn = 'intelligence-bufficorn',
-  IntelligenceBufficornGold = 'intelligence-bufficorn-gold',
-  IntelligenceBufficornSilver = 'intelligence-bufficorn-silver',
-  SpeedBufficornGold = 'speed-bufficorn-gold',
-  SpeedBufficornSilver = 'speed-bufficorn-silver',
-  SpeedBufficornBronze = 'speed-bufficorn-bronze',
-  StaminaBufficornGold = 'stamina-bufficorn-gold',
-  StaminaBufficornSilver = 'stamina-bufficorn-silver',
-  StaminaBufficornBronze = 'stamina-bufficorn-bronze',
-  VigorBufficornGold = 'vigor-bufficorn-gold',
-  VigorBufficornSilver = 'vigor-bufficorn-silver',
-  VigorBufficornBronze = 'vigor-bufficorn-bronze',
+  CoatGold = 'coat-gold',
+  CoatSilver = 'coat-silver',
+  CoatBronze = 'coat-bronze',
+  CoolnessGold = 'coolness-gold',
+  CoolnessSilver = 'coolness-silver',
+  CoolnessBronze = 'coolness-bronze',
+  IntelligenceGold = 'intelligence-gold',
+  IntelligenceBronze = 'intelligence-gold',
+  IntelligenceSilver = 'intelligence-silver',
+  SpeedGold = 'speed-gold',
+  SpeedSilver = 'speed-silver',
+  SpeedBronze = 'speed-bronze',
+  StaminaGold = 'stamina-gold',
+  StaminaSilver = 'stamina-silver',
+  StaminaBronze = 'stamina-bronze',
+  VigorGold = 'vigor-gold',
+  VigorSilver = 'vigor-silver',
+  VigorBronze = 'vigor-bronze',
 }
 
 export enum ResourceFullName {
@@ -562,7 +565,7 @@ export const BestBufficornMedalMetadata = Type.Object({
   ),
 })
 
-export type GetTokenInfoReponse = {
+export type GetTokenInfoResponse = {
   category: number
   ranking: number
 }
@@ -581,3 +584,11 @@ export type MedalMetadata = Static<typeof MedalMetadata>
 
 export const SvgImage = Type.String()
 export type SvgImage = Static<typeof SvgImage>
+
+export const PlayerImagesReponse = Type.Array(
+  Type.Object({
+    tokenId: Type.String(),
+    svg: Type.String(),
+  })
+)
+export type PlayerImagesReponse = Static<typeof PlayerImagesReponse>

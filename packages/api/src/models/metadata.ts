@@ -22,6 +22,25 @@ export class MetadataModel {
   }
 
   public async get(tokenId: number): Promise<MedalMetadata | null> {
-    return await this.repository.getOne({ token_id: tokenId })
+    const metadata = await this.repository.getOne({ token_id: tokenId })
+
+    if (
+      metadata?.attributes.length &&
+      metadata.description &&
+      metadata.external_url &&
+      metadata.image &&
+      metadata.name
+    ) {
+      return {
+        // TODO: remove any and add a strong type
+        attributes: metadata?.attributes as any,
+        description: metadata?.description,
+        external_url: metadata?.external_url,
+        image: metadata?.image,
+        name: metadata?.name,
+      }
+    } else {
+      return null
+    }
   }
 }

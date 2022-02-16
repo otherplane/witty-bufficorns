@@ -26,7 +26,7 @@ export const useStore = defineStore('player', {
       gameOverTimeMilli: GAME_ENDS_TIMESTAMP,
       demoOverTimeMilli: DEMO_ENDS_TIMESTAMP,
       timeToMintInMilli: GAME_ENDS_TIMESTAMP + TIME_TO_MINT_MILLISECONDS,
-      // previews: ['imageName', 'imageName'],
+      //previews: ['imageName', 'imageName'],
       previews: [],
       // mintedAwards: [
       //   { tokenId: '1', image: 'imageName' },
@@ -58,7 +58,8 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      return this.gameOverTimeMilli < Date.now()
+      // return this.gameOverTimeMilli < Date.now()
+      return true 
     },
     mintingAllow () {
       //FIXME: make it reactive
@@ -66,7 +67,8 @@ export const useStore = defineStore('player', {
     },
     demoOver () {
       //FIXME: make it reactive
-      return this.demoOverTimeMilli < Date.now()
+      // return this.demoOverTimeMilli < Date.now()
+      return true
     },
     isMainnetTime () {
       return isMainnetTime()
@@ -191,9 +193,13 @@ export const useStore = defineStore('player', {
       }
     },
     async getPreviews () {
+      console.log('id.....', this.id)
+      const tokenInfo = this.getToken()
       const request = await this.api.getPreviews({
+        token: tokenInfo.token,
         key: this.id
       })
+      console.log('getPreviews......', request)
       if (request.error) {
         this.setError('preview', request.error)
         router.push('/init-game')

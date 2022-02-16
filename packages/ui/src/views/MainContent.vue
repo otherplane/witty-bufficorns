@@ -165,11 +165,11 @@ export default {
         if (player.gameOver) {
           await player.getMintInfo()
           // TODO: uncomment when api implements preview method
-          // if (player.mintInfo?.blockHash) {
-          //   await player.getMintedAwardsImages()
-          // } else {
-          //   await player.getPreviews()
-          // }
+          if (player.mintInfo?.blockHash) {
+            // await player.getMintedAwardsImages()
+          } else {
+            await player.getPreviews()
+          }
           const tokenIds = await web3WittyBufficorns.getTokenIds()
           player.setTokenIds(tokenIds)
         }

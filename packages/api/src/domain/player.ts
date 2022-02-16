@@ -67,12 +67,18 @@ export class Player {
     paginationOffset: number = 0
   ): { players: Array<PlayerLeaderboardInfo>; total: number } {
     return {
-      players: players.map((p, index) => ({
-        username: p.username,
-        creationIndex: p.creationIndex,
-        points: isMainnetTime() ? p.points : p.testnetPoints,
-        position: paginationOffset + index,
-      })),
+      players: players
+        .sort(
+          (a, b) =>
+            // sort by creation index if the players are tied
+            b.points - a.points || a.username.localeCompare(b.username)
+        )
+        .map((p, index) => ({
+          username: p.username,
+          creationIndex: p.creationIndex,
+          points: isMainnetTime() ? p.points : p.testnetPoints,
+          position: paginationOffset + index,
+        })),
       total: totalPlayers,
     }
   }

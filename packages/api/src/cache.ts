@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache'
-import { Trait } from './types'
+import { Prize, Trait } from './types'
 
 const WEATHER_KEY = 'weather'
 const WEATHER_CACHE_TTL = 3600 // 1 hour, library need to be in seconds
@@ -22,6 +22,22 @@ export class Cache {
 
   public get(key: string): any {
     return this.cache.has(key) ? this.cache.get(key) : null
+  }
+
+  setTokenIdToSVGName(tokenId: string, svgName: Prize, ranking: string) {
+    return this.cache.set(`token-id-${tokenId}`, { tokenId, svgName, ranking })
+  }
+
+  getTokenIdToSVGName(tokenId: string): {
+    tokenId: string
+    svgName: Prize
+    ranking: string
+  } {
+    return this.cache.get(`token-id-${tokenId}`) as {
+      tokenId: string
+      svgName: Prize
+      ranking: string
+    }
   }
 
   setWeather(ranchId: number, value: any) {
