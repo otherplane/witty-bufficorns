@@ -14,12 +14,14 @@
           class="text-lg leading-6 font-medium text-gray-900"
           id="modal-title"
         >
-          The game is over
+          Please connect to a Web3 provider
         </h3>
         <div class="mt-2">
           <p class="text-sm text-gray-900">
-            Preview and mint the NFTs, you need to connect to a web3 provider
-            (e.g. MetaMask). Create a backup if needed.
+            You need to connect to Polygon Mainnet via your favorite Web3
+            provider (e.g. MetaMask) to mint your NFTs. Please, create a backup
+            of your profile from the main menu in case you need to move to
+            another device.
           </p>
         </div>
       </div>
@@ -28,19 +30,11 @@
   <div class="bg-beige px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
     <button
       :class="RANCHES[player?.ranch?.name]"
-      @click="mint"
-      type="button"
-      class="w-full inline-flex justify-center rounded-md border border-primary shadow-sm px-4 py-2 bg-primary text-base font-bold text-pink hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-    >
-      OPEN
-    </button>
-    <button
-      :class="RANCHES[player?.ranch?.name]"
       @click="$parent.$emit('close')"
       type="button"
       class="mt-3 w-full inline-flex justify-center rounded-md border-primary shadow-sm px-4 py-2 bg-transparent text-base font-bold text-brown hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
     >
-      CANCEL
+      CLOSE
     </button>
   </div>
 </template>
@@ -63,7 +57,6 @@ export default defineComponent({
       bufficornMain,
       RANCHES,
       mint () {
-        w3Witmon.open()
         instance.parent.emit('close')
       }
     }

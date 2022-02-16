@@ -80,8 +80,6 @@ const medalNameToSvg: Record<Prize, any> = {
 
 export class SvgService {
   static getSvgName({ category, ranking }: GetTokenInfoResponse): Prize {
-    console.log('category-------------', category)
-    console.log('ranking', ranking)
     const categoryToMedal: Record<number, Medal> = {
       0: Medal.Breeder,
       1: Medal.Ranch,
@@ -93,24 +91,29 @@ export class SvgService {
       7: Medal.Stamina,
       8: Medal.Vigor,
     }
-
+    console.log('category', typeof category, 'ranking', typeof ranking)
     let medalMetal: MetalName | 'stone'
 
     switch (ranking) {
       case 1:
         medalMetal = MetalName.Gold
+        console.log('medalMetal1', medalMetal)
         break
       case 2: {
         medalMetal = MetalName.Silver
+        console.log('medalMetal2', medalMetal)
         break
       }
       case 3: {
         medalMetal = MetalName.Bronze
+        console.log('medalMetal3', medalMetal)
         break
       }
       default:
         medalMetal = 'stone'
+        console.log('medalMetaldefault', medalMetal)
     }
+    console.log('medalMetaldefault', medalMetal)
     const svgName = `${
       categoryToMedal[category as number]
     }-${medalMetal}` as Prize
@@ -119,7 +122,7 @@ export class SvgService {
   }
 
   static getSVGFromName(name: Prize, ranking: string): string {
-    console.log('name', name)
+    console.log(name, ranking, medalNameToSvg[name])
     return medalNameToSvg[name].replace('#9999', `#${ranking}`)
   }
 

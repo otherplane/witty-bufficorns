@@ -1,7 +1,7 @@
 <template>
   <div class="bufficorn-image-container" :class="{ horizontal }">
     <div v-if="horizontal" class="small-title item">
-      <p class="bufficorn-name">{{ name }}</p>
+      <p class="bufficorn-name">{{ BUFFICORN_NAMES[name] }}</p>
     </div>
     <img
       v-if="ranchName"
@@ -35,7 +35,7 @@
 <script>
 import { importPng } from '@/composables/importPng.js'
 import { importSvg } from '@/composables/importSvg.js'
-import { RANCHES } from '@/constants.js'
+import { RANCHES, BUFFICORN_NAMES } from '@/constants.js'
 export default {
   props: {
     name: String,
@@ -44,7 +44,7 @@ export default {
     ranchName: String
   },
   setup () {
-    return { importPng, importSvg, RANCHES }
+    return { importPng, importSvg, RANCHES, BUFFICORN_NAMES }
   }
 }
 </script>

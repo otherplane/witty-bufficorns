@@ -1,7 +1,7 @@
 <template>
   <div v-if="player.mintInfo" class="mint-content">
     <LabelMintStatus v-if="player.mintInfo" :status="mintStatus" />
-    <p v-if="player.mintInfo === 'error'">Try claiming NFTs again</p>
+    <p v-if="mintStatus === 'error'">Try claiming your NFTs again</p>
     <p class="label">TRANSACTION HASH</p>
     <div class="mint-status" v-if="player?.mintInfo?.transactionHash">
       <div class="info address">
@@ -26,10 +26,9 @@ export default {
   setup () {
     const player = useStore()
     const mintStatus = computed(() => {
-      console.log(player.mintInfo)
-      if (player.mintInfo.blockHash && player.mintInfo.events[1]) {
+      if (player.mintInfo.blockHash && player.minted) {
         return 'minted'
-      } else if (player.mintInfo.blockHash && !player.mintInfo.events[1]) {
+      } else if (player.mintInfo.blockHash && !player.minted) {
         return 'error'
       } else {
         return 'pending'

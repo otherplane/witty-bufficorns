@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import qs from 'query-string'
 import { API_BASE_URL } from './constants'
 
 export class ApiService {
@@ -19,7 +19,7 @@ export class ApiService {
 
   _get ({ url, config }) {
     return axios
-      .get(url, config)
+      .get(url, { ...config, paramsSerializer: params => qs.stringify(params) })
       .then(this._handleResponse)
       .catch(this._handleError)
   }
@@ -65,15 +65,20 @@ export class ApiService {
   getMintedAwardsImages (params) {
     return this._get({
       url: `${this.baseUrl}/players/images`,
-      config: { params: { tokenIds: params.tokenIds } }
+      config: {
+        headers: { authorization: params.token },
+        params: { token_ids: params.tokenIds }
+      }
     })
   }
 
   getPreviews (params) {
-    console.log('key', params.key)
     return this._get({
       url: `${this.baseUrl}/players/preview`,
-      config: { params: { key: params.key }, headers: { authorization: params.token } }
+      config: {
+        params: { key: params.key },
+        headers: { authorization: params.token }
+      }
     })
   }
 

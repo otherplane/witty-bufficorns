@@ -1,7 +1,7 @@
 <template>
   <div class="bufficorn-list-container" :class="{ horizontal }">
     <div v-if="selectable" class="name-container">
-      <p class="name">{{ name }}</p>
+      <p class="name">{{ BUFFICORN_NAMES[name] }}</p>
       <div
         class="pointer"
         @click="player.updateSelectedBufficorn(creationIndex)"
@@ -50,6 +50,7 @@
 
 <script>
 import { useStore } from '@/stores/player'
+import { BUFFICORN_NAMES } from '@/constants'
 
 export default {
   props: {
@@ -84,7 +85,7 @@ export default {
   },
   setup (props) {
     const player = useStore()
-    return { player }
+    return { player, BUFFICORN_NAMES }
   }
 }
 </script>

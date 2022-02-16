@@ -63,7 +63,6 @@ export default defineComponent({
       bufficornMain,
       RANCHES,
       mint () {
-        w3Witmon.open()
         instance.parent.emit('close')
       }
     }

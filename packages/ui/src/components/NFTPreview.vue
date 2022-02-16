@@ -1,22 +1,8 @@
 <template>
-  <div class="medals-container" v-if="player.previews.length > 1">
+  <div class="medals-container" v-if="player.previews.length >= 1">
     <p class="medals-title">{{ title }}</p>
-    <div v-if="player.mintedAwards.length" class="nft-container">
-      <a
-        v-for="mintedAward in player.mintedAwards"
-        :href="`${OPENSEA_BASE_URL}/${mintedAward.tokenId}`"
-        :key="mintedAward"
-        target="_blank"
-      >
-        <img
-          class="preview-nft minted"
-          :src="importSvg(mintedAward.image)"
-          alt="icon"
-        />
-      </a>
-    </div>
-    <div v-else class="nft-container">
-      <SvgImage v-for="preview in player.previews" :key="preview" class="preview-nft" :svg="preview" />
+    <div class="nft-container">
+      <CarouselMedals :medals="medals" />
     </div>
   </div>
 </template>
@@ -32,7 +18,14 @@ export default {
     const title = computed(() => {
       return player.mintedAwards ? 'NFT AWARDS' : 'NFT AWARDS (PREVIEW)'
     })
-    return { importSvg, title, player, OPENSEA_BASE_URL }
+    const medals = computed(() => {
+      if (player.mintedAwards.length) {
+        return player.mintedAwards
+      } else {
+        return player.previews
+      }
+    })
+    return { importSvg, title, player, OPENSEA_BASE_URL, medals }
   }
 }
 </script>
@@ -40,12 +33,12 @@ export default {
 <style lang="scss" scoped>
 .nft-container {
   display: grid;
+  background: var(--primary-color-opacity-2);
+  border-radius: 4px;
   margin: 16px 0px;
   justify-content: center;
-  grid-template-columns: repeat(auto-fill, 50px);
-  grid-gap: 16px;
   .preview-nft {
-    width: 50px;
+    width: 200px;
     padding: 8px;
     border-radius: 4px;
     background: var(--primary-color-opacity-2);
