@@ -33,7 +33,7 @@ module.exports = async function (deployer, network) {
     await deployer.link(WittyBufficornsLib, WittyBufficornsDecorator)
     await deployer.deploy(
       WittyBufficornsDecorator, 
-      "https://api-ethdenver2022.witty-bufficorns.com/"
+      "https://wittybufficorns.com/"
     );
   }
   let decorator = await WittyBufficornsDecorator.at(WittyBufficornsDecorator.address)

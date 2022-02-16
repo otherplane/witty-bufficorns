@@ -37,15 +37,7 @@ contract WittyBufficornsDecorator
     }
 
     constructor(string memory _baseURI) {
-        bytes memory _rawURI = bytes(_baseURI);
-        require(
-            _rawURI.length > 0,
-            "WittyBufficornsDecorator: empty URI"
-        );
-        require(
-            _rawURI[_rawURI.length - 1] == "/",
-            "WittyBufficornsDecorator: no trailing slash"
-        );
+        setBaseURI(_baseURI);
         baseURI = _baseURI;
         boosters.odds = [ 225, 16, 8, 4, 2, 1 ];
         boosters.values = [ 0, 10, 20, 30, 40, 50 ];
@@ -58,6 +50,22 @@ contract WittyBufficornsDecorator
         onlyOwner
     {
         forged = true;
+    }
+
+    function setBaseURI(string memory _baseURI)
+        public virtual
+        onlyOwner
+    {
+        bytes memory _rawURI = bytes(_baseURI);
+        require(
+            _rawURI.length > 0,
+            "WittyBufficornsDecorator: empty URI"
+        );
+        require(
+            _rawURI[_rawURI.length - 1] == "/",
+            "WittyBufficornsDecorator: no trailing slash"
+        );
+        baseURI = _baseURI;   
     }
 
     function setBoosters(uint[] calldata _odds, uint[] calldata _values)
