@@ -105,56 +105,57 @@ export function generateUsernameList(count: number): Array<string> {
   return Array.from(usernames)
 }
 
-export function getBestFarmerAward(
+export function getFarmerAward(
   playerName: string,
   topPlayers: Array<PlayerLeaderboardInfo>
-): Array<FarmerAward> {
-  const farmerAwards = []
+): FarmerAward | null {
+  let farmerAward: FarmerAward | null = null
   for (let topPlayer of topPlayers) {
     if (playerName === topPlayer.username) {
-      farmerAwards.push({
+      farmerAward = {
         category: 0,
         ranking: topPlayer.position + 1,
         bufficornId: 0,
-      })
+      }
       break
     }
   }
-  return farmerAwards
+
+  return farmerAward
 }
 
-export function getBestRanchAward(
+export function getRanchAward(
   playerRanch: RanchName | BonusRanchName,
   topRanches: Array<RanchLeaderboardInfo>
-): Array<FarmerAward> {
-  const farmerAwards = []
+): FarmerAward | null {
+  let ranchAward: FarmerAward | null = null
   for (let topRanch of topRanches) {
     if (playerRanch === topRanch.name) {
-      farmerAwards.push({
+      ranchAward = {
         category: 1,
         ranking: topRanch.position + 1,
         bufficornId: 0,
-      })
+      }
       break
     }
   }
-  return farmerAwards
+  return ranchAward
 }
 
 export function getBestBufficornAwards(
   playerRanch: RanchName | BonusRanchName,
   topBufficorns: Array<BufficornLeaderboardInfo>,
   categoryIndex: number
-): Array<FarmerAward> {
-  const farmerAwards = []
+): FarmerAward | null {
+  let bufficornAward = null
   for (let topBufficorn of topBufficorns) {
     if (playerRanch === topBufficorn.ranch) {
-      farmerAwards.push({
+      bufficornAward = {
         category: 2 + categoryIndex,
         ranking: topBufficorn.position + 1,
         bufficornId: topBufficorn.creationIndex,
-      })
+      }
     }
   }
-  return farmerAwards
+  return bufficornAward
 }
