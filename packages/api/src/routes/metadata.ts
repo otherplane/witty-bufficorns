@@ -107,7 +107,14 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
       const [category, ranking]: [number, number] = callResult
       console.log('before getsvg')
-      const svg = SvgService.getSVG({ category, ranking })
+      const svgName = SvgService.getSvgName({ category, ranking })
+      const svg = SvgService.getSVGFromName(svgName, ranking.toString())
+
+      fastify.cache.setTokenIdToSVGName(
+        key.toString(),
+        svgName,
+        ranking.toString()
+      )
 
       console.log('svg', svg)
       return reply.status(200).send(svg)
