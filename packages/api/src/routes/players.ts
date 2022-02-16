@@ -250,18 +250,15 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   })
 
   fastify.get<{
-    Querystring: PreviewParams
     Reply: PreviewImageNameReply | Error
   }>('/players/preview', {
     schema: {
-      querystring: PreviewParams,
       headers: AuthorizationHeader,
       response: {
         200: PreviewImageNameReply,
       },
     },
     handler: async (request, reply) => {
-      console.log('---PREVIEW---')
       // Check 1: token is valid
       let fromKey: string
       try {
