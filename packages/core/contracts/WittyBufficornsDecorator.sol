@@ -100,7 +100,7 @@ contract WittyBufficornsDecorator
         } else if (_ranking == 3) {
             return "Bronze";
         } else {
-            return "Diploma";
+            return "Stone";
         }
     }
 
@@ -195,16 +195,15 @@ contract WittyBufficornsDecorator
             _randomness = keccak256(abi.encode(_randomness, _metadata.farmer.name));
         }
         string memory _tokenIdStr = _tokenId.toString();
-        string memory _rankingStr = _metadata.tokenInfo.award.ranking.toString();
-        string memory _categoryStr = _metadata.tokenInfo.award.category.toString();
-        string memory _farmerName = _metadata.farmer.name;
         string memory _baseURI = baseURI;
 
         string memory _name = string(abi.encodePacked(
-            "\"name\": \"", _farmerName, " #", _tokenIdStr, "\","
+            "\"name\": \"Witty Bufficorns Award #", _tokenIdStr, "\","
         ));
         string memory _description = string(abi.encodePacked(
-            "\"description\": \"EthDenver 2022: Ranked as #", _rankingStr, " ", _categoryStr, "\","
+            "\"description\": \"",
+            _loadDescription(_metadata),
+            "\","
         ));        
         string memory _externalUrl = string(abi.encodePacked(
             "\"external_url\": \"", _baseURI, "metadata/", _tokenIdStr, "\","
@@ -241,11 +240,41 @@ contract WittyBufficornsDecorator
         }
     }
 
+    function _loadDescription(WittyBufficornsLib.TokenMetadata memory _metadata)
+        internal pure
+        returns (string memory _json)
+    {
+        WittyBufficornsLib.Awards _category = _metadata.tokenInfo.award.category;
+        if (_category == WittyBufficornsLib.Awards.BestBreeder) {
+            _json = string(abi.encodePacked(
+                "Owner ranked as #",
+                _metadata.tokenInfo.award.ranking.toString(),
+                " ",
+                _metadata.tokenInfo.award.category.toString()
+            ));
+        } else if (_category == WittyBufficornsLib.Awards.BestRanch) {
+            _json = string(abi.encodePacked(
+                "Owner contributed to #",
+                _metadata.tokenInfo.award.ranking.toString(),
+                " ",
+                _metadata.tokenInfo.award.category.toString()
+            ));
+        } else {
+            _json = string(abi.encodePacked(
+                "Owner bred ", _metadata.bufficorn.name,
+                " as #", 
+                _metadata.tokenInfo.award.ranking.toString(),
+                " ",
+                _metadata.tokenInfo.award.category.toString()
+            ));
+        }
+    }
+
     function _loadAttributes(
            bytes32 _randomness,
            WittyBufficornsLib.TokenMetadata memory _metadata
         )
-        public view
+        internal view
         returns (string memory _json)
     {
         _json = _loadAttributesCommon(_metadata);

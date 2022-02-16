@@ -38,9 +38,6 @@ contract("WittyBufficornsDecorator", _accounts => {
                     // console.log(metadata)
                     metadata = JSON.parse(metadata)
                 })
-                it("name starts with farmer name", async () => {
-                    assert(metadata.name.indexOf(farmerName) >= 0, "no farmer name")
-                })
                 it("name contains token id", async () => {
                     assert(metadata.name.indexOf(`${tokenId}`) > 0, "token id not found")
                 })
@@ -152,7 +149,7 @@ contract("WittyBufficornsDecorator", _accounts => {
                     })
                     assert(_diplomas.length < 2, "more than one diploma")
                     assert(_diplomas.length == 1, "no diplomas")
-                    assert(_diplomas[0].value === "Diploma", "diploma matches no \"Diploma\"")
+                    assert(_diplomas[0].value === "Stone", "diploma matches no \"Diploma\"")
                 })
                 it ("contains no ranch name trait", async () => {
                     const _attrs = metadata.attributes.filter(val => {
@@ -259,9 +256,6 @@ contract("WittyBufficornsDecorator", _accounts => {
                     )                    
                     // console.log(metadata)
                     metadata = JSON.parse(metadata)
-                })
-                it("name starts with farmer name", async () => {
-                    assert(metadata.name.indexOf(farmerName) >= 0, "no farmer name")
                 })
                 it("name contains token id", async () => {
                     assert(metadata.name.indexOf(`${tokenId}`) > 0, "token id not found")
@@ -403,7 +397,7 @@ contract("WittyBufficornsDecorator", _accounts => {
                     })
                     assert(_diplomas.length < 2, "more than one diploma")
                     assert(_diplomas.length == 1, "no diplomas")
-                    assert(_diplomas[0].value === "Diploma", "diploma matches no \"Diploma\"")
+                    assert(_diplomas[0].value === "Stone", "diploma matches no \"Diploma\"")
                 })
                 it ("contains no boosters", async () => {
                     const _attrs = metadata.attributes.filter(val => {
@@ -453,9 +447,6 @@ contract("WittyBufficornsDecorator", _accounts => {
                     )                    
                     // console.log(metadata)
                     metadata = JSON.parse(metadata)
-                })
-                it("name starts with farmer name", async () => {
-                    assert(metadata.name.indexOf(farmerName) >= 0, "no farmer name")
                 })
                 it("name contains token id", async () => {
                     assert(metadata.name.indexOf(`${tokenId}`) > 0, "token id not found")
