@@ -26,12 +26,7 @@ export const useStore = defineStore('player', {
       gameOverTimeMilli: GAME_ENDS_TIMESTAMP,
       demoOverTimeMilli: DEMO_ENDS_TIMESTAMP,
       timeToMintInMilli: GAME_ENDS_TIMESTAMP + TIME_TO_MINT_MILLISECONDS,
-      //previews: ['imageName', 'imageName'],
       previews: [],
-      // mintedAwards: [
-      //   { tokenId: '1', image: 'imageName' },
-      //   { tokenId: '2', image: 'imageName' }
-      // ],
       mintedAwards: [],
       tradeHistory: null,
       mintInfo: null,
@@ -58,17 +53,22 @@ export const useStore = defineStore('player', {
   getters: {
     gameOver () {
       //FIXME: make it reactive
-      // return this.gameOverTimeMilli < Date.now()
-      return true 
+      return this.gameOverTimeMilli < Date.now()
     },
     mintingAllow () {
       //FIXME: make it reactive
       return this.timeToMintInMilli < Date.now()
     },
+    minted () {
+      if (this.mintInfo && this.mintInfo.events && this.mintInfo.events[1]) {
+        return true
+      } else {
+        return false
+      }
+    },
     demoOver () {
       //FIXME: make it reactive
-      // return this.demoOverTimeMilli < Date.now()
-      return true
+      return this.demoOverTimeMilli < Date.now()
     },
     isMainnetTime () {
       return isMainnetTime()
@@ -85,6 +85,7 @@ export const useStore = defineStore('player', {
       )
     },
     setTokenIds (tokenIds) {
+      console.log('setTokenIds!', tokenIds)
       this.tokenIds = tokenIds
     },
     savePreview (preview) {
@@ -96,14 +97,9 @@ export const useStore = defineStore('player', {
       this.theme = theme
     },
     saveMintInfo (info) {
+      console.log('mintInfo!', info)
       localStorage.setItem('mintInfo', JSON.stringify({ ...info }))
       this.mintInfo = info
-    },
-    getPreview () {
-      const preview = localStorage.getItem('preview')
-      if (preview) {
-        this.preview = preview
-      }
     },
     getTheme () {
       const theme = localStorage.getItem('theme')
@@ -181,25 +177,29 @@ export const useStore = defineStore('player', {
       }
     },
     async getMintedAwardsImages () {
-      const request = await this.api.getMintedAwardsImages({
-        tokeIds: this.tokenIds
-      })
-      if (request.error) {
-        this.setError('showMintedAwards', request.error)
-        router.push('/init-game')
-      } else {
-        this.clearError('showMintedAwards')
-        this.mintedAwards = request
+      const tokenInfo = this.getToken()
+      if (this.tokenIds) {
+        const request = await this.api.getMintedAwardsImages({
+          token: tokenInfo.token,
+          tokenIds: this.tokenIds
+        })
+        console.log('mintedAwards!', request)
+        if (request.error) {
+          this.setError('showMintedAwards', request.error)
+          router.push('/init-game')
+        } else {
+          this.clearError('showMintedAwards')
+          this.mintedAwards = request
+        }
       }
     },
     async getPreviews () {
-      console.log('id.....', this.id)
       const tokenInfo = this.getToken()
       const request = await this.api.getPreviews({
         token: tokenInfo.token,
         key: this.id
       })
-      console.log('getPreviews......', request)
+      console.log('getPreview!', request)
       if (request.error) {
         this.setError('preview', request.error)
         router.push('/init-game')
@@ -280,7 +280,7 @@ export const useStore = defineStore('player', {
         this.id = key
         this.username = username
         this.ranch = ranch
-        this.playerPoints = isMainnetTime() ? points : testnetPoints
+        this.playerPoints = testnetPoints
         this.selectedBufficorn = selectedBufficorn
         this.farmerId = creationIndex
 
@@ -299,6 +299,7 @@ export const useStore = defineStore('player', {
         address,
         token: tokenInfo.token
       })
+      console.log('getContractArgs', request)
       if (request.error) {
         router.push({ name: 'init-game' })
         this.setError('getContractArgs', request.error)

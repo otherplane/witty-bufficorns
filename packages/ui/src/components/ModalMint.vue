@@ -14,13 +14,14 @@
           class="text-lg leading-6 font-medium text-gray-900"
           id="modal-title"
         >
-          Mint your NFT
+          Mint now your awards as NFTs
         </h3>
         <div class="mt-2">
           <p class="text-sm text-gray-900">
-            A NFT is about to appear in the Metaverse. The minting process will
-            occur in the Polygon mainnet and it is powered by the Witnet Random
-            Number Generator (RNG) functionality.
+            You are about to bequeath to posterity your perfomance in the Witty
+            Bufficorns social game that took place during EthDenver 2022. The
+            minting process will occur in the Polygon mainnet and it is powered
+            by the Witnet Random Number Generator (RNG) functionality.
           </p>
         </div>
       </div>

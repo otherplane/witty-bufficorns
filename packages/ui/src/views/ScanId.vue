@@ -8,72 +8,72 @@
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/21234f47b1c46620')"
+        @click="onDecode('https://bufficorns.com/#/4b3fa3d0d4c085b6')"
       >
-        The Ol' Algoranch
+        A
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/36fea506ac21e347')"
+        @click="onDecode('https://bufficorns.com/#/d248e4009b8d5bd8')"
       >
-        WITNET
+        B
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('realpoap')"
+        @click="onDecode('https://bufficorns.com/#/60723c0283542b2a')"
       >
-        REAL POAP
+        C
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/bf70268a8f1e2d67')"
+        @click="onDecode('https://bufficorns.com/#/d7f743c226e9fd8e')"
       >
-        Vega Slopes Range
+        D
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/b5425e1b1ed66dcb')"
+        @click="onDecode('https://bufficorns.com/#/d4aa3feb7a6eb1be')"
       >
-        Balancer Peak State'
+        E
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/ef12efbd765f9ad3')"
+        @click="onDecode('https://bufficorns.com/#/dbe8cdf86dc53025')"
       >
-        Gold Reef Co.'
+        F
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/e9d8e88334820666')"
+        @click="onDecode('https://bufficorns.com/#/ac850781190585d2')"
       >
-        Infinite Harmony Farm'
+        G
       </Button>
       <Button
         v-if="VITE_TEST"
         class="btn"
         type="primary"
         :slim="true"
-        @click="onDecode('https://bufficorns.com/#/895aa6083cc2dfaf')"
+        @click="onDecode('https://bufficorns.com/#/1f5f3e0883be2866')"
       >
-        Opolis Reservation
+        H
       </Button>
     </div>
     <ModalDialog :show="modal.visible.value" v-on:close="modal.hideModal">

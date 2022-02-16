@@ -73,15 +73,7 @@
       </router-link>
       <div class="sticky-btn" v-if="player.gameOver">
         <Button
-          v-if="!player.previews.length"
-          @click="openModal('preview')"
-          type="dark"
-          :slim="true"
-        >
-          PREVIEW NFT AWARDS
-        </Button>
-        <Button
-          v-else-if="player.mintingAllow && player.previews.length"
+          v-if="player.mintingAllow && player.previews.length && !player.minted"
           @click="mint"
           type="dark"
           :slim="true"
@@ -104,7 +96,6 @@
     <ModalExport v-if="modals.export" />
     <GameOverModal v-if="modals.gameOver" />
     <ModalMint v-if="modals.mint" />
-    <ModalPreview v-if="modals.preview" />
   </ModalDialog>
 </template>
 
@@ -164,14 +155,11 @@ export default {
         }
         if (player.gameOver) {
           await player.getMintInfo()
-          // TODO: uncomment when api implements preview method
+          await player.getPreviews()
           if (player.mintInfo?.blockHash) {
-            // await player.getMintedAwardsImages()
-          } else {
-            await player.getPreviews()
+            await web3WittyBufficorns.getTokenIds()
+            await player.getMintedAwardsImages()
           }
-          const tokenIds = await web3WittyBufficorns.getTokenIds()
-          player.setTokenIds(tokenIds)
         }
       }
     })
@@ -196,7 +184,7 @@ export default {
     )
 
     function openModal (name) {
-      const needProvider = name === 'mint' || name === 'preview'
+      const needProvider = name === 'mint'
       if (!web3WittyBufficorns.isProviderConnected.value && needProvider) {
         modals['gameOver'] = true
       } else {
@@ -234,7 +222,6 @@ export default {
       enableProvider: web3WittyBufficorns.enableProvider,
       addPolygonNetwork: web3WittyBufficorns.addPolygonNetwork,
       isProviderConnected: web3WittyBufficorns.isProviderConnected,
-      getTokenIds: web3WittyBufficorns.getTokenIds,
       importSvg,
       RANCHES,
       metamaskIcon,

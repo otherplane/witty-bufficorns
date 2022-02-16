@@ -20,10 +20,11 @@ function createErrorMessage (message) {
 }
 
 function networkById (id) {
+  console.log(id)
   switch (id) {
-    case 137:
+    case '137':
       return 'Polygon Mainnet'
-    case 80001:
+    case '80001':
       return 'Polygon Mumbai'
   }
 }
@@ -46,6 +47,12 @@ export function useWeb3 () {
     const accounts = await requestAccounts(web3)
     if (accounts[0]) {
       isProviderConnected.value = true
+      if ((await web3.eth.net.getId()) !== Number(NETWORK)) {
+        return player.setError(
+          'network',
+          createErrorMessage(errorNetworkMessage)
+        )
+      }
     }
   }
 
@@ -67,41 +74,18 @@ export function useWeb3 () {
       })
   }
 
-  async function open () {
-    if ((await web3.eth.net.getId()) !== NETWORK) {
-      return player.setError('network', createErrorMessage(errorNetworkMessage))
-    } else {
-      try {
-        const contract = new web3.eth.Contract(
-          jsonInterface.abi,
-          CONTRACT_ADDRESS
-        )
-        const from = (await requestAccounts(web3))[0]
-        const previewArgs = await player.getContractArgs(from)
-        const preview = await contract.methods
-          .previewImage(...previewArgs.values())
-          .call()
-        if (preview) {
-          player.savePreview(preview)
-        }
-      } catch (err) {
-        console.error(err)
-        player.setError('preview', createErrorMessage(errorPreviewMessage))
-      }
-    }
-  }
-
   onMounted(() => {
     if (window.ethereum) {
       web3 = new Web3(window.ethereum || 'ws://localhost:8545')
       if (player.gameOver) {
+        console.log('player.gameover enableProvider')
         enableProvider()
       }
     }
   })
 
   async function getTokenIds () {
-    if ((await web3.eth.net.getId()) !== NETWORK) {
+    if ((await web3.eth.net.getId()) !== Number(NETWORK)) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
       try {
@@ -109,10 +93,7 @@ export function useWeb3 () {
         const result = await contract.methods
           .getFarmerTokens(player.farmerId)
           .call()
-        // TODO: uncomment when get minted awards is implemented in api
-        // if (result) {
-        //   await player.getMintedAwardsImages()
-        // }
+        player.setTokenIds(result)
         return result
       } catch (err) {
         console.error(err)
@@ -122,7 +103,7 @@ export function useWeb3 () {
   }
 
   async function mint () {
-    if ((await web3.eth.net.getId()) !== NETWORK) {
+    if ((await web3.eth.net.getId()) !== Number(NETWORK)) {
       return player.setError('network', createErrorMessage(errorNetworkMessage))
     } else {
       const contract = new web3.eth.Contract(jsonInterface, CONTRACT_ADDRESS)
@@ -152,14 +133,12 @@ export function useWeb3 () {
         })
         .on('confirmation', (confirmationNumber, receipt) => {
           player.saveMintInfo(receipt)
-          const data = getData()
+          const data = player.getMintedAwardsImages()
           player.setData(data)
         })
         .then(newContractInstance => {
           console.log('newContractInstance', newContractInstance)
-
-          const witmon = newContractInstance.events.NewCreature.returnValues
-          console.log('Witmon minted: ', witmon)
+          console.log('Witmon minted: ', newContractInstance.transactionHash)
         })
     }
   }

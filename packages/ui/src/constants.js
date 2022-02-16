@@ -1,6 +1,6 @@
 export const CONTRACT_ADDRESS =
   import.meta.env.VITE_CONTRACT_ADDRESS ||
-  '0xDc7135D817Ab955ddF90D33f144c150a622e133E'
+  '0xE41D6D1cFe55A0fc2035dD663D873D15f21d93c2'
 
 export const OPENSEA_BASE_URL =
   import.meta.env.VITE_OPENSEA_BASE_URL ||
@@ -9,7 +9,7 @@ export const OPENSEA_BASE_URL =
 export const EXPLORER_BASE_URL =
   import.meta.env.VITE_EXPLORER_BASE_URL || 'https://polygonscan.com/tx/'
 
-export const NETWORK = import.meta.env.VITE_NETWORK || 80001
+export const NETWORK = import.meta.env.VITE_NETWORK || 137
 
 export const VITE_TEST = import.meta.env.VITE_TEST || false
 
@@ -19,20 +19,25 @@ export const API_BASE_URL =
 export const BASE_URL =
   import.meta.env.VITE_BASE_URL || 'https://bufficorns.com'
 
-export const POLLER_MILLISECONDS =
-  import.meta.env.VITE_POLLER_MILLISECONDS || 5000
+export const POLLER_MILLISECONDS = import.meta.env.VITE_POLLER_MILLISECONDS
+  ? parseInt(import.meta.env.VITE_POLLER_MILLISECONDS)
+  : 5000
 
-export const TIME_TO_MINT_MILLISECONDS =
-  import.meta.env.VITE_TIME_TO_MINT_MILLISECONDS || 60000
+export const TIME_TO_MINT_MILLISECONDS = import.meta.env
+  .VITE_TIME_TO_MINT_MILLISECONDS
+  ? parseInt(import.meta.env.VITE_TIME_TO_MINT_MILLISECONDS)
+  : 1645131600000
 
-export const DEMO_ENDS_TIMESTAMP =
-  import.meta.env.VITE_DEMO_ENDS_TIMESTAMP || 1645131600000
+export const DEMO_ENDS_TIMESTAMP = import.meta.env.VITE_DEMO_ENDS_TIMESTAMP
+  ? parseInt(import.meta.env.VITE_DEMO_ENDS_TIMESTAMP)
+  : 1645131600000
 
-export const GAME_ENDS_TIMESTAMP =
-  import.meta.env.VITE_GAME_ENDS_TIMESTAMP || 1645351200000
+export const GAME_ENDS_TIMESTAMP = import.meta.env.VITE_GAME_ENDS_TIMESTAMP
+  ? parseInt(import.meta.env.VITE_GAME_ENDS_TIMESTAMP)
+  : 1645351200000
 
-export const PLAYER_MAINNET_TIMESTAMP = process.env.PLAYER_MAINNET_TIMESTAMP
-  ? parseInt(process.env.VITE_PLAYER_MAINNET_TIMESTAMP)
+export const PLAYER_MAINNET_TIMESTAMP = import.meta.env.PLAYER_MAINNET_TIMESTAMP
+  ? parseInt(import.meta.env.VITE_PLAYER_MAINNET_TIMESTAMP)
   : 1645131600 // Thursday, February 17, 2022 09:00:00 PM (UTC)
 
 export const RANCHES = {
@@ -82,6 +87,40 @@ export const ATTRIBUTES = {
     resource: 'Hearty Berry'
   }
 }
+
+export const BUFFICORN_NAMES = {
+  // reef
+  'Bufficorn-0': 'Bufficorn-0',
+  'Bufficorn-6': 'Bufficorn-6',
+  'Bufficorn-12': 'Bufficorn-12',
+  'Bufficorn-18': 'Bufficorn-18',
+  // harmony
+  'Bufficorn-1': 'Bufficorn-1',
+  'Bufficorn-7': 'Bufficorn-7',
+  'Bufficorn-13': 'Bufficorn-13',
+  'Bufficorn-19': 'Bufficorn-19',
+  // balancer
+  'Bufficorn-2': 'BALlercorn',
+  'Bufficorn-8': 'AMMcorn',
+  'Bufficorn-14': 'Ferntalik',
+  'Bufficorn-20': 'BALlicorn',
+  // algorand
+  'Bufficorn-3': 'ZKcorn',
+  'Bufficorn-9': 'Micalicorn',
+  'Bufficorn-15': 'Mr.Grantsalot',
+  'Bufficorn-21': 'Buffirand',
+  // vega
+  'Bufficorn-4': 'Bufficorn-4',
+  'Bufficorn-10': 'Bufficorn-10',
+  'Bufficorn-16': 'Bufficorn-16',
+  'Bufficorn-22': 'Bufficorn-22',
+  // opolis
+  'Bufficorn-5': 'Bufficorn-5',
+  'Bufficorn-11': 'Bufficorn-11',
+  'Bufficorn-17': 'Bufficorn-17',
+  'Bufficorn-23': 'Bufficorn-23'
+}
+
 export const STATS_FILTERS = {
   players: {
     key: 'players',
@@ -143,38 +182,4 @@ export const STATS_FILTERS = {
       }
     }
   }
-}
-
-const BUFFICORN_NAME = {
-  // ranch1
-  'Bufficorn-0' : 'Bufficorn-0',
-  'Bufficorn-6' : 'Bufficorn-6',
-  'Bufficorn12' : 'Bufficorn-12',
-  'Bufficorn18' : 'Bufficorn-18',
-  // ranch2
-  'Bufficorn-1' : 'Bufficorn-1',
-  'Bufficorn-7' : 'Bufficorn-7',
-  'Bufficorn13' : 'Bufficorn-13',
-  'Bufficorn19' : 'Bufficorn-19',
-  // balancer
-  'Bufficorn-2' : 'Bufficorn BALler',
-  'Bufficorn-8' : 'AMMcorn',
-  'Bufficorn14' : 'Ferntalik',
-  'Bufficorn20' : 'BALlicorn',
-
-  // algorand 
-  'Bufficorn-3' : 'ZKcorn',
-  'Bufficorn-9' : 'Micalicorn',
-  'Bufficorn15' : 'Mr.Grantsalot',
-  'Bufficorn21' : 'Buffirand',
-  // ranch5
-  'Bufficorn-4' : 'Bufficorn-4',
-  'Bufficorn10' : 'Bufficorn-10',
-  'Bufficorn16' : 'Bufficorn-16',
-  'Bufficorn22' : 'Bufficorn-22',
-  // ranch6
-  'Bufficorn-5' : 'Bufficorn-5',
-  'Bufficorn11' : 'Bufficorn-11',
-  'Bufficorn17' : 'Bufficorn-17',
-  'Bufficorn23' : 'Bufficorn-23',
 }

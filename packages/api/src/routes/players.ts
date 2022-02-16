@@ -20,10 +20,7 @@ import {
   PreviewImageNameReply,
   PlayerImagesReponse,
 } from '../types'
-import {
-  isMainnetTime,
-  calculateAllPlayerAwards,
-} from '../utils'
+import { isMainnetTime, calculateAllPlayerAwards } from '../utils'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
 import Web3 from 'web3'
 
@@ -292,17 +289,20 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   })
 
   fastify.get<{
-    Params: PreviewParams
+    Querystring: PreviewParams
     Reply: PlayerImagesReponse | Error
   }>('/players/images', {
     schema: {
-      params: PreviewParams,
+      querystring: PreviewParams,
       headers: AuthorizationHeader,
       response: {
         200: PlayerImagesReponse,
       },
     },
-    handler: async (request, reply) => {
+    handler: async (
+      request: FastifyRequest<{ Querystring: PreviewParams }>,
+      reply
+    ) => {
       // Check 1: token is valid
       let fromKey: string
       try {
@@ -322,28 +322,17 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
 
-      const tokenIds = request.params.token_ids
+      const tokenIds = request.query.token_ids
       const result: Array<{ tokenId: string; svg: string }> = []
-      // let cached
       let callResult
       for (let tokenId of tokenIds) {
-        // cached = fastify.cache.getTokenIdToSVGName(tokenId)
-        // if (false && cached) {
-        //   result.push({
-        //     tokenId,
-        //     svg: SvgService.getSVGFromName(cached.svgName, cached.ranking),
-        //   })
-        // } else {
         const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
-        console.log('web3 initialized')
         const contract = new web3.eth.Contract(
           CONTRACT_ERCC721_ABI,
           WITTY_BUFFICORNS_ERC721_ADDRESS
         )
-        console.log('contract initialized')
         try {
           callResult = await contract.methods.getTokenInfo(tokenId).call()
-          console.log('callresult', callResult)
         } catch (err) {
           console.error('[Server] Metadata error:', err)
           return reply
@@ -355,7 +344,10 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         const [category, ranking]: [number, string] = callResult[0]
         console.log('before getsvg')
 
-        const svgName = SvgService.getSvgName({ category: Number(category), ranking: Number(ranking) })
+        const svgName = SvgService.getSvgName({
+          category: Number(category),
+          ranking: Number(ranking),
+        })
         const svg = SvgService.getSVGFromName(svgName, ranking.toString())
         // fastify.cache.setTokenIdToSVGName(tokenId, svgName, ranking.toString())
 
