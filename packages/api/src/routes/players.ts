@@ -3,6 +3,8 @@ import { Bufficorn } from '../domain/bufficorn'
 import { Ranch } from '../domain/ranch'
 import { SvgService } from '../svgService'
 
+const CONTRACT_ERCC721_ABI = require('../assets/WittyBufficornsABI.json')
+
 import {
   AuthorizationHeader,
   BonusParams,
@@ -12,12 +14,12 @@ import {
   GetByStringKeyParams,
   JwtVerifyPayload,
   PreviewParams,
-  PreviewReply,
   RanchName,
   SelectBufficornParams,
   SelectBufficornReply,
   Trait,
   PreviewImageNameReply,
+  PlayerImagesReponse,
 } from '../types'
 import {
   groupBufficornsByRanch,
@@ -27,6 +29,8 @@ import {
   getBestRanchAward,
 } from '../utils'
 import { Player } from '../domain/player'
+import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
+import Web3 from 'web3'
 
 const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
@@ -338,13 +342,13 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.get<{
     Params: PreviewParams
-    Reply: PreviewReply | Error
+    Reply: PlayerImagesReponse | Error
   }>('/players/images', {
     schema: {
       params: PreviewParams,
       headers: AuthorizationHeader,
       response: {
-        200: PreviewReply,
+        200: PlayerImagesReponse,
       },
     },
     handler: async (request, reply) => {
@@ -367,51 +371,58 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
 
-      // Get raw info
-      const players: Array<Player> = await playerModel.getAllRegistered()
-      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
-      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
-        r.addBufficorns(bufficornsByRanch[r.name])
-        return r
-      })
+      const tokenIds = request.params.token_ids
+      const result: Array<{ tokenId: string; svg: string }> = []
+      let cached
+      let callResult
+      for (let tokenId of tokenIds) {
+        cached = fastify.cache.getTokenIdToSVGName(tokenId)
+        if (cached) {
+          result.push({
+            tokenId,
+            svg: SvgService.getSVGFromName(cached.svgName, cached.ranking),
+          })
+        } else {
+          const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
+          console.log('web3 initialized')
+          const contract = new web3.eth.Contract(
+            CONTRACT_ERCC721_ABI,
+            WITTY_BUFFICORNS_ERC721_ADDRESS
+          )
+          console.log('contract initialized')
+          try {
+            callResult = await contract.methods.getTokenInfo(tokenId).call()
+            console.log('callresult', callResult)
+          } catch (err) {
+            console.error('[Server] Metadata error:', err)
+            return reply
+              .status(404)
+              .send(
+                new Error(
+                  `Metadata for token id ${tokenId} could not be fetched`
+                )
+              )
+          }
+          const [category, ranking]: [number, number] = callResult
+          console.log('before getsvg')
 
-      const farmerAwards: Array<FarmerAward> = []
+          const svgName = SvgService.getSvgName({ category, ranking })
+          const svg = SvgService.getSVGFromName(svgName, ranking.toString())
+          fastify.cache.setTokenIdToSVGName(
+            tokenId,
+            svgName,
+            ranking.toString()
+          )
 
-      // Get farmer award
-      const sortedPlayers = Player.getLeaderboard(
-        players,
-        players.length
-      ).players
-      getBestFarmerAward(player.username, sortedPlayers).concat(farmerAwards)
-
-      // Update best ranch award
-      const top3Ranches = Ranch.top3(ranches)
-      getBestRanchAward(player.ranch, top3Ranches).concat(farmerAwards)
-
-      const bufficornTraits = [
-        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
-        undefined,
-        Trait.Coat,
-        Trait.Coolness,
-        Trait.Intelligence,
-        Trait.Speed,
-        Trait.Stamina,
-        Trait.Vigor,
-      ]
-
-      // Iterate over all the traits and get corresponding medal
-      for (const [categoryIndex, category] of bufficornTraits.entries()) {
-        const top3Bufficorns = Bufficorn.top3(bufficorns, category)
-        getBestBufficornAwards(
-          player.ranch,
-          top3Bufficorns,
-          categoryIndex
-        ).concat(farmerAwards)
+          result.push({
+            tokenId,
+            svg,
+          })
+        }
       }
 
       // return extended player
-      return reply.status(200).send(farmerAwards)
+      return reply.status(200).send(result)
     },
   })
 }

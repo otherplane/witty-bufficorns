@@ -163,7 +163,7 @@ export const FarmerAward = Type.Object({
 export type FarmerAward = Static<typeof FarmerAward>
 
 export const PreviewParams = Type.Object({
-  key: Type.String(),
+  token_ids: Type.Array(Type.String()),
 })
 export type PreviewParams = Static<typeof PreviewParams>
 
@@ -584,3 +584,11 @@ export type MedalMetadata = Static<typeof MedalMetadata>
 
 export const SvgImage = Type.String()
 export type SvgImage = Static<typeof SvgImage>
+
+export const PlayerImagesReponse = Type.Array(
+  Type.Object({
+    tokenId: Type.String(),
+    svg: Type.String(),
+  })
+)
+export type PlayerImagesReponse = Static<typeof PlayerImagesReponse>

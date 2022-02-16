@@ -98,6 +98,10 @@ export class SvgService {
     return svgName
   }
 
+  static getSVGFromName(name: Prize, ranking: string): string {
+    return medalNameToSvg[name].replace('#9999', `#${ranking}`)
+  }
+
   static getSVG({ category, ranking }: GetTokenInfoResponse): string {
     return medalNameToSvg[this.getSvgName({ category, ranking })].replace(
       '#9999',
