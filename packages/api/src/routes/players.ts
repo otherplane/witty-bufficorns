@@ -25,8 +25,8 @@ import {
   groupBufficornsByRanch,
   isMainnetTime,
   getBestBufficornAwards,
-  getBestFarmerAward,
-  getBestRanchAward,
+  getRanchAward,
+  getFarmerAward,
 } from '../utils'
 import { Player } from '../domain/player'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
@@ -294,16 +294,21 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         players,
         players.length
       ).players
-      console.log('--sortedplayers--', sortedPlayers)
-      farmerAwards = getBestFarmerAward(player.username, sortedPlayers).concat(
-        farmerAwards
-      )
+      const farmerAward = getFarmerAward(player.username, sortedPlayers)
 
+      if (farmerAward) {
+        farmerAwards.push(farmerAward)
+      } else {
+        console.error('All farmers should have a farmer award')
+      }
       // Update best ranch award
       const leaderboardRanches = Ranch.getLeaderboard(ranches)
-      farmerAwards = getBestRanchAward(player.ranch, leaderboardRanches).concat(
-        farmerAwards
-      )
+      const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
+      if (ranchAward) {
+        farmerAwards.push(ranchAward)
+      } else {
+        console.error('All farmers should have a ranch award')
+      }
 
       const bufficornTraits = [
         // undefined will get the leaderboard sorted according to how balanced are the bufficorns
@@ -319,12 +324,16 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       // Iterate over all the traits and get corresponding medal
       for (const [categoryIndex, category] of bufficornTraits.entries()) {
         const top3Bufficorns = Bufficorn.top3(bufficorns, category)
-        farmerAwards = getBestBufficornAwards(
+        const bufficornCategoryAward = getBestBufficornAwards(
           player.ranch,
           top3Bufficorns,
           categoryIndex
-        ).concat(farmerAwards)
+        )
+        if (bufficornCategoryAward) {
+          farmerAwards.push(bufficornCategoryAward)
+        }
       }
+
       const svgAwardsNames: Array<string> = farmerAwards.map(
         (award: FarmerAward): string => {
           return SvgService.getSvgName({
