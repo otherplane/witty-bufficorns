@@ -62,6 +62,8 @@ const medalNameToSvg: Record<Prize, any> = {
 
 export class SvgService {
   static getSvgName({ category, ranking }: GetTokenInfoResponse): Prize {
+    console.log('category-------------', category)
+    console.log('ranking', ranking)
     const categoryToMedal: Record<number, Medal> = {
       0: Medal.Breeder,
       1: Medal.Ranch,

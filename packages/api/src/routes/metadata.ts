@@ -105,8 +105,11 @@ const metadata: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .status(404)
           .send(new Error(`Metadata for token id ${key} could not be fetched`))
       }
-      const [category, ranking]: [number, number] = callResult
-      console.log('before getsvg')
+      const [category, ranking]: [number, number] = callResult[0]
+      console.log('callresult', callResult)
+      // const category = callResult[0]
+      // const ranking = callResult[1]
+      console.log('before getsvg', category)
       const svgName = SvgService.getSvgName({ category, ranking })
       const svg = SvgService.getSVGFromName(svgName, ranking.toString())
 
