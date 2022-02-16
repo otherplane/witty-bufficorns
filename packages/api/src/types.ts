@@ -354,32 +354,40 @@ export enum Medal {
 }
 
 export enum Prize {
-  RanchStone = 'ranch-stone',
   RanchGold = 'ranch-gold',
   RanchSilver = 'ranch-silver',
   RanchBronze = 'ranch-bronze',
+  RanchStone = 'ranch-stone',
+
   BufficornGold = 'bufficorn-gold',
   BufficornSilver = 'bufficorn-silver',
   BufficornBronze = 'bufficorn-bronze',
-  Breeder = 'breeder-stone',
+
   BreederGold = 'breeder-gold',
   BreederSilver = 'breeder-silver',
   BreederBronze = 'breeder-bronze',
+  BreederStone = 'breeder-stone',
+
   CoatGold = 'coat-gold',
   CoatSilver = 'coat-silver',
   CoatBronze = 'coat-bronze',
+
   CoolnessGold = 'coolness-gold',
   CoolnessSilver = 'coolness-silver',
   CoolnessBronze = 'coolness-bronze',
+
   IntelligenceGold = 'intelligence-gold',
-  IntelligenceBronze = 'intelligence-gold',
   IntelligenceSilver = 'intelligence-silver',
+  IntelligenceBronze = 'intelligence-bronze',
+
   SpeedGold = 'speed-gold',
   SpeedSilver = 'speed-silver',
   SpeedBronze = 'speed-bronze',
+
   StaminaGold = 'stamina-gold',
   StaminaSilver = 'stamina-silver',
   StaminaBronze = 'stamina-bronze',
+
   VigorGold = 'vigor-gold',
   VigorSilver = 'vigor-silver',
   VigorBronze = 'vigor-bronze',
