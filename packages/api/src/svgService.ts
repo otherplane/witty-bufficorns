@@ -99,6 +99,7 @@ export class SvgService {
   }
 
   static getSVGFromName(name: Prize, ranking: string): string {
+    console.log('name', name)
     return medalNameToSvg[name].replace('#9999', `#${ranking}`)
   }
 
