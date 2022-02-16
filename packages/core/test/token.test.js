@@ -779,4 +779,41 @@ contract("WittyBufficornsToken", accounts => {
       })
     })
   })
+  describe("ERC721Metadata", async () => {
+    describe("baseURI()", async () => {
+        let baseURI
+        it("returns no empty string", async () => {
+            baseURI = await tender.baseURI.call()
+            assert(baseURI.length > 0)
+        })
+        it("ends up with slash", () => {
+            assert(baseURI[baseURI.length - 1] === "/")
+        })
+    })
+    describe("metadata(_tokenId)", async () => {
+        it("metadata of a previously minted creature should be valid", async () => {
+            let metadata = await tender.metadata.call(1)
+            metadata = JSON.parse(metadata)
+        })
+        it("getting metadata from inexistent token fails", async () => {
+            await truffleAssert.reverts(
+                tender.metadata.call(11),
+                "inexistent token"
+            )
+        })
+    })
+    describe("tokenURI(_tokenId)", async () => {
+      it("tokenURI of a previously minted creature should be valid", async () => {
+          let tokenURI = await tender.tokenURI.call(1)
+          console.log(tokenURI)
+          assert(tokenURI.endsWith("/metadata/1"))
+      })
+      it("getting tokenURI from inexistent token fails", async () => {
+          await truffleAssert.reverts(
+              tender.tokenURI.call(311),
+              "inexistent token"
+          )
+      })
+    })
+  })
 })

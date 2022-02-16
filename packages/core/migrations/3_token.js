@@ -36,7 +36,7 @@ module.exports = async function (deployer, network, accounts) {
     await deployer.deploy(
       WittyBufficornsToken,
       /* ERC-721 Token Name   */ "Witty Bufficorns - ETHDenver 2022", 
-      /* ERC-721 Token Symbol */ "DENVER22", // ERC721 Token Symbol
+      /* ERC-721 Token Symbol */ "WB22", // ERC721 Token Symbol
       /* _witnetRandomness    */ WitnetRandomness.address,
       /* _wittyBufficornsDeco */ WittyBufficornsDecorator.address,
     )

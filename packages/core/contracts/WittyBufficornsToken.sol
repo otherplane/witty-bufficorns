@@ -106,6 +106,7 @@ contract WittyBufficornsToken
     {
         return string(abi.encodePacked(
             baseURI(),
+            "metadata/",
             _tokenId.toString()
         ));
     }
