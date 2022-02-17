@@ -321,51 +321,45 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const tokenIds = request.params.token_ids
       const result: Array<{ tokenId: string; svg: string }> = []
-      let cached
+      // let cached
       let callResult
       for (let tokenId of tokenIds) {
-        cached = fastify.cache.getTokenIdToSVGName(tokenId)
+        // cached = fastify.cache.getTokenIdToSVGName(tokenId)
         // if (false && cached) {
         //   result.push({
         //     tokenId,
         //     svg: SvgService.getSVGFromName(cached.svgName, cached.ranking),
         //   })
         // } else {
-          const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
-          console.log('web3 initialized')
-          const contract = new web3.eth.Contract(
-            CONTRACT_ERCC721_ABI,
-            WITTY_BUFFICORNS_ERC721_ADDRESS
-          )
-          console.log('contract initialized')
-          try {
-            callResult = await contract.methods.getTokenInfo(tokenId).call()
-            console.log('callresult', callResult)
-          } catch (err) {
-            console.error('[Server] Metadata error:', err)
-            return reply
-              .status(404)
-              .send(
-                new Error(
-                  `Metadata for token id ${tokenId} could not be fetched`
-                )
-              )
-          }
-          const [category, ranking]: [number, number] = callResult[0]
-          console.log('before getsvg')
+        const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
+        console.log('web3 initialized')
+        const contract = new web3.eth.Contract(
+          CONTRACT_ERCC721_ABI,
+          WITTY_BUFFICORNS_ERC721_ADDRESS
+        )
+        console.log('contract initialized')
+        try {
+          callResult = await contract.methods.getTokenInfo(tokenId).call()
+          console.log('callresult', callResult)
+        } catch (err) {
+          console.error('[Server] Metadata error:', err)
+          return reply
+            .status(404)
+            .send(
+              new Error(`Metadata for token id ${tokenId} could not be fetched`)
+            )
+        }
+        const [category, ranking]: [number, number] = callResult[0]
+        console.log('before getsvg')
 
-          const svgName = SvgService.getSvgName({ category, ranking })
-          const svg = SvgService.getSVGFromName(svgName, ranking.toString())
-          fastify.cache.setTokenIdToSVGName(
-            tokenId,
-            svgName,
-            ranking.toString()
-          )
+        const svgName = SvgService.getSvgName({ category, ranking })
+        const svg = SvgService.getSVGFromName(svgName, ranking.toString())
+        // fastify.cache.setTokenIdToSVGName(tokenId, svgName, ranking.toString())
 
-          result.push({
-            tokenId,
-            svg,
-          })
+        result.push({
+          tokenId,
+          svg,
+        })
         // }
       }
 

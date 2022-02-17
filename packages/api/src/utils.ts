@@ -23,7 +23,6 @@ import { BufficornModel } from './models/bufficorn'
 import { RanchModel } from './models/ranch'
 import { Player } from './domain/player'
 import { Ranch } from './domain/ranch'
-import { Cache } from './cache'
 
 export function calculateRemainingCooldown(
   tradeEnds: number,
@@ -173,11 +172,10 @@ export async function calculateAllPlayerAwards(
     playerModel: PlayerModel
     bufficornModel: BufficornModel
     ranchModel: RanchModel
-    cache: Cache
   }
 ): Promise<Array<FarmerAward>> {
   const farmerAwards = []
-  const { playerModel, bufficornModel, ranchModel, cache } = fastifyInstance
+  const { playerModel, bufficornModel, ranchModel } = fastifyInstance
   const players: Array<Player> = await playerModel.getAllRegistered()
   const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
   const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
@@ -186,13 +184,8 @@ export async function calculateAllPlayerAwards(
     return r
   })
 
-  const cachedPlayerLeaderboard = cache.getAllSortedPlayers()
   const sortedPlayers =
-    cachedPlayerLeaderboard ||
     Player.getLeaderboard(players, players.length).players
-  if (!cachedPlayerLeaderboard) {
-    cache.setAllSortedPlayer(sortedPlayers)
-  }
 
   const farmerAward = getFarmerAward(player.username, sortedPlayers)
 
@@ -202,12 +195,8 @@ export async function calculateAllPlayerAwards(
     console.error('All farmers should have a farmer award')
   }
 
-  const cachedLeaderboardRanches = cache.getLeaderboardRanches()
   const leaderboardRanches =
-    cachedLeaderboardRanches || Ranch.getLeaderboard(ranches)
-  if (!cachedLeaderboardRanches) {
-    cache.setLeaderboardRanches(leaderboardRanches)
-  }
+    Ranch.getLeaderboard(ranches)
   const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
   if (ranchAward) {
     farmerAwards.push(ranchAward)
@@ -228,14 +217,8 @@ export async function calculateAllPlayerAwards(
 
   // Iterate over all the traits and get corresponding medal
   for (const [categoryIndex, category] of bufficornTraits.entries()) {
-    // const cachedTop3BufficornsByCategory =
-    //   cache.getTop3SortedBufficorns(category)
-    const cachedTop3BufficornsByCategory = null
     const top3Bufficorns =
-      cachedTop3BufficornsByCategory || Bufficorn.top3(bufficorns, category)
-    // if (!cachedTop3BufficornsByCategory) {
-    //   cache.setTop3SortedBufficorns(category, category)
-    // }
+       Bufficorn.top3(bufficorns, category)
     const bufficornCategoryAward = getBestBufficornAwards(
       player.ranch,
       top3Bufficorns,
