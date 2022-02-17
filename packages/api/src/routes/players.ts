@@ -280,7 +280,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const svgAwardsNames: Array<string> = farmerAwards.map(
         (award: FarmerAward): string => {
-          return SvgService.getSvgName({
+          return SvgService.getSVG({
             category: Number(award.category),
             ranking: Number(award.ranking),
           })
