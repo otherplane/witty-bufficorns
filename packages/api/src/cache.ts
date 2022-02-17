@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache'
-import { Prize, Trait } from './types'
+import { Prize, RanchLeaderboardInfo, Trait } from './types'
 
 const WEATHER_KEY = 'weather'
 const WEATHER_CACHE_TTL = 3600 // 1 hour, library need to be in seconds
@@ -100,6 +100,14 @@ export class Cache {
       case undefined:
         return this.cache.set(CACHE_BUFFICORN_KEY, value)
     }
+  }
+
+  setLeaderboardRanches(ranches: Array<RanchLeaderboardInfo>) {
+    return this.cache.set('LEADERBOARD_RANCHES', ranches)
+  }
+
+  getLeaderboardRanches(): Array<RanchLeaderboardInfo> | undefined{
+    return this.cache.get('LEADERBOARD_RANCHES')
   }
 }
 

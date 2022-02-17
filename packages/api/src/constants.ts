@@ -183,6 +183,15 @@ export const TRAIT_BY_RANCH: Record<RanchName, Trait> = {
   [RanchName.Ranch6]: Trait.Vigor,
 }
 
+export const categoryToPrize: Record<number, Trait> = {
+  3 : Trait.Coat,
+  4 : Trait.Coolness,
+  5 : Trait.Intelligence,      
+  6 : Trait.Speed,
+  7 : Trait.Stamina,
+  8 : Trait.Vigor 
+}
+
 export default {
   RANCHES_COUNT,
   PLAYER_KEY_LENGTH_BYTES,

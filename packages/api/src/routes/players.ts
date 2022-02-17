@@ -27,7 +27,7 @@ import {
   getBestBufficornAwards,
   getRanchAward,
   getFarmerAward,
-  getAllAwards,
+  calculateAllPlayerAwards,
 } from '../utils'
 import { Player } from '../domain/player'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
@@ -279,7 +279,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
 
-      const farmerAwards: Array<FarmerAward> = await getAllAwards(
+      const farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
         player,
         fastify
       )
