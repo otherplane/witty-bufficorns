@@ -27,6 +27,7 @@ import {
   getBestBufficornAwards,
   getRanchAward,
   getFarmerAward,
+  getAllAwards,
 } from '../utils'
 import { Player } from '../domain/player'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
@@ -278,61 +279,10 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
           .send(new Error(`Player does not exist (key: ${fromKey})`))
       }
 
-      // Get raw info
-      const players: Array<Player> = await playerModel.getAllRegistered()
-      const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
-      const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
-      const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
-        r.addBufficorns(bufficornsByRanch[r.name])
-        return r
-      })
-
-      let farmerAwards: Array<FarmerAward> = []
-
-      // Get farmer award
-      const sortedPlayers = Player.getLeaderboard(
-        players,
-        players.length
-      ).players
-      const farmerAward = getFarmerAward(player.username, sortedPlayers)
-
-      if (farmerAward) {
-        farmerAwards.push(farmerAward)
-      } else {
-        console.error('All farmers should have a farmer award')
-      }
-      // Update best ranch award
-      const leaderboardRanches = Ranch.getLeaderboard(ranches)
-      const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
-      if (ranchAward) {
-        farmerAwards.push(ranchAward)
-      } else {
-        console.error('All farmers should have a ranch award')
-      }
-
-      const bufficornTraits = [
-        // undefined will get the leaderboard sorted according to how balanced are the bufficorns
-        undefined,
-        Trait.Coat,
-        Trait.Coolness,
-        Trait.Intelligence,
-        Trait.Speed,
-        Trait.Stamina,
-        Trait.Vigor,
-      ]
-
-      // Iterate over all the traits and get corresponding medal
-      for (const [categoryIndex, category] of bufficornTraits.entries()) {
-        const top3Bufficorns = Bufficorn.top3(bufficorns, category)
-        const bufficornCategoryAward = getBestBufficornAwards(
-          player.ranch,
-          top3Bufficorns,
-          categoryIndex
-        )
-        if (bufficornCategoryAward) {
-          farmerAwards.push(bufficornCategoryAward)
-        }
-      }
+      const farmerAwards: Array<FarmerAward> = await getAllAwards(
+        player,
+        fastify
+      )
 
       const svgAwardsNames: Array<string> = farmerAwards.map(
         (award: FarmerAward): string => {
