@@ -17,19 +17,13 @@ import {
   RanchName,
   SelectBufficornParams,
   SelectBufficornReply,
-  Trait,
   PreviewImageNameReply,
   PlayerImagesReponse,
 } from '../types'
 import {
-  groupBufficornsByRanch,
   isMainnetTime,
-  getBestBufficornAwards,
-  getRanchAward,
-  getFarmerAward,
   calculateAllPlayerAwards,
 } from '../utils'
-import { Player } from '../domain/player'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
 import Web3 from 'web3'
 

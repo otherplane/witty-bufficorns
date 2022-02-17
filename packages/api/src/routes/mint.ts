@@ -10,33 +10,24 @@ import {
   WEB3_PROVIDER,
   WITTY_BUFFICORNS_ERC721_ADDRESS,
 } from '../constants'
-import { Bufficorn } from '../domain/bufficorn'
-import { Ranch } from '../domain/ranch'
-import { Player } from '../domain/player'
 import {
   AuthorizationHeader,
   FarmerAward,
   JwtVerifyPayload,
   MintOutput,
   MintParams,
-  Trait,
 } from '../types'
 import {
   fromHexToUint8Array,
   isTimeToMint,
-  groupBufficornsByRanch,
-  getBestBufficornAwards,
-  getFarmerAward,
-  getRanchAward,
   calculateAllPlayerAwards,
 } from '../utils'
-import { SvgService } from '../svgService'
 
 const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
 
 const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   if (!fastify.mongo.db) throw Error('mongo db not found')
-  const { bufficornModel, mintModel, playerModel, ranchModel } = fastify
+  const { mintModel, playerModel } = fastify
 
   fastify.post<{ Body: MintParams; Reply: MintOutput | Error }>('/mint', {
     schema: {
