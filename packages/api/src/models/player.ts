@@ -176,24 +176,15 @@ export class PlayerModel {
     limit: number
     offset: number
   }): Promise<Array<Player>> {
-    let sortBy = {}
-    if (isMainnetTime()) {
-      sortBy = {
-        points: -1,
-      }
-    } else {
-      sortBy = {
-        testnetPoints: -1,
-      }
-    }
-
     // TODO: Remove mongoDB $exists from model
     const vtos = await this.repository.getSortedBy(
       {
         token: { $exists: true, $ne: undefined },
         ranch: { $ne: 'WITNET_RANCH' },
       },
-      sortBy,
+      {
+        testnetPoints: -1,
+      },
       paginationParams
     )
 

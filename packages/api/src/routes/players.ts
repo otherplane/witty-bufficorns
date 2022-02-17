@@ -20,7 +20,11 @@ import {
   PreviewImageNameReply,
   PlayerImagesReponse,
 } from '../types'
-import { isMainnetTime, calculateAllPlayerAwards } from '../utils'
+import {
+  isMainnetTime,
+  calculateAllPlayerAwards,
+  getPlayerAwardsEntities,
+} from '../utils'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
 import Web3 from 'web3'
 
@@ -272,7 +276,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
         player,
-        fastify
+        await getPlayerAwardsEntities(fastify)
       )
 
       const svgAwardsNames: Array<string> = farmerAwards.map(

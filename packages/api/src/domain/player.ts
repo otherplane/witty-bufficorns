@@ -9,7 +9,6 @@ import {
 } from '../types'
 import { Ranch } from './ranch'
 import { Trade } from './trade'
-import { isMainnetTime } from '../utils'
 
 export class Player {
   token?: string
@@ -71,12 +70,13 @@ export class Player {
         .sort(
           (a, b) =>
             // sort by creation index if the players are tied
-            b.points - a.points || a.username.localeCompare(b.username)
+            b.testnetPoints - a.testnetPoints ||
+            a.username.localeCompare(b.username)
         )
         .map((p, index) => ({
           username: p.username,
           creationIndex: p.creationIndex,
-          points: isMainnetTime() ? p.points : p.testnetPoints,
+          points: p.testnetPoints,
           position: paginationOffset + index,
         })),
       total: totalPlayers,
