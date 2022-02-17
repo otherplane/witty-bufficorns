@@ -14,9 +14,16 @@ import {
   PlayerLeaderboardInfo,
   RanchLeaderboardInfo,
   RanchName,
+  Trait,
 } from './types'
 import { uniqueNamesGenerator, adjectives, names } from 'unique-names-generator'
 import { Bufficorn } from './domain/bufficorn'
+import { PlayerModel } from './models/player'
+import { BufficornModel } from './models/bufficorn'
+import { RanchModel } from './models/ranch'
+import { Player } from './domain/player'
+import { Ranch } from './domain/ranch'
+import { Cache } from './cache'
 
 export function calculateRemainingCooldown(
   tradeEnds: number,
@@ -158,4 +165,85 @@ export function getBestBufficornAwards(
     }
   }
   return bufficornAward
+}
+
+export async function calculateAllPlayerAwards(
+  player: Player,
+  fastifyInstance: {
+    playerModel: PlayerModel
+    bufficornModel: BufficornModel
+    ranchModel: RanchModel
+    cache: Cache
+  }
+): Promise<Array<FarmerAward>> {
+  const farmerAwards = []
+  const { playerModel, bufficornModel, ranchModel, cache } = fastifyInstance
+  const players: Array<Player> = await playerModel.getAllRegistered()
+  const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
+  const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
+  const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
+    r.addBufficorns(bufficornsByRanch[r.name])
+    return r
+  })
+
+  const cachedPlayerLeaderboard = cache.getAllSortedPlayers()
+  const sortedPlayers =
+    cachedPlayerLeaderboard ||
+    Player.getLeaderboard(players, players.length).players
+  if (!cachedPlayerLeaderboard) {
+    cache.setAllSortedPlayer(sortedPlayers)
+  }
+
+  const farmerAward = getFarmerAward(player.username, sortedPlayers)
+
+  if (farmerAward) {
+    farmerAwards.push(farmerAward)
+  } else {
+    console.error('All farmers should have a farmer award')
+  }
+
+  const cachedLeaderboardRanches = cache.getLeaderboardRanches()
+  const leaderboardRanches =
+    cachedLeaderboardRanches || Ranch.getLeaderboard(ranches)
+  if (!cachedLeaderboardRanches) {
+    cache.setLeaderboardRanches(leaderboardRanches)
+  }
+  const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
+  if (ranchAward) {
+    farmerAwards.push(ranchAward)
+  } else {
+    console.error('All farmers should have a ranch award')
+  }
+
+  const bufficornTraits = [
+    // undefined will get the leaderboard sorted according to how balanced are the bufficorns
+    undefined,
+    Trait.Coat,
+    Trait.Coolness,
+    Trait.Intelligence,
+    Trait.Speed,
+    Trait.Stamina,
+    Trait.Vigor,
+  ]
+
+  // Iterate over all the traits and get corresponding medal
+  for (const [categoryIndex, category] of bufficornTraits.entries()) {
+    const cachedTop3BufficornsByCategory =
+      cache.getTop3SortedBufficorns(category)
+    const top3Bufficorns =
+      cachedTop3BufficornsByCategory || Bufficorn.top3(bufficorns, category)
+    if (!cachedTop3BufficornsByCategory) {
+      cache.setTop3SortedBufficorns(category, category)
+    }
+    const bufficornCategoryAward = getBestBufficornAwards(
+      player.ranch,
+      top3Bufficorns,
+      categoryIndex
+    )
+    if (bufficornCategoryAward) {
+      farmerAwards.push(bufficornCategoryAward)
+    }
+  }
+
+  return farmerAwards
 }
