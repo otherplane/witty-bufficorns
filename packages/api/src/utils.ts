@@ -184,8 +184,7 @@ export async function calculateAllPlayerAwards(
     return r
   })
 
-  const sortedPlayers =
-    Player.getLeaderboard(players, players.length).players
+  const sortedPlayers = Player.getLeaderboard(players, players.length).players
 
   const farmerAward = getFarmerAward(player.username, sortedPlayers)
 
@@ -195,8 +194,7 @@ export async function calculateAllPlayerAwards(
     console.error('All farmers should have a farmer award')
   }
 
-  const leaderboardRanches =
-    Ranch.getLeaderboard(ranches)
+  const leaderboardRanches = Ranch.getLeaderboard(ranches)
   const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
   if (ranchAward) {
     farmerAwards.push(ranchAward)
@@ -217,8 +215,7 @@ export async function calculateAllPlayerAwards(
 
   // Iterate over all the traits and get corresponding medal
   for (const [categoryIndex, category] of bufficornTraits.entries()) {
-    const top3Bufficorns =
-       Bufficorn.top3(bufficorns, category)
+    const top3Bufficorns = Bufficorn.top3(bufficorns, category)
     const bufficornCategoryAward = getBestBufficornAwards(
       player.ranch,
       top3Bufficorns,
