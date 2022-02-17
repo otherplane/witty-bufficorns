@@ -21,7 +21,6 @@ import {
   fromHexToUint8Array,
   isTimeToMint,
   calculateAllPlayerAwards,
-  getPlayerAwardsEntities,
 } from '../utils'
 
 const WITTY_BUFFICORNS_ERC721_ABI = require('../assets/WittyBufficornsABI.json')
@@ -120,7 +119,7 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       let farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
         player,
-        await getPlayerAwardsEntities(fastify)
+        fastify
       )
 
       const message = web3.eth.abi.encodeParameters(

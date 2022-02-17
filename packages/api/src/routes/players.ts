@@ -23,7 +23,6 @@ import {
 import {
   isMainnetTime,
   calculateAllPlayerAwards,
-  getPlayerAwardsEntities,
 } from '../utils'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
 import Web3 from 'web3'
@@ -276,14 +275,14 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
         player,
-        await getPlayerAwardsEntities(fastify)
+        fastify
       )
 
       const svgAwardsNames: Array<string> = farmerAwards.map(
         (award: FarmerAward): string => {
           return SvgService.getSvgName({
-            category: award.category,
-            ranking: award.ranking,
+            category: Number(award.category),
+            ranking: Number(award.ranking),
           })
         }
       )
@@ -353,10 +352,10 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
               new Error(`Metadata for token id ${tokenId} could not be fetched`)
             )
         }
-        const [category, ranking]: [number, number] = callResult[0]
+        const [category, ranking]: [number, string] = callResult[0]
         console.log('before getsvg')
 
-        const svgName = SvgService.getSvgName({ category, ranking })
+        const svgName = SvgService.getSvgName({ category: Number(category), ranking: Number(ranking) })
         const svg = SvgService.getSVGFromName(svgName, ranking.toString())
         // fastify.cache.setTokenIdToSVGName(tokenId, svgName, ranking.toString())
 
