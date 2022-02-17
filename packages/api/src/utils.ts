@@ -228,13 +228,14 @@ export async function calculateAllPlayerAwards(
 
   // Iterate over all the traits and get corresponding medal
   for (const [categoryIndex, category] of bufficornTraits.entries()) {
-    const cachedTop3BufficornsByCategory =
-      cache.getTop3SortedBufficorns(category)
+    // const cachedTop3BufficornsByCategory =
+    //   cache.getTop3SortedBufficorns(category)
+    const cachedTop3BufficornsByCategory = null
     const top3Bufficorns =
       cachedTop3BufficornsByCategory || Bufficorn.top3(bufficorns, category)
-    if (!cachedTop3BufficornsByCategory) {
-      cache.setTop3SortedBufficorns(category, category)
-    }
+    // if (!cachedTop3BufficornsByCategory) {
+    //   cache.setTop3SortedBufficorns(category, category)
+    // }
     const bufficornCategoryAward = getBestBufficornAwards(
       player.ranch,
       top3Bufficorns,

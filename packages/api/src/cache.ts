@@ -78,7 +78,7 @@ export class Cache {
         return this.get(CACHE_BUFFICORN_STAMINA_KEY)
       case Trait.Vigor:
         return this.get(CACHE_BUFFICORN_VIGOR_KEY)
-      case undefined:
+      default:
         return this.get(CACHE_BUFFICORN_KEY)
     }
   }

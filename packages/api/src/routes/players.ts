@@ -20,10 +20,7 @@ import {
   PreviewImageNameReply,
   PlayerImagesReponse,
 } from '../types'
-import {
-  isMainnetTime,
-  calculateAllPlayerAwards,
-} from '../utils'
+import { isMainnetTime, calculateAllPlayerAwards } from '../utils'
 import { WEB3_PROVIDER, WITTY_BUFFICORNS_ERC721_ADDRESS } from '../constants'
 import Web3 from 'web3'
 
@@ -328,12 +325,12 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       let callResult
       for (let tokenId of tokenIds) {
         cached = fastify.cache.getTokenIdToSVGName(tokenId)
-        if (cached) {
-          result.push({
-            tokenId,
-            svg: SvgService.getSVGFromName(cached.svgName, cached.ranking),
-          })
-        } else {
+        // if (false && cached) {
+        //   result.push({
+        //     tokenId,
+        //     svg: SvgService.getSVGFromName(cached.svgName, cached.ranking),
+        //   })
+        // } else {
           const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_PROVIDER))
           console.log('web3 initialized')
           const contract = new web3.eth.Contract(
@@ -354,7 +351,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 )
               )
           }
-          const [category, ranking]: [number, number] = callResult
+          const [category, ranking]: [number, number] = callResult[0]
           console.log('before getsvg')
 
           const svgName = SvgService.getSvgName({ category, ranking })
@@ -369,7 +366,7 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             tokenId,
             svg,
           })
-        }
+        // }
       }
 
       // return extended player
