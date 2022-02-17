@@ -85,7 +85,6 @@ export const useStore = defineStore('player', {
       )
     },
     setTokenIds (tokenIds) {
-      console.log('setTokenIds!', tokenIds)
       this.tokenIds = tokenIds
     },
     savePreview (preview) {
@@ -97,7 +96,6 @@ export const useStore = defineStore('player', {
       this.theme = theme
     },
     saveMintInfo (info) {
-      console.log('mintInfo!', info)
       localStorage.setItem('mintInfo', JSON.stringify({ ...info }))
       this.mintInfo = info
     },
@@ -183,7 +181,6 @@ export const useStore = defineStore('player', {
           token: tokenInfo.token,
           tokenIds: this.tokenIds
         })
-        console.log('mintedAwards!', request)
         if (request.error) {
           this.setError('showMintedAwards', request.error)
           router.push('/init-game')
@@ -199,7 +196,6 @@ export const useStore = defineStore('player', {
         token: tokenInfo.token,
         key: this.id
       })
-      console.log('getPreview!', request)
       if (request.error) {
         this.setError('preview', request.error)
         router.push('/init-game')
@@ -299,7 +295,6 @@ export const useStore = defineStore('player', {
         address,
         token: tokenInfo.token
       })
-      console.log('getContractArgs', request)
       if (request.error) {
         router.push({ name: 'init-game' })
         this.setError('getContractArgs', request.error)

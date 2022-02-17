@@ -156,7 +156,7 @@ export default {
         if (player.gameOver) {
           await player.getMintInfo()
           await player.getPreviews()
-          if (player.mintInfo?.blockHash) {
+          if (player.minted) {
             await web3WittyBufficorns.getTokenIds()
             await player.getMintedAwardsImages()
           }

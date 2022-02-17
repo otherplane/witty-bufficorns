@@ -20,7 +20,6 @@ function createErrorMessage (message) {
 }
 
 function networkById (id) {
-  console.log(id)
   switch (id) {
     case '137':
       return 'Polygon Mainnet'
@@ -78,7 +77,6 @@ export function useWeb3 () {
     if (window.ethereum) {
       web3 = new Web3(window.ethereum || 'ws://localhost:8545')
       if (player.gameOver) {
-        console.log('player.gameover enableProvider')
         enableProvider()
       }
     }
