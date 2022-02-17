@@ -106,7 +106,7 @@ export class Cache {
     return this.cache.set('LEADERBOARD_RANCHES', ranches)
   }
 
-  getLeaderboardRanches(): Array<RanchLeaderboardInfo> | undefined{
+  getLeaderboardRanches(): Array<RanchLeaderboardInfo> | undefined {
     return this.cache.get('LEADERBOARD_RANCHES')
   }
 }

@@ -186,7 +186,10 @@ const mint: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const farmerScore = player.points
       const farmerName = player.username
 
-      let farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(player, fastify)
+      let farmerAwards: Array<FarmerAward> = await calculateAllPlayerAwards(
+        player,
+        fastify
+      )
       // const svgAwardsNames: Array<string> = farmerAwards.map(
       //   (award: FarmerAward): string => {
       //     return SvgService.getSvgName({

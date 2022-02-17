@@ -177,7 +177,7 @@ export async function calculateAllPlayerAwards(
   }
 ): Promise<Array<FarmerAward>> {
   const farmerAwards = []
-  const { playerModel, bufficornModel, ranchModel, cache } = fastifyInstance 
+  const { playerModel, bufficornModel, ranchModel, cache } = fastifyInstance
   const players: Array<Player> = await playerModel.getAllRegistered()
   const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
   const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
@@ -185,9 +185,11 @@ export async function calculateAllPlayerAwards(
     r.addBufficorns(bufficornsByRanch[r.name])
     return r
   })
- 
+
   const cachedPlayerLeaderboard = cache.getAllSortedPlayers()
-  const sortedPlayers = cachedPlayerLeaderboard || Player.getLeaderboard(players, players.length).players
+  const sortedPlayers =
+    cachedPlayerLeaderboard ||
+    Player.getLeaderboard(players, players.length).players
   if (!cachedPlayerLeaderboard) {
     cache.setAllSortedPlayer(sortedPlayers)
   }
@@ -201,8 +203,9 @@ export async function calculateAllPlayerAwards(
   }
 
   const cachedLeaderboardRanches = cache.getLeaderboardRanches()
-  const leaderboardRanches = cachedLeaderboardRanches ||  Ranch.getLeaderboard(ranches)
-  if (!cachedLeaderboardRanches){
+  const leaderboardRanches =
+    cachedLeaderboardRanches || Ranch.getLeaderboard(ranches)
+  if (!cachedLeaderboardRanches) {
     cache.setLeaderboardRanches(leaderboardRanches)
   }
   const ranchAward = getRanchAward(player.ranch, leaderboardRanches)
@@ -225,8 +228,10 @@ export async function calculateAllPlayerAwards(
 
   // Iterate over all the traits and get corresponding medal
   for (const [categoryIndex, category] of bufficornTraits.entries()) {
-    const cachedTop3BufficornsByCategory = cache.getTop3SortedBufficorns(category)
-    const top3Bufficorns = cachedTop3BufficornsByCategory || Bufficorn.top3(bufficorns, category)
+    const cachedTop3BufficornsByCategory =
+      cache.getTop3SortedBufficorns(category)
+    const top3Bufficorns =
+      cachedTop3BufficornsByCategory || Bufficorn.top3(bufficorns, category)
     if (!cachedTop3BufficornsByCategory) {
       cache.setTop3SortedBufficorns(category, category)
     }
