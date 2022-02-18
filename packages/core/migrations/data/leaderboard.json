@@ -1,0 +1,419 @@
+{
+    "bufficorns": [
+      {
+        "name": "Bufficorn-4",
+        "ranch": "Vega Slopes Range",
+        "coat": 320,
+        "coolness": 160,
+        "intelligence": 160,
+        "speed": 160,
+        "stamina": 160,
+        "vigor": 160,
+        "score": 160,
+        "position": 0,
+        "creationIndex": 4
+      },
+      {
+        "name": "Bufficorn-8",
+        "ranch": "Balancer Peak State",
+        "coat": 240,
+        "coolness": 640,
+        "intelligence": 160,
+        "speed": 480,
+        "stamina": 480,
+        "vigor": 160,
+        "score": 160,
+        "position": 1,
+        "creationIndex": 8
+      },
+      {
+        "name": "Bufficorn-16",
+        "ranch": "Vega Slopes Range",
+        "coat": 290,
+        "coolness": 160,
+        "intelligence": 160,
+        "speed": 160,
+        "stamina": 160,
+        "vigor": 160,
+        "score": 160,
+        "position": 2,
+        "creationIndex": 16
+      },
+      {
+        "name": "Bufficorn-10",
+        "ranch": "Vega Slopes Range",
+        "coat": 160,
+        "coolness": 480,
+        "intelligence": 160,
+        "speed": 240,
+        "stamina": 240,
+        "vigor": 100,
+        "score": 100,
+        "position": 3,
+        "creationIndex": 10
+      },
+      {
+        "name": "Bufficorn-7",
+        "ranch": "Infinite Harmony Farm",
+        "coat": 160,
+        "coolness": 130,
+        "intelligence": 130,
+        "speed": 80,
+        "stamina": 310,
+        "vigor": 80,
+        "score": 80,
+        "position": 4,
+        "creationIndex": 7
+      },
+      {
+        "name": "Bufficorn-22",
+        "ranch": "Vega Slopes Range",
+        "coat": 160,
+        "coolness": 160,
+        "intelligence": 160,
+        "speed": 80,
+        "stamina": 100,
+        "vigor": 50,
+        "score": 50,
+        "position": 5,
+        "creationIndex": 22
+      },
+      {
+        "name": "Bufficorn-0",
+        "ranch": "Gold Reef Co.",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 6,
+        "creationIndex": 0
+      },
+      {
+        "name": "Bufficorn-1",
+        "ranch": "Infinite Harmony Farm",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 7,
+        "creationIndex": 1
+      },
+      {
+        "name": "Bufficorn-2",
+        "ranch": "Balancer Peak State",
+        "coat": 0,
+        "coolness": 160,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 8,
+        "creationIndex": 2
+      },
+      {
+        "name": "Bufficorn-3",
+        "ranch": "The Ol' Algoranch",
+        "coat": 130,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 9,
+        "creationIndex": 3
+      },
+      {
+        "name": "Bufficorn-5",
+        "ranch": "Opolis Reservation",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 80,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 10,
+        "creationIndex": 5
+      },
+      {
+        "name": "Bufficorn-6",
+        "ranch": "Gold Reef Co.",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 11,
+        "creationIndex": 6
+      },
+      {
+        "name": "Bufficorn-9",
+        "ranch": "The Ol' Algoranch",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 12,
+        "creationIndex": 9
+      },
+      {
+        "name": "Bufficorn-11",
+        "ranch": "Opolis Reservation",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 13,
+        "creationIndex": 11
+      },
+      {
+        "name": "Bufficorn-12",
+        "ranch": "Gold Reef Co.",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 14,
+        "creationIndex": 12
+      },
+      {
+        "name": "Bufficorn-13",
+        "ranch": "Infinite Harmony Farm",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 15,
+        "creationIndex": 13
+      },
+      {
+        "name": "Bufficorn-14",
+        "ranch": "Balancer Peak State",
+        "coat": 160,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 16,
+        "creationIndex": 14
+      },
+      {
+        "name": "Bufficorn-15",
+        "ranch": "The Ol' Algoranch",
+        "coat": 50,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 17,
+        "creationIndex": 15
+      },
+      {
+        "name": "Bufficorn-17",
+        "ranch": "Opolis Reservation",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 18,
+        "creationIndex": 17
+      },
+      {
+        "name": "Bufficorn-18",
+        "ranch": "Gold Reef Co.",
+        "coat": 80,
+        "coolness": 80,
+        "intelligence": 50,
+        "speed": 50,
+        "stamina": 50,
+        "vigor": 0,
+        "score": 0,
+        "position": 19,
+        "creationIndex": 18
+      },
+      {
+        "name": "Bufficorn-19",
+        "ranch": "Infinite Harmony Farm",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 20,
+        "creationIndex": 19
+      },
+      {
+        "name": "Bufficorn-20",
+        "ranch": "Balancer Peak State",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 160,
+        "vigor": 0,
+        "score": 0,
+        "position": 21,
+        "creationIndex": 20
+      },
+      {
+        "name": "Bufficorn-21",
+        "ranch": "The Ol' Algoranch",
+        "coat": 80,
+        "coolness": 50,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 180,
+        "vigor": 0,
+        "score": 0,
+        "position": 22,
+        "creationIndex": 21
+      },
+      {
+        "name": "Bufficorn-23",
+        "ranch": "Opolis Reservation",
+        "coat": 0,
+        "coolness": 0,
+        "intelligence": 0,
+        "speed": 0,
+        "stamina": 0,
+        "vigor": 0,
+        "score": 0,
+        "position": 23,
+        "creationIndex": 23
+      }
+    ],
+    "ranches": [
+      {
+        "name": "Vega Slopes Range",
+        "score": 50,
+        "position": 0,
+        "creationIndex": 4
+      },
+      {
+        "name": "Balancer Peak State",
+        "score": 0,
+        "position": 1,
+        "creationIndex": 2
+      },
+      {
+        "name": "Gold Reef Co.",
+        "score": 0,
+        "position": 2,
+        "creationIndex": 0
+      },
+      {
+        "name": "Infinite Harmony Farm",
+        "score": 0,
+        "position": 3,
+        "creationIndex": 1
+      },
+      {
+        "name": "Opolis Reservation",
+        "score": 0,
+        "position": 4,
+        "creationIndex": 5
+      },
+      {
+        "name": "The Ol' Algoranch",
+        "score": 0,
+        "position": 5,
+        "creationIndex": 3
+      }
+    ],
+    "players": {
+      "players": [
+        {
+          "username": "apparent-flo",
+          "points": 0,
+          "position": 0,
+          "creationIndex": 89
+        },
+        {
+          "username": "continental-ninette",
+          "points": 0,
+          "position": 1,
+          "creationIndex": 7
+        },
+        {
+          "username": "deliberate-jacinthe",
+          "points": 0,
+          "position": 2,
+          "creationIndex": 8
+        },
+        {
+          "username": "dull-oliy",
+          "points": 0,
+          "position": 3,
+          "creationIndex": 14
+        },
+        {
+          "username": "mental-farica",
+          "points": 0,
+          "position": 4,
+          "creationIndex": 5
+        },
+        {
+          "username": "organisational-yovonnda",
+          "points": 0,
+          "position": 5,
+          "creationIndex": 24
+        },
+        {
+          "username": "polite-nonna",
+          "points": 0,
+          "position": 6,
+          "creationIndex": 15
+        },
+        {
+          "username": "proud-mirilla",
+          "points": 0,
+          "position": 7,
+          "creationIndex": 90
+        },
+        {
+          "username": "realistic-ilise",
+          "points": 0,
+          "position": 8,
+          "creationIndex": 4
+        },
+        {
+          "username": "verbal-fiona",
+          "points": 0,
+          "position": 9,
+          "creationIndex": 3
+        }
+      ],
+      "total": 16
+    }
+  }
