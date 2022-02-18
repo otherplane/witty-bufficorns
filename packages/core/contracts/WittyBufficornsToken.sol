@@ -153,10 +153,6 @@ contract WittyBufficornsToken
         inStatus(WittyBufficornsLib.Status.Breeding)
     {
         WittyBufficornsLib.Ranch storage __ranch = __storage.ranches[_ranchId];
-        require(
-            bytes(_name).length > 0,
-            "WittyBufficornsToken: no name"
-        );
         WittyBufficornsLib.Bufficorn storage __bufficorn = __storage.bufficorns[_id];
         if (bytes(_name).length > 0) {
             if (bytes(__bufficorn.name).length == 0) {
