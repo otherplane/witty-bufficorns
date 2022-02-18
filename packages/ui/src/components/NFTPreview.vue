@@ -31,21 +31,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.medals-container {
+  max-width: 90vw;
+}
 .nft-container {
+  overflow: hidden;
   display: grid;
-  background: var(--primary-color-opacity-2);
   border-radius: 4px;
   margin: 16px 0px;
   justify-content: center;
-  .preview-nft {
-    width: 200px;
-    padding: 8px;
-    border-radius: 4px;
-    background: var(--primary-color-opacity-2);
-    &.minted {
-      border: 2px solid var(--primary-color);
-    }
-  }
 }
 .medals-title {
   font-weight: bold;

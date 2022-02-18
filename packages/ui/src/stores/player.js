@@ -85,6 +85,7 @@ export const useStore = defineStore('player', {
       )
     },
     setTokenIds (tokenIds) {
+      console.log(tokenIds)
       this.tokenIds = tokenIds
     },
     savePreview (preview) {
@@ -176,11 +177,13 @@ export const useStore = defineStore('player', {
     },
     async getMintedAwardsImages () {
       const tokenInfo = this.getToken()
+      console.log('call-------', this.tokenIds)
       if (this.tokenIds) {
         const request = await this.api.getMintedAwardsImages({
           token: tokenInfo.token,
           tokenIds: this.tokenIds
         })
+        console.log(request)
         if (request.error) {
           this.setError('showMintedAwards', request.error)
           router.push('/init-game')
