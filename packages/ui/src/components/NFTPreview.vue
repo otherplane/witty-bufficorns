@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .medals-container {
-  max-width: 90vw;
+  width: 40vw;
 }
 .nft-container {
   overflow: hidden;
@@ -46,5 +46,10 @@ export default {
   font-family: Zilla Slab, sans-serif;
   font-size: 12px;
   color: var(--primary-color);
+}
+@media (max-width: 600px) {
+  .medals-container {
+    width: 90vw;
+  }
 }
 </style>

@@ -1,11 +1,16 @@
 <template>
-  <div v-html="svg" />
+  <img id="medal-img" :src="url" />
 </template>
 
 <script>
 export default {
   props: {
     svg: { type: String, required: true }
+  },
+  setup (props) {
+    let blob = new Blob([props.svg], { type: 'image/svg+xml' })
+    let url = URL.createObjectURL(blob)
+    return { url }
   }
 }
 </script>

@@ -342,8 +342,6 @@ const players: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             )
         }
         const [category, ranking]: [number, string] = callResult[0]
-        console.log('before getsvg')
-
         const svgName = SvgService.getSvgName({
           category: Number(category),
           ranking: Number(ranking),

@@ -1,6 +1,6 @@
 <template>
   <Carousel>
-    <Slide v-for="medal in medals" :key="medal">
+    <Slide v-for="(medal, index) in medals" :key="medal">
       <div class="carousel__item">
         <SvgImage v-if="!!medal.tokenId" class="preview-nft" :svg="medal.svg" />
         <SvgImage v-else class="preview-nft" :svg="medal" />
@@ -10,6 +10,7 @@
           </a>
           <svgImage class="external-link-icon" :svg="externalLink" />
         </div>
+        <p class="medals-number">{{ index + 1 }} of {{ medals.length }}</p>
       </div>
     </Slide>
     <template #addons>
@@ -19,9 +20,8 @@
 </template>
 
 <script>
-// If you are using PurgeCSS, make sure to whitelist the carousel CSS classes
 import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import { OPENSEA_BASE_URL } from '@/constants'
 import externalLink from '@/assets/external-black.svg?raw'
 
@@ -30,8 +30,7 @@ export default {
   components: {
     Carousel,
     Slide,
-    Pagination,
-    Navigation
+    Pagination
   },
   props: {
     medals: {
@@ -39,7 +38,7 @@ export default {
       required: true
     }
   },
-  setup () {
+  setup (props) {
     return {
       OPENSEA_BASE_URL,
       externalLink
@@ -48,16 +47,17 @@ export default {
 }
 </script>
 <style lang="scss">
-// .navigation-btn {
-//   position: fixed;
-//   margin: 0 auto;
-//   left: 40px;
-//   width: 80vw;
-// }
 .carousel__item {
+  cursor: grab;
   width: 150px;
   display: grid;
+  .medals-number {
+    margin-top: 16px;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
   .opensea-link {
+    margin-top: 8px;
     display: flex;
     cursor: pointer;
     text-decoration: underline;

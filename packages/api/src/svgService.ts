@@ -127,6 +127,7 @@ export class SvgService {
   }
 
   static getSVG({ category, ranking }: GetTokenInfoResponse): string {
+    console.log('svg', medalNameToSvg[this.getSvgName({ category, ranking })])
     return medalNameToSvg[this.getSvgName({ category, ranking })].replace(
       '#9999',
       `#${ranking}`
