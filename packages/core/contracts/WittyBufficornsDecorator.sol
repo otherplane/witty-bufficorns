@@ -247,25 +247,24 @@ contract WittyBufficornsDecorator
         WittyBufficornsLib.Awards _category = _metadata.tokenInfo.award.category;
         if (_category == WittyBufficornsLib.Awards.BestBreeder) {
             _json = string(abi.encodePacked(
-                "Owner ranked as #",
+                "Player ", _metadata.farmer.name, 
+                " ranked as #",
                 _metadata.tokenInfo.award.ranking.toString(),
-                " ",
-                _metadata.tokenInfo.award.category.toString()
+                " ", _metadata.tokenInfo.award.category.toString()
             ));
         } else if (_category == WittyBufficornsLib.Awards.BestRanch) {
             _json = string(abi.encodePacked(
-                "Owner contributed to #",
-                _metadata.tokenInfo.award.ranking.toString(),
-                " ",
-                _metadata.tokenInfo.award.category.toString()
+                "Player ", _metadata.farmer.name, 
+                " helped ", lookupRanchName(_metadata.farmer.ranchId),
+                " rank as #", _metadata.tokenInfo.award.ranking.toString(),
+                " ", _metadata.tokenInfo.award.category.toString()
             ));
         } else {
             _json = string(abi.encodePacked(
-                "Owner bred ", _metadata.bufficorn.name,
-                " as #", 
-                _metadata.tokenInfo.award.ranking.toString(),
-                " ",
-                _metadata.tokenInfo.award.category.toString()
+                "Player ", _metadata.farmer.name,
+                " helped ", _metadata.bufficorn.name,
+                " rank as #", _metadata.tokenInfo.award.ranking.toString(),
+                " ", _metadata.tokenInfo.award.category.toString()
             ));
         }
     }
