@@ -156,7 +156,6 @@ export default {
         if (player.gameOver) {
           await player.getMintInfo()
           await player.getPreviews()
-          console.log(player.minted)
           if (player.minted) {
             await web3WittyBufficorns.getTokenIds()
             await player.getMintedAwardsImages()
