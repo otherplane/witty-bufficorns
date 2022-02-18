@@ -63,42 +63,63 @@ body {
   --secondary-color: #{$opolis-secondary};
   --primary-color-opacity-1: #{$opolis-opacity-1};
   --primary-color-opacity-2: #{$opolis-opacity-2};
+  --vc-nav-background-color: #{$opolis};
+  --vc-pgn-active-color: #{$opolis};
+  --vc-pgn-background-color: #{$opolis-opacity-1};
 }
 .harmony {
   --primary-color: #{$harmony};
   --secondary-color: #{$harmony-secondary};
   --primary-color-opacity-1: #{$harmony-opacity-1};
   --primary-color-opacity-2: #{$harmony-opacity-2};
+  --vc-nav-background-color: #{$harmony};
+  --vc-pgn-active-color: #{$harmony};
+  --vc-pgn-background-color: #{$harmony-secondary};
 }
 .algorand {
   --primary-color: #{$algorand};
-  --secondary-color: #{$algorand-secondary};
+  --secondary-color: #{$algorand};
   --primary-color-opacity-1: #{$algorand-opacity-1};
   --primary-color-opacity-2: #{$algorand-opacity-2};
+  --vc-nav-background-color: #{$algorand};
+  --vc-pgn-active-color: #{$algorand};
+  --vc-pgn-background-color: #{$algorand-opacity-1};
 }
 .vega {
   --primary-color: #{$vega};
   --secondary-color: #{$vega-secondary};
   --primary-color-opacity-1: #{$vega-opacity-1};
   --primary-color-opacity-2: #{$vega-opacity-2};
+  --vc-nav-background-color: #{$vega};
+  --vc-pgn-active-color: #{$vega};
+  --vc-pgn-background-color: #{$vega-opacity-1};
 }
 .reef {
   --primary-color: #{$reef};
   --secondary-color: #{$reef-secondary};
   --primary-color-opacity-1: #{$reef-opacity-1};
   --primary-color-opacity-2: #{$reef-opacity-2};
+  --vc-nav-background-color: #{$reef};
+  --vc-pgn-active-color: #{$reef};
+  --vc-pgn-background-color: #{$reef-secondary};
 }
 .balancer {
   --primary-color: #{$balancer};
   --secondary-color: #{$balancer-secondary};
   --primary-color-opacity-1: #{$balancer-opacity-1};
   --primary-color-opacity-2: #{$balancer-opacity-2};
+  --vc-pgn-active-color: #{$balancer};
+  --vc-nav-background-color: #{$balancer};
+  --vc-pgn-background-color: #{$balancer-opacity-1};
 }
 .witnet {
   --primary-color: #{$witnet};
   --secondary-color: #{$witnet-secondary};
   --primary-color-opacity-1: #{$witnet-opacity-1};
   --primary-color-opacity-2: #{$witnet-opacity-2};
+  --vc-nav-background-color: #{$witnet};
+  --vc-pgn-active-color: #{$witnet};
+  --vc-pgn-background-color: #{$witnet-secondary};
 }
 
 .bg-white {

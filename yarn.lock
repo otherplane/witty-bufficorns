@@ -18386,6 +18386,11 @@ vue-router@4.0.12:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.18"
 
+vue3-carousel@^0.1.36:
+  version "0.1.36"
+  resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.1.36.tgz#494f06cf08dd1632f534bfee5ee5785b33bc5ac8"
+  integrity sha512-e1wDM9wmzy+hFrBaoJXXRTmsiZ1Q71p646MgZ75qC3NlymbigYwqlKewj0cNWslC0Q9gXEieIwIbNJO71Ydesw==
+
 vue3-qr-reader@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vue3-qr-reader/-/vue3-qr-reader-1.0.0.tgz#a43c0f9badd39af611f37a92a8dd18e2150f41c5"
