@@ -28,7 +28,7 @@
     "fastify-sensible": "3.1.2",
     "fastify-static": "4.5.0",
     "keccak": "3.0.2",
-    "mongodb": "4.3.1",
+    "mongodb": "^4.0.1",
     "node-cache": "^5.1.2",
     "pino-pretty": "7.3.0",
     "secp256k1": "4.0.2",
