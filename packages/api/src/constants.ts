@@ -92,8 +92,7 @@ export const WEB3_PROVIDER =
 
 // WitmonERC721 contract address
 export const WITTY_BUFFICORNS_ERC721_ADDRESS =
-  process.env.WITTY_BUFFICORNS_ERC721_ADDRESS ||
-  '0xE41D6D1cFe55A0fc2035dD663D873D15f21d93c2'
+  process.env.WITTY_BUFFICORNS_ERC721_ADDRESS || '0xE41D6D1cFe55A0fc2035dD663D873D15f21d93c2'
 
 export const MONGO_URI: string =
   process.env.MONGO_URI ||

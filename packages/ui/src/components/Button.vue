@@ -1,11 +1,12 @@
 <template>
-  <button class="btn" :class="{ [type]: type, slim }">
+  <button class="btn" :class="{ [type]: type , slim }">
     <slot class="btn-content"> </slot>
   </button>
 </template>
 
 <script>
 export default {
+
   props: {
     type: {
       type: String,
