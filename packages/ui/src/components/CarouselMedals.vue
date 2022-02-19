@@ -2,13 +2,13 @@
   <Carousel>
     <Slide v-for="(medal, index) in medals" :key="medal">
       <div class="carousel__item">
-        <SvgImage v-if="!!medal.tokenId" class="preview-nft" :svg="medal.svg" />
-        <SvgImage v-else class="preview-nft" :svg="medal" />
+        <SvgMedal v-if="!!medal.tokenId" class="preview-nft" :svg="medal.svg" />
+        <SvgMedal v-else class="preview-nft" :svg="medal" />
         <div v-if="!!medal.tokenId" class="opensea-link">
           <a :href="`${OPENSEA_BASE_URL}/${medal.tokenId}`" target="_blank">
             See on opensea
           </a>
-          <svgImage class="external-link-icon" :svg="externalLink" />
+          <SvgImage class="external-link-icon" :svg="externalLink" />
         </div>
         <p class="medals-number">{{ index + 1 }} of {{ medals.length }}</p>
       </div>
