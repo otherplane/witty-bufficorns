@@ -32,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .medals-container {
-  width: 40vw;
+  width: 700px;
 }
 .nft-container {
   overflow: hidden;
