@@ -17,7 +17,7 @@ module.exports = async function (deployer, network) {
       await deployer.link(WittyBufficornsLib, WittyBufficornsDecorator)
       await deployer.deploy(
         WittyBufficornsDecorator, 
-        "https://api-ethdenver2022.witty-bufficorns.com/"
+        "https://bufficorns.com/"
       )
       addresses[network].WittyBufficornsDecorator = WittyBufficornsDecorator.address
       fs.writeFileSync(

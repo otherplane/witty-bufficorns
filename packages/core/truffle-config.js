@@ -23,7 +23,7 @@ module.exports = {
       port: 9535,
       network_id: 137,
       skipDryRun: true,
-      gasPrice: 30 * 10 ** 9,
+      gasPrice: 20 * 10 ** 9,
       confirmations: 3,
     },
   },

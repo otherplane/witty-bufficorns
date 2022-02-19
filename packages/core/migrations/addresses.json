@@ -5,13 +5,13 @@
         "WittyBufficornsLib": ""
     },
     "polygon.goerli": {
-        "WittyBufficornsToken": "0x82321F45D684900E4fd7fE3bB31f7eA88B8b9E98",
-        "WittyBufficornsDecorator": "0x61766cB959fDE60Fb7941B9de535e7A0D3A2B8d1",
+        "WittyBufficornsToken": "0x9020730c2a4806161BC78DA904c8e3CD268aDD65",
+        "WittyBufficornsDecorator": "0xf9f3107757880733886EA82d9fc79a0Bd3de6356",
         "WittyBufficornsLib": "0xD08a662bd50C4A20997A8c60e470DE3Eb6aA6be2"
     },
     "polygon.mainnet": {
-        "WittyBufficornsToken": "",
-        "WittyBufficornsDecorator": "",
-        "WittyBufficornsLib": ""
+        "WittyBufficornsToken": "0xbfdEcBA08dA8e63644c1Fe91cC18397d770d365E",
+        "WittyBufficornsDecorator": "0x608b9B1a176Df449fC5B31c823da3913e3843672",
+        "WittyBufficornsLib": "0x22fcfb7034f33cacae6e5c035f47291b6c3bdd2b"
     }
 }
