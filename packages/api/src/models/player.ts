@@ -163,10 +163,11 @@ export class PlayerModel {
     }
   }
 
-  public async getAllRegistered(): Promise<Array<Player>> {
+  public async getAllRegisteredExceptWitnetRanch(): Promise<Array<Player>> {
     // TODO: Remove mongoDB $exists from model
     const vtos = await this.repository.get({
       token: { $exists: true, $ne: undefined },
+      ranch: { $ne: 'WITNET_RANCH' },
     })
 
     return vtos.map((vto) => new Player(vto))

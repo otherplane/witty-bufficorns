@@ -176,7 +176,7 @@ export async function calculateAllPlayerAwards(
 ): Promise<Array<FarmerAward>> {
   const farmerAwards = []
   const { playerModel, bufficornModel, ranchModel } = fastifyInstance
-  const players: Array<Player> = await playerModel.getAllRegistered()
+  const players: Array<Player> = await playerModel.getAllRegisteredExceptWitnetRanch()
   const bufficorns: Array<Bufficorn> = await bufficornModel.getAll()
   const bufficornsByRanch = groupBufficornsByRanch(bufficorns)
   const ranches: Array<Ranch> = (await ranchModel.getAll()).map((r) => {
