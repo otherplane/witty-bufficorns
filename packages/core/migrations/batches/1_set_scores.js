@@ -2,7 +2,7 @@ const WittyBufficornsToken = artifacts.require("WittyBufficornsToken")
 
 const ranches = require("../data/ranches").ranches
 const bufficorns = require("../data/bufficorns").bufficorns
-const witnetFee = 2660000000000000
+const witnetFee = 4660000000000000
 
 module.exports = async function (_deployer, network) {
     console.log(`Running on ${network}...\n`)
